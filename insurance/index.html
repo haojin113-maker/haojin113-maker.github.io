@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>보험 푸어 탈출 :: 종신보험의 배신</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6902579674102145" crossorigin="anonymous"></script>
+    <style>
+        body { font-family: 'Pretendard', sans-serif; background: #e0f7fa; color: #333; margin:0; line-height:1.6; }
+        header { background: #006064; color: #fff; padding: 50px 20px; text-align: center; }
+        header h1 { margin-bottom: 10px; font-weight: 800; font-size: 2rem; color: #80deea; }
+        .wrapper { max-width: 1100px; margin: 30px auto; display: flex; gap: 30px; padding: 0 20px; align-items: flex-start; }
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+        section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #b2ebf2; }
+        h2 { border-left: 5px solid #006064; padding-left: 15px; margin-bottom: 20px; color: #00838f; }
+        input { width: 100%; padding: 12px; margin-bottom: 5px; border: 1px solid #ddd; border-radius: 6px; }
+        .calc-btn { width: 100%; padding: 16px; background: #006064; color: #fff; border: none; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; margin-top: 15px; }
+        #result-area { display: none; background: #e0f2f1; padding: 25px; border-radius: 10px; text-align: center; margin-top: 20px; border: 1px solid #80cbc4; }
+        .price-tag { font-size: 2rem; font-weight: 800; color: #004d40; display: block; margin: 10px 0; }
+        .ad-box { background: #fff; padding: 10px; text-align: center; border-radius: 12px; min-height: 600px; border: 1px solid #eee; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } .ad-box { min-height: 250px; } }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>보험은 <strong>저축</strong>이 아닙니다</h1>
+        <p>혹시 "나중에 연금으로 전환돼요"라는 말에 속아<br>비싼 종신보험에 가입하셨나요?</p>
+    </header>
+    <div class="wrapper">
+        <main class="main-content">
+            <section>
+                <h2>📉 BTID 전략 (Buy Term, Invest Difference)</h2>
+                <p>비싼 종신보험 대신 저렴한 <strong>정기보험</strong>을 들고, 그 차액을 <strong>투자</strong>했을 때의 차이를 계산해드립니다.</p>
+                
+                <label>① 종신보험 월 납입료 (만원)</label>
+                <input type="number" id="wholeLife" value="30" placeholder="예: 30">
+                <div style="font-size:0.8rem; color:#666; margin-bottom:10px;">* 사망보장 1억 기준 보통 20~30만원</div>
+                
+                <label>② 정기보험 월 납입료 (만원)</label>
+                <input type="number" id="termLife" value="4" placeholder="예: 4">
+                <div style="font-size:0.8rem; color:#666; margin-bottom:10px;">* 같은 보장이지만 소멸성이라 훨씬 저렴</div>
+
+                <label>③ 납입 기간 (년)</label>
+                <input type="number" id="years" value="20" placeholder="예: 20">
+                
+                <button id="calcBtn" class="calc-btn">20년 뒤 자산 차이 확인</button>
+
+                <div id="result-area">
+                    <p>종신보험 해지환급금 (사업비 차감)</p>
+                    <span id="resWhole" style="font-size:1.2rem; color:#666;">약 0원 (원금 수준)</span>
+                    
+                    <hr style="margin:20px 0; border:0; border-top:1px dashed #aaa;">
+                    
+                    <p style="font-weight:bold;">차액을 주식(S&P500)에 투자했다면</p>
+                    <span id="resInvest" class="price-tag">0원</span>
+                    
+                    <div style="background:#fff; padding:10px; border-radius:8px; margin-top:10px;">
+                        보험 설계사가 당신에게<br>
+                        <strong><span id="diffVal" style="color:#d32f2f;">0만원</span></strong>의 손해를 입혔습니다.
+                    </div>
+                </div>
+            </section>
+            <section>
+                <h2>💡 보험의 3계명</h2>
+                <ul style="padding-left:20px; line-height:1.8; color:#555;">
+                    <li><strong>목적 분리:</strong> 저축과 보장은 섞으면 안 됩니다. 섞으면 '수수료 폭탄'이 됩니다.</li>
+                    <li><strong>정기보험 활용:</strong> 가장이 돈을 버는 시기(예: 자녀 독립 전)까지만 사망 보장을 받는 것이 합리적입니다.</li>
+                    <li><strong>사업비:</strong> 내가 낸 돈의 20~30%는 설계사 수당과 보험사 운영비로 빠집니다. 저축이 될 리가 없습니다.</li>
+                </ul>
+            </section>
+        </main>
+        <aside class="sidebar">
+            <div class="ad-box">
+                <span style="font-size:11px; color:#ccc;">Sponsored</span>
+                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
+        </aside>
+    </div>
+    <script>
+        document.getElementById('calcBtn').addEventListener('click', function() {
+            const whole = Number(document.getElementById('wholeLife').value) * 10000;
+            const term = Number(document.getElementById('termLife').value) * 10000;
+            const years = Number(document.getElementById('years').value);
+            const months = years * 12;
+
+            // 1. 종신보험 환급금 예상 (대략 원금의 100~105% 수준으로 가정 - 사업비 때문)
+            // 사실 10년 이내는 원금 손실이지만, 20년이면 원금보단 조금 더 줌
+            const totalPremium = whole * months;
+            const wholeReturn = totalPremium * 1.05; // 20년 묵혀도 이자 거의 없음
+
+            // 2. 차액 투자 (월복리 10%)
+            const diff = whole - term;
+            const rate = 0.10 / 12;
+            const investReturn = diff * ((Math.pow(1 + rate, months) - 1) / rate);
+
+            document.getElementById('result-area').style.display = 'block';
+            document.getElementById('resWhole').innerText = "약 " + Math.round(wholeReturn/10000).toLocaleString() + "만원";
+            document.getElementById('resInvest').innerText = Math.round(investReturn/10000).toLocaleString() + "만원";
+            
+            const loss = investReturn - wholeReturn;
+            document.getElementById('diffVal').innerText = Math.round(loss/10000).toLocaleString() + "만원";
+        });
+    </script>
+</body>
+</html>
