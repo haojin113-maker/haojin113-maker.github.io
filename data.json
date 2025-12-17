@@ -1,0 +1,44 @@
+[
+  {
+    "title": "전기차, 사지 마세요",
+    "desc": "기름값 아끼려다 차값으로 다 날립니다. 소름 돋는 손익분기점 계산기.",
+    "icon": "⚡",
+    "category": "consumer",
+    "url": "./ev/index.html"
+  },
+  {
+    "title": "스마트폰 호갱 탈출",
+    "desc": "공짜폰의 진실. 자급제와 통신사 할부 이자를 적나라하게 비교해드립니다.",
+    "icon": "📱",
+    "category": "consumer",
+    "url": "./phone/index.html"
+  },
+  {
+    "title": "티끌 모아 페라리",
+    "desc": "담배와 커피값만 아꼈어도... 30년 뒤의 충격적 금액.",
+    "icon": "☕",
+    "category": "money",
+    "url": "./smoke/index.html"
+  },
+  {
+    "title": "사교육비 vs 증여세",
+    "desc": "학원비로 쓴 돈 vs 주식으로 물려줬을 때 자산 차이 시뮬레이션.",
+    "icon": "🎓",
+    "category": "life",
+    "url": "./edu/index.html"
+  },
+  {
+    "title": "리볼빙의 늪",
+    "desc": "이번 달 카드값 10%만 내셨나요? 법정 최고 금리 빚의 공포.",
+    "icon": "💳",
+    "category": "money",
+    "url": "./credit/index.html"
+  },
+  {
+    "title": "결혼 비용 현실 자각",
+    "desc": "1시간 예식을 위해 당신 부부가 몇 달을 일해야 하는지 계산.",
+    "icon": "💍",
+    "category": "life",
+    "url": "./wedding/index.html"
+  }
+]
