@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>웨딩 푸어 탈출기 :: 1시간의 허영심</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6902579674102145" crossorigin="anonymous"></script>
+    <style>
+        /* 테마: 화려함 뒤의 허무함을 상징하는 퍼플 & 그레이 */
+        body { font-family: 'Pretendard', sans-serif; background: #f3e5f5; color: #333; margin:0; line-height:1.6; }
+        header { background: #4a148c; color: #fff; padding: 50px 20px; text-align: center; }
+        header h1 { margin-bottom: 10px; font-weight: 800; font-size: 2rem; color: #e1bee7; }
+        
+        .wrapper { max-width: 1100px; margin: 30px auto; display: flex; gap: 30px; padding: 0 20px; align-items: flex-start; }
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+        
+        section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        h2 { border-left: 5px solid #4a148c; padding-left: 15px; margin-bottom: 20px; color: #4a148c; }
+        
+        input { width: 100%; padding: 12px; margin-bottom: 5px; border: 1px solid #ddd; border-radius: 6px; }
+        .calc-btn { width: 100%; padding: 16px; background: #4a148c; color: #fff; border: none; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; margin-top: 15px; }
+        .calc-btn:hover { background: #6a1b9a; }
+
+        #result-area { display: none; background: #f3e5f5; padding: 25px; border-radius: 10px; text-align: center; margin-top: 20px; border: 1px solid #ce93d8; }
+        .price-tag { font-size: 2rem; font-weight: 800; color: #4a148c; display: block; margin: 10px 0; }
+        .work-time { font-size: 1.4rem; font-weight: 900; color: #d50000; text-decoration: underline; }
+        
+        .ad-box { background: #fff; padding: 10px; text-align: center; border-radius: 12px; min-height: 600px; border: 1px solid #eee; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } .ad-box { min-height: 250px; } }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>남들 보여주기 위한 1시간 파티<br>그 비용이면 <strong>신혼여행을 10번</strong> 갑니다</h1>
+        <p>하객들은 밥맛만 기억합니다. 당신의 통장 잔고를 지키세요.</p>
+    </header>
+    <div class="wrapper">
+        <main class="main-content">
+            <section>
+                <h2>💍 결혼 비용 견적 계산기</h2>
+                <label>① 스드메 + 예식장 대관료 (만원)</label>
+                <input type="number" id="basicCost" value="500" placeholder="예: 500">
+                
+                <label style="margin-top:15px;">② 하객 수 (명)</label>
+                <input type="number" id="guestCount" value="250" placeholder="예: 250">
+                
+                <label style="margin-top:15px;">③ 1인당 식대 (만원)</label>
+                <input type="number" id="mealCost" value="7" placeholder="예: 7">
+                
+                <label style="margin-top:15px;">④ 기타(예물/예단/촬영) (만원)</label>
+                <input type="number" id="etcCost" value="1000" placeholder="예: 1000">
+                
+                <button id="calcBtn" class="calc-btn">이 돈을 모으려면 얼마나 일해야 할까?</button>
+
+                <div id="result-area">
+                    <p>총 결혼식 예상 비용</p>
+                    <span id="resTotal" class="price-tag">0원</span>
+                    
+                    <hr style="margin:20px 0; border:0; border-top:1px dashed #aaa;">
+                    
+                    <p>이 돈을 모으기 위해 당신 부부는</p>
+                    <p style="margin:10px 0;">
+                        숨만 쉬고 <span id="resWorkTime" class="work-time">0개월</span> 동안
+                    </p>
+                    <p>일해야 합니다. (최저시급 기준)</p>
+                    
+                    <div style="margin-top:20px; font-size:0.9rem; color:#666;">
+                        * 2024년 최저시급(9,860원) 월 209시간 기준 세전 약 206만원
+                    </div>
+                </div>
+            </section>
+            <section>
+                <h2>🛑 스몰 웨딩을 고려해야 할 이유</h2>
+                <ul style="padding-left:20px; color:#555;">
+                    <li><strong>보여주기식 문화:</strong> 3천만 원짜리 결혼식을 해도, 밥이 맛없으면 욕먹는 게 현실입니다.</li>
+                    <li><strong>종잣돈의 차이:</strong> 그 돈으로 신혼집 대출을 갚거나 미국 주식을 샀다면? 출발선이 달라집니다.</li>
+                    <li><strong>진정한 축하:</strong> 정말 가까운 사람만 초대해서 진심으로 축하받는 결혼식이 더 기억에 남습니다.</li>
+                </ul>
+            </section>
+        </main>
+        <aside class="sidebar">
+            <div class="ad-box">
+                <span style="font-size:11px; color:#ccc;">Sponsored</span>
+                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0000000000000000" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
+        </aside>
+    </div>
+    <script>
+        document.getElementById('calcBtn').addEventListener('click', function() {
+            const basic = Number(document.getElementById('basicCost').value) * 10000;
+            const guest = Number(document.getElementById('guestCount').value);
+            const meal = Number(document.getElementById('mealCost').value) * 10000;
+            const etc = Number(document.getElementById('etcCost').value) * 10000;
+
+            const total = basic + (guest * meal) + etc;
+            
+            // 최저임금 월급 (206만원)
+            const minWageMonth = 2060000;
+            // 맞벌이 가정 (2명)
+            const coupleWage = minWageMonth * 2;
+            
+            const months = total / coupleWage;
+
+            document.getElementById('result-area').style.display = 'block';
+            document.getElementById('resTotal').innerText = Math.round(total/10000).toLocaleString() + "만원";
+            document.getElementById('resWorkTime').innerText = months.toFixed(1) + "개월";
+        });
+    </script>
+</body>
+</html>
