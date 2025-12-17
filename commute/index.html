@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>길바닥 인생 계산기 :: 당신의 시간은 얼마인가요</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6902579674102145" crossorigin="anonymous"></script>
+    <style>
+        body { font-family: 'Pretendard', sans-serif; background: #fff3e0; color: #333; margin:0; line-height:1.6; }
+        header { background: #e65100; color: #fff; padding: 50px 20px; text-align: center; }
+        header h1 { margin-bottom: 10px; font-weight: 800; font-size: 2rem; color: #ffe0b2; }
+        .wrapper { max-width: 1100px; margin: 30px auto; display: flex; gap: 30px; padding: 0 20px; align-items: flex-start; }
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+        section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #ffcc80; }
+        h2 { border-left: 5px solid #e65100; padding-left: 15px; margin-bottom: 20px; color: #bf360c; }
+        input { width: 100%; padding: 12px; margin-bottom: 5px; border: 1px solid #ddd; border-radius: 6px; }
+        .calc-btn { width: 100%; padding: 16px; background: #e65100; color: #fff; border: none; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; margin-top: 15px; }
+        #result-area { display: none; background: #fff8e1; padding: 25px; border-radius: 10px; text-align: center; margin-top: 20px; border: 1px solid #ffe0b2; }
+        .price-tag { font-size: 2rem; font-weight: 800; color: #e65100; display: block; margin: 10px 0; }
+        .ad-box { background: #fff; padding: 10px; text-align: center; border-radius: 12px; min-height: 600px; border: 1px solid #eee; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } .ad-box { min-height: 250px; } }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>싼 집을 찾아 멀리 가셨나요?<br>당신은 <strong>시간</strong>을 버리고 있습니다</h1>
+        <p>월세 20만원 아끼려다 50만원어치 수명을 갉아먹는 현실</p>
+    </header>
+    <div class="wrapper">
+        <main class="main-content">
+            <section>
+                <h2>🚌 도로 위 인생 비용 계산기</h2>
+                <label>① 왕복 출퇴근 시간 (분)</label>
+                <input type="number" id="minutes" value="120" placeholder="예: 120 (왕복 2시간)">
+                
+                <label style="margin-top:15px;">② 당신의 시급 가치 (원)</label>
+                <input type="number" id="wage" value="15000" placeholder="예: 15000 (최저시급 약 1만원)">
+                <div style="font-size:0.8rem; color:#666;">* 본인 연봉 나누기 2090 하거나, 최저시급(9,860원) 입력</div>
+
+                <button id="calcBtn" class="calc-btn">1년 동안 버리는 비용 확인</button>
+
+                <div id="result-area">
+                    <p>당신은 1년에 <strong><span id="resDays" style="color:#d32f2f;">0일</span></strong>을</p>
+                    <p>버스/지하철에 갇혀 지냅니다.</p>
+                    
+                    <hr style="margin:20px 0; border:0; border-top:1px dashed #aaa;">
+                    
+                    <p>돈으로 환산한 손실액</p>
+                    <span id="resCost" class="price-tag">0원</span>
+                    
+                    <p style="font-size:0.9rem; margin-top:10px;">
+                        이 돈이면 회사 근처 월세방을 구하고,<br>
+                        하루 2시간씩 운동하거나 잠을 더 잘 수 있습니다.
+                    </p>
+                </div>
+            </section>
+            <section>
+                <h2>🛑 장거리 출퇴근의 부작용</h2>
+                <ul style="padding-left:20px; line-height:1.8; color:#555;">
+                    <li><strong>삶의 질 하락:</strong> 왕복 3시간 이상 출퇴근자는 이혼율이 40% 높다는 연구 결과가 있습니다.</li>
+                    <li><strong>건강 악화:</strong> 수면 부족, 척추 질환, 만성 피로의 주범입니다.</li>
+                    <li><strong>기회 비용:</strong> 길에서 버리는 시간에 독서, 운동, 부업을 했다면 당신의 연봉은 달라졌을 겁니다.</li>
+                </ul>
+            </section>
+        </main>
+        <aside class="sidebar">
+            <div class="ad-box">
+                <span style="font-size:11px; color:#ccc;">Sponsored</span>
+                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
+        </aside>
+    </div>
+    <script>
+        document.getElementById('calcBtn').addEventListener('click', function() {
+            const mins = Number(document.getElementById('minutes').value);
+            const wage = Number(document.getElementById('wage').value);
+            
+            // 연간 근무일수 약 250일 가정
+            const daysWorked = 250;
+            
+            // 연간 총 소모 분 -> 시간
+            const totalHours = (mins / 60) * daysWorked;
+            
+            // 시간 -> 일(24시간) 환산
+            const totalDays = totalHours / 24;
+            
+            // 비용 환산
+            const totalCost = totalHours * wage;
+
+            document.getElementById('result-area').style.display = 'block';
+            document.getElementById('resDays').innerText = totalDays.toFixed(1) + "일"; // 24시간 기준 며칠인지
+            document.getElementById('resCost').innerText = Math.round(totalCost).toLocaleString() + "원";
+        });
+    </script>
+</body>
+</html>
