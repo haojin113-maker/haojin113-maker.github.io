@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>리볼빙의 늪 :: 당신의 신용점수가 위험합니다</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6902579674102145" crossorigin="anonymous"></script>
+    <style>
+        /* 테마: 위험/경고를 상징하는 검정 & 레드 */
+        body { font-family: 'Pretendard', sans-serif; background: #212121; color: #fff; margin:0; line-height:1.6; }
+        header { background: #b71c1c; color: #fff; padding: 50px 20px; text-align: center; }
+        header h1 { margin-bottom: 10px; font-weight: 800; font-size: 2rem; }
+        
+        .wrapper { max-width: 1100px; margin: 30px auto; display: flex; gap: 30px; padding: 0 20px; align-items: flex-start; }
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+        
+        section { background: #333; padding: 30px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #444; }
+        h2 { border-left: 5px solid #b71c1c; padding-left: 15px; margin-bottom: 20px; color: #ffcdd2; }
+        p { color: #e0e0e0; }
+        
+        input { width: 100%; padding: 12px; margin-bottom: 5px; background: #424242; border: 1px solid #666; color:#fff; border-radius: 6px; font-size:1rem; }
+        .calc-btn { width: 100%; padding: 16px; background: #b71c1c; color: #fff; border: none; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; margin-top: 15px; }
+        .calc-btn:hover { background: #c62828; }
+
+        #result-area { display: none; background: #424242; padding: 25px; border-radius: 10px; text-align: center; margin-top: 20px; border: 1px solid #b71c1c; }
+        .price-tag { font-size: 2rem; font-weight: 800; color: #ff5252; display: block; margin: 10px 0; }
+        
+        .ad-box { background: #333; padding: 10px; text-align: center; border-radius: 12px; min-height: 600px; border: 1px solid #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } .ad-box { min-height: 250px; } }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>리볼빙, '일부결제'의 달콤한 함정<br>그것은 <strong>법정 최고 금리 빚</strong>입니다</h1>
+        <p>10%만 내고 넘기셨나요? 축하합니다. 사채업자와 계약하셨습니다.</p>
+    </header>
+    <div class="wrapper">
+        <main class="main-content">
+            <section>
+                <h2>☠️ 금융 문맹 탈출 시뮬레이터</h2>
+                <label>① 현재 카드값 (이월 잔액, 만원)</label>
+                <input type="number" id="debt" value="200" placeholder="예: 200">
+                
+                <label style="margin-top:15px;">② 리볼빙 수수료율 (%, 앱에서 확인)</label>
+                <input type="number" id="rate" value="18.9" placeholder="예: 18.9 (보통 15~19%)">
+                
+                <label style="margin-top:15px;">③ 다 갚는데 걸릴 예상 기간 (년)</label>
+                <input type="number" id="years" value="3" placeholder="예: 3 (계속 이월한다고 가정)">
+                
+                <button id="calcBtn" class="calc-btn">내가 낼 이자 확인하기</button>
+
+                <div id="result-area">
+                    <p>당신이 갚아야 할 원금은 <span id="resPrincipal">0</span>만원이지만</p>
+                    <hr style="border-color:#666; opacity:0.3;">
+                    
+                    <p>카드사에 바치는 <strong>이자만</strong></p>
+                    <span id="resInterest" class="price-tag">0원</span>
+                    
+                    <p style="color:#ffcdd2; font-weight:bold; margin-top:15px;">
+                        배보다 배꼽이 더 큽니다.<br>
+                        지금 당장 가족에게 빌려서라도 갚으세요.
+                    </p>
+                </div>
+            </section>
+            <section>
+                <h2>🚫 리볼빙/분할납부를 끊어야 하는 이유</h2>
+                <ul style="padding-left:20px; color:#ccc;">
+                    <li><strong>신용등급 파괴자:</strong> 리볼빙 사용 즉시 신용점수가 하락하며, 1금융권 대출이 막힙니다.</li>
+                    <li><strong>복리의 저주:</strong> 이자가 원금에 붙고, 다음 달엔 그 합계에 또 이자가 붙습니다.</li>
+                    <li><strong>건전성 착각:</strong> "나는 연체 안 했어"라고 안심하지만, 사실은 빚을 굴리고 있는 중입니다.</li>
+                </ul>
+            </section>
+        </main>
+        <aside class="sidebar">
+            <div class="ad-box">
+                <span style="font-size:11px; color:#888;">Sponsored</span>
+                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0000000000000000" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
+        </aside>
+    </div>
+    <script>
+        document.getElementById('calcBtn').addEventListener('click', function() {
+            const debt = Number(document.getElementById('debt').value) * 10000;
+            const rate = Number(document.getElementById('rate').value) / 100; // 연이율
+            const years = Number(document.getElementById('years').value);
+
+            // 단순 계산: 매년 원금에 대한 이자가 계속 발생한다고 가정 (원금을 못 갚고 이월 시)
+            // 실제로는 더 복잡하지만, 경각심을 위해 '매달 잔액이 유지된다면 나가는 누적 이자' 계산
+            const annualInterest = debt * rate;
+            const totalInterest = annualInterest * years;
+
+            document.getElementById('result-area').style.display = 'block';
+            document.getElementById('resPrincipal').innerText = (debt/10000).toLocaleString();
+            document.getElementById('resInterest').innerText = Math.round(totalInterest).toLocaleString() + "원";
+        });
+    </script>
+</body>
+</html>
