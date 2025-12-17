@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="전기차 구매 전 반드시 확인해야 할 손익분기점 계산기와 구매 반대 이유 정리">
+    <title>전기차, 당신은 사지 마세요</title>
+    
+    <!-- 구글 애드센스 스크립트 -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6902579674102145"
+     crossorigin="anonymous"></script>
+
+    <style>
+        /* [1] 기본 설정 */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* [2] 헤더 */
+        header {
+            background-color: #c92a2a;
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+        }
+        header h1 { font-size: 2.2rem; margin-bottom: 10px; font-weight: 800; }
+        header p { font-size: 1.1rem; opacity: 0.9; }
+
+        /* [3] 레이아웃 (반응형: 본문 + 사이드바) */
+        .wrapper {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 30px;
+            align-items: flex-start; /* 사이드바 고정(sticky)을 위해 필요 */
+        }
+
+        /* 메인 콘텐츠 영역 (왼쪽) */
+        .main-content {
+            flex: 3; /* 공간 75% 차지 */
+            min-width: 0; /* 플렉스 박스 내 줄바꿈 이슈 방지 */
+        }
+
+        /* 사이드바 영역 (오른쪽 광고) */
+        .sidebar {
+            flex: 1; /* 공간 25% 차지 */
+            min-width: 300px;
+            position: sticky; /* 스크롤 따라오기 */
+            top: 20px;
+        }
+
+        /* [4] 섹션 박스 디자인 */
+        section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+        }
+        
+        h2 {
+            border-left: 5px solid #c92a2a;
+            padding-left: 15px;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            color: #111;
+        }
+
+        .intro-box p { font-size: 1.05rem; color: #444; }
+        .intro-box strong { color: #c92a2a; background: #fff0f0; padding: 0 4px; }
+
+        /* [5] 계산기 디자인 */
+        .calc-group {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.9rem; color: #555; }
+        input {
+            width: 100%; padding: 12px; border: 1px solid #ccc;
+            border-radius: 6px; font-size: 1rem;
+        }
+        .calc-btn {
+            width: 100%; padding: 16px;
+            background-color: #212529; color: white;
+            border: none; border-radius: 8px;
+            font-size: 1.2rem; font-weight: bold; cursor: pointer;
+            margin-top: 10px; transition: 0.2s;
+        }
+        .calc-btn:hover { background-color: #000; transform: translateY(-2px); }
+
+        #result-area {
+            display: none;
+            margin-top: 20px; padding: 25px;
+            background-color: #fff5f5; border: 2px solid #ffc9c9;
+            border-radius: 10px; text-align: center;
+        }
+        .highlight { color: #c92a2a; font-size: 2rem; font-weight: 800; display: block; margin: 10px 0; }
+
+        /* [6] 주장 리스트 */
+        .reason-card { display: flex; margin-bottom: 20px; }
+        .icon {
+            flex-shrink: 0; width: 35px; height: 35px;
+            background: #c92a2a; color: white;
+            border-radius: 50%; font-weight: bold;
+            display: flex; align-items: center; justify-content: center;
+            margin-right: 15px; margin-top: 3px;
+        }
+        .reason-content h3 { font-size: 1.1rem; margin-bottom: 5px; }
+        .reason-content p { font-size: 0.95rem; color: #666; }
+
+        /* [7] 광고 박스 (사이드바용) */
+        .ad-box {
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 10px;
+            text-align: center;
+            min-height: 600px; /* 세로형 광고 공간 확보 */
+        }
+        .ad-label { font-size: 11px; color: #ccc; display: block; margin-bottom: 5px; text-align: right; }
+
+        /* [8] 모바일 반응형 처리 */
+        @media (max-width: 850px) {
+            .wrapper { flex-direction: column; } /* 모바일에서 세로 배치 */
+            .sidebar { 
+                width: 100%; 
+                position: static; /* 모바일에서는 고정 해제 */
+                min-width: auto;
+            }
+            .ad-box { min-height: 250px; } /* 모바일 광고 높이 조정 */
+            header h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>전기차, 아직은 시기상조입니다</h1>
+        <p>저는 전기차 오너입니다. 하지만 지인에게는 <strong>"절대 사지 마라"</strong>고 말립니다.</p>
+    </header>
+
+    <div class="wrapper">
+        
+        <!-- [왼쪽] 메인 콘텐츠 -->
+        <main class="main-content">
+            
+            <!-- 인트로 -->
+            <section class="intro-box">
+                <h2>당신은 '베타 테스터'입니까?</h2>
+                <p>
+                    언론과 제조사는 '유지비 절약'만 강조합니다. 하지만 그 뒤에 숨겨진 <strong>화재 공포, 감가상각, 충전 스트레스</strong>는 이야기하지 않습니다.<br><br>
+                    단순히 기름값 아끼려다 차값으로 수천만 원을 더 쓰는 비합리적인 소비를 막기 위해, 냉혹한 현실 계산기를 준비했습니다.
+                </p>
+            </section>
+
+            <!-- 계산기 -->
+            <section id="calculator">
+                <h2>📉 '본전 뽑기' 계산기</h2>
+                <div class="calc-group">
+                    <label>① 내연기관차 가격 (만원)</label>
+                    <input type="number" id="gasPrice" value="3500">
+                </div>
+                <div class="calc-group">
+                    <label>② 전기차 실구매가 (보조금 포함, 만원)</label>
+                    <input type="number" id="evPrice" value="5500">
+                </div>
+                <div class="calc-group">
+                    <label>③ 휘발유 가격 (원/L) & 내연차 연비 (km/L)</label>
+                    <div style="display:flex; gap:10px;">
+                        <input type="number" id="gasCost" value="1700" placeholder="기름값">
+                        <input type="number" id="gasEff" value="12" placeholder="연비">
+                    </div>
+                </div>
+                <div class="calc-group">
+                    <label>④ 충전요금 (원/kWh) & 전기차 전비 (km/kWh)</label>
+                    <div style="display:flex; gap:10px;">
+                        <input type="number" id="evCost" value="350" placeholder="충전비">
+                        <input type="number" id="evEff" value="5.0" placeholder="전비">
+                    </div>
+                </div>
+                <div class="calc-group">
+                    <label>⑤ 연간 주행 거리 (km)</label>
+                    <input type="number" id="annualKm" value="15000">
+                </div>
+
+                <button id="calcBtn" class="calc-btn">결과 확인하기</button>
+
+                <div id="result-area">
+                    <p style="font-weight:bold; color:#555;">본전 뽑는 데 걸리는 시간</p>
+                    <span id="resultTime" class="highlight">0년</span>
+                    <p id="resultDist" style="color:#888; font-size:0.9rem;">(0km 주행 필요)</p>
+                    <p style="margin-top:15px; font-size:0.85rem; color:#d6336c;">
+                        * 보험료 인상분, 수리비 리스크는 포함되지 않은 수치입니다. 실제로는 더 오래 걸립니다.
+                    </p>
+                </div>
+            </section>
+
+            <!-- 반대 이유 -->
+            <section>
+                <h2>🛑 전기차를 말리는 5가지 이유</h2>
+                
+                <div class="reason-card">
+                    <div class="icon">1</div>
+                    <div class="reason-content">
+                        <h3>생명을 위협하는 화재 공포</h3>
+                        <p>열폭주 발생 시 1,000도 고열과 함께 전소됩니다. 전자식 도어 잠김으로 탈출 골든타임을 놓칠 수 있습니다.</p>
+                    </div>
+                </div>
+                
+                <div class="reason-card">
+                    <div class="icon">2</div>
+                    <div class="reason-content">
+                        <h3>경제성 붕괴 (수리비 & 감가)</h3>
+                        <p>배터리 팩 교체 비용은 수천만 원입니다. 중고차 가격 방어가 안 되어 팔 때 큰 손해를 봅니다.</p>
+                    </div>
+                </div>
+
+                <div class="reason-card">
+                    <div class="icon">3</div>
+                    <div class="reason-content">
+                        <h3>충전 노예가 되는 삶</h3>
+                        <p>주유소는 3분이지만 충전소는 40분입니다. 충전기 고장과 자리 싸움으로 당신의 시간을 낭비하지 마세요.</p>
+                    </div>
+                </div>
+
+                <div class="reason-card">
+                    <div class="icon">4</div>
+                    <div class="reason-content">
+                        <h3>시기상조 기술 (베타 테스터)</h3>
+                        <p>현재의 리튬이온 배터리는 과도기입니다. 전고체 배터리가 나오면 현재 전기차는 구형 고철이 됩니다.</p>
+                    </div>
+                </div>
+
+                <div class="reason-card">
+                    <div class="icon">5</div>
+                    <div class="reason-content">
+                        <h3>승차감과 멀미</h3>
+                        <p>회생 제동의 울컥거림은 동승자에게 멀미를 유발합니다. 무거운 차체로 타이어 분진과 마모도 심각합니다.</p>
+                    </div>
+                </div>
+            </section>
+
+            <footer style="text-align:center; padding:20px; color:#999; font-size:0.8rem;">
+                &copy; 2024 Smart Consumer Alert. 본 페이지는 정보 제공 목적입니다.
+            </footer>
+
+        </main>
+
+        <!-- [오른쪽] 사이드바 (광고 영역) -->
+        <aside class="sidebar">
+            <div class="ad-box">
+                <span class="ad-label">Sponsored</span>
+                
+                <!-- [광고 넣는 곳] 구글 애드센스 '수직형(Vertical)' 광고 코드 권장 -->
+                <!-- 예: 300x600 크기 또는 반응형 수직 광고 -->
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-0000000000000000"
+                     data-ad-slot="1234567890"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+                
+                <p style="margin-top:20px; color:#ddd; font-size:0.8rem;">
+                    광고 영역입니다.<br>PC에서는 우측에 고정되며,<br>모바일에서는 하단으로 이동합니다.
+                </p>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- 스크립트 (기능 로직) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                // 1. 값 가져오기 (숫자로 변환, 빈값은 0)
+                const getNum = (id) => Number(document.getElementById(id).value);
+                
+                const gasPrice = getNum('gasPrice') * 10000;
+                const evPrice = getNum('evPrice') * 10000;
+                const gasCost = getNum('gasCost');
+                const gasEff = getNum('gasEff');
+                const evCost = getNum('evCost');
+                const evEff = getNum('evEff');
+                const annualKm = getNum('annualKm');
+
+                // 2. 유효성 검사 (0으로 나누기 방지)
+                if(gasEff <= 0 || evEff <= 0 || annualKm <= 0) {
+                    alert("연비와 주행거리를 올바르게 입력해주세요.");
+                    return;
+                }
+
+                // 3. 계산
+                const priceGap = evPrice - gasPrice; // 차값 차이
+                const costPerKmGas = gasCost / gasEff; // 내연차 km당 비용
+                const costPerKmEv = evCost / evEff;   // 전기차 km당 비용
+                const savingPerKm = costPerKmGas - costPerKmEv; // km당 절약액
+
+                // 4. 결과 출력
+                const resultArea = document.getElementById('result-area');
+                const timeElem = document.getElementById('resultTime');
+                const distElem = document.getElementById('resultDist');
+                
+                resultArea.style.display = 'block';
+
+                if (priceGap <= 0) {
+                    timeElem.innerText = "이미 이득 (차값이 더 쌈)";
+                    timeElem.style.color = "#2b8a3e"; // Green
+                    distElem.innerText = "";
+                } else if (savingPerKm <= 0) {
+                    timeElem.innerText = "절대 불가능";
+                    timeElem.style.color = "#c92a2a"; // Red
+                    distElem.innerText = "(전기차 유지비가 더 비쌉니다)";
+                } else {
+                    const breakEvenDistance = priceGap / savingPerKm;
+                    const breakEvenYears = breakEvenDistance / annualKm;
+
+                    timeElem.innerText = breakEvenYears.toFixed(1) + "년";
+                    distElem.innerText = `(총 ${Math.round(breakEvenDistance).toLocaleString()}km 주행 필요)`;
+                    
+                    // 10년 이상이면 빨간색 경고
+                    timeElem.style.color = breakEvenYears >= 10 ? "#c92a2a" : "#333";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
