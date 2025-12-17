@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사교육비의 진실 :: 1등급보다 등기권리증</title>
+    <!-- 구글 애드센스 -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6902579674102145" crossorigin="anonymous"></script>
+    <style>
+        /* 테마: 교육/성장을 상징하는 네이비 & 골드 */
+        body { font-family: 'Pretendard', sans-serif; background: #f4f6f9; color: #333; margin:0; line-height:1.6; }
+        header { background: #1a237e; color: #fff; padding: 50px 20px; text-align: center; }
+        header h1 { margin-bottom: 10px; font-weight: 800; font-size: 2rem; color: #ffd700; }
+        
+        .wrapper { max-width: 1100px; margin: 30px auto; display: flex; gap: 30px; padding: 0 20px; align-items: flex-start; }
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+        
+        section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        h2 { border-left: 5px solid #1a237e; padding-left: 15px; margin-bottom: 20px; color: #1a237e; }
+        
+        input { width: 100%; padding: 12px; margin-bottom: 5px; border: 1px solid #ddd; border-radius: 6px; }
+        .calc-btn { width: 100%; padding: 16px; background: #1a237e; color: #fff; border: none; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; margin-top: 15px; }
+        .calc-btn:hover { background: #121858; }
+
+        #result-area { display: none; background: #e8eaf6; padding: 25px; border-radius: 10px; text-align: center; margin-top: 20px; border: 1px solid #c5cae9; }
+        .price-tag { font-size: 2rem; font-weight: 800; color: #1a237e; display: block; margin: 10px 0; }
+        .shock-text { background: #fffde7; padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px solid #fff9c4; }
+        
+        .ad-box { background: #fff; padding: 10px; text-align: center; border-radius: 12px; min-height: 600px; border: 1px solid #eee; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } .ad-box { min-height: 250px; } }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>자녀에게 "공부해라" 잔소리 대신<br><strong>5억 자산</strong>을 물려주세요</h1>
+        <p>사라지는 학원비 vs 불어나는 투자금, 당신의 선택은?</p>
+    </header>
+    <div class="wrapper">
+        <main class="main-content">
+            <section>
+                <h2>📉 학원비, 정말 투자가 맞습니까?</h2>
+                <p>대한민국 평균 사교육비 월 50~100만원. 아이가 대학 갈 때쯤이면 이 돈은 흔적도 없이 사라집니다.<br>하지만 이 돈을 <strong>세계 1등 기업(미국 S&P500)</strong>에 투자했다면 어떨까요?</p>
+            </section>
+            <section>
+                <h2>📊 자녀 자산 시뮬레이터</h2>
+                <label>① 월평균 사교육비 (만원)</label>
+                <input type="number" id="monthlyCost" value="70" placeholder="예: 70">
+                
+                <label style="margin-top:15px;">② 지출 기간 (년)</label>
+                <input type="number" id="years" value="12" placeholder="예: 12 (초1~고3)">
+                <div style="font-size:0.8rem; color:#666;">* 예상 수익률 연 10%(S&P500 평균) 복리 적용</div>
+                
+                <button id="calcBtn" class="calc-btn">아이의 미래 자산 확인하기</button>
+
+                <div id="result-area">
+                    <p>학원비로 그냥 썼다면 사라진 돈</p>
+                    <span id="resLost" style="font-size:1.2rem; color:#666; text-decoration:line-through;">0원</span>
+                    
+                    <hr style="margin:20px 0; border:0; border-top:1px dashed #aaa;">
+                    
+                    <p style="font-weight:bold;">이 돈을 주식으로 물려줬다면</p>
+                    <span id="resInvest" class="price-tag">0원</span>
+                    
+                    <div class="shock-text">
+                        당신의 자녀는 사회생활을<br>
+                        <strong><span id="compareItem" style="color:#d32f2f; font-size:1.2rem;">서울 아파트 전세금</span></strong><br>
+                        을 쥐고 시작할 수 있었습니다.
+                    </div>
+                </div>
+            </section>
+            <section>
+                <h2>💡 부모가 알아야 할 3가지 팩트</h2>
+                <ul style="padding-left:20px; line-height:1.8;">
+                    <li><strong>사교육의 가성비:</strong> 명문대 졸업장만으로 부자가 되는 시대는 끝났습니다. 자본 소득 시스템을 만들어주는 게 진짜 사랑입니다.</li>
+                    <li><strong>증여세 절세:</strong> 미성년 자녀에게 10년 단위로 2천만 원씩 증여하면 세금이 없습니다. 지금이 기회입니다.</li>
+                    <li><strong>복리의 마법:</strong> 아이에게는 '시간'이라는 무기가 있습니다. 어릴수록 복리 효과는 극대화됩니다.</li>
+                </ul>
+            </section>
+        </main>
+        <aside class="sidebar">
+            <div class="ad-box">
+                <span style="font-size:11px; color:#ccc;">Sponsored</span>
+                <!-- 광고 코드 -->
+                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0000000000000000" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
+        </aside>
+    </div>
+    <script>
+        document.getElementById('calcBtn').addEventListener('click', function() {
+            const monthly = Number(document.getElementById('monthlyCost').value) * 10000;
+            const years = Number(document.getElementById('years').value);
+            const rate = 0.10 / 12; // 월이율 (연 10%)
+            const months = years * 12;
+
+            // 월복리 적금 공식
+            const futureValue = monthly * ((Math.pow(1 + rate, months) - 1) / rate);
+            const simpleCost = monthly * months;
+
+            document.getElementById('result-area').style.display = 'block';
+            document.getElementById('resLost').innerText = Math.round(simpleCost/10000).toLocaleString() + "만원";
+            document.getElementById('resInvest').innerText = Math.round(futureValue/10000).toLocaleString() + "만원";
+
+            const fv = futureValue / 100000000; // 억 단위
+            let item = "지방 아파트 한 채";
+            if(fv > 5) item = "서울 소형 아파트 매매";
+            else if(fv > 3) item = "수도권 아파트 전세금";
+            else if(fv > 1) item = "오피스텔 한 채";
+            
+            document.getElementById('compareItem').innerText = item;
+        });
+    </script>
+</body>
+</html>
