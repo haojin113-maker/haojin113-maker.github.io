@@ -6,9 +6,10 @@
     <title>팩트 폭격 연구소 :: 호갱 탈출의 모든 것</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <style>
-        /* 스타일은 이전과 100% 동일합니다. (생략 가능하지만 편의를 위해 유지) */
+        /* [기본 스타일] */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background: #f5f7fa; color: #333; }
+
         header { background: linear-gradient(135deg, #1a237e, #283593); color: white; padding: 60px 20px 40px; text-align: center; }
         header h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; }
         
@@ -17,28 +18,112 @@
         .search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #999; }
 
         .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; min-height: 600px; }
-        
-        .filter-tags { text-align: center; margin-bottom: 30px; }
-        .tag { display: inline-block; padding: 8px 16px; margin: 5px; background: white; border: 1px solid #ddd; border-radius: 20px; cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
+
+        /* 컨트롤 바 (필터 + 뷰 모드 토글) */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .filter-tags { text-align: center; }
+        .tag { display: inline-block; padding: 8px 16px; margin: 5px 2px; background: white; border: 1px solid #ddd; border-radius: 20px; cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
         .tag.active, .tag:hover { background: #1a237e; color: white; border-color: #1a237e; }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
-        .card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.2s; cursor: pointer; text-decoration: none; color: inherit; display: flex; flex-direction: column; border: 1px solid #eee; }
+        /* [추가] 뷰 모드 토글 버튼 */
+        .view-toggle {
+            display: flex;
+            gap: 5px;
+            background: white;
+            padding: 5px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        .view-btn {
+            background: none; border: none; cursor: pointer;
+            padding: 5px; border-radius: 4px; color: #999;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .view-btn.active { background: #e8eaf6; color: #1a237e; }
+        .view-btn:hover { color: #1a237e; }
+
+
+        /* ----------------------------------------------------
+           [핵심] 카드 그리드 vs 리스트 스타일링
+           ---------------------------------------------------- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* 기본: 카드형 */
+            gap: 25px;
+        }
+
+        .card {
+            background: white; border-radius: 15px; overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.2s; cursor: pointer;
+            text-decoration: none; color: inherit; display: flex; flex-direction: column;
+            border: 1px solid #eee;
+        }
         .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .card-header { padding: 20px; font-size: 3rem; text-align: center; background: #fafafa; border-bottom: 1px solid #eee; }
         .card-body { padding: 20px; flex-grow: 1; }
         .category-badge { font-size: 0.75rem; font-weight: bold; color: #1a237e; background: #e8eaf6; padding: 4px 8px; border-radius: 4px; margin-bottom: 10px; display: inline-block; }
         .card-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 10px; }
-        .card-desc { font-size: 0.95rem; color: #666; }
+        .card-desc { font-size: 0.95rem; color: #666; line-height: 1.5; }
+
+        /* [리스트 모드일 때 적용되는 CSS] */
+        .grid.list-mode {
+            grid-template-columns: 1fr; /* 한 줄에 하나씩 */
+            gap: 15px;
+        }
+        
+        .grid.list-mode .card {
+            flex-direction: row; /* 가로 배치 */
+            align-items: center;
+            padding: 10px;
+            min-height: auto;
+        }
+        .grid.list-mode .card:hover { transform: translateX(5px); } /* 위로 뜨는 대신 옆으로 살짝 */
+        
+        .grid.list-mode .card-header {
+            width: 80px; /* 아이콘 영역 고정 너비 */
+            font-size: 2rem;
+            padding: 10px;
+            border-bottom: none;
+            background: transparent;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .grid.list-mode .card-body {
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            flex-wrap: wrap; /* 모바일 대응 */
+        }
+        .grid.list-mode .content-wrapper { flex: 1; }
+        .grid.list-mode .card-title { margin-bottom: 5px; font-size: 1.1rem; }
+        .grid.list-mode .card-desc { font-size: 0.9rem; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 600px; }
+        .grid.list-mode .category-badge { margin: 0 0 5px 0; }
+
+        /* 모바일에서는 리스트 모드여도 약간 겹치게 */
+        @media (max-width: 768px) {
+            .grid.list-mode .card { flex-direction: row; }
+            .grid.list-mode .card-desc { display: none; } /* 모바일 리스트에선 설명 숨김 (깔끔하게) */
+            .controls { justify-content: center; }
+        }
+
+        /* ---------------------------------------------------- */
 
         .pagination { display: flex; justify-content: center; margin-top: 40px; gap: 10px; }
         .page-btn { padding: 10px 15px; background: white; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; font-weight: bold; color: #555; }
-        .page-btn:hover { background: #eee; }
         .page-btn.active { background: #1a237e; color: white; border-color: #1a237e; }
-        .page-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-        .loading { text-align: center; padding: 50px; color: #666; font-size: 1.1rem; }
-        .no-result { text-align: center; padding: 50px; color: #888; display: none; }
+        .page-btn:disabled { opacity: 0.5; }
+        
+        .loading, .no-result { text-align: center; padding: 50px; color: #888; }
+        .no-result { display: none; }
         footer { text-align: center; padding: 40px; color: #999; font-size: 0.8rem; margin-top: 50px; }
     </style>
 </head>
@@ -49,24 +134,37 @@
         <p>빅데이터로 분석한 호갱 탈출 솔루션</p>
         <div class="search-container">
             <span class="material-icons-round search-icon">search</span>
-            <input type="text" class="search-input" id="searchInput" placeholder="무엇이 궁금하신가요?">
+            <input type="text" class="search-input" id="searchInput" placeholder="궁금한 내용을 검색하세요">
         </div>
     </header>
 
     <div class="container">
-        <div class="filter-tags" id="filterTags">
-            <span class="tag active" data-filter="all">전체보기</span>
-            <span class="tag" data-filter="money">💰 재테크</span>
-            <span class="tag" data-filter="life">🧬 인생</span>
-            <span class="tag" data-filter="consumer">🛒 소비</span>
+        
+        <!-- 컨트롤 바 (필터 + 뷰 토글) -->
+        <div class="controls">
+            <div class="filter-tags" id="filterTags">
+                <span class="tag active" data-filter="all">전체</span>
+                <span class="tag" data-filter="money">💰 재테크</span>
+                <span class="tag" data-filter="life">🧬 인생</span>
+                <span class="tag" data-filter="consumer">🛒 소비</span>
+            </div>
+
+            <!-- 뷰 모드 토글 버튼 -->
+            <div class="view-toggle">
+                <button class="view-btn active" id="btnGrid" title="카드 보기">
+                    <span class="material-icons-round">grid_view</span>
+                </button>
+                <button class="view-btn" id="btnList" title="목록 보기">
+                    <span class="material-icons-round">view_list</span>
+                </button>
+            </div>
         </div>
 
-        <!-- 로딩 메시지 (데이터 불러오는 동안 보임) -->
-        <div id="loadingMsg" class="loading">
-            데이터를 불러오는 중입니다... ⏳
-        </div>
-
+        <div id="loadingMsg" class="loading">데이터 로딩 중... ⏳</div>
+        
+        <!-- 카드 영역 -->
         <div class="grid" id="cardGrid"></div>
+        
         <div class="no-result" id="noResult">검색 결과가 없습니다. 😅</div>
         <div class="pagination" id="pagination"></div>
     </div>
@@ -74,46 +172,34 @@
     <footer>&copy; 2024 Fact Bomber Lab. All rights reserved.</footer>
 
     <script>
-        // ===============================================
-        // [중요] 변수에 데이터를 직접 넣지 않고 비워둡니다.
-        // ===============================================
         let pages = []; 
-
         const ITEMS_PER_PAGE = 9;
         let currentPage = 1;
         let currentFilter = 'all';
         let currentSearch = '';
         let filteredData = [];
+        
+        // 뷰 모드 상태 (false: 그리드, true: 리스트)
+        let isListView = false; 
 
         const grid = document.getElementById('cardGrid');
         const pagination = document.getElementById('pagination');
         const noResult = document.getElementById('noResult');
         const loadingMsg = document.getElementById('loadingMsg');
+        const btnGrid = document.getElementById('btnGrid');
+        const btnList = document.getElementById('btnList');
 
-        // ===============================================
-        // [1] 데이터 로딩 함수 (비동기 Fetch)
-        // ===============================================
         async function loadData() {
             try {
-                // 'data.json' 파일을 읽어옵니다.
                 const response = await fetch('./data.json');
-                
-                // 읽어온 텍스트를 자바스크립트 객체로 변환합니다.
                 pages = await response.json(); 
-
-                // 로딩 메시지를 숨깁니다.
                 loadingMsg.style.display = 'none';
-
-                // 화면을 그립니다.
                 initData(); 
-
             } catch (error) {
-                console.error("데이터 로딩 실패:", error);
-                loadingMsg.innerHTML = "데이터를 불러오는데 실패했습니다.<br>새로고침 해주세요.";
+                loadingMsg.innerHTML = "데이터 로딩 실패";
             }
         }
 
-        // 2. 데이터를 필터링하고 초기화하는 함수
         function initData() {
             filteredData = pages.filter(page => {
                 const matchCat = currentFilter === 'all' || page.category === currentFilter;
@@ -124,7 +210,6 @@
             render();
         }
 
-        // 3. 화면에 그리는 함수
         function render() {
             grid.innerHTML = '';
             pagination.innerHTML = '';
@@ -135,6 +220,13 @@
             }
             noResult.style.display = 'none';
 
+            // [핵심] 리스트 모드 클래스 토글
+            if(isListView) {
+                grid.classList.add('list-mode');
+            } else {
+                grid.classList.remove('list-mode');
+            }
+
             const start = (currentPage - 1) * ITEMS_PER_PAGE;
             const end = start + ITEMS_PER_PAGE;
             const pageItems = filteredData.slice(start, end);
@@ -143,12 +235,17 @@
                 const card = document.createElement('a');
                 card.href = page.url;
                 card.className = 'card';
+                
+                // HTML 구조를 약간 개선하여 리스트 뷰일 때도 예쁘게 나오게 함
                 card.innerHTML = `
                     <div class="card-header">${page.icon}</div>
                     <div class="card-body">
-                        <span class="category-badge">${getCategoryName(page.category)}</span>
-                        <div class="card-title">${page.title}</div>
-                        <div class="card-desc">${page.desc}</div>
+                        <div class="content-wrapper">
+                            <span class="category-badge">${getCategoryName(page.category)}</span>
+                            <div class="card-title">${page.title}</div>
+                            <div class="card-desc">${page.desc}</div>
+                        </div>
+                        <!-- 리스트 뷰에서만 보일 화살표 (CSS로 제어 가능하지만 일단 생략) -->
                     </div>
                 `;
                 grid.appendChild(card);
@@ -157,41 +254,30 @@
             renderPagination();
         }
 
-        // 4. 페이지네이션
         function renderPagination() {
             const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
             if (totalPages <= 1) return;
 
-            const prevBtn = document.createElement('button');
-            prevBtn.innerText = '이전';
-            prevBtn.className = 'page-btn';
-            prevBtn.disabled = currentPage === 1;
-            prevBtn.onclick = () => { currentPage--; render(); window.scrollTo(0, 0); };
-            pagination.appendChild(prevBtn);
-
-            for (let i = 1; i <= totalPages; i++) {
+            const createBtn = (text, page) => {
                 const btn = document.createElement('button');
-                btn.innerText = i;
-                btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
-                btn.onclick = () => { currentPage = i; render(); window.scrollTo(0, 0); };
+                btn.innerText = text;
+                btn.className = `page-btn ${page === currentPage ? 'active' : ''}`;
+                btn.disabled = (text === '이전' && currentPage === 1) || (text === '다음' && currentPage === totalPages);
+                btn.onclick = () => { currentPage = page; render(); window.scrollTo(0, 0); };
                 pagination.appendChild(btn);
-            }
+            };
 
-            const nextBtn = document.createElement('button');
-            nextBtn.innerText = '다음';
-            nextBtn.className = 'page-btn';
-            nextBtn.disabled = currentPage === totalPages;
-            nextBtn.onclick = () => { currentPage++; render(); window.scrollTo(0, 0); };
-            pagination.appendChild(nextBtn);
+            createBtn('이전', currentPage - 1);
+            for (let i = 1; i <= totalPages; i++) createBtn(i, i);
+            createBtn('다음', currentPage + 1);
         }
 
         function getCategoryName(cat) {
-            if(cat === 'money') return '💰 재테크';
-            if(cat === 'life') return '🧬 인생';
-            if(cat === 'consumer') return '🛒 소비';
-            return '기타';
+            const names = { 'money': '💰 재테크', 'life': '🧬 인생', 'consumer': '🛒 소비' };
+            return names[cat] || '기타';
         }
 
+        // [이벤트] 검색 및 필터
         document.getElementById('searchInput').addEventListener('input', (e) => {
             currentSearch = e.target.value;
             initData();
@@ -206,9 +292,26 @@
             });
         });
 
-        // [핵심] 페이지가 열리면 데이터를 불러옵니다.
-        loadData();
+        // [이벤트] 뷰 모드 전환 버튼
+        btnGrid.addEventListener('click', () => {
+            if(isListView) {
+                isListView = false;
+                btnGrid.classList.add('active');
+                btnList.classList.remove('active');
+                render();
+            }
+        });
 
+        btnList.addEventListener('click', () => {
+            if(!isListView) {
+                isListView = true;
+                btnList.classList.add('active');
+                btnGrid.classList.remove('active');
+                render();
+            }
+        });
+
+        loadData();
     </script>
 </body>
 </html>
