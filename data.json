@@ -41,25 +41,25 @@
     "category": "life",
     "url": "./wedding/index.html"
   },
-{
-  "title": "로또 확률의 진실",
-  "desc": "매주 로또 사시나요? 1등 당첨될 확률과 벼락 맞을 확률을 비교해드립니다.",
-  "icon": "🎱",
-  "category": "money",
-  "url": "./lotto/index.html"
-},
-{
-  "title": "보험 푸어 탈출",
-  "desc": "종신보험 vs 정기보험. 보험사가 숨기는 사업비와 기회비용 계산.",
-  "icon": "🏥",
-  "category": "money",
-  "url": "./insurance/index.html"
-},
-{
-  "title": "길바닥 인생 계산기",
-  "desc": "출퇴근 왕복 3시간? 당신이 도로 위에 버리는 돈과 수명을 계산해드립니다.",
-  "icon": "🚌",
-  "category": "life",
-  "url": "./commute/index.html"
-}
+  {
+    "title": "로또 확률의 진실",
+    "desc": "매주 로또 사시나요? 1등 당첨될 확률과 벼락 맞을 확률을 비교해드립니다.",
+    "icon": "🎱",
+    "category": "money",
+    "url": "./lotto/index.html"
+  },
+  {
+    "title": "보험 푸어 탈출",
+    "desc": "종신보험 vs 정기보험. 보험사가 숨기는 사업비와 기회비용 계산.",
+    "icon": "🏥",
+    "category": "money",
+    "url": "./insurance/index.html"
+  },
+  {
+    "title": "길바닥 인생 계산기",
+    "desc": "출퇴근 왕복 3시간? 당신이 도로 위에 버리는 돈과 수명을 계산해드립니다.",
+    "icon": "🚌",
+    "category": "life",
+    "url": "./commute/index.html"
+  }
 ]
