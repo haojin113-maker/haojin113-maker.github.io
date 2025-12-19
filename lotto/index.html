@@ -3,90 +3,289 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>로또의 진실 :: 확률 0%에 돈을 버리지 마세요</title>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6902579674102145" crossorigin="anonymous"></script>
+    <meta name="description" content="로또 당첨 확률 계산기. 매주 로또를 사면 1등 될 확률과 그 돈을 투자했을 때의 금액 비교.">
+    <title>로또의 진실 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
+    <script src="../common.js"></script>
+
+    <!-- 구글 아이콘 -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
-        body { font-family: 'Pretendard', sans-serif; background: #fafafa; color: #333; margin:0; line-height:1.6; }
-        header { background: #6a1b9a; color: #fff; padding: 50px 20px; text-align: center; }
-        header h1 { margin-bottom: 10px; font-weight: 800; font-size: 2rem; color: #e1bee7; }
-        .wrapper { max-width: 1100px; margin: 30px auto; display: flex; gap: 30px; padding: 0 20px; align-items: flex-start; }
+        /* --- [표준 스타일 가이드] --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.7;
+        }
+
+        .wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+        
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
-        section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #eee; }
-        h2 { border-left: 5px solid #6a1b9a; padding-left: 15px; margin-bottom: 20px; color: #4a148c; }
-        input { width: 100%; padding: 12px; margin-bottom: 5px; border: 1px solid #ddd; border-radius: 6px; }
-        .calc-btn { width: 100%; padding: 16px; background: #6a1b9a; color: #fff; border: none; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; margin-top: 15px; }
-        #result-area { display: none; background: #f3e5f5; padding: 25px; border-radius: 10px; text-align: center; margin-top: 20px; }
-        .price-tag { font-size: 2rem; font-weight: 800; color: #4a148c; display: block; margin: 10px 0; }
-        .ad-box { background: #fff; padding: 10px; text-align: center; border-radius: 12px; min-height: 600px; border: 1px solid #eee; }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } .ad-box { min-height: 250px; } }
+
+        section {
+            background: white;
+            border-radius: 16px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            border: 1px solid #eee;
+        }
+
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        /* [테마 변경] 환상/희망(Purple) -> #6a1b9a */
+        h2 { border-left: 5px solid #6a1b9a; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+
+        .intro-box { background-color: #f3e5f5; border: 1px solid #e1bee7; color: #4a148c; }
+        .intro-box strong { color: #6a1b9a; background: #fff; padding: 0 5px; border-radius: 4px; }
+
+        /* 계산기 스타일 */
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #6a1b9a; }
+        input {
+            width: 100%; padding: 14px; border: 1px solid #ddd;
+            border-radius: 8px; font-size: 1rem; transition: 0.2s;
+        }
+        input:focus { border-color: #6a1b9a; outline: none; box-shadow: 0 0 0 3px rgba(106, 27, 154, 0.1); }
+        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
+
+        .calc-btn {
+            width: 100%; padding: 18px;
+            background-color: #6a1b9a; color: white;
+            border: none; border-radius: 12px;
+            font-size: 1.2rem; font-weight: bold; cursor: pointer;
+            margin-top: 10px; transition: 0.2s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .calc-btn:hover { background-color: #4a148c; transform: translateY(-3px); }
+
+        #result-area {
+            display: none; margin-top: 30px; padding: 30px;
+            background-color: #f3e5f5; border-radius: 12px; text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
+        .highlight.prob { color: #d32f2f; } /* 확률 (빨강) */
+        .highlight.money { color: #2e7d32; } /* 돈 (초록) */
+
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box {
+            flex-shrink: 0; width: 40px; height: 40px;
+            background: #6a1b9a; color: white;
+            border-radius: 10px; font-weight: bold;
+            display: flex; align-items: center; justify-content: center;
+            margin-right: 20px; margin-top: 5px;
+        }
+        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
+        .reason-content p { font-size: 1rem; color: #666; }
+
+        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
+        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 850px) {
+            .wrapper { flex-direction: column; }
+            .sidebar { width: 100%; position: static; min-width: auto; }
+            .main-content { width: 100%; }
+            h1.page-title { font-size: 1.8rem; }
+        }
     </style>
 </head>
 <body>
-    <header>
-        <h1>인생 역전? 아니요, <strong>수학적 필패</strong>입니다</h1>
-        <p>매주 5천원씩 희망을 사시나요? 당신은 '확률 세금'을 내고 있습니다.</p>
-    </header>
-    <div class="wrapper">
-        <main class="main-content">
-            <section>
-                <h2>📉 로또 당첨 현실 시뮬레이터</h2>
-                <label>① 매주 로또 구매 금액 (원)</label>
-                <input type="number" id="weeklyAmount" value="5000" placeholder="예: 5000">
-                <label style="margin-top:15px;">② 구매 기간 (년)</label>
-                <input type="number" id="years" value="10" placeholder="예: 10">
-                <button id="calcBtn" class="calc-btn">결과 확인하기</button>
 
+    <div class="wrapper">
+        
+        <!-- [좌측] 메인 콘텐츠 -->
+        <main class="main-content">
+            
+            <h1 class="page-title">인생 역전? 아니요, '확률적 필패'입니다</h1>
+            <p class="page-subtitle">매주 5천원씩 희망을 사시나요? 당신은 정부에 자발적 세금을 내고 있습니다.</p>
+
+            <!-- 인트로: 팩트 제시 -->
+            <section class="intro-box">
+                <h2>🎱 "이번 주는 느낌이 좋은데?"</h2>
+                <p>
+                    한국 로또 1등 확률은 <strong>814만 분의 1</strong>입니다. 
+                    이 숫자가 얼마나 비현실적인지 감이 안 오시죠?<br><br>
+                    매주 꾸준히 로또를 샀을 때 당신이 1등에 당첨될 확률과, 그 돈을 차라리 <strong>미국 주식</strong>에 넣었을 때 벌 수 있는 돈을 비교해드립니다.
+                </p>
+            </section>
+
+            <!-- 계산기 섹션 -->
+            <section id="calculator">
+                <h2>📉 로또 현실 자각 시뮬레이터</h2>
+                <p style="margin-bottom: 25px; color: #666; font-size: 0.95rem;">
+                    매주 로또 구매 금액과 기간을 입력하세요.
+                </p>
+
+                <div class="calc-group">
+                    <label>① 매주 로또 구매 금액 (원)</label>
+                    <input type="number" id="weeklyAmount" value="5000" placeholder="예: 5000">
+                </div>
+
+                <div class="calc-group">
+                    <label>② 구매 기간 (년)</label>
+                    <input type="number" id="years" value="10" placeholder="예: 10">
+                    <div class="help-text">"몇 년 동안 꽝이었나요?"</div>
+                </div>
+
+                <button id="calcBtn" class="calc-btn">내 당첨 확률 확인하기</button>
+
+                <!-- 결과창 -->
                 <div id="result-area">
-                    <p>당신이 길바닥에 버린 돈</p>
-                    <span id="resTotal" class="price-tag">0원</span>
-                    <hr style="margin:20px 0; border:0; border-top:1px dashed #aaa;">
-                    <p>이 기간 동안 1등 될 확률</p>
-                    <span id="resProb" style="color:#d32f2f; font-weight:900; font-size:1.5rem;">0.000...%</span>
-                    <p style="margin-top:10px; font-size:0.9rem;">
-                        (참고: 벼락 맞아 죽을 확률이 로또보다 약 <strong>15배</strong> 높습니다)
-                    </p>
+                    
+                    <div style="margin-bottom:20px;">
+                        <p class="result-title">이 기간 동안 1등 될 확률</p>
+                        <span id="resProb" class="highlight prob">0.0000%</span>
+                        <p style="font-size:0.9rem; color:#666;">
+                            (참고: 길 가다 벼락 맞아 죽을 확률이 약 <strong style="color:#333;">0.008%</strong>입니다)
+                        </p>
+                    </div>
+
+                    <div style="background: white; padding: 20px; border-radius: 10px; border: 2px solid #2e7d32; margin-top:20px;">
+                        <p class="result-title" style="color:#2e7d32; margin-bottom:5px;">차라리 이 돈을 투자했다면 (S&P500)</p>
+                        <span id="resInvest" class="highlight money">0원</span>
+                        <p style="font-size:0.9rem; color:#555;">(원금 <span id="resTotal">0</span>원 + 복리 수익)</p>
+                    </div>
+
+                    <div style="margin-top:20px; font-size:0.95rem;">
+                         당신은 벼락 맞을 확률보다 낮은 게임에<br>
+                         <strong><span id="compareItem" style="background:#fff176; padding:0 4px; border-radius:4px;">경차 한 대 값</span></strong>을 버렸습니다.
+                    </div>
                 </div>
             </section>
+
+            <!-- 팩트 체크 리스트 -->
             <section>
-                <h2>🛑 로또를 끊어야 하는 이유 (Fact)</h2>
-                <ul style="padding-left:20px; line-height:1.8; color:#555;">
-                    <li><strong>814만분의 1:</strong> 쌀 한 가마니(약 400만 톨)에서 쌀알 2개 찾기 게임입니다.</li>
-                    <li><strong>기대값은 마이너스:</strong> 1,000원을 내면 통계적으로 500원만 돌려받는 구조입니다. 카지노보다 승률이 낮습니다.</li>
-                    <li><strong>대안 투자:</strong> 매주 1만 원을 S&P500에 넣었다면 20년 뒤 1등 당첨금 못지않은 목돈이 됩니다.</li>
-                </ul>
+                <h2>🛑 로또를 끊어야 하는 이유</h2>
+                
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">grain</span></div>
+                    <div class="reason-content">
+                        <h3>814만 분의 1의 의미</h3>
+                        <p>쌀 한 가마니(80kg)에 쌀알이 약 400만 개 들어있습니다. 쌀 두 가마니를 쏟아놓고, 그중에서 <strong>특정 쌀알 하나</strong>를 단번에 집어낼 확률입니다.</p>
+                    </div>
+                </div>
+                
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">money_off</span></div>
+                    <div class="reason-content">
+                        <h3>마이너스 기대값 (반토막 게임)</h3>
+                        <p>로또 1,000원어치를 사는 순간, 통계적 가치는 <strong>500원</strong>이 됩니다. 나머지 500원은 기부금과 운영비로 사라집니다. 카지노보다 승률이 나쁜 게임입니다.</p>
+                    </div>
+                </div>
+
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">trending_up</span></div>
+                    <div class="reason-content">
+                        <h3>확실한 부자는 '확률'에 건다</h3>
+                        <p>부자들은 0.00001%의 대박을 쫓지 않고, 매년 10%씩 성장하는 확실한 자산에 돈을 묻습니다. 5천 원으로 로또를 사는 대신 ETF를 샀다면 당신은 이미 부자 대열에 올랐을 겁니다.</p>
+                    </div>
+                </div>
             </section>
-        </main>
-        <aside class="sidebar">
+
+            <!-- 하단 광고 -->
             <div class="ad-box">
-                <span style="font-size:11px; color:#ccc;">Sponsored</span>
-                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                <span class="ad-label">Sponsored</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="1234567890"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+            </div>
+
+            <!-- common.js가 푸터 자동 추가 -->
+
+        </main>
+
+        <!-- [우측] 사이드바 광고 -->
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
+                <span class="ad-label">Sponsored</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="1234567890" 
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
             </div>
         </aside>
-    </div>
-    <script>
-        document.getElementById('calcBtn').addEventListener('click', function() {
-            const weekly = Number(document.getElementById('weeklyAmount').value);
-            const years = Number(document.getElementById('years').value);
-            
-            // 총 지출액
-            const totalSpent = weekly * 52 * years;
-            
-            // 로또 게임 수 (1게임 1000원)
-            const totalGames = totalSpent / 1000;
-            
-            // 1등 당첨 확률 (1/8,145,060)
-            // 여러 번 샀을 때 적어도 한 번 당첨될 확률 = 1 - (낙첨확률)^게임수
-            const singleProb = 1 / 8145060;
-            const loseProb = 1 - singleProb;
-            const winAtLeastOnce = 1 - Math.pow(loseProb, totalGames);
-            
-            const percent = (winAtLeastOnce * 100).toFixed(6);
 
-            document.getElementById('result-area').style.display = 'block';
-            document.getElementById('resTotal').innerText = Math.round(totalSpent).toLocaleString() + "원";
-            document.getElementById('resProb').innerText = percent + "%";
+    </div>
+
+    <!-- 계산 로직 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                // 1. 값 가져오기
+                const weekly = Number(document.getElementById('weeklyAmount').value);
+                const years = Number(document.getElementById('years').value);
+
+                if(weekly <= 0 || years <= 0) {
+                    alert("금액과 기간을 올바르게 입력해주세요.");
+                    return;
+                }
+
+                // 2. 계산 로직 (확률)
+                // 로또 1게임 가격 1000원
+                const totalSpent = weekly * 52 * years;
+                const totalGames = totalSpent / 1000;
+                
+                // 1등 당첨 확률 (1/8,145,060)
+                // 적어도 한 번 당첨될 확률 = 1 - (낙첨확률)^게임수
+                const p = 1 / 8145060;
+                const notWinProb = 1 - p;
+                // 게임 수가 너무 많으면 Math.pow가 힘들 수 있으니 근사치 사용 가능하지만,
+                // JS Math.pow는 꽤 큰수도 처리함.
+                const winProb = 1 - Math.pow(notWinProb, totalGames);
+                const probPercent = (winProb * 100).toFixed(6); // 소수점 6자리까지
+
+                // 3. 계산 로직 (기회비용 - 월복리 10%)
+                const monthlyP = weekly * 4.345; // 월평균 주수(4.345) 곱해서 월 납입액 추산
+                const rate = 0.10 / 12; // 월이율
+                const months = years * 12;
+                
+                const futureValue = monthlyP * ((Math.pow(1 + rate, months) - 1) / rate);
+
+                // 4. 결과 출력
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+
+                document.getElementById('resProb').innerText = probPercent + "%";
+                document.getElementById('resTotal').innerText = Math.round(totalSpent).toLocaleString();
+                document.getElementById('resInvest').innerText = Math.round(futureValue).toLocaleString() + "원";
+
+                // 5. 비교 물건 변경
+                const totalManwon = totalSpent / 10000; // 원금 기준(만원)
+                let item = "맛있는 치킨 몇 마리";
+                
+                if(totalManwon > 5000) item = "중형차 한 대 값";
+                else if(totalManwon > 3000) item = "소형차 한 대 값";
+                else if(totalManwon > 1000) item = "명품 가방 하나 값";
+                else if(totalManwon > 500) item = "최신형 노트북 값";
+                else if(totalManwon > 100) item = "최신형 스마트폰 값";
+                
+                document.getElementById('compareItem').innerText = item;
+            });
         });
     </script>
 </body>
