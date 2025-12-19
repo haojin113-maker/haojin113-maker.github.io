@@ -188,5 +188,84 @@
   "category": "life",
   "url": "./screentime/index.html"
 }
-
+,
+{
+  "title": "내 진짜 시급 계산기",
+  "desc": "출퇴근 시간과 야근을 포함하면? 편의점 알바보다 못한 당신의 충격적인 진짜 몸값.",
+  "icon": "💼",
+  "category": "life",
+  "url": "./salary/index.html"
+}
+,
+{
+  "title": "렌탈 호갱 판독기",
+  "desc": "정수기 월 3만 원? 5년이면 제품 3대를 사는 가격입니다. 렌탈의 늪에서 탈출하세요.",
+  "icon": "💧",
+  "category": "consumer",
+  "url": "./rental/index.html"
+}
+,
+{
+  "title": "주식 단타의 최후",
+  "desc": "하루에 10번 매매하시나요? 1년 뒤 증권사에 바치는 수수료가 원금보다 많아집니다.",
+  "icon": "📉",
+  "category": "money",
+  "url": "./trading/index.html"
+}
+,
+{
+  "title": "담배값 계산기",
+  "desc": "하루 한 갑, 30년이면 얼마일까요? 당신이 입으로 태워 없앤 페라리 한 대를 찾아드립니다.",
+  "icon": "🚬",
+  "category": "life",
+  "url": "./smoking/index.html"
+}
+,
+{
+  "title": "독립 비용 계산기",
+  "desc": "자유를 찾아 떠난 자취 생활. 숨만 쉬어도 나가는 월세와 관리비가 5년 뒤엔 얼마일까요?",
+  "icon": "🏠",
+  "category": "life",
+  "url": "./independence/index.html"
+}
+,
+{
+  "title": "전세의 배신",
+  "desc": "보증금 3억이면 월 125만 원? 전세가 사실상 '공짜'가 아닌 수학적 이유.",
+  "icon": "🏢",
+  "category": "money",
+  "url": "./jeonse/index.html"
+}
+,
+{
+  "title": "연애 비용 계산기",
+  "desc": "사랑하는 데도 돈이 듭니다. 데이트 비용을 아껴 결혼 자금으로 만들면 얼마가 될까요?",
+  "icon": "💘",
+  "category": "life",
+  "url": "./dating/index.html"
+}
+,
+{
+  "title": "카드 혜택의 함정",
+  "desc": "1만 원 할인받으려고 30만 원 쓰셨나요? 배보다 배꼽이 더 큰 소비 습관 점검.",
+  "icon": "💳",
+  "category": "money",
+  "url": "./card/index.html"
+}
+,
+{
+  "title": "자녀 양육비 계산기",
+  "desc": "아이 하나 키우는 데 3억? 기저귀부터 대학 등록금까지, 등골 브레이커 총비용.",
+  "icon": "👶",
+  "category": "life",
+  "url": "./parenting/index.html"
+}
+,
+{
+  "title": "파이어족 은퇴 계산기",
+  "desc": "회사를 언제 그만둘 수 있을까요? 4%의 법칙으로 계산한 당신의 은퇴 가능 나이.",
+  "icon": "🔥",
+  "category": "money",
+  "url": "./fire/index.html"
+}
 ]
