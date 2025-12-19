@@ -1,196 +1,176 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-N69M89LG');</script>
-<!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>팩트 폭격 연구소 :: 호갱 탈출의 모든 것</title>
+    <meta name="description" content="돈, 인생, 소비의 불편한 진실을 숫자로 증명합니다. 팩트 폭격 연구소.">
+    <title>팩트 폭격 연구소 | Fact Bomber</title>
+    
+    <!-- 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    
+    <!-- ★ 핵심: 공통 모듈 연결 (이거 하나로 GA4, 애드센스, 네비게이션 끝!) -->
+    <script src="./common.js"></script>
+
     <style>
-        /* [기본 스타일] */
+        /* CSS Reset */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Pretendard', sans-serif; background: #f5f7fa; color: #333; }
+        body { font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif; background-color: #f8f9fa; color: #333; }
 
-        header { background: linear-gradient(135deg, #1a237e, #283593); color: white; padding: 60px 20px 40px; text-align: center; }
-        header h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; }
+        /* 메인 헤더 (Hero Section) */
+        .hero {
+            background: linear-gradient(135deg, #212121, #000000);
+            color: white;
+            padding: 80px 20px 60px;
+            text-align: center;
+        }
+        .hero h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 15px; letter-spacing: -1px; }
+        .hero p { opacity: 0.8; font-size: 1.2rem; margin-bottom: 40px; }
         
-        .search-container { max-width: 600px; margin: 0 auto; position: relative; }
-        .search-input { width: 100%; padding: 15px 20px 15px 50px; border-radius: 30px; border: none; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); outline: none; }
-        .search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #999; }
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .search-input {
+            width: 100%;
+            padding: 18px 25px 18px 55px;
+            border-radius: 50px;
+            border: none;
+            font-size: 1.1rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            outline: none;
+            transition: 0.3s;
+        }
+        .search-input:focus { box-shadow: 0 10px 25px rgba(255,255,255,0.2); }
+        .search-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: #666; font-size: 1.5rem; }
 
-        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; min-height: 600px; }
+        /* 컨텐츠 영역 */
+        .container {
+            max-width: 1200px;
+            margin: -30px auto 0; /* 헤더와 살짝 겹치게 */
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+            min-height: 800px;
+        }
 
-        /* 컨트롤 바 (필터 + 뷰 모드 토글) */
+        /* 컨트롤 바 */
         .controls {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             flex-wrap: wrap;
-            gap: 10px;
-        }
-        .filter-tags { text-align: center; }
-        .tag { display: inline-block; padding: 8px 16px; margin: 5px 2px; background: white; border: 1px solid #ddd; border-radius: 20px; cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
-        .tag.active, .tag:hover { background: #1a237e; color: white; border-color: #1a237e; }
-
-        /* [추가] 뷰 모드 토글 버튼 */
-        .view-toggle {
-            display: flex;
-            gap: 5px;
-            background: white;
-            padding: 5px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-        }
-        .view-btn {
-            background: none; border: none; cursor: pointer;
-            padding: 5px; border-radius: 4px; color: #999;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .view-btn.active { background: #e8eaf6; color: #1a237e; }
-        .view-btn:hover { color: #1a237e; }
-
-
-        /* ----------------------------------------------------
-           [핵심] 카드 그리드 vs 리스트 스타일링
-           ---------------------------------------------------- */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* 기본: 카드형 */
-            gap: 25px;
-        }
-
-        .card {
-            background: white; border-radius: 15px; overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: transform 0.2s; cursor: pointer;
-            text-decoration: none; color: inherit; display: flex; flex-direction: column;
-            border: 1px solid #eee;
-        }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .card-header { padding: 20px; font-size: 3rem; text-align: center; background: #fafafa; border-bottom: 1px solid #eee; }
-        .card-body { padding: 20px; flex-grow: 1; }
-        .category-badge { font-size: 0.75rem; font-weight: bold; color: #1a237e; background: #e8eaf6; padding: 4px 8px; border-radius: 4px; margin-bottom: 10px; display: inline-block; }
-        .card-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 10px; }
-        .card-desc { font-size: 0.95rem; color: #666; line-height: 1.5; }
-
-        /* [리스트 모드일 때 적용되는 CSS] */
-        .grid.list-mode {
-            grid-template-columns: 1fr; /* 한 줄에 하나씩 */
             gap: 15px;
         }
-        
-        .grid.list-mode .card {
-            flex-direction: row; /* 가로 배치 */
-            align-items: center;
-            padding: 10px;
-            min-height: auto;
+        .filter-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+        .tag { 
+            padding: 8px 16px; background: #f1f3f5; border-radius: 20px; cursor: pointer; 
+            font-size: 0.95rem; font-weight: 600; color: #555; transition: 0.2s; 
         }
-        .grid.list-mode .card:hover { transform: translateX(5px); } /* 위로 뜨는 대신 옆으로 살짝 */
-        
-        .grid.list-mode .card-header {
-            width: 80px; /* 아이콘 영역 고정 너비 */
-            font-size: 2rem;
-            padding: 10px;
-            border-bottom: none;
-            background: transparent;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .grid.list-mode .card-body {
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            flex-wrap: wrap; /* 모바일 대응 */
-        }
-        .grid.list-mode .content-wrapper { flex: 1; }
-        .grid.list-mode .card-title { margin-bottom: 5px; font-size: 1.1rem; }
-        .grid.list-mode .card-desc { font-size: 0.9rem; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 600px; }
-        .grid.list-mode .category-badge { margin: 0 0 5px 0; }
+        .tag.active, .tag:hover { background: #212121; color: white; }
 
-        /* 모바일에서는 리스트 모드여도 약간 겹치게 */
+        .view-toggle button {
+            background: none; border: none; cursor: pointer; padding: 5px; color: #ccc;
+        }
+        .view-toggle button.active { color: #333; }
+
+        /* 그리드 시스템 */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
+        
+        /* 카드 디자인 */
+        .card {
+            background: white; border-radius: 15px; overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03); border: 1px solid #eee;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none; color: inherit; display: flex; flex-direction: column;
+        }
+        .card:hover { transform: translateY(-7px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        
+        .card-header { 
+            height: 140px; background: #fafafa; display: flex; align-items: center; justify-content: center; 
+            font-size: 4rem; border-bottom: 1px solid #f0f0f0; 
+        }
+        .card-body { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; }
+        .category-badge { 
+            align-self: flex-start; font-size: 0.75rem; font-weight: 800; color: #c62828; 
+            background: #ffebee; padding: 4px 8px; border-radius: 4px; margin-bottom: 10px; 
+        }
+        .card-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 10px; line-height: 1.4; }
+        .card-desc { font-size: 0.95rem; color: #666; line-height: 1.6; }
+
+        /* 리스트 모드 스타일 */
+        .grid.list-mode { grid-template-columns: 1fr; gap: 15px; }
+        .grid.list-mode .card { flex-direction: row; align-items: center; padding: 10px; }
+        .grid.list-mode .card-header { width: 80px; height: 80px; font-size: 2.5rem; background: none; border: none; }
+        .grid.list-mode .card-body { padding: 10px 20px; }
+        
         @media (max-width: 768px) {
-            .grid.list-mode .card { flex-direction: row; }
-            .grid.list-mode .card-desc { display: none; } /* 모바일 리스트에선 설명 숨김 (깔끔하게) */
+            .hero h1 { font-size: 2rem; }
+            .grid.list-mode .card-desc { display: none; }
             .controls { justify-content: center; }
         }
 
-        /* ---------------------------------------------------- */
-
-        .pagination { display: flex; justify-content: center; margin-top: 40px; gap: 10px; }
-        .page-btn { padding: 10px 15px; background: white; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; font-weight: bold; color: #555; }
-        .page-btn.active { background: #1a237e; color: white; border-color: #1a237e; }
-        .page-btn:disabled { opacity: 0.5; }
+        /* 페이지네이션 */
+        .pagination { display: flex; justify-content: center; margin-top: 50px; gap: 8px; }
+        .page-btn { 
+            width: 40px; height: 40px; border: 1px solid #ddd; background: white; border-radius: 8px; 
+            cursor: pointer; font-weight: bold; color: #555; transition: 0.2s;
+        }
+        .page-btn.active { background: #212121; color: white; border-color: #212121; }
+        .page-btn:hover:not(.active) { background: #f1f3f5; }
         
-        .loading, .no-result { text-align: center; padding: 50px; color: #888; }
-        .no-result { display: none; }
-        footer { text-align: center; padding: 40px; color: #999; font-size: 0.8rem; margin-top: 50px; }
+        .loading { text-align: center; padding: 50px; color: #888; }
+        .no-result { display: none; text-align: center; padding: 50px; color: #888; }
+
     </style>
 </head>
 <body>
-    <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N69M89LG"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
 
-    <header>
-        <h1>🧪 팩트 폭격 연구소</h1>
-        <p>빅데이터로 분석한 호갱 탈출 솔루션</p>
+    <section class="hero">
+        <h1>FACT BOMBER</h1>
+        <p>당신의 돈과 인생을 지키는 팩트 폭격기</p>
         <div class="search-container">
             <span class="material-icons-round search-icon">search</span>
-            <input type="text" class="search-input" id="searchInput" placeholder="궁금한 내용을 검색하세요">
+            <input type="text" class="search-input" id="searchInput" placeholder="무엇이 궁금하신가요? (예: 로또, 결혼, 주식)">
         </div>
-    </header>
+    </section>
 
     <div class="container">
         
-        <!-- 컨트롤 바 (필터 + 뷰 토글) -->
         <div class="controls">
-            <div class="filter-tags" id="filterTags">
+            <div class="filter-tags">
                 <span class="tag active" data-filter="all">전체</span>
                 <span class="tag" data-filter="money">💰 재테크</span>
                 <span class="tag" data-filter="life">🧬 인생</span>
-                <span class="tag" data-filter="consumer">🛒 소비</span>
+                <span class="tag" data-filter="consumer">🛒 호갱탈출</span>
             </div>
-
-            <!-- 뷰 모드 토글 버튼 -->
             <div class="view-toggle">
-                <button class="view-btn active" id="btnGrid" title="카드 보기">
-                    <span class="material-icons-round">grid_view</span>
-                </button>
-                <button class="view-btn" id="btnList" title="목록 보기">
-                    <span class="material-icons-round">view_list</span>
-                </button>
+                <button class="active" id="btnGrid"><span class="material-icons-round">grid_view</span></button>
+                <button id="btnList"><span class="material-icons-round">view_list</span></button>
             </div>
         </div>
 
-        <div id="loadingMsg" class="loading">데이터 로딩 중... ⏳</div>
-        
-        <!-- 카드 영역 -->
+        <div id="loadingMsg" class="loading">데이터를 불러오는 중...</div>
         <div class="grid" id="cardGrid"></div>
-        
-        <div class="no-result" id="noResult">검색 결과가 없습니다. 😅</div>
+        <div class="no-result" id="noResult">검색 결과가 없습니다.</div>
         <div class="pagination" id="pagination"></div>
+
     </div>
 
-    <footer>&copy; 2024 Fact Bomber Lab. All rights reserved.</footer>
-
+    <!-- 스크립트: 데이터 로딩 및 렌더링 -->
     <script>
         let pages = []; 
-        const ITEMS_PER_PAGE = 9;
+        const ITEMS_PER_PAGE = 12; // 넉넉하게 12개
         let currentPage = 1;
         let currentFilter = 'all';
         let currentSearch = '';
         let filteredData = [];
-        
-        // 뷰 모드 상태 (false: 그리드, true: 리스트)
         let isListView = false; 
 
         const grid = document.getElementById('cardGrid');
@@ -202,12 +182,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         async function loadData() {
             try {
-                const response = await fetch('./data.json');
+                // data.json 캐싱 방지용 타임스탬프 추가
+                const response = await fetch('./data.json?t=' + new Date().getTime());
                 pages = await response.json(); 
                 loadingMsg.style.display = 'none';
                 initData(); 
             } catch (error) {
-                loadingMsg.innerHTML = "데이터 로딩 실패";
+                loadingMsg.innerHTML = "데이터 로딩 실패.<br>잠시 후 다시 시도해주세요.";
+                console.error(error);
             }
         }
 
@@ -231,12 +213,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             }
             noResult.style.display = 'none';
 
-            // [핵심] 리스트 모드 클래스 토글
-            if(isListView) {
-                grid.classList.add('list-mode');
-            } else {
-                grid.classList.remove('list-mode');
-            }
+            if(isListView) grid.classList.add('list-mode');
+            else grid.classList.remove('list-mode');
 
             const start = (currentPage - 1) * ITEMS_PER_PAGE;
             const end = start + ITEMS_PER_PAGE;
@@ -246,22 +224,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 const card = document.createElement('a');
                 card.href = page.url;
                 card.className = 'card';
-                
-                // HTML 구조를 약간 개선하여 리스트 뷰일 때도 예쁘게 나오게 함
                 card.innerHTML = `
                     <div class="card-header">${page.icon}</div>
                     <div class="card-body">
-                        <div class="content-wrapper">
-                            <span class="category-badge">${getCategoryName(page.category)}</span>
-                            <div class="card-title">${page.title}</div>
-                            <div class="card-desc">${page.desc}</div>
-                        </div>
-                        <!-- 리스트 뷰에서만 보일 화살표 (CSS로 제어 가능하지만 일단 생략) -->
+                        <span class="category-badge">${getCategoryName(page.category)}</span>
+                        <div class="card-title">${page.title}</div>
+                        <div class="card-desc">${page.desc}</div>
                     </div>
                 `;
                 grid.appendChild(card);
             });
-
             renderPagination();
         }
 
@@ -271,16 +243,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
             const createBtn = (text, page) => {
                 const btn = document.createElement('button');
-                btn.innerText = text;
                 btn.className = `page-btn ${page === currentPage ? 'active' : ''}`;
-                btn.disabled = (text === '이전' && currentPage === 1) || (text === '다음' && currentPage === totalPages);
-                btn.onclick = () => { currentPage = page; render(); window.scrollTo(0, 0); };
+                btn.innerText = text;
+                // 이전/다음 버튼 로직 단순화
+                if (text === '<' || text === '>') {
+                    btn.disabled = (text === '<' && currentPage === 1) || (text === '>' && currentPage === totalPages);
+                    btn.onclick = () => { currentPage = page; render(); window.scrollTo(0,0); };
+                } else {
+                    btn.onclick = () => { currentPage = page; render(); window.scrollTo(0,0); };
+                }
                 pagination.appendChild(btn);
             };
 
-            createBtn('이전', currentPage - 1);
+            createBtn('<', currentPage - 1);
             for (let i = 1; i <= totalPages; i++) createBtn(i, i);
-            createBtn('다음', currentPage + 1);
+            createBtn('>', currentPage + 1);
         }
 
         function getCategoryName(cat) {
@@ -288,12 +265,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             return names[cat] || '기타';
         }
 
-        // [이벤트] 검색 및 필터
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            currentSearch = e.target.value;
-            initData();
-        });
-
+        // 이벤트 리스너
+        document.getElementById('searchInput').addEventListener('input', (e) => { currentSearch = e.target.value; initData(); });
+        
         document.querySelectorAll('.tag').forEach(tag => {
             tag.addEventListener('click', () => {
                 document.querySelector('.tag.active').classList.remove('active');
@@ -303,24 +277,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             });
         });
 
-        // [이벤트] 뷰 모드 전환 버튼
-        btnGrid.addEventListener('click', () => {
-            if(isListView) {
-                isListView = false;
-                btnGrid.classList.add('active');
-                btnList.classList.remove('active');
-                render();
-            }
-        });
-
-        btnList.addEventListener('click', () => {
-            if(!isListView) {
-                isListView = true;
-                btnList.classList.add('active');
-                btnGrid.classList.remove('active');
-                render();
-            }
-        });
+        btnGrid.addEventListener('click', () => { isListView = false; btnGrid.classList.add('active'); btnList.classList.remove('active'); render(); });
+        btnList.addEventListener('click', () => { isListView = true; btnList.classList.add('active'); btnGrid.classList.remove('active'); render(); });
 
         loadData();
     </script>
