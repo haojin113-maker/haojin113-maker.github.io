@@ -116,4 +116,37 @@
   "category": "consumer",
   "url": "./taxi/index.html"
 }
+  ,
+{
+  "title": "예적금의 배신",
+  "desc": "은행 이자 4%? 세금 떼고 물가 오르면 내 돈은 사실상 삭제되고 있습니다.",
+  "icon": "📉",
+  "category": "money",
+  "url": "./inflation/index.html"
+}
+,
+{
+  "title": "게임 현질 계산기",
+  "desc": "확률 0.8% 뽑기에 월급을 태우고 계신가요? 데이터 쪼가리의 실제 가격을 알려드립니다.",
+  "icon": "🎮",
+  "category": "consumer",
+  "url": "./game/index.html"
+}
+,
+{
+  "title": "골프 푸어 판독기",
+  "desc": "필드 한 번 나가면 40만원? 취미 생활이 당신의 등골을 휘게 만들고 있습니다.",
+  "icon": "⛳",
+  "category": "life",
+  "url": "./golf/index.html"
+}
+,
+{
+  "title": "커피값 계산기",
+  "desc": "하루 커피 두 잔? 30년 뒤 당신이 잃게 될 강남 오피스텔 한 채 값을 확인하세요.",
+  "icon": "☕",
+  "category": "money",
+  "url": "./coffee/index.html"
+}
+
 ]
