@@ -6,7 +6,7 @@
     <meta name="description" content="전기차 구매 전 필독. 손익분기점 계산기와 구매를 말리는 5가지 현실적인 이유.">
     <title>전기차, 사지 마세요 | 팩트 폭격 연구소</title>
 
-    <!-- [1] 공통 모듈 연결 (이 한 줄로 상단/하단/광고/추적기능 해결) -->
+    <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
 
     <!-- 구글 아이콘 -->
@@ -22,31 +22,18 @@
             line-height: 1.7;
         }
 
-        /* 레이아웃 구조 */
         .wrapper {
             max-width: 1100px;
             margin: 0 auto;
             padding: 20px;
             display: flex;
             gap: 40px;
-            align-items: flex-start; /* 사이드바 고정을 위해 필수 */
+            align-items: flex-start;
         }
         
-        /* 왼쪽 본문 영역 */
-        .main-content {
-            flex: 3; /* 공간의 75% 차지 */
-            min-width: 0; /* 반응형 깨짐 방지 */
-        }
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
 
-        /* 오른쪽 사이드바 영역 */
-        .sidebar {
-            flex: 1; /* 공간의 25% 차지 */
-            min-width: 300px;
-            position: sticky; /* 스크롤 따라오기 */
-            top: 20px;
-        }
-
-        /* 콘텐츠 박스 디자인 */
         section {
             background: white;
             border-radius: 16px;
@@ -56,29 +43,16 @@
             border: 1px solid #eee;
         }
 
-        /* 타이틀 디자인 (테마 컬러: Red & Dark) */
-        h1.page-title {
-            font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111;
-        }
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
 
-        h2 {
-            border-left: 5px solid #c62828; /* 테마 컬러 */
-            padding-left: 15px;
-            margin: 40px 0 20px;
-            font-size: 1.5rem;
-            color: #111;
-        }
+        /* 테마 컬러: 붉은색 (주제별로 변경 가능) */
+        h2 { border-left: 5px solid #c62828; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
 
-        /* 인트로 박스 (강조) */
-        .intro-box {
-            background-color: #fff8f8;
-            border: 1px solid #ffcdd2;
-            color: #444;
-        }
+        .intro-box { background-color: #fff8f8; border: 1px solid #ffcdd2; color: #444; }
         .intro-box strong { color: #c62828; background: #fff; padding: 0 5px; border-radius: 4px; }
 
-        /* 계산기 폼 스타일 */
+        /* 계산기 스타일 */
         .calc-group { margin-bottom: 20px; }
         label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #555; }
         input {
@@ -88,7 +62,6 @@
         input:focus { border-color: #c62828; outline: none; box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.1); }
         .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
 
-        /* 계산 버튼 */
         .calc-btn {
             width: 100%; padding: 18px;
             background-color: #212121; color: white;
@@ -99,22 +72,18 @@
         }
         .calc-btn:hover { background-color: #000; transform: translateY(-3px); }
 
-        /* 결과 영역 */
         #result-area {
-            display: none; /* 초기엔 숨김 */
-            margin-top: 30px; padding: 30px;
-            background-color: #e8f5e9; /* 성공(이득) 색상 베이스 */
-            border-radius: 12px; text-align: center;
+            display: none; margin-top: 30px; padding: 30px;
+            background-color: #e8f5e9; border-radius: 12px; text-align: center;
             animation: fadeIn 0.5s ease;
         }
-        #result-area.bad { background-color: #ffebee; border: 1px solid #ffcdd2; } /* 손해일 때 색상 */
+        #result-area.bad { background-color: #ffebee; border: 1px solid #ffcdd2; }
         
         .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
         .highlight { font-size: 2.5rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
         .highlight.good { color: #2e7d32; }
         .highlight.bad { color: #c62828; }
 
-        /* 리스트 스타일 */
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
         .icon-box {
             flex-shrink: 0; width: 40px; height: 40px;
@@ -126,17 +95,11 @@
         .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
         .reason-content p { font-size: 1rem; color: #666; }
 
-        /* 광고 박스 스타일 */
-        .ad-box {
-            background: #fff; border: 1px solid #eee; border-radius: 12px;
-            padding: 10px; text-align: center; margin-bottom: 20px;
-        }
+        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
         .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
 
-        /* 애니메이션 */
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 모바일 대응 */
         @media (max-width: 850px) {
             .wrapper { flex-direction: column; }
             .sidebar { width: 100%; position: static; min-width: auto; }
@@ -152,11 +115,10 @@
         <!-- [좌측] 메인 콘텐츠 -->
         <main class="main-content">
             
-            <!-- 페이지 헤더 -->
             <h1 class="page-title">전기차, 아직은 시기상조입니다</h1>
             <p class="page-subtitle">얼리어답터가 되어 '베타 테스터' 비용을 지불하시겠습니까?</p>
 
-            <!-- 인트로 섹션 -->
+            <!-- 인트로: 팩트 제시 -->
             <section class="intro-box">
                 <h2>🚘 당신은 '호갱'입니까?</h2>
                 <p>
@@ -165,17 +127,7 @@
                 </p>
             </section>
 
-            <!-- [광고 1] 본문 중간 광고 (인피드) -->
-            <div class="ad-box">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890" 
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <!-- [수정됨] 여기 있던 중간 광고를 제거했습니다. 바로 계산기로 이어집니다. -->
 
             <!-- 계산기 섹션 -->
             <section id="calculator">
@@ -224,7 +176,6 @@
 
                 <button id="calcBtn" class="calc-btn">결과 확인하기</button>
 
-                <!-- 결과창 (JS로 제어) -->
                 <div id="result-area">
                     <div class="result-title">본전을 뽑기 위해 타야 하는 기간</div>
                     <span id="resultTime" class="highlight bad">0년</span>
@@ -236,7 +187,7 @@
                 </div>
             </section>
 
-            <!-- 팩트 체크 섹션 -->
+            <!-- 팩트 체크 리스트 -->
             <section>
                 <h2>🛑 전기차를 말리는 5가지 이유</h2>
                 
@@ -281,7 +232,7 @@
                 </div>
             </section>
 
-            <!-- [광고 2] 하단 광고 -->
+            <!-- [광고 2] 하단 광고는 유지 (글을 다 읽은 시점이라 괜찮습니다) -->
             <div class="ad-box">
                 <span class="ad-label">Sponsored</span>
                 <ins class="adsbygoogle"
@@ -293,15 +244,14 @@
                 <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
             </div>
 
-            <!-- ★ 중요: common.js가 여기에 '다른 계산기 보기' 버튼과 '푸터'를 자동으로 추가합니다. -->
+            <!-- common.js가 여기에 푸터를 자동 추가합니다 -->
 
         </main>
 
-        <!-- [우측] 사이드바 -->
+        <!-- [우측] 사이드바 광고 (PC에서는 옆에 항상 보임) -->
         <aside class="sidebar">
             <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
                 <span class="ad-label">Sponsored</span>
-                <!-- 사이드바용 수직 광고 -->
                 <ins class="adsbygoogle"
                      style="display:block"
                      data-ad-client="ca-pub-6902579674102145"
@@ -314,11 +264,10 @@
 
     </div>
 
-    <!-- 계산 로직 스크립트 -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                // 1. 값 가져오기 (숫자 변환, 빈값은 0)
+                // 1. 값 가져오기
                 const getNum = (id) => Number(document.getElementById(id).value);
                 
                 const gasPrice = getNum('gasPrice') * 10000;
@@ -329,52 +278,46 @@
                 const evEff = getNum('evEff');
                 const annualKm = getNum('annualKm');
 
-                // 2. 유효성 검사
                 if(gasEff <= 0 || evEff <= 0 || annualKm <= 0) {
                     alert("연비와 주행거리를 올바르게 입력해주세요.");
                     return;
                 }
 
-                // 3. 계산
-                const priceGap = evPrice - gasPrice; // 차값 차이
-                const costPerKmGas = gasCost / gasEff; // 내연차 km당 비용
-                const costPerKmEv = evCost / evEff;   // 전기차 km당 비용
-                const savingPerKm = costPerKmGas - costPerKmEv; // km당 절약액
+                // 2. 계산
+                const priceGap = evPrice - gasPrice; 
+                const costPerKmGas = gasCost / gasEff; 
+                const costPerKmEv = evCost / evEff; 
+                const savingPerKm = costPerKmGas - costPerKmEv; 
 
-                // 4. 결과 출력 및 디자인 변경
+                // 3. 결과 출력
                 const resultArea = document.getElementById('result-area');
                 const timeElem = document.getElementById('resultTime');
                 const distElem = document.getElementById('resultDist');
                 
                 resultArea.style.display = 'block';
 
-                // 시나리오별 처리
                 if (priceGap <= 0) {
-                    // 전기차가 더 쌀 때 (거의 없지만)
                     timeElem.innerText = "이미 이득입니다";
                     timeElem.className = "highlight good";
                     distElem.innerText = "(초기 구매 비용이 더 저렴합니다)";
-                    resultArea.className = ""; // 기본 배경
+                    resultArea.className = "";
                 } else if (savingPerKm <= 0) {
-                    // 유지비가 더 비쌀 때
                     timeElem.innerText = "본전 회수 불가능";
                     timeElem.className = "highlight bad";
                     distElem.innerText = "(전기차 유지비가 더 많이 나옵니다)";
-                    resultArea.className = "bad"; // 경고 배경
+                    resultArea.className = "bad";
                 } else {
-                    // 정상 계산
                     const breakEvenDistance = priceGap / savingPerKm;
                     const breakEvenYears = breakEvenDistance / annualKm;
 
                     timeElem.innerText = breakEvenYears.toFixed(1) + "년";
                     distElem.innerText = `(총 ${Math.round(breakEvenDistance).toLocaleString()}km 주행 필요)`;
                     
-                    // 10년 이상이면 '나쁨', 그 이하면 '좋음' 처리
                     if(breakEvenYears >= 10) {
                         timeElem.className = "highlight bad";
                         resultArea.className = "bad";
                     } else {
-                        timeElem.className = "highlight good"; // 사실 전기차 페이지라 '좋음'도 띄워주긴 해야 함
+                        timeElem.className = "highlight good";
                         resultArea.className = "";
                     }
                 }
