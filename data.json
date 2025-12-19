@@ -148,5 +148,45 @@
   "category": "money",
   "url": "./coffee/index.html"
 }
+,
+{
+  "title": "편의점 VIP 판독기",
+  "desc": "1+1 행사와 4캔 만원의 유혹. 당신이 편의점에 바치는 돈이 1년에 얼마일까요?",
+  "icon": "🏪",
+  "category": "consumer",
+  "url": "./cvs/index.html"
+}
+,
+{
+  "title": "쇼핑 중독 판독기",
+  "desc": "\"어머 이건 사야해!\" 매일 밤 택배를 시키는 당신. 그 돈이면 차를 샀습니다.",
+  "icon": "🛍️",
+  "category": "consumer",
+  "url": "./shopping/index.html"
+}
+,
+{
+  "title": "런치플레이션 방어기",
+  "desc": "점심값 1만 원 시대. 도시락 싸면 1년에 얼마 벌까요? 밥값 아껴서 건물주 되는 법.",
+  "icon": "🍱",
+  "category": "money",
+  "url": "./lunch/index.html"
+}
+,
+{
+  "title": "명품병 판독기",
+  "desc": "샤넬 가방 살 돈으로 LVMH 주식을 샀다면? 명품 소비의 엄청난 기회비용.",
+  "icon": "👜",
+  "category": "consumer",
+  "url": "./luxury/index.html"
+}
+,
+{
+  "title": "스마트폰 중독 판독기",
+  "desc": "하루 4시간? 1년이면 두 달을 잠 안 자고 폰만 보는 셈입니다. 당신의 사라진 시간을 계산해드립니다.",
+  "icon": "📱",
+  "category": "life",
+  "url": "./screentime/index.html"
+}
 
 ]
