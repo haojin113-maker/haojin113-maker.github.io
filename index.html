@@ -6,105 +6,46 @@
     <meta name="description" content="돈, 인생, 소비의 불편한 진실을 숫자로 증명합니다. 팩트 폭격 연구소.">
     <title>팩트 폭격 연구소 | Fact Bomber</title>
     
-    <!-- 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-    
-    <!-- ★ 핵심: 공통 모듈 연결 (이거 하나로 GA4, 애드센스, 네비게이션 끝!) -->
+    <!-- 공통 모듈 (애드센스, GA4, 네비게이션) -->
     <script src="./common.js"></script>
 
     <style>
-        /* CSS Reset */
+        /* [스타일은 기존과 99% 동일, 필터 영역만 약간 수정] */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif; background-color: #f8f9fa; color: #333; }
 
-        /* 메인 헤더 (Hero Section) */
-        .hero {
-            background: linear-gradient(135deg, #212121, #000000);
-            color: white;
-            padding: 80px 20px 60px;
-            text-align: center;
-        }
+        .hero { background: linear-gradient(135deg, #212121, #000000); color: white; padding: 80px 20px 60px; text-align: center; }
         .hero h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 15px; letter-spacing: -1px; }
         .hero p { opacity: 0.8; font-size: 1.2rem; margin-bottom: 40px; }
         
-        .search-container {
-            max-width: 600px;
-            margin: 0 auto;
-            position: relative;
-        }
-        .search-input {
-            width: 100%;
-            padding: 18px 25px 18px 55px;
-            border-radius: 50px;
-            border: none;
-            font-size: 1.1rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            outline: none;
-            transition: 0.3s;
-        }
+        .search-container { max-width: 600px; margin: 0 auto; position: relative; }
+        .search-input { width: 100%; padding: 18px 25px 18px 55px; border-radius: 50px; border: none; font-size: 1.1rem; box-shadow: 0 10px 25px rgba(0,0,0,0.3); outline: none; transition: 0.3s; }
         .search-input:focus { box-shadow: 0 10px 25px rgba(255,255,255,0.2); }
         .search-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: #666; font-size: 1.5rem; }
 
-        /* 컨텐츠 영역 */
-        .container {
-            max-width: 1200px;
-            margin: -30px auto 0; /* 헤더와 살짝 겹치게 */
-            padding: 0 20px;
-            position: relative;
-            z-index: 2;
-            min-height: 800px;
-        }
+        .container { max-width: 1200px; margin: -30px auto 0; padding: 0 20px; position: relative; z-index: 2; min-height: 800px; }
 
-        /* 컨트롤 바 */
-        .controls {
-            background: white;
-            padding: 15px 20px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        .filter-tags { display: flex; gap: 5px; flex-wrap: wrap; }
-        .tag { 
-            padding: 8px 16px; background: #f1f3f5; border-radius: 20px; cursor: pointer; 
-            font-size: 0.95rem; font-weight: 600; color: #555; transition: 0.2s; 
-        }
-        .tag.active, .tag:hover { background: #212121; color: white; }
+        .controls { background: white; padding: 15px 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px; }
+        
+        /* [수정] 필터 태그 영역이 자동으로 늘어나도록 설정 */
+        .filter-tags { display: flex; gap: 8px; flex-wrap: wrap; flex: 1; }
+        .tag { padding: 8px 16px; background: #f1f3f5; border-radius: 20px; cursor: pointer; font-size: 0.95rem; font-weight: 600; color: #555; transition: 0.2s; border: 1px solid transparent; }
+        .tag.active, .tag:hover { background: #212121; color: white; border-color: #212121; }
 
-        .view-toggle button {
-            background: none; border: none; cursor: pointer; padding: 5px; color: #ccc;
-        }
+        .view-toggle button { background: none; border: none; cursor: pointer; padding: 5px; color: #ccc; }
         .view-toggle button.active { color: #333; }
 
-        /* 그리드 시스템 */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
-        
-        /* 카드 디자인 */
-        .card {
-            background: white; border-radius: 15px; overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.03); border: 1px solid #eee;
-            transition: transform 0.3s, box-shadow 0.3s;
-            text-decoration: none; color: inherit; display: flex; flex-direction: column;
-        }
+        .card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.03); border: 1px solid #eee; transition: transform 0.3s, box-shadow 0.3s; text-decoration: none; color: inherit; display: flex; flex-direction: column; }
         .card:hover { transform: translateY(-7px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
         
-        .card-header { 
-            height: 140px; background: #fafafa; display: flex; align-items: center; justify-content: center; 
-            font-size: 4rem; border-bottom: 1px solid #f0f0f0; 
-        }
+        .card-header { height: 140px; background: #fafafa; display: flex; align-items: center; justify-content: center; font-size: 4rem; border-bottom: 1px solid #f0f0f0; }
         .card-body { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; }
-        .category-badge { 
-            align-self: flex-start; font-size: 0.75rem; font-weight: 800; color: #c62828; 
-            background: #ffebee; padding: 4px 8px; border-radius: 4px; margin-bottom: 10px; 
-        }
+        .category-badge { align-self: flex-start; font-size: 0.75rem; font-weight: 800; color: #c62828; background: #ffebee; padding: 4px 8px; border-radius: 4px; margin-bottom: 10px; }
         .card-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 10px; line-height: 1.4; }
         .card-desc { font-size: 0.95rem; color: #666; line-height: 1.6; }
 
-        /* 리스트 모드 스타일 */
         .grid.list-mode { grid-template-columns: 1fr; gap: 15px; }
         .grid.list-mode .card { flex-direction: row; align-items: center; padding: 10px; }
         .grid.list-mode .card-header { width: 80px; height: 80px; font-size: 2.5rem; background: none; border: none; }
@@ -114,19 +55,16 @@
             .hero h1 { font-size: 2rem; }
             .grid.list-mode .card-desc { display: none; }
             .controls { justify-content: center; }
+            .filter-tags { justify-content: center; } /* 모바일에서 태그 중앙 정렬 */
         }
 
-        /* 페이지네이션 */
         .pagination { display: flex; justify-content: center; margin-top: 50px; gap: 8px; }
-        .page-btn { 
-            width: 40px; height: 40px; border: 1px solid #ddd; background: white; border-radius: 8px; 
-            cursor: pointer; font-weight: bold; color: #555; transition: 0.2s;
-        }
+        .page-btn { width: 40px; height: 40px; border: 1px solid #ddd; background: white; border-radius: 8px; cursor: pointer; font-weight: bold; color: #555; transition: 0.2s; }
         .page-btn.active { background: #212121; color: white; border-color: #212121; }
         .page-btn:hover:not(.active) { background: #f1f3f5; }
         
-        .loading { text-align: center; padding: 50px; color: #888; }
-        .no-result { display: none; text-align: center; padding: 50px; color: #888; }
+        .loading, .no-result { display: none; text-align: center; padding: 50px; color: #888; }
+        #loadingMsg { display: block; } /* 초기엔 보임 */
 
     </style>
 </head>
@@ -144,12 +82,9 @@
     <div class="container">
         
         <div class="controls">
-            <div class="filter-tags">
-                <span class="tag active" data-filter="all">전체</span>
-                <span class="tag" data-filter="money">💰 재테크</span>
-                <span class="tag" data-filter="life">🧬 인생</span>
-                <span class="tag" data-filter="consumer">🛒 호갱탈출</span>
-            </div>
+            <!-- [변경] 여기가 비어있습니다. JS가 채워줍니다. -->
+            <div class="filter-tags" id="filterTags"></div>
+            
             <div class="view-toggle">
                 <button class="active" id="btnGrid"><span class="material-icons-round">grid_view</span></button>
                 <button id="btnList"><span class="material-icons-round">view_list</span></button>
@@ -163,34 +98,86 @@
 
     </div>
 
-    <!-- 스크립트: 데이터 로딩 및 렌더링 -->
     <script>
         let pages = []; 
-        const ITEMS_PER_PAGE = 12; // 넉넉하게 12개
+        const ITEMS_PER_PAGE = 12; 
         let currentPage = 1;
         let currentFilter = 'all';
         let currentSearch = '';
         let filteredData = [];
         let isListView = false; 
 
+        // [중요] 카테고리 설정 (새 카테고리가 생기면 여기에 이름과 아이콘만 추가하세요)
+        // 만약 여기에 없어도 에러는 안 나고 그냥 영어 코드 그대로 보여줍니다.
+        const categoryConfig = {
+            'money': { name: '재테크', icon: '💰' },
+            'life': { name: '인생', icon: '🧬' },
+            'consumer': { name: '소비', icon: '🛒' },
+            'health': { name: '건강', icon: '💪' }, // 예시: 나중에 추가될 수 있음
+            'tech': { name: '기술', icon: '💻' }     // 예시
+        };
+
         const grid = document.getElementById('cardGrid');
         const pagination = document.getElementById('pagination');
         const noResult = document.getElementById('noResult');
         const loadingMsg = document.getElementById('loadingMsg');
-        const btnGrid = document.getElementById('btnGrid');
-        const btnList = document.getElementById('btnList');
+        const filterTagsContainer = document.getElementById('filterTags');
 
         async function loadData() {
             try {
-                // data.json 캐싱 방지용 타임스탬프 추가
                 const response = await fetch('./data.json?t=' + new Date().getTime());
                 pages = await response.json(); 
                 loadingMsg.style.display = 'none';
+                
+                // 1. 카테고리 버튼 자동 생성
+                generateFilterButtons();
+                
+                // 2. 데이터 초기화
                 initData(); 
             } catch (error) {
                 loadingMsg.innerHTML = "데이터 로딩 실패.<br>잠시 후 다시 시도해주세요.";
                 console.error(error);
             }
+        }
+
+        // [신규 기능] data.json에 있는 카테고리를 스캔해서 버튼 만들기
+        function generateFilterButtons() {
+            // 1. 전체 데이터에서 유니크한 카테고리만 뽑아냄
+            const uniqueCategories = ['all', ...new Set(pages.map(page => page.category))];
+            
+            filterTagsContainer.innerHTML = ''; // 기존 버튼 초기화
+
+            uniqueCategories.forEach(cat => {
+                const span = document.createElement('span');
+                span.className = `tag ${cat === 'all' ? 'active' : ''}`; // all은 기본 활성
+                span.dataset.filter = cat;
+                
+                // 이름과 아이콘 결정
+                let displayName = cat;
+                let displayIcon = '';
+
+                if (cat === 'all') {
+                    displayName = '전체';
+                } else if (categoryConfig[cat]) {
+                    displayName = categoryConfig[cat].name;
+                    displayIcon = categoryConfig[cat].icon + ' ';
+                } else {
+                    // Config에 없는 새로운 카테고리일 경우 (대문자로 변환해서 표시)
+                    displayName = cat.charAt(0).toUpperCase() + cat.slice(1);
+                }
+
+                span.innerText = displayIcon + displayName;
+
+                // 클릭 이벤트 연결
+                span.addEventListener('click', () => {
+                    document.querySelector('.tag.active').classList.remove('active');
+                    span.classList.add('active');
+                    currentFilter = cat;
+                    initData();
+                });
+
+                filterTagsContainer.appendChild(span);
+            });
         }
 
         function initData() {
@@ -245,7 +232,6 @@
                 const btn = document.createElement('button');
                 btn.className = `page-btn ${page === currentPage ? 'active' : ''}`;
                 btn.innerText = text;
-                // 이전/다음 버튼 로직 단순화
                 if (text === '<' || text === '>') {
                     btn.disabled = (text === '<' && currentPage === 1) || (text === '>' && currentPage === totalPages);
                     btn.onclick = () => { currentPage = page; render(); window.scrollTo(0,0); };
@@ -260,25 +246,19 @@
             createBtn('>', currentPage + 1);
         }
 
+        // 카드 내부 뱃지용 이름 변환
         function getCategoryName(cat) {
-            const names = { 'money': '💰 재테크', 'life': '🧬 인생', 'consumer': '🛒 소비' };
-            return names[cat] || '기타';
+            if (categoryConfig[cat]) {
+                return categoryConfig[cat].icon + ' ' + categoryConfig[cat].name;
+            }
+            return cat.toUpperCase(); // 설정에 없으면 영어 대문자로 표시
         }
 
         // 이벤트 리스너
         document.getElementById('searchInput').addEventListener('input', (e) => { currentSearch = e.target.value; initData(); });
         
-        document.querySelectorAll('.tag').forEach(tag => {
-            tag.addEventListener('click', () => {
-                document.querySelector('.tag.active').classList.remove('active');
-                tag.classList.add('active');
-                currentFilter = tag.dataset.filter;
-                initData();
-            });
-        });
-
-        btnGrid.addEventListener('click', () => { isListView = false; btnGrid.classList.add('active'); btnList.classList.remove('active'); render(); });
-        btnList.addEventListener('click', () => { isListView = true; btnList.classList.add('active'); btnGrid.classList.remove('active'); render(); });
+        document.getElementById('btnGrid').addEventListener('click', () => { isListView = false; document.getElementById('btnGrid').classList.add('active'); document.getElementById('btnList').classList.remove('active'); render(); });
+        document.getElementById('btnList').addEventListener('click', () => { isListView = true; document.getElementById('btnList').classList.add('active'); document.getElementById('btnGrid').classList.remove('active'); render(); });
 
         loadData();
     </script>
