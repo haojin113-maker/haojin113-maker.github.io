@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="쇼핑 중독 자가진단 및 비용 계산기. 무의식적인 택배 주문이 내 자산에 미치는 영향을 확인하세요.">
+    <title>쇼핑 중독 판독기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
+    <script src="../common.js"></script>
+
+    <!-- 구글 아이콘 -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+    <style>
+        /* --- [표준 스타일 가이드] --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.7;
+        }
+
+        .wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+        
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        section {
+            background: white;
+            border-radius: 16px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            border: 1px solid #eee;
+        }
+
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        /* [테마 변경] 쇼핑/세일(Pink) -> #d81b60 */
+        h2 { border-left: 5px solid #d81b60; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+
+        .intro-box { background-color: #fce4ec; border: 1px solid #f8bbd0; color: #880e4f; }
+        .intro-box strong { color: #d81b60; background: #fff; padding: 0 5px; border-radius: 4px; }
+
+        /* 계산기 스타일 */
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #d81b60; }
+        input {
+            width: 100%; padding: 14px; border: 1px solid #ddd;
+            border-radius: 8px; font-size: 1rem; transition: 0.2s;
+        }
+        input:focus { border-color: #d81b60; outline: none; box-shadow: 0 0 0 3px rgba(216, 27, 96, 0.1); }
+        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
+
+        .calc-btn {
+            width: 100%; padding: 18px;
+            background-color: #d81b60; color: white;
+            border: none; border-radius: 12px;
+            font-size: 1.2rem; font-weight: bold; cursor: pointer;
+            margin-top: 10px; transition: 0.2s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .calc-btn:hover { background-color: #a00037; transform: translateY(-3px); }
+
+        #result-area {
+            display: none; margin-top: 30px; padding: 30px;
+            background-color: #fce4ec; border-radius: 12px; text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
+        .highlight.waste { color: #d81b60; } 
+        .highlight.asset { color: #2e7d32; }
+
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box {
+            flex-shrink: 0; width: 40px; height: 40px;
+            background: #d81b60; color: white;
+            border-radius: 10px; font-weight: bold;
+            display: flex; align-items: center; justify-content: center;
+            margin-right: 20px; margin-top: 5px;
+        }
+        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
+        .reason-content p { font-size: 1rem; color: #666; }
+
+        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
+        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 850px) {
+            .wrapper { flex-direction: column; }
+            .sidebar { width: 100%; position: static; min-width: auto; }
+            .main-content { width: 100%; }
+            h1.page-title { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        
+        <!-- [좌측] 메인 콘텐츠 -->
+        <main class="main-content">
+            
+            <h1 class="page-title">"세일해서 샀어"는 "돈을 썼다"의 다른 말입니다</h1>
+            <p class="page-subtitle">문 앞을 가로막은 택배 상자들, 그 속에 담긴 건 당신의 미래 자산입니다.</p>
+
+            <!-- 인트로: 팩트 제시 -->
+            <section class="intro-box">
+                <h2>🛍️ 택배 중독 증후군</h2>
+                <p>
+                    스트레스 받으면 결제 버튼부터 누르시나요? (일명 '시발비용')<br>
+                    <strong>"오늘만 특가", "마감 임박"</strong>에 속아 필요 없는 물건을 사는 습관이 10년 뒤 당신의 통장을 어떻게 만드는지 계산해드립니다.
+                </p>
+            </section>
+
+            <!-- 계산기 섹션 -->
+            <section id="calculator">
+                <h2>📦 쇼핑 다이어트 계산기</h2>
+                <p style="margin-bottom: 25px; color: #666; font-size: 0.95rem;">
+                    생필품(휴지, 물 등)을 제외하고, 옷/잡화/취미용품에 쓰는 돈만 입력하세요.
+                </p>
+
+                <div class="calc-group">
+                    <label>① 월평균 순수 쇼핑 금액 (만원)</label>
+                    <input type="number" id="monthlyCost" value="30" placeholder="예: 30">
+                    <div class="help-text">* 의류, 화장품, 굿즈, 디지털 기기 등</div>
+                </div>
+
+                <div class="calc-group">
+                    <label>② 이 습관을 유지할 기간 (년)</label>
+                    <input type="number" id="years" value="10" placeholder="예: 10">
+                </div>
+
+                <button id="calcBtn" class="calc-btn">이 돈을 안 쓰고 모았다면?</button>
+
+                <!-- 결과창 -->
+                <div id="result-area">
+                    
+                    <div style="margin-bottom:20px;">
+                        <p class="result-title">단순히 쇼핑몰에 갖다 준 돈</p>
+                        <span id="resTotal" class="highlight waste">0원</span>
+                    </div>
+
+                    <div style="background:white; padding:15px; border-radius:8px; border:2px solid #2e7d32; margin-top:20px;">
+                        <p class="result-title" style="color:#2e7d32; font-size:0.95rem;">이 돈을 투자했다면 (S&P500 복리)</p>
+                        <span id="resInvest" class="highlight asset" style="font-size:1.8rem;">0원</span>
+                    </div>
+
+                    <div style="margin-top:25px; font-size:0.95rem;">
+                        당신은 입지도 않을 옷과 예쁜 쓰레기를 사느라<br>
+                        <strong><span id="compareItem" style="background:#f8bbd0; padding:0 4px; color:#880e4f;">그랜저 신차 한 대</span></strong>를<br>
+                        포기했습니다.
+                    </div>
+                </div>
+            </section>
+
+            <!-- 팩트 체크 리스트 -->
+            <section>
+                <h2>🛑 쇼핑 앱 알림을 꺼야 하는 이유</h2>
+                
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">local_offer</span></div>
+                    <div class="reason-content">
+                        <h3>'할인'의 심리학 (앵커링 효과)</h3>
+                        <p>원래 10만 원짜리를 5만 원에 판다고 하면 5만 원을 벌었다고 착각합니다. 하지만 당신은 5만 원을 번 게 아니라, 5만 원을 '쓴' 것입니다. 안 사면 100% 할인입니다.</p>
+                    </div>
+                </div>
+                
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">sentiment_satisfied_alt</span></div>
+                    <div class="reason-content">
+                        <h3>택배 언박싱 도파민</h3>
+                        <p>물건을 주문하고 택배를 뜯을 때 뇌는 도파민을 분비합니다. 하지만 이 행복감은 30분도 가지 않습니다. 그 허무함을 채우려 또 다른 결제를 하는 악순환에 빠집니다.</p>
+                    </div>
+                </div>
+
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">delete_outline</span></div>
+                    <div class="reason-content">
+                        <h3>공간 비용과 환경 오염</h3>
+                        <p>쓰지 않는 물건이 집 공간을 차지합니다. 평당 2~3천만 원짜리 집에 쓰레기를 보관하는 셈입니다. 또한 택배 박스와 비닐은 심각한 환경 오염을 유발합니다.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 하단 광고 -->
+            <div class="ad-box">
+                <span class="ad-label">Sponsored</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="1234567890"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+            </div>
+
+            <!-- common.js가 푸터 자동 추가 -->
+
+        </main>
+
+        <!-- [우측] 사이드바 광고 -->
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
+                <span class="ad-label">Sponsored</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="1234567890" 
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- 계산 로직 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                // 1. 값 가져오기
+                const monthly = Number(document.getElementById('monthlyCost').value) * 10000;
+                const years = Number(document.getElementById('years').value);
+
+                if(monthly <= 0 || years <= 0) {
+                    alert("금액과 기간을 올바르게 입력해주세요.");
+                    return;
+                }
+
+                // 2. 계산 로직
+                // 단순 합계
+                const totalCost = monthly * 12 * years;
+
+                // 투자 기회비용 (월복리 10%)
+                const rate = 0.10 / 12;
+                const months = years * 12;
+                const investValue = monthly * ((Math.pow(1 + rate, months) - 1) / rate);
+
+                // 3. 결과 출력
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+
+                document.getElementById('resTotal').innerText = Math.round(totalCost).toLocaleString() + "원";
+                document.getElementById('resInvest').innerText = Math.round(investValue).toLocaleString() + "원";
+
+                // 4. 비교 물건 변경
+                const costManwon = totalCost / 10000;
+                let item = "최신형 아이패드";
+                
+                if(costManwon > 10000) item = "수도권 오피스텔 보증금";
+                else if(costManwon > 5000) item = "제네시스 G80";
+                else if(costManwon > 3000) item = "소형 아파트 인테리어 비용";
+                else if(costManwon > 2000) item = "아반떼 신차";
+                else if(costManwon > 1000) item = "유럽 여행 2회";
+                else if(costManwon > 500) item = "샤넬 가방 하나";
+                
+                document.getElementById('compareItem').innerText = item;
+            });
+        });
+    </script>
+</body>
+</html>
