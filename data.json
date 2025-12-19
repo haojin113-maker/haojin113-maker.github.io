@@ -76,5 +76,44 @@
   "icon": "📺",
   "category": "consumer",
   "url": "./subscription/index.html"
+},
+{
+  "title": "카푸어 판독기",
+  "desc": "월 할부금만 낼 수 있으면 내 차일까요? 숨겨진 유지비와 당신의 카푸어 등급을 진단해드립니다.",
+  "icon": "🚘",
+  "category": "money",
+  "url": "./carpoor/index.html"
+}
+,
+{
+  "title": "댕냥이 양육비 계산기",
+  "desc": "귀여워서 데려왔다가 병원비에 웁니다. 반려동물 평생 양육비가 얼마나 들까요?",
+  "icon": "🐶",
+  "category": "life",
+  "url": "./pet/index.html"
+}
+,
+{
+  "title": "술값 계산기",
+  "desc": "일주일에 2번? 안주값에 대리비까지 합치면 얼마일까요? 당신이 마셔 없앤 건물을 찾아드립니다.",
+  "icon": "🍺",
+  "category": "money",
+  "url": "./alcohol/index.html"
+}
+,
+{
+  "title": "헬스장 기부천사",
+  "desc": "1년 등록하고 3일 나가셨나요? 당신의 운동 1회당 비용이 얼마인지 알려드립니다.",
+  "icon": "💪",
+  "category": "life",
+  "url": "./gym/index.html"
+}
+,
+{
+  "title": "택시 VIP 판독기",
+  "desc": "지각비와 귀차니즘 비용으로 1년에 얼마를 쓰는지 아시나요? 대중교통 100번 탈 돈입니다.",
+  "icon": "🚖",
+  "category": "consumer",
+  "url": "./taxi/index.html"
 }
 ]
