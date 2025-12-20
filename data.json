@@ -412,5 +412,117 @@
   "category": "money",
   "url": "./coin/index.html"
 }
+  ,
+{
+  "title": "통신비 호갱 판독기",
+  "desc": "와이파이 쓰면서 9만 원 요금제? 2년 약정 동안 통신사에 기부하는 돈이 얼마일까요?",
+  "icon": "📶",
+  "category": "consumer",
+  "url": "./data/index.html"
+}
+,
+{
+  "title": "신차 감가상각 판독기",
+  "desc": "새 차 비닐 뜯는 순간 수백만 원이 사라집니다. 신차 vs 중고차, 자산 가치 하락 비교.",
+  "icon": "📉",
+  "category": "money",
+  "url": "./depreciation/index.html"
+}
+,
+{
+  "title": "시력 교정 가성비",
+  "desc": "렌즈값이 수술비보다 비싸다? 10년 동안 안경점에 갖다 바친 돈을 계산해드립니다.",
+  "icon": "👁️",
+  "category": "health",
+  "url": "./eye/index.html"
+}
+,
+{
+  "title": "인터넷 호갱 판독기",
+  "desc": "3년마다 47만 원 받으셨나요? 통신사에 의리 지키다 날린 돈을 계산해드립니다.",
+  "icon": "🌐",
+  "category": "consumer",
+  "url": "./internet/index.html"
+}
+,
+{
+  "title": "배당금 건물주 계산기",
+  "desc": "월 100만 원 따박따박 받으려면 얼마가 필요할까요? 주식으로 월세 받는 현실적인 금액.",
+  "icon": "💵",
+  "category": "money",
+  "url": "./dividend/index.html"
+}
+,
+{
+  "title": "연말정산 환급금 판독기",
+  "desc": "국가가 보장하는 수익률 16.5%. 연금저축 안 하면 매년 얼마를 손해 보는 걸까요?",
+  "icon": "💰",
+  "category": "money",
+  "url": "./tax/index.html"
+}
+,
+{
+  "title": "중고 거래 가성비 판독기",
+  "desc": "5천 원 벌겠다고 1시간 쓰셨나요? 당근 거래가 오히려 손해인 이유를 계산해드립니다.",
+  "icon": "🥕",
+  "category": "life",
+  "url": "./market/index.html"
+}
+,
+{
+  "title": "1억 만들기 계산기",
+  "desc": "월급 250만 원으로 1억 모으는 데 얼마나 걸릴까요? 짠테크의 동기부여를 심어드립니다.",
+  "icon": "🌱",
+  "category": "money",
+  "url": "./seedmoney/index.html"
+}
+,
+{
+  "title": "주식 리딩방 판독기",
+  "desc": "가입비 500만원 내고 3배 수익? 리딩방에 가입하면 필패하는 수학적 이유.",
+  "icon": "📢",
+  "category": "money",
+  "url": "./leading/index.html"
+}
+,
+{
+  "title": "세차 환자 판독기",
+  "desc": "자동세차 기스 난다고 셀프 세차하시나요? 장비값과 노동비를 자동세차와 비교해드립니다.",
+  "icon": "🚿",
+  "category": "life",
+  "url": "./carwash/index.html"
+}
+,
+{
+  "title": "자동차 보험 호갱 판독기",
+  "desc": "설계사에게 가입하셨나요? 클릭 몇 번으로 평생 아낄 수 있는 돈이 차 한 대 값입니다.",
+  "icon": "🚗",
+  "category": "money",
+  "url": "./carins/index.html"
+}
+,
+{
+  "title": "주차비 낭비 판독기",
+  "desc": "차가 서 있는 자리에도 월세가 나갑니다. 1년 주차비로 택시를 몇 번 탈 수 있을까요?",
+  "icon": "🅿️",
+  "category": "life",
+  "url": "./parking/index.html"
+}
+,
+{
+  "title": "디저트 비용 계산기",
+  "desc": "밥값보다 비싼 커피와 케이크. 10년 동안 먹은 설탕값이 얼마인지 확인하세요.",
+  "icon": "🍰",
+  "category": "life",
+  "url": "./dessert/index.html"
+}
+,
+{
+  "title": "책장 장식품 판독기",
+  "desc": "사놓고 안 읽는 책, 당신의 지적 허영심 비용을 계산해드립니다. 도서관이 답입니다.",
+  "icon": "📚",
+  "category": "life",
+  "url": "./book/index.html"
+}
 
 ]
