@@ -524,5 +524,101 @@
   "category": "life",
   "url": "./book/index.html"
 }
+,
+{
+  "title": "미식 허세 판독기",
+  "desc": "한 끼에 20만 원? 당신이 먹어치운 오마카세 비용을 국밥 그릇 수로 환산해드립니다.",
+  "icon": "🍽️",
+  "category": "life",
+  "url": "./dining/index.html"
+}
+,
+{
+  "title": "안마의자 가성비 판독기",
+  "desc": "300만 원짜리 옷걸이를 사셨나요? 1번 앉을 때마다 얼마인지, 마사지샵 가격과 비교해드립니다.",
+  "icon": "💺",
+  "category": "life",
+  "url": "./massage/index.html"
+}
+,
+{
+  "title": "별풍선 호갱 판독기",
+  "desc": "오빠 소리 한 번 듣겠다고 월급을 태우시나요? 당신이 BJ에게 사준 차가 무엇인지 확인하세요.",
+  "icon": "🎈",
+  "category": "life",
+  "url": "./donation/index.html"
+}
+,
+{
+  "title": "덕질 비용 판독기",
+  "desc": "오빠를 위해 쓴 돈, 10년 뒤엔 쓰레기가 됩니다. 굿즈 대신 기획사 주식을 샀다면?",
+  "icon": "🎤",
+  "category": "life",
+  "url": "./fandom/index.html"
+}
+,
+{
+  "title": "중고 외제차 판독기",
+  "desc": "1000만 원짜리 벤츠? 수리비가 차값보다 더 나옵니다. 썩차의 현실 유지비 계산.",
+  "icon": "🏎️",
+  "category": "money",
+  "url": "./usedcar/index.html"
+}
+,
+{
+  "title": "장기렌트/리스 판독기",
+  "desc": "월 40만 원에 외제차? 선납금의 함정을 아시나요? 차는 없고 빚만 남는 구조.",
+  "icon": "🔑",
+  "category": "money",
+  "url": "./lease/index.html"
+}
+,
+{
+  "title": "연봉 실수령액 계산기",
+  "desc": "연봉 1억이면 월 650? 4대 보험과 세금이 뜯어가는 내 월급의 실체를 공개합니다.",
+  "icon": "💸",
+  "category": "money",
+  "url": "./paycheck/index.html"
+}
+,
+{
+  "title": "하이브리드 본전 계산기",
+  "desc": "연비 좋다고 400만 원 더 주고 사셨나요? 기름값으로 본전 뽑으려면 몇 년 타야 할까요?",
+  "icon": "🔋",
+  "category": "money",
+  "url": "./hybrid/index.html"
+}
+,
+{
+  "title": "내 차 vs 택시 판독기",
+  "desc": "차 사면 돈 못 모은다? 매일 택시 타는 것과 차를 유지하는 것 중 무엇이 이득일까요?",
+  "icon": "🚗",
+  "category": "life",
+  "url": "./buycar/index.html"
+}
+,
+{
+  "title": "물값 가성비 판독기",
+  "desc": "생수 사 먹는 게 쌀까요? 정수기가 쌀까요? 플라스틱 쓰레기 처리 비용까지 계산해드립니다.",
+  "icon": "💧",
+  "category": "life",
+  "url": "./water/index.html"
+}
+,
+{
+  "title": "3대 이모님 가성비 판독기",
+  "desc": "식기세척기, 건조기, 로봇청소기. 300만 원 쓰고 3,000만 원어치 시간을 버는 법.",
+  "icon": "🤖",
+  "category": "life",
+  "url": "./helper/index.html"
+}
+,
+{
+  "title": "앱테크 가성비 판독기",
+  "desc": "하루 종일 광고 보고 100원? 당신의 시급을 계산해드립니다. 디지털 폐지 줍기의 현실.",
+  "icon": "📱",
+  "category": "money",
+  "url": "./apptech/index.html"
+}
 
 ]
