@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="라식/라섹 수술비 vs 렌즈값 비교 계산기. 평생 쓰는 안경/렌즈 비용이 수술비보다 얼마나 비싼지 확인하세요.">
+    <title>시력 교정 가성비 판독기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
+    <script src="../common.js"></script>
+
+    <!-- 구글 아이콘 -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+    <style>
+        /* --- [표준 스타일 가이드] --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.7;
+        }
+
+        .wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+        
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        section {
+            background: white;
+            border-radius: 16px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            border: 1px solid #eee;
+        }
+
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        /* [테마 변경] 눈/시력(Light Blue) -> #29b6f6 */
+        h2 { border-left: 5px solid #29b6f6; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+
+        .intro-box { background-color: #e1f5fe; border: 1px solid #b3e5fc; color: #01579b; }
+        .intro-box strong { color: #29b6f6; background: #fff; padding: 0 5px; border-radius: 4px; }
+
+        /* 계산기 스타일 */
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #29b6f6; }
+        input {
+            width: 100%; padding: 14px; border: 1px solid #ddd;
+            border-radius: 8px; font-size: 1rem; transition: 0.2s;
+        }
+        input:focus { border-color: #29b6f6; outline: none; box-shadow: 0 0 0 3px rgba(41, 182, 246, 0.1); }
+        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
+
+        .calc-btn {
+            width: 100%; padding: 18px;
+            background-color: #29b6f6; color: white;
+            border: none; border-radius: 12px;
+            font-size: 1.2rem; font-weight: bold; cursor: pointer;
+            margin-top: 10px; transition: 0.2s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .calc-btn:hover { background-color: #0288d1; transform: translateY(-3px); }
+
+        #result-area {
+            display: none; margin-top: 30px; padding: 30px;
+            background-color: #e1f5fe; border-radius: 12px; text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
+        .highlight.waste { color: #d32f2f; } 
+        .highlight.save { color: #0277bd; }
+
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box {
+            flex-shrink: 0; width: 40px; height: 40px;
+            background: #29b6f6; color: white;
+            border-radius: 10px; font-weight: bold;
+            display: flex; align-items: center; justify-content: center;
+            margin-right: 20px; margin-top: 5px;
+        }
+        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
+        .reason-content p { font-size: 1rem; color: #666; }
+
+        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
+        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 850px) {
+            .wrapper { flex-direction: column; }
+            .sidebar { width: 100%; position: static; min-width: auto; }
+            .main-content { width: 100%; }
+            h1.page-title { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        
+        <!-- [좌측] 메인 콘텐츠 -->
+        <main class="main-content">
+            
+            <h1 class="page-title">수술비가 비싸다고요? 렌즈값이 더 비쌉니다</h1>
+            <p class="page-subtitle">"무서워서", "비싸서" 미루는 동안 당신의 눈과 통장은 고통받고 있습니다.</p>
+
+            <!-- 인트로: 팩트 제시 -->
+            <section class="intro-box">
+                <h2>👁️ 일회용 렌즈의 역습</h2>
+                <p>
+                    원데이 렌즈 한 팩 4만 원. 한 달이면 8만 원, 1년이면 약 100만 원입니다.<br>
+                    3년만 써도 라식 수술비가 나옵니다. 평생 안경과 렌즈에 쓰는 돈이 수술비의 몇 배인지 계산해드립니다.
+                </p>
+            </section>
+
+            <!-- 계산기 섹션 -->
+            <section id="calculator">
+                <h2>👓 시력 교정 가성비 견적서</h2>
+                
+                <div class="calc-group">
+                    <label>① 월평균 렌즈/세척액 구매비 (만원)</label>
+                    <input type="number" id="lensCost" value="5" placeholder="예: 5 (원데이 or 관리용액)">
+                </div>
+
+                <div class="calc-group">
+                    <label>② 안경/선글라스 교체비 (연간 환산, 만원)</label>
+                    <input type="number" id="glassesCost" value="10" placeholder="예: 10 (테+알)">
+                </div>
+
+                <div class="calc-group">
+                    <label>③ 예상 수술 비용 (만원)</label>
+                    <input type="number" id="surgeryCost" value="200" placeholder="예: 200 (스마일라식 등)">
+                </div>
+
+                <div class="calc-group">
+                    <label>④ 앞으로 렌즈 낄 기간 (년)</label>
+                    <input type="number" id="years" value="20" placeholder="예: 20 (노안 오기 전까지)">
+                </div>
+
+                <button id="calcBtn" class="calc-btn">내가 버릴 렌즈값 확인하기</button>
+
+                <!-- 결과창 -->
+                <div id="result-area">
+                    
+                    <div style="margin-bottom:20px;">
+                        <p class="result-title">앞으로 안경점에 갖다 바칠 돈</p>
+                        <span id="resTotal" class="highlight waste">0원</span>
+                    </div>
+
+                    <div style="border-top:1px dashed #aaa; padding-top:20px;">
+                        <p class="result-title" style="margin-bottom:10px;">이 돈이면 최고급 수술을</p>
+                        <span id="resCount" class="highlight save" style="font-size:1.8rem;">0번</span>
+                        <p style="font-size:0.9rem; color:#888;">하고도 돈이 남습니다.</p>
+                    </div>
+
+                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #81d4fa; font-size:0.95rem;">
+                        <strong>시간 비용:</strong><br>
+                        매일 렌즈 끼고 빼는 시간(10분)을 20년 모으면<br>
+                        약 <span style="color:#0277bd; font-weight:bold;">1200시간(50일)</span>을 허비하게 됩니다.
+                    </div>
+                </div>
+            </section>
+
+            <!-- 팩트 체크 리스트 -->
+            <section>
+                <h2>🛑 당신의 눈이 숨 막혀 하는 이유</h2>
+                
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">visibility</span></div>
+                    <div class="reason-content">
+                        <h3>각막 저산소증</h3>
+                        <p>눈도 숨을 쉬어야 합니다. 렌즈는 각막을 덮어 산소 공급을 차단합니다. 오래 끼면 혈관이 각막으로 자라 들어오는 신생혈관 증상이 생겨 눈 건강을 영구적으로 해칩니다.</p>
+                    </div>
+                </div>
+                
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">dry</span></div>
+                    <div class="reason-content">
+                        <h3>안구 건조증과 염증</h3>
+                        <p>렌즈는 눈물의 순환을 막고 수분을 뺏어갑니다. 인공눈물 값만 1년에 수십만 원이 듭니다. 결막염, 각막염의 위험은 덤입니다.</p>
+                    </div>
+                </div>
+
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">beach_access</span></div>
+                    <div class="reason-content">
+                        <h3>삶의 질 (QOL) 상승</h3>
+                        <p>아침에 눈 뜨자마자 시계가 보이고, 여행 가서 렌즈 통 안 챙겨도 되고, 라면 먹을 때 김 서리지 않는 삶. 수술한 사람들이 "왜 진작 안 했나" 후회하는 유일한 이유입니다.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 하단 광고 -->
+            <div class="ad-box">
+                <span class="ad-label">Sponsored</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="1234567890"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+            </div>
+
+            <!-- common.js가 푸터 자동 추가 -->
+
+        </main>
+
+        <!-- [우측] 사이드바 광고 -->
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
+                <span class="ad-label">Sponsored</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="1234567890" 
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- 계산 로직 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                // 1. 값 가져오기
+                const monthlyLens = Number(document.getElementById('lensCost').value) * 10000;
+                const yearlyGlasses = Number(document.getElementById('glassesCost').value) * 10000;
+                const surgery = Number(document.getElementById('surgeryCost').value) * 10000;
+                const years = Number(document.getElementById('years').value);
+
+                if(years <= 0 || surgery <= 0) {
+                    alert("값을 올바르게 입력해주세요.");
+                    return;
+                }
+
+                // 2. 계산 로직
+                // 연간 유지비
+                const annualMaintain = (monthlyLens * 12) + yearlyGlasses;
+                
+                // 총 누적 비용
+                const totalCost = annualMaintain * years;
+                
+                // 수술비 대비 배수
+                const ratio = (totalCost / surgery).toFixed(1);
+
+                // 3. 결과 출력
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+
+                document.getElementById('resTotal').innerText = Math.round(totalCost).toLocaleString() + "원";
+                document.getElementById('resCount').innerText = ratio + "번";
+                
+                // 시간 계산 (하루 10분 * 365일 * 년수)
+                // const totalMinutes = 10 * 365 * years;
+                // const totalHours = Math.round(totalMinutes / 60);
+                // 텍스트에 이미 하드코딩 되어 있으나, 동적으로 바꾸려면 위 로직 사용.
+            });
+        });
+    </script>
+</body>
+</html>
