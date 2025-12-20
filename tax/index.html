@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="연금저축 IRP 세액공제 계산기. 연말정산 때 돌려받을 수 있는 세금 환급액과 미래 자산 가치를 계산해드립니다.">
+    <title>연말정산 환급금 계산기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
+    <script src="../common.js"></script>
+
+    <!-- 구글 아이콘 -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+    <style>
+        /* --- [표준 스타일 가이드] --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.7;
+        }
+
+        .wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+        
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        section {
+            background: white;
+            border-radius: 16px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            border: 1px solid #eee;
+        }
+
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        /* [테마 변경] 세금/환급(Gold) -> #ffb300 */
+        h2 { border-left: 5px solid #ffb300; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+
+        .intro-box { background-color: #fff8e1; border: 1px solid #ffe082; color: #f57f17; }
+        .intro-box strong { color: #ffb300; background: #fff; padding: 0 5px; border-radius: 4px; }
+
+        /* 계산기 스타일 */
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #ffb300; }
+        input {
+            width: 100%; padding: 14px; border: 1px solid #ddd;
+            border-radius: 8px; font-size: 1rem; transition: 0.2s;
+        }
+        input:focus { border-color: #ffb300; outline: none; box-shadow: 0 0 0 3px rgba(255, 179, 0, 0.1); }
+        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
+
+        .calc-btn {
+            width: 100%; padding: 18px;
+            background-color: #ffb300; color: #333;
+            border: none; border-radius: 12px;
+            font-size: 1.2rem; font-weight: bold; cursor: pointer;
+            margin-top: 10px; transition: 0.2s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .calc-btn:hover { background-color: #ffca28; transform: translateY(-3px); }
+
+        #result-area {
+            display: none; margin-top: 30px; padding: 30px;
+            background-color: #fffde7; border-radius: 12px; text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
+        .highlight.tax { color: #f57f17; } 
+        .highlight.asset { color: #2e7d32; }
+
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box {
+            flex-shrink: 0; width: 40px; height: 40px;
+            background: #ffb300; color: white;
+            border-radius: 10px; font-weight: bold;
+            display: flex; align-items: center; justify-content: center;
+            margin-right: 20px; margin-top: 5px;
+        }
+        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
+        .reason-content p { font-size: 1rem; color: #666; }
+
+        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
+        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 850px) {
+            .wrapper { flex-direction: column; }
+            .sidebar { width: 100%; position: static; min-width: auto; }
+            .main-content { width: 100%; }
+            h1.page-title { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        
+        <!-- [좌측] 메인 콘텐츠 -->
+        <main class="main-content">
+            
+            <h1 class="page-title">나라에서 주는 148만 원, 걷어차고 계신가요?</h1>
+            <p class="page-subtitle">"어렵다"는 핑계로 포기하기엔 너무 큰 돈입니다. 13월의 월급을 챙기세요.</p>
+
+            <!-- 인트로: 팩트 제시 -->
+            <section class="intro-box">
+                <h2>💰 국가 공인 확정 수익률 16.5%</h2>
+                <p>
+                    워렌 버핏도 부러워할 수익률입니다.<br>
+                    연금저축과 IRP에 돈을 넣기만 해도, 연말정산 때 <strong>최대 148만 5천 원</strong>을 현금으로 돌려줍니다. 안 하면 무조건 손해인 제도를 확인해보세요.
+                </p>
+            </section>
+
+            <!-- 계산기 섹션 -->
+            <section id="calculator">
+                <h2>🧾 세금 환급액 시뮬레이터</h2>
+                <p style="margin-bottom: 25px; color: #666; font-size: 0.95rem;">
+                    연봉과 납입 계획을 입력하세요. (2024년 세법 기준)
+                </p>
+
+                <div class="calc-group">
+                    <label>① 연간 총급여 (세전, 만원)</label>
+                    <input type="number" id="salary" value="5000" placeholder="예: 5000">
+                    <div class="help-text">* 5,500만원 이하는 16.5%, 초과는 13.2% 공제</div>
+                </div>
+
+                <div class="calc-group">
+                    <label>② 연금저축펀드/보험 납입액 (만원)</label>
+                    <input type="number" id="pension" value="600" placeholder="최대 600만원까지">
+                </div>
+
+                <div class="calc-group">
+                    <label>③ IRP(퇴직연금) 납입액 (만원)</label>
+                    <input type="number" id="irp" value="300" placeholder="합산 최대 900만원까지">
+                    <div class="help-text">* 연금저축+IRP 합산 900만원 한도</div>
+                </div>
+
+                <button id="calcBtn" class="calc-btn">내년에 돌려받을 돈 확인</button>
+
+                <!-- 결과창 -->
+                <div id="result-area">
+                    
+                    <div style="margin-bottom:20px;">
+                        <p class="result-title">13월의 월급 (예상 환급액)</p>
+                        <span id="resRefund" class="highlight tax">0원</span>
+                        <p style="font-size:0.9rem; color:#888;">(적용 세율: <span id="resRate">0</span>%)</p>
+                    </div>
+
+                    <div style="border-top:1px dashed #aaa; padding-top:20px;">
+                        <p class="result-title" style="margin-bottom:10px;">이 환급금만 모아도 (20년 복리 투자)</p>
+                        <span id="resFuture" class="highlight asset" style="font-size:1.8rem;">0원</span>
+                        <p style="font-size:0.9rem; color:#888;">(원금은 그대로, 공짜로 생긴 돈)</p>
+                    </div>
+
+                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #ffe082; font-size:0.95rem;">
+                        <strong>팩트 폭격:</strong><br>
+                        이 제도를 활용하지 않는 것은<br>
+                        길가에 떨어진 <strong><span style="color:#f57f17;">100만 원 수표</span></strong>를 안 줍는 것과 같습니다.
+                    </div>
+                </div>
+            </section>
+
+            <!-- 팩트 체크 리스트 -->
+            <section>
+                <h2>🛑 안 하면 손해인 이유</h2>
+                
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">trending_up</span></div>
+                    <div class="reason-content">
+                        <h3>수익률 깡패 (16.5% vs 13.2%)</h3>
+                        <p>주식으로 10% 수익 내기도 힘든 세상에, 넣기만 하면 16.5%(총급여 5,500만 이하)를 확정적으로 돌려줍니다. 세상에 이런 금융 상품은 없습니다.</p>
+                    </div>
+                </div>
+                
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">update</span></div>
+                    <div class="reason-content">
+                        <h3>과세 이연 (세금 미루기)</h3>
+                        <p>투자 수익에 대한 세금(15.4%)을 지금 내지 않고, 먼 훗날 연금을 받을 때 저율(3.3~5.5%)로 냅니다. 그동안 세금 낼 돈이 복리로 굴러가 자산이 더 커집니다.</p>
+                    </div>
+                </div>
+
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">elderly</span></div>
+                    <div class="reason-content">
+                        <h3>강제 저축 효과</h3>
+                        <p>55세까지 못 뺀다는 단점이 오히려 장점입니다. 노후 빈곤이 심각한 한국 사회에서, 내 노후 자금을 강제로 지켜주는 유일한 방패입니다.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 하단 광고 -->
+            <div class="ad-box">
+                <span class="ad-label">Sponsored</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="1234567890"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+            </div>
+
+            <!-- common.js가 푸터 자동 추가 -->
+
+        </main>
+
+        <!-- [우측] 사이드바 광고 -->
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
+                <span class="ad-label">Sponsored</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="1234567890" 
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- 계산 로직 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                // 1. 값 가져오기
+                const salary = Number(document.getElementById('salary').value) * 10000;
+                let pension = Number(document.getElementById('pension').value) * 10000;
+                let irp = Number(document.getElementById('irp').value) * 10000;
+
+                if(salary <= 0) {
+                    alert("연봉을 입력해주세요.");
+                    return;
+                }
+
+                // 한도 체크 (2024년 기준: 연금저축 600, 합산 900)
+                if(pension > 6000000) pension = 6000000;
+                const totalLimit = 9000000;
+                let totalDeposit = pension + irp;
+                if(totalDeposit > totalLimit) totalDeposit = totalLimit;
+
+                // 2. 계산 로직
+                // 공제율 결정
+                let taxRate = 0.132; // 기본 13.2%
+                let rateText = "13.2";
+                if(salary <= 55000000) {
+                    taxRate = 0.165; // 5500이하 16.5%
+                    rateText = "16.5";
+                }
+
+                // 환급액
+                const refundAmount = totalDeposit * taxRate;
+
+                // 미래 가치 (환급금을 20년간 연 5% 복리 재투자 가정)
+                // FV = P * ((1+r)^n - 1) / r  (매년 환급받아 적립)
+                const years = 20;
+                const investRate = 0.05;
+                const futureValue = refundAmount * ((Math.pow(1 + investRate, years) - 1) / investRate);
+
+                // 3. 결과 출력
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+
+                document.getElementById('resRefund').innerText = Math.round(refundAmount).toLocaleString() + "원";
+                document.getElementById('resRate').innerText = rateText;
+                document.getElementById('resFuture').innerText = Math.round(futureValue).toLocaleString() + "원";
+            });
+        });
+    </script>
+</body>
+</html>
