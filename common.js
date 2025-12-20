@@ -1,7 +1,16 @@
 // common.js :: 팩트 폭격 연구소 공통 모듈
 
 document.addEventListener("DOMContentLoaded", function() {
-    
+   
+    // [0] 파비콘(Favicon) 자동 삽입 (폭탄 이모지 💣)
+    // ----------------------------------------------------
+    const favicon = document.createElement("link");
+    favicon.rel = "icon";
+    // 아래 href 값이 이모지를 아이콘으로 바꿔주는 마법의 코드입니다.
+    favicon.href = "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💣</text></svg>";
+    document.head.appendChild(favicon);
+
+   
     // [1] 구글 애널리틱스 (GA4) 자동 삽입
     // ----------------------------------------------------
     const gaId = 'G-42F1L5GYBK';
