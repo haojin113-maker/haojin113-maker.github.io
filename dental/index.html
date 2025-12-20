@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="치과 치료비 견적 계산기. 임플란트, 크라운 비용과 스케일링의 가성비를 비교해드립니다.">
+    <title>치아 방치 비용 계산기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
+    <script src="../common.js"></script>
+
+    <!-- 구글 아이콘 -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+    <style>
+        /* --- [표준 스타일 가이드] --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.7;
+        }
+
+        .wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+        
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        section {
+            background: white;
+            border-radius: 16px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            border: 1px solid #eee;
+        }
+
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        /* [테마 변경] 치과/청결(Teal) -> #00897b */
+        h2 { border-left: 5px solid #00897b; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+
+        .intro-box { background-color: #e0f2f1; border: 1px solid #b2dfdb; color: #004d40; }
+        .intro-box strong { color: #00897b; background: #fff; padding: 0 5px; border-radius: 4px; }
+
+        /* 계산기 스타일 */
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #00897b; }
+        input {
+            width: 100%; padding: 14px; border: 1px solid #ddd;
+            border-radius: 8px; font-size: 1rem; transition: 0.2s;
+        }
+        input:focus { border-color: #00897b; outline: none; box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.1); }
+        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
+
+        .calc-btn {
+            width: 100%; padding: 18px;
+            background-color: #00897b; color: white;
+            border: none; border-radius: 12px;
+            font-size: 1.2rem; font-weight: bold; cursor: pointer;
+            margin-top: 10px; transition: 0.2s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .calc-btn:hover { background-color: #004d40; transform: translateY(-3px); }
+
+        #result-area {
+            display: none; margin-top: 30px; padding: 30px;
+            background-color: #e0f2f1; border-radius: 12px; text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
+        .highlight.waste { color: #d32f2f; } 
+        .highlight.save { color: #00897b; }
+
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box {
+            flex-shrink: 0; width: 40px; height: 40px;
+            background: #00897b; color: white;
+            border-radius: 10px; font-weight: bold;
+            display: flex; align-items: center; justify-content: center;
+            margin-right: 20px; margin-top: 5px;
+        }
+        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
+        .reason-content p { font-size: 1rem; color: #666; }
+
+        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
+        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 850px) {
+            .wrapper { flex-direction: column; }
+            .sidebar { width: 100%; position: static; min-width: auto; }
+            .main-content { width: 100%; }
+            h1.page-title { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        
+        <!-- [좌측] 메인 콘텐츠 -->
+        <main class="main-content">
+            
+            <h1 class="page-title">치과 가기 무서우세요? 계산서는 더 무섭습니다</h1>
+            <p class="page-subtitle">"조금만 더 참아보자"라고 미루는 순간, 치료비는 10배씩 불어납니다.</p>
+
+            <!-- 인트로: 팩트 제시 -->
+            <section class="intro-box">
+                <h2>🦷 호미로 막을 것을 가래로 막는다</h2>
+                <p>
+                    치과 치료는 <strong>타이밍</strong>이 돈입니다.<br>
+                    1만 5천 원짜리 스케일링을 미루면 10만 원짜리 레진이 되고, 그걸 미루면 50만 원짜리 크라운, 결국엔 200만 원짜리 임플란트가 됩니다.
+                </p>
+            </section>
+
+            <!-- 계산기 섹션 -->
+            <section id="calculator">
+                <h2>🏥 치과 견적 미리보기</h2>
+                <p style="margin-bottom: 25px; color: #666; font-size: 0.95rem;">
+                    현재 방치 중인 치아 상태를 대략적으로 입력하세요.
+                </p>
+
+                <div class="calc-group">
+                    <label>① 임플란트 필요 개수 (개)</label>
+                    <input type="number" id="implant" value="0" placeholder="예: 0 (발치 필요한 치아)">
+                    <div class="help-text">* 평균 150~200만원 (뼈이식 포함)</div>
+                </div>
+
+                <div class="calc-group">
+                    <label>② 크라운(금니/지르코니아) 필요 개수 (개)</label>
+                    <input type="number" id="crown" value="1" placeholder="예: 1 (신경치료 필요한 치아)">
+                    <div class="help-text">* 평균 50~60만원</div>
+                </div>
+
+                <div class="calc-group">
+                    <label>③ 레진/인레이 필요 개수 (개)</label>
+                    <input type="number" id="resin" value="2" placeholder="예: 2 (작은 충치)">
+                    <div class="help-text">* 평균 10~30만원</div>
+                </div>
+
+                <button id="calcBtn" class="calc-btn">예상 치료비 견적 확인</button>
+
+                <!-- 결과창 -->
+                <div id="result-area">
+                    
+                    <div style="margin-bottom:20px;">
+                        <p class="result-title">방치 대가로 지불할 예상 병원비</p>
+                        <span id="resTotal" class="highlight waste">0원</span>
+                    </div>
+
+                    <div style="border-top:1px dashed #aaa; padding-top:20px;">
+                        <p class="result-title" style="margin-bottom:10px;">이 돈이면 스케일링(1.5만원)을</p>
+                        <span id="resScaling" class="highlight save" style="font-size:1.8rem;">0회</span>
+                        <p style="font-size:0.9rem; color:#888;">(약 <span id="resYears">0</span>년치) 받을 수 있습니다.</p>
+                    </div>
+
+                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #b2dfdb; font-size:0.95rem;">
+                        <strong>경고:</strong> 치통이 사라졌다고요?<br>
+                        나은 게 아니라 <strong><span style="color:#d32f2f;">신경이 죽어서</span></strong> 안 아픈 겁니다.<br>
+                        지금 당장 치과 예약하세요.
+                    </div>
+                </div>
+            </section>
+
+            <!-- 팩트 체크 리스트 -->
+            <section>
+                <h2>🛑 치아 하나의 가치는 3,000만 원</h2>
+                
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">monetization_on</span></div>
+                    <div class="reason-content">
+                        <h3>자연 치아의 위엄</h3>
+                        <p>아무리 비싼 임플란트도 자연 치아의 씹는 맛과 완충 기능을 따라갈 수 없습니다. 미국 법원에서는 치아 하나의 경제적 가치를 약 3만 달러(3,500만 원)로 산정합니다.</p>
+                    </div>
+                </div>
+                
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">brush</span></div>
+                    <div class="reason-content">
+                        <h3>가장 싼 보험, 치실</h3>
+                        <p>5,000원짜리 치실 하나가 수백만 원의 치료비를 아껴줍니다. 양치질만으로는 치아 사이의 플라그를 60%밖에 제거하지 못합니다. 치실 사용은 선택이 아닌 필수입니다.</p>
+                    </div>
+                </div>
+
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">calendar_today</span></div>
+                    <div class="reason-content">
+                        <h3>연 1회 스케일링은 국룰</h3>
+                        <p>만 19세 이상이면 1년에 한 번 스케일링 건강보험이 적용되어 1만 5천 원대면 받을 수 있습니다. 이 혜택을 놓치는 건 나라에서 주는 돈을 버리는 것과 같습니다.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 하단 광고 -->
+            <div class="ad-box">
+                <span class="ad-label">Sponsored</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="1234567890"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+            </div>
+
+            <!-- common.js가 푸터 자동 추가 -->
+
+        </main>
+
+        <!-- [우측] 사이드바 광고 -->
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
+                <span class="ad-label">Sponsored</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="1234567890" 
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- 계산 로직 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                // 1. 값 가져오기
+                const implantCount = Number(document.getElementById('implant').value);
+                const crownCount = Number(document.getElementById('crown').value);
+                const resinCount = Number(document.getElementById('resin').value);
+
+                if(implantCount < 0 || crownCount < 0 || resinCount < 0) {
+                    alert("개수를 올바르게 입력해주세요.");
+                    return;
+                }
+
+                // 2. 계산 로직 (평균 수가 적용)
+                const implantCost = 1500000; // 150만원
+                const crownCost = 500000; // 50만원
+                const resinCost = 150000; // 15만원
+
+                const totalCost = (implantCount * implantCost) + (crownCount * crownCost) + (resinCount * resinCost);
+                
+                // 스케일링 비교 (1.5만원)
+                const scalingCost = 15000;
+                const scalingCount = Math.floor(totalCost / scalingCost);
+                const scalingYears = Math.floor(scalingCount / 1); // 연 1회 기준
+
+                // 3. 결과 출력
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+
+                document.getElementById('resTotal').innerText = Math.round(totalCost).toLocaleString() + "원";
+                document.getElementById('resScaling').innerText = scalingCount.toLocaleString() + "회";
+                document.getElementById('resYears').innerText = scalingYears.toLocaleString();
+            });
+        });
+    </script>
+</body>
+</html>
