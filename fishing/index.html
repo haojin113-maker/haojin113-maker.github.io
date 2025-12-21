@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="낚시 비용 효율 계산기. 장비값과 선비를 합치면 물고기 한 마리에 얼마인지 계산해드립니다.">
+    <title>낚시 장비병 판독기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
+    <script src="../common.js"></script>
+
+    <!-- 구글 아이콘 -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+    <style>
+        /* --- [표준 스타일 가이드] --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.7;
+        }
+
+        .wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+        
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        section {
+            background: white;
+            border-radius: 16px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            border: 1px solid #eee;
+        }
+
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        /* [테마 변경] 낚시/바다(Blue) -> #0277bd */
+        h2 { border-left: 5px solid #0277bd; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+
+        .intro-box { background-color: #e1f5fe; border: 1px solid #b3e5fc; color: #01579b; }
+        .intro-box strong { color: #0277bd; background: #fff; padding: 0 5px; border-radius: 4px; }
+
+        /* 계산기 스타일 */
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #0277bd; }
+        input {
+            width: 100%; padding: 14px; border: 1px solid #ddd;
+            border-radius: 8px; font-size: 1rem; transition: 0.2s;
+        }
+        input:focus { border-color: #0277bd; outline: none; box-shadow: 0 0 0 3px rgba(2, 119, 189, 0.1); }
+        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
+
+        .calc-btn {
+            width: 100%; padding: 18px;
+            background-color: #0277bd; color: white;
+            border: none; border-radius: 12px;
+            font-size: 1.2rem; font-weight: bold; cursor: pointer;
+            margin-top: 10px; transition: 0.2s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .calc-btn:hover { background-color: #01436b; transform: translateY(-3px); }
+
+        #result-area {
+            display: none; margin-top: 30px; padding: 30px;
+            background-color: #e1f5fe; border-radius: 12px; text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
+        .highlight.waste { color: #0277bd; } 
+        .highlight.fish { color: #d32f2f; }
+
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box {
+            flex-shrink: 0; width: 40px; height: 40px;
+            background: #0277bd; color: white;
+            border-radius: 10px; font-weight: bold;
+            display: flex; align-items: center; justify-content: center;
+            margin-right: 20px; margin-top: 5px;
+        }
+        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
+        .reason-content p { font-size: 1rem; color: #666; }
+
+        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
+        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 850px) {
+            .wrapper { flex-direction: column; }
+            .sidebar { width: 100%; position: static; min-width: auto; }
+            .main-content { width: 100%; }
+            h1.page-title { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        
+        <!-- [좌측] 메인 콘텐츠 -->
+        <main class="main-content">
+            
+            <h1 class="page-title">물고기 잡으러 가서 '돈'만 뿌리고 오셨나요?</h1>
+            <p class="page-subtitle">"자연산이라 더 맛있다"는 자기위로. 그 회 한 점이 얼마짜리인지 계산해드립니다.</p>
+
+            <!-- 인트로: 팩트 제시 -->
+            <section class="intro-box">
+                <h2>🎣 낚시는 '귀족 취미'입니다</h2>
+                <p>
+                    로드(낚싯대), 릴, 아이스박스, 구명조끼, 전용 의류... 장비값만 수백만 원.<br>
+                    여기에 배 한 번 타면 선비 10만 원, 기름값 10만 원이 우습게 깨집니다. 
+                    당신이 잡은 <strong>쭈꾸미 한 마리의 단가</strong>를 확인해보세요.
+                </p>
+            </section>
+
+            <!-- 계산기 섹션 -->
+            <section id="calculator">
+                <h2>🐟 조과(성과) 비용 시뮬레이터</h2>
+                
+                <div class="calc-group">
+                    <label>① 보유 장비 총액 (만원)</label>
+                    <input type="number" id="gearPrice" value="300" placeholder="예: 300 (낚싯대+릴+용품)">
+                </div>
+
+                <div class="calc-group">
+                    <label>② 1회 출조 비용 (만원)</label>
+                    <input type="number" id="tripCost" value="20" placeholder="예: 20 (선비+기름값+식비+미끼)">
+                    <div class="help-text">* 선상낚시 평균 15~25만원 소요</div>
+                </div>
+
+                <div class="calc-group">
+                    <label>③ 연간 출조 횟수 (회)</label>
+                    <input type="number" id="yearlyCount" value="10" placeholder="예: 10 (한 달에 한 번)">
+                </div>
+
+                <div class="calc-group">
+                    <label>④ 평균 조과 (1회당 잡는 마릿수)</label>
+                    <input type="number" id="fishCount" value="5" placeholder="예: 5 (못 잡는 날 포함 평균)">
+                </div>
+
+                <button id="calcBtn" class="calc-btn">물고기 1마리 가격 확인</button>
+
+                <!-- 결과창 -->
+                <div id="result-area">
+                    
+                    <div style="margin-bottom:20px;">
+                        <p class="result-title">1년 동안 바다에 뿌리는 돈</p>
+                        <span id="resTotal" class="highlight waste">0원</span>
+                    </div>
+
+                    <div style="border-top:1px dashed #aaa; padding-top:20px;">
+                        <p class="result-title" style="margin-bottom:10px;">당신이 잡은 물고기 1마리의 가격</p>
+                        <span id="resFishPrice" class="highlight fish" style="font-size:2.2rem;">0원</span>
+                        <p style="font-size:0.9rem; color:#888;">(시장가 대비 <span id="resMulti">0</span>배 비쌈)</p>
+                    </div>
+
+                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #b3e5fc; font-size:0.95rem;">
+                        <strong>팩트 폭격:</strong><br>
+                        이 돈이면 수산시장에서<br>
+                        <strong><span style="color:#01579b;">자연산 최고급 횟감</span></strong>을 배 터지게 사 먹습니다.
+                    </div>
+                </div>
+            </section>
+
+            <!-- 팩트 체크 리스트 -->
+            <section>
+                <h2>🛑 강태공들이 빠지는 늪</h2>
+                
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">anchor</span></div>
+                    <div class="reason-content">
+                        <h3>장비병의 끝판왕</h3>
+                        <p>"이 낚싯대를 쓰면 감도가 달라"라며 100만 원짜리 로드를 지릅니다. 하지만 물고기는 낚싯대 가격을 모릅니다. 장비가 좋다고 고기가 잘 잡히는 건 아닙니다.</p>
+                    </div>
+                </div>
+                
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">directions_boat</span></div>
+                    <div class="reason-content">
+                        <h3>선비(배 삯)의 압박</h3>
+                        <p>배 낚시는 한 번 나갈 때마다 10~15만 원의 선비를 냅니다. 새벽같이 일어나 멀미와 싸우며 고생한 대가치고는 잡는 양이 너무 적을 때가 많습니다.</p>
+                    </div>
+                </div>
+
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">home</span></div>
+                    <div class="reason-content">
+                        <h3>가정의 평화 위협</h3>
+                        <p>주말마다 새벽에 나가서 밤늦게 들어옵니다. 비린내 나는 아이스박스를 들고 왔을 때, 가족들이 진심으로 반겨줄까요? 낚시는 '이혼 사유'가 될 수도 있는 취미입니다.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 하단 광고 -->
+            <div class="ad-box">
+                <span class="ad-label">Sponsored</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="1234567890"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+            </div>
+
+            <!-- common.js가 푸터 자동 추가 -->
+
+        </main>
+
+        <!-- [우측] 사이드바 광고 -->
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
+                <span class="ad-label">Sponsored</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="1234567890" 
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- 계산 로직 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                // 1. 값 가져오기
+                const gear = Number(document.getElementById('gearPrice').value) * 10000;
+                const trip = Number(document.getElementById('tripCost').value) * 10000;
+                const count = Number(document.getElementById('yearlyCount').value);
+                const fish = Number(document.getElementById('fishCount').value);
+
+                if(gear <= 0 || trip <= 0 || count <= 0 || fish <= 0) {
+                    alert("모든 값을 올바르게 입력해주세요.");
+                    return;
+                }
+
+                // 2. 계산 로직
+                // 연간 출조 비용
+                const annualTripCost = trip * count;
+                
+                // 장비 감가상각 (5년 사용 가정)
+                const annualGearCost = gear / 5;
+                
+                // 연간 총 비용
+                const totalAnnualCost = annualTripCost + annualGearCost;
+
+                // 연간 총 조과(마릿수)
+                const totalFish = fish * count;
+
+                // 마리당 단가
+                const pricePerFish = totalAnnualCost / totalFish;
+
+                // 시장가 비교 (광어/우럭 1마리 2~3만원 가정)
+                const marketPrice = 25000;
+                const multiple = (pricePerFish / marketPrice).toFixed(1);
+
+                // 3. 결과 출력
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+
+                document.getElementById('resTotal').innerText = Math.round(totalAnnualCost).toLocaleString() + "원";
+                document.getElementById('resFishPrice').innerText = Math.round(pricePerFish).toLocaleString() + "원";
+                document.getElementById('resMulti').innerText = multiple;
+
+                // 4. 비교 물건 변경
+                const totalManwon = totalAnnualCost / 10000;
+                let item = "최신형 낚싯대";
+                
+                if(totalManwon > 500) item = "가족 해외여행";
+                else if(totalManwon > 300) item = "안마의자";
+                else if(totalManwon > 200) item = "최신형 노트북";
+                else if(totalManwon > 100) item = "수산시장 회식 10회";
+                else item = "고급 일식집 코스요리";
+                
+                // document.getElementById('compareItem').innerText = item; // 여기선 텍스트 고정 사용
+            });
+        });
+    </script>
+</body>
+</html>
