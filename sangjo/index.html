@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="상조 서비스 가입 실효성 계산기. 미리 내는 상조 회비의 기회비용과 현금 결제 시의 차이를 비교해드립니다.">
+    <title>상조 호갱 판독기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
+    <script src="../common.js"></script>
+
+    <!-- 구글 아이콘 -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+    <style>
+        /* --- [표준 스타일 가이드] --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.7;
+        }
+
+        .wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+        
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        section {
+            background: white;
+            border-radius: 16px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            border: 1px solid #eee;
+        }
+
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        /* [테마 변경] 장례/엄숙(Grey) -> #455a64 */
+        h2 { border-left: 5px solid #455a64; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+
+        .intro-box { background-color: #eceff1; border: 1px solid #cfd8dc; color: #263238; }
+        .intro-box strong { color: #455a64; background: #fff; padding: 0 5px; border-radius: 4px; }
+
+        /* 계산기 스타일 */
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #455a64; }
+        input {
+            width: 100%; padding: 14px; border: 1px solid #ddd;
+            border-radius: 8px; font-size: 1rem; transition: 0.2s;
+        }
+        input:focus { border-color: #455a64; outline: none; box-shadow: 0 0 0 3px rgba(69, 90, 100, 0.1); }
+        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
+
+        .calc-btn {
+            width: 100%; padding: 18px;
+            background-color: #455a64; color: white;
+            border: none; border-radius: 12px;
+            font-size: 1.2rem; font-weight: bold; cursor: pointer;
+            margin-top: 10px; transition: 0.2s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .calc-btn:hover { background-color: #1c313a; transform: translateY(-3px); }
+
+        #result-area {
+            display: none; margin-top: 30px; padding: 30px;
+            background-color: #eceff1; border-radius: 12px; text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
+        .highlight.waste { color: #d32f2f; } 
+        .highlight.asset { color: #455a64; }
+
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box {
+            flex-shrink: 0; width: 40px; height: 40px;
+            background: #455a64; color: white;
+            border-radius: 10px; font-weight: bold;
+            display: flex; align-items: center; justify-content: center;
+            margin-right: 20px; margin-top: 5px;
+        }
+        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
+        .reason-content p { font-size: 1rem; color: #666; }
+
+        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
+        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 850px) {
+            .wrapper { flex-direction: column; }
+            .sidebar { width: 100%; position: static; min-width: auto; }
+            .main-content { width: 100%; }
+            h1.page-title { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        
+        <!-- [좌측] 메인 콘텐츠 -->
+        <main class="main-content">
+            
+            <h1 class="page-title">미래를 위해 가입하셨나요? 회사가 먼저 망할 수도 있습니다</h1>
+            <p class="page-subtitle">"물가 상승 방어"라는 말에 속아 10년 동안 묶어둔 돈의 가치를 계산해드립니다.</p>
+
+            <!-- 인트로: 팩트 제시 -->
+            <section class="intro-box">
+                <h2>⚱️ 상조 서비스의 불편한 진실</h2>
+                <p>
+                    39,900원씩 120회 납입하면 장례를 다 치러준다고 합니다.<br>
+                    하지만 그 돈을 <strong>은행</strong>에만 넣어둬도, 장례를 치르고 <strong>유족에게 남겨줄 돈</strong>이 생긴다는 사실을 알고 계셨나요?
+                </p>
+            </section>
+
+            <!-- 계산기 섹션 -->
+            <section id="calculator">
+                <h2>📉 상조 vs 재테크 비교</h2>
+                
+                <div class="calc-group">
+                    <label>① 월 납입금 (원)</label>
+                    <input type="number" id="monthlyFee" value="39900" placeholder="예: 39900">
+                </div>
+
+                <div class="calc-group">
+                    <label>② 납입 횟수 (회)</label>
+                    <input type="number" id="months" value="120" placeholder="예: 120 (10년 만기)">
+                </div>
+
+                <div class="calc-group">
+                    <label>③ 만기 시 제공받는 서비스 가치 (만원)</label>
+                    <input type="number" id="serviceValue" value="400" placeholder="예: 400 (장례 상품가)">
+                    <div class="help-text">* 보통 납입 원금과 비슷하거나 조금 높게 책정됨</div>
+                </div>
+
+                <button id="calcBtn" class="calc-btn">내가 손해 보는 금액 확인</button>
+
+                <!-- 결과창 -->
+                <div id="result-area">
+                    
+                    <div style="margin-bottom:20px;">
+                        <p class="result-title">만기까지 납입하는 원금 총액</p>
+                        <span id="resTotal" class="highlight waste">0원</span>
+                    </div>
+
+                    <div style="border-top:1px dashed #aaa; padding-top:20px;">
+                        <p class="result-title" style="margin-bottom:10px;">이 돈을 적립식 투자했다면 (연 5% 복리)</p>
+                        <span id="resInvest" class="highlight asset" style="font-size:1.8rem;">0원</span>
+                        <p style="font-size:0.9rem; color:#888;">(이자 수익만 <span id="resInterest">0</span>원)</p>
+                    </div>
+
+                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #cfd8dc; font-size:0.95rem;">
+                        상조 대신 저축을 했다면<br>
+                        장례비 400만 원을 치르고도<br>
+                        <strong><span id="compareItem" style="background:#eceff1; padding:0 4px; color:#37474f;">150만 원</span></strong>을<br>
+                        유족에게 남겨줄 수 있었습니다.
+                    </div>
+                </div>
+            </section>
+
+            <!-- 팩트 체크 리스트 -->
+            <section>
+                <h2>🛑 가입 전 꼭 따져봐야 할 것들</h2>
+                
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">business_center</span></div>
+                    <div class="reason-content">
+                        <h3>회사의 폐업 리스크</h3>
+                        <p>상조회사가 망하면 법적으로 납입금의 50%밖에 보장받지 못합니다. 10년, 20년 뒤에 내 상조회사가 살아있을지 아무도 모릅니다.</p>
+                    </div>
+                </div>
+                
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">money_off</span></div>
+                    <div class="reason-content">
+                        <h3>현금의 힘 (Cash is King)</h3>
+                        <p>장례식장에서 "상조 안 쓰고 현금으로 할게요"라고 하면 대부분 할인을 해줍니다. 상조 상품에 포함된 불필요한 품목(수의, 관 등)을 빼고 실속 있게 치르는 게 훨씬 저렴합니다.</p>
+                    </div>
+                </div>
+
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">add_shopping_cart</span></div>
+                    <div class="reason-content">
+                        <h3>끼워팔기의 유혹</h3>
+                        <p>안마의자, 가전제품을 사은품으로 준다며 가입을 유도하지만, 세상에 공짜는 없습니다. 그 비용은 고스란히 월 납입금에 녹아 있으며, 중도 해지 시 위약금 폭탄으로 돌아옵니다.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 하단 광고 -->
+            <div class="ad-box">
+                <span class="ad-label">Sponsored</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="1234567890"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+            </div>
+
+            <!-- common.js가 푸터 자동 추가 -->
+
+        </main>
+
+        <!-- [우측] 사이드바 광고 -->
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
+                <span class="ad-label">Sponsored</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="1234567890" 
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- 계산 로직 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                // 1. 값 가져오기
+                const monthly = Number(document.getElementById('monthlyFee').value);
+                const months = Number(document.getElementById('months').value);
+                const serviceValue = Number(document.getElementById('serviceValue').value) * 10000;
+
+                if(monthly <= 0 || months <= 0) {
+                    alert("모든 값을 올바르게 입력해주세요.");
+                    return;
+                }
+
+                // 2. 계산 로직
+                // 총 납입 원금
+                const totalPrincipal = monthly * months;
+
+                // 투자 기회비용 (월복리 5% 가정 - 보수적 투자)
+                // 적립식 공식: P * [((1+r)^n - 1) / r]
+                const rate = 0.05 / 12; // 월이율
+                const investValue = monthly * ((Math.pow(1 + rate, months) - 1) / rate);
+                
+                // 이자 수익
+                const interest = investValue - totalPrincipal;
+
+                // 차액 (투자금 - 장례비용)
+                const diff = investValue - serviceValue;
+
+                // 3. 결과 출력
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+
+                document.getElementById('resTotal').innerText = Math.round(totalPrincipal).toLocaleString() + "원";
+                document.getElementById('resInvest').innerText = Math.round(investValue).toLocaleString() + "원";
+                document.getElementById('resInterest').innerText = Math.round(interest).toLocaleString();
+
+                // 4. 비교 물건 변경
+                if (diff > 0) {
+                    document.getElementById('compareItem').innerText = Math.round(diff/10000).toLocaleString() + "만원";
+                } else {
+                    document.getElementById('compareItem').innerText = "0원 (본전)";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
