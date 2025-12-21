@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>팩트 폭격 연구소 사이트맵 생성기</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; line-height: 1.6; }
+        h1 { color: #333; }
+        textarea { width: 100%; height: 200px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-family: monospace; }
+        button { background-color: #007bff; color: white; border: none; padding: 10px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; margin: 10px 0; }
+        button:hover { background-color: #0056b3; }
+        .output-area { margin-top: 20px; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <h1>🗺️ 사이트맵(sitemap.xml) 자동 생성기</h1>
+    
+    <h3>1단계: data.json 내용 붙여넣기</h3>
+    <p>작성하신 <code>data.json</code> 파일의 내용을 전체 복사해서 아래 칸에 붙여넣으세요.</p>
+    <textarea id="jsonInput" placeholder='[
+  {
+    "title": "전기차...",
+    "url": "./ev/index.html"
+  },
+  ...
+]'></textarea>
+
+    <button onclick="generateSitemap()">사이트맵 만들기 (클릭)</button>
+
+    <div id="resultSection" class="hidden">
+        <h3>2단계: 결과 확인 및 다운로드</h3>
+        <p>아래 내용을 복사해서 메모장에 <code>sitemap.xml</code>로 저장하거나, 다운로드 버튼을 누르세요.</p>
+        <textarea id="xmlOutput"></textarea>
+        <button onclick="downloadSitemap()" style="background-color: #28a745;">💾 sitemap.xml 다운로드</button>
+    </div>
+
+    <script>
+        function generateSitemap() {
+            const input = document.getElementById('jsonInput').value;
+            const today = new Date().toISOString().split('T')[0];
+            const domain = "http://factbomber.kr";
+
+            try {
+                const data = JSON.parse(input);
+                
+                let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+                xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+
+                // 1. 메인 페이지
+                xml += '  <url>\n';
+                xml += `    <loc>${domain}/</loc>\n`;
+                xml += `    <lastmod>${today}</lastmod>\n`;
+                xml += '    <priority>1.0</priority>\n';
+                xml += '  </url>\n';
+
+                // 2. 서브 페이지들
+                data.forEach(item => {
+                    // 주소 앞의점(.) 제거
+                    let cleanUrl = item.url.replace(/^\./, '');
+                    
+                    xml += '  <url>\n';
+                    xml += `    <loc>${domain}${cleanUrl}</loc>\n`;
+                    xml += `    <lastmod>${today}</lastmod>\n`;
+                    xml += '    <priority>0.8</priority>\n';
+                    xml += '  </url>\n';
+                });
+
+                xml += '</urlset>';
+
+                document.getElementById('xmlOutput').value = xml;
+                document.getElementById('resultSection').classList.remove('hidden');
+
+            } catch (e) {
+                alert("오류! data.json 내용을 올바르게 붙여넣었는지 확인해주세요.\n\n" + e.message);
+            }
+        }
+
+        function downloadSitemap() {
+            const xmlContent = document.getElementById('xmlOutput').value;
+            const blob = new Blob([xmlContent], { type: "text/xml" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "sitemap.xml";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
