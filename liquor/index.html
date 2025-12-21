@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="위스키 와인 수집 비용 계산기. 홈바를 꾸미느라 쓴 돈과 재고 자산의 기회비용을 계산해드립니다.">
+    <title>주류 수집(홈바) 판독기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
+    <script src="../common.js"></script>
+
+    <!-- 구글 아이콘 -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+    <style>
+        /* --- [표준 스타일 가이드] --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.7;
+        }
+
+        .wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+        
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        section {
+            background: white;
+            border-radius: 16px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            border: 1px solid #eee;
+        }
+
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        /* [테마 변경] 위스키/앰버(Amber) -> #ff8f00 */
+        h2 { border-left: 5px solid #ff8f00; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+
+        .intro-box { background-color: #fff8e1; border: 1px solid #ffe082; color: #ef6c00; }
+        .intro-box strong { color: #ff8f00; background: #fff; padding: 0 5px; border-radius: 4px; }
+
+        /* 계산기 스타일 */
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #ff8f00; }
+        input {
+            width: 100%; padding: 14px; border: 1px solid #ddd;
+            border-radius: 8px; font-size: 1rem; transition: 0.2s;
+        }
+        input:focus { border-color: #ff8f00; outline: none; box-shadow: 0 0 0 3px rgba(255, 143, 0, 0.1); }
+        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
+
+        .calc-btn {
+            width: 100%; padding: 18px;
+            background-color: #ff8f00; color: white;
+            border: none; border-radius: 12px;
+            font-size: 1.2rem; font-weight: bold; cursor: pointer;
+            margin-top: 10px; transition: 0.2s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .calc-btn:hover { background-color: #e65100; transform: translateY(-3px); }
+
+        #result-area {
+            display: none; margin-top: 30px; padding: 30px;
+            background-color: #fff8e1; border-radius: 12px; text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
+        .highlight.waste { color: #ff8f00; } 
+        .highlight.gold { color: #fbc02d; }
+
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box {
+            flex-shrink: 0; width: 40px; height: 40px;
+            background: #ff8f00; color: white;
+            border-radius: 10px; font-weight: bold;
+            display: flex; align-items: center; justify-content: center;
+            margin-right: 20px; margin-top: 5px;
+        }
+        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
+        .reason-content p { font-size: 1rem; color: #666; }
+
+        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
+        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 850px) {
+            .wrapper { flex-direction: column; }
+            .sidebar { width: 100%; position: static; min-width: auto; }
+            .main-content { width: 100%; }
+            h1.page-title { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        
+        <!-- [좌측] 메인 콘텐츠 -->
+        <main class="main-content">
+            
+            <h1 class="page-title">술을 마시는 겁니까, 모으는 겁니까?</h1>
+            <p class="page-subtitle">"밖에서 먹는 것보단 싸다"며 사 모은 위스키와 와인. 장식장에 잠든 돈을 깨워드립니다.</p>
+
+            <!-- 인트로: 팩트 제시 -->
+            <section class="intro-box">
+                <h2>🥃 홈바(Home Bar)의 함정</h2>
+                <p>
+                    오픈런해서 구한 발베니, 맥캘란... 아까워서 뚜껑도 못 따고 계신가요?<br>
+                    마시지 않는 술은 <strong>'액체로 된 장식품'</strong>일 뿐입니다. 당신의 진열장에 묶여있는 자산의 규모를 확인해보세요.
+                </p>
+            </section>
+
+            <!-- 계산기 섹션 -->
+            <section id="calculator">
+                <h2>🍾 주류 재고 자산 평가</h2>
+                
+                <div class="calc-group">
+                    <label>① 현재 보유 중인 술 (병)</label>
+                    <input type="number" id="bottleCount" value="20" placeholder="예: 20 (오픈 안 한 것 포함)">
+                </div>
+
+                <div class="calc-group">
+                    <label>② 평균 병당 가격 (만원)</label>
+                    <input type="number" id="avgPrice" value="15" placeholder="예: 15 (위스키/와인 평균)">
+                </div>
+
+                <div class="calc-group">
+                    <label>③ 월평균 추가 구매 비용 (만원)</label>
+                    <input type="number" id="monthlyBuy" value="20" placeholder="예: 20 (새로운 술 쇼핑)">
+                </div>
+
+                <div class="calc-group">
+                    <label>④ 취미 유지 기간 (년)</label>
+                    <input type="number" id="years" value="10" placeholder="예: 10">
+                </div>
+
+                <button id="calcBtn" class="calc-btn">술독에 빠진 내 돈 확인하기</button>
+
+                <!-- 결과창 -->
+                <div id="result-area">
+                    
+                    <div style="margin-bottom:20px;">
+                        <p class="result-title">현재 진열장에 묶인 돈 (매몰 비용)</p>
+                        <span id="resStock" class="highlight waste">0원</span>
+                        <p style="font-size:0.9rem; color:#888;">(마시지 않으면 0원)</p>
+                    </div>
+
+                    <div style="border-top:1px dashed #aaa; padding-top:20px;">
+                        <p class="result-title" style="margin-bottom:10px;">이 취미를 유지할 때 총지출 (기회비용 포함)</p>
+                        <span id="resTotal" class="highlight gold" style="font-size:1.8rem;">0원</span>
+                        <p style="font-size:0.9rem; color:#888;">(S&P500 투자 시 자산 가치)</p>
+                    </div>
+
+                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #ffe082; font-size:0.95rem;">
+                        이 돈이면<br>
+                        <strong><span id="compareItem" style="background:#fff8e1; padding:0 4px; color:#ef6c00;">순금(Gold) 20돈</span></strong>을<br>
+                        금고에 넣어둘 수 있었습니다.
+                    </div>
+                </div>
+            </section>
+
+            <!-- 팩트 체크 리스트 -->
+            <section>
+                <h2>🛑 수집인가 중독인가</h2>
+                
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">local_bar</span></div>
+                    <div class="reason-content">
+                        <h3>키친 드링커의 위험</h3>
+                        <p>집에 술이 많으면 알코올 접근성이 높아집니다. "한 잔만 딱 하고 자야지"가 매일 반복되면 알코올 의존증으로 이어질 확률이 매우 높습니다.</p>
+                    </div>
+                </div>
+                
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">inventory_2</span></div>
+                    <div class="reason-content">
+                        <h3>엔젤스 셰어? 내 돈 증발!</h3>
+                        <p>위스키는 보관 중 자연 증발하고, 와인은 온도 관리를 잘못하면 식초가 됩니다. 관리가 까다로운 술을 쌓아두는 것은 자산 가치를 떨어뜨리는 행위입니다.</p>
+                    </div>
+                </div>
+
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">attach_money</span></div>
+                    <div class="reason-content">
+                        <h3>재테크 수단으로서의 한계</h3>
+                        <p>"나중에 오르면 팔아야지"라고 하지만, 주류 개인 간 거래는 불법(탈세)입니다. 환금성이 매우 떨어지는 자산에 과도한 돈을 묶어두지 마세요.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 하단 광고 -->
+            <div class="ad-box">
+                <span class="ad-label">Sponsored</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="1234567890"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+            </div>
+
+            <!-- common.js가 푸터 자동 추가 -->
+
+        </main>
+
+        <!-- [우측] 사이드바 광고 -->
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
+                <span class="ad-label">Sponsored</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="1234567890" 
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- 계산 로직 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                // 1. 값 가져오기
+                const bottles = Number(document.getElementById('bottleCount').value);
+                const price = Number(document.getElementById('avgPrice').value) * 10000;
+                const monthly = Number(document.getElementById('monthlyBuy').value) * 10000;
+                const years = Number(document.getElementById('years').value);
+
+                if(bottles < 0 || price <= 0 || years <= 0) {
+                    alert("모든 값을 올바르게 입력해주세요.");
+                    return;
+                }
+
+                // 2. 계산 로직
+                // 현재 재고 가치 (매몰 비용)
+                const stockValue = bottles * price;
+                
+                // 향후 지출될 비용의 미래가치 (투자 기회비용)
+                // 연복리 10%, 월 적립 가정
+                const rate = 0.10 / 12;
+                const months = years * 12;
+                const investValue = monthly * ((Math.pow(1 + rate, months) - 1) / rate);
+
+                // 총 기회비용 (현재 재고도 투자했다면 + 미래 지출 투자)
+                const stockInvestValue = stockValue * Math.pow(1 + 0.10, years); // 현재 재고 가치도 거치식 투자 가정
+                const totalOpportunity = stockInvestValue + investValue;
+
+                // 3. 결과 출력
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+
+                document.getElementById('resStock').innerText = Math.round(stockValue).toLocaleString() + "원";
+                document.getElementById('resTotal').innerText = Math.round(totalOpportunity).toLocaleString() + "원";
+
+                // 4. 비교 물건 변경
+                const totalManwon = totalOpportunity / 10000;
+                let item = "최신형 아이패드";
+                
+                if(totalManwon > 10000) item = "순금 30돈 (골드바)";
+                else if(totalManwon > 5000) item = "롤렉스 서브마리너";
+                else if(totalManwon > 3000) item = "유럽 초호화 여행";
+                else if(totalManwon > 2000) item = "샤넬 클래식 백";
+                else if(totalManwon > 1000) item = "최고급 안마의자";
+                else if(totalManwon > 500) item = "6성급 호텔 스위트룸 5박";
+                
+                document.getElementById('compareItem').innerText = item;
+            });
+        });
+    </script>
+</body>
+</html>
