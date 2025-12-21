@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="생애 주기 총비용 계산기. 결혼, 내 집 마련, 자녀 양육, 노후 준비에 드는 평생 비용을 계산해드립니다.">
+    <title>평범한 인생 견적서 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
+    <script src="../common.js"></script>
+
+    <!-- 구글 아이콘 -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+    <style>
+        /* --- [표준 스타일 가이드] --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.7;
+        }
+
+        .wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+        
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        section {
+            background: white;
+            border-radius: 16px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            border: 1px solid #eee;
+        }
+
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        /* [테마 변경] 인생/완성(Gold) -> #fbc02d (가독성 위해 조정) */
+        h2 { border-left: 5px solid #fbc02d; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+
+        .intro-box { background-color: #fffde7; border: 1px solid #fff59d; color: #f57f17; }
+        .intro-box strong { color: #f9a825; background: #fff; padding: 0 5px; border-radius: 4px; }
+
+        /* 계산기 스타일 */
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #f9a825; }
+        select, input {
+            width: 100%; padding: 14px; border: 1px solid #ddd;
+            border-radius: 8px; font-size: 1rem; transition: 0.2s; background: #fff;
+        }
+        select:focus, input:focus { border-color: #fbc02d; outline: none; box-shadow: 0 0 0 3px rgba(253, 216, 53, 0.1); }
+        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
+
+        .calc-btn {
+            width: 100%; padding: 18px;
+            background-color: #fbc02d; color: #333;
+            border: none; border-radius: 12px;
+            font-size: 1.2rem; font-weight: bold; cursor: pointer;
+            margin-top: 10px; transition: 0.2s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .calc-btn:hover { background-color: #f9a825; transform: translateY(-3px); }
+
+        #result-area {
+            display: none; margin-top: 30px; padding: 30px;
+            background-color: #fff9c4; border-radius: 12px; text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
+        .highlight { font-size: 2.5rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
+        .highlight.total { color: #f57f17; } 
+
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box {
+            flex-shrink: 0; width: 40px; height: 40px;
+            background: #fbc02d; color: #fff;
+            border-radius: 10px; font-weight: bold;
+            display: flex; align-items: center; justify-content: center;
+            margin-right: 20px; margin-top: 5px;
+        }
+        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
+        .reason-content p { font-size: 1rem; color: #666; }
+
+        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
+        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 850px) {
+            .wrapper { flex-direction: column; }
+            .sidebar { width: 100%; position: static; min-width: auto; }
+            .main-content { width: 100%; }
+            h1.page-title { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        
+        <!-- [좌측] 메인 콘텐츠 -->
+        <main class="main-content">
+            
+            <h1 class="page-title">"그냥 평범하게 살고 싶어요"</h1>
+            <p class="page-subtitle">남들처럼 결혼하고, 집 사고, 애 키우고, 늙어가는 삶. 그 '평범함'의 가격표를 공개합니다.</p>
+
+            <!-- 인트로: 팩트 제시 -->
+            <section class="intro-box">
+                <h2>🏁 인생 실전 모의고사</h2>
+                <p>
+                    집값, 물가, 사교육비... 숨만 쉬어도 돈이 나가는 대한민국.<br>
+                    은퇴 전까지 당신이 벌어야 할 <strong>총 필요 자금</strong>은 얼마일까요?<br>
+                    이 계산기는 당신이 왜 <strong>재테크</strong>를 해야만 하는지 증명해드립니다.
+                </p>
+            </section>
+
+            <!-- 계산기 섹션 -->
+            <section id="calculator">
+                <h2>🔢 생애 주기 비용 합산기</h2>
+                
+                <div class="calc-group">
+                    <label>① 결혼 준비 자금 (만원)</label>
+                    <input type="number" id="wedding" value="5000" placeholder="예: 5000 (식장+신혼여행+혼수)">
+                </div>
+
+                <div class="calc-group">
+                    <label>② 내 집 마련 목표 (지역/평수 고려, 만원)</label>
+                    <input type="number" id="house" value="80000" placeholder="예: 80000 (서울 평균 8~10억)">
+                </div>
+
+                <div class="calc-group">
+                    <label>③ 자녀 양육비 (1인당 3억, 자녀 수 입력)</label>
+                    <select id="child">
+                        <option value="0">없음</option>
+                        <option value="1">1명 (약 3억)</option>
+                        <option value="2" selected>2명 (약 6억)</option>
+                        <option value="3">3명 (약 9억)</option>
+                    </select>
+                </div>
+
+                <div class="calc-group">
+                    <label>④ 차량 구매 및 유지비 (평생, 만원)</label>
+                    <input type="number" id="car" value="15000" placeholder="예: 15000 (차 3~4번 교체+유지비)">
+                </div>
+
+                <div class="calc-group">
+                    <label>⑤ 은퇴 후 노후 자금 (만원)</label>
+                    <input type="number" id="retire" value="80000" placeholder="예: 80000 (월 250만 * 30년)">
+                    <div class="help-text">* 국민연금 제외, 순수 필요 생활비</div>
+                </div>
+
+                <button id="calcBtn" class="calc-btn">평범한 인생 총견적 확인</button>
+
+                <!-- 결과창 -->
+                <div id="result-area">
+                    
+                    <div style="margin-bottom:20px;">
+                        <p class="result-title">당신의 인생에 필요한 총예산</p>
+                        <span id="resTotal" class="highlight total">0원</span>
+                    </div>
+
+                    <div style="border-top:1px dashed #aaa; padding-top:20px;">
+                        <p class="result-title" style="margin-bottom:10px;">이 돈을 마련하려면 (30년 근로 기준)</p>
+                        <p style="font-size:1.1rem; color:#555;">매달 <strong id="resMonthly" style="color:#d32f2f; font-size:1.4rem;">0원</strong>씩</p>
+                        <p style="font-size:1.1rem; color:#555;">한 푼도 안 쓰고 저축해야 합니다.</p>
+                    </div>
+
+                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #fff9c4; font-size:0.95rem;">
+                        <strong>결론:</strong><br>
+                        월급만 모아서는 '평범한 삶'도 불가능합니다.<br>
+                        지금 당장 <strong><span style="color:#f57f17;">투자</span></strong>를 시작해야 하는 이유입니다.
+                    </div>
+                </div>
+            </section>
+
+            <!-- 팩트 체크 리스트 -->
+            <section>
+                <h2>🛑 월급쟁이의 생존 전략</h2>
+                
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">trending_up</span></div>
+                    <div class="reason-content">
+                        <h3>근로 소득의 한계</h3>
+                        <p>평생 벌 수 있는 근로 소득은 평균 10~15억 원(세후) 수준입니다. 하지만 필요한 돈은 25억 원이 넘습니다. 10억의 갭을 메우는 것은 '투자 소득'뿐입니다.</p>
+                    </div>
+                </div>
+                
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">hourglass_bottom</span></div>
+                    <div class="reason-content">
+                        <h3>시간은 당신 편이 아니다</h3>
+                        <p>물가는 오르고 화폐 가치는 떨어집니다. 오늘 1억 원은 10년 뒤 7천만 원의 가치밖에 안 됩니다. 하루라도 빨리 자산을 실물 자산(부동산, 주식)으로 바꿔야 합니다.</p>
+                    </div>
+                </div>
+
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">self_improvement</span></div>
+                    <div class="reason-content">
+                        <h3>가장 확실한 투자</h3>
+                        <p>술값, 담배값, 명품값, 배달비를 아끼는 '짠테크'가 시드머니의 시작입니다. 이 사이트의 계산기들을 다시 한번 돌려보세요. 답이 보일 것입니다.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 하단 광고 -->
+            <div class="ad-box">
+                <span class="ad-label">Sponsored</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="1234567890"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+            </div>
+
+            <!-- common.js가 푸터 자동 추가 -->
+
+        </main>
+
+        <!-- [우측] 사이드바 광고 -->
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
+                <span class="ad-label">Sponsored</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="1234567890" 
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- 계산 로직 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                // 1. 값 가져오기
+                const wedding = Number(document.getElementById('wedding').value) * 10000;
+                const house = Number(document.getElementById('house').value) * 10000;
+                const childCount = Number(document.getElementById('child').value);
+                const car = Number(document.getElementById('car').value) * 10000;
+                const retire = Number(document.getElementById('retire').value) * 10000;
+
+                // 2. 계산 로직
+                // 자녀 양육비 (1인당 3억 가정)
+                const childCost = childCount * 300000000;
+                
+                // 총 필요 자금
+                const totalCost = wedding + house + childCost + car + retire;
+
+                // 월 저축 필요액 (30년 근무 가정)
+                const workYears = 30;
+                const workMonths = workYears * 12;
+                const monthlySavingNeeded = totalCost / workMonths;
+
+                // 3. 결과 출력
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+
+                // 억 단위 변환 표시
+                const totalOk = Math.floor(totalCost / 100000000);
+                const totalMan = Math.round((totalCost % 100000000) / 10000);
+                
+                let totalText = "";
+                if(totalOk > 0) totalText += totalOk + "억 ";
+                if(totalMan > 0) totalText += totalMan + "만원";
+                if(totalText === "") totalText = "0원";
+
+                document.getElementById('resTotal').innerText = totalText;
+                document.getElementById('resMonthly').innerText = Math.round(monthlySavingNeeded/10000).toLocaleString();
+            });
+        });
+    </script>
+</body>
+</html>
