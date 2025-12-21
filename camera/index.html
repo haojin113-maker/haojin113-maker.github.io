@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="카메라 장비 비용 계산기. 렌즈와 바디값 대비 실제 촬영 횟수를 분석하여 사진 1장당 비용을 계산해드립니다.">
+    <title>카메라 장비병 판독기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
+    <script src="../common.js"></script>
+
+    <!-- 구글 아이콘 -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+    <style>
+        /* --- [표준 스타일 가이드] --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.7;
+        }
+
+        .wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+        
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        section {
+            background: white;
+            border-radius: 16px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            border: 1px solid #eee;
+        }
+
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        /* [테마 변경] 카메라/녹화(Red) -> #d50000 */
+        h2 { border-left: 5px solid #d50000; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+
+        .intro-box { background-color: #ffebee; border: 1px solid #ffcdd2; color: #b71c1c; }
+        .intro-box strong { color: #d50000; background: #fff; padding: 0 5px; border-radius: 4px; }
+
+        /* 계산기 스타일 */
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #d50000; }
+        input {
+            width: 100%; padding: 14px; border: 1px solid #ddd;
+            border-radius: 8px; font-size: 1rem; transition: 0.2s;
+        }
+        input:focus { border-color: #d50000; outline: none; box-shadow: 0 0 0 3px rgba(213, 0, 0, 0.1); }
+        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
+
+        .calc-btn {
+            width: 100%; padding: 18px;
+            background-color: #d50000; color: white;
+            border: none; border-radius: 12px;
+            font-size: 1.2rem; font-weight: bold; cursor: pointer;
+            margin-top: 10px; transition: 0.2s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .calc-btn:hover { background-color: #b71c1c; transform: translateY(-3px); }
+
+        #result-area {
+            display: none; margin-top: 30px; padding: 30px;
+            background-color: #fafafa; border-radius: 12px; text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
+        .highlight.waste { color: #d50000; } 
+        .highlight.pro { color: #263238; }
+
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box {
+            flex-shrink: 0; width: 40px; height: 40px;
+            background: #d50000; color: white;
+            border-radius: 10px; font-weight: bold;
+            display: flex; align-items: center; justify-content: center;
+            margin-right: 20px; margin-top: 5px;
+        }
+        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
+        .reason-content p { font-size: 1rem; color: #666; }
+
+        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
+        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 850px) {
+            .wrapper { flex-direction: column; }
+            .sidebar { width: 100%; position: static; min-width: auto; }
+            .main-content { width: 100%; }
+            h1.page-title { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        
+        <!-- [좌측] 메인 콘텐츠 -->
+        <main class="main-content">
+            
+            <h1 class="page-title">사진은 장비빨? 아니요, 당신의 실력 문제입니다</h1>
+            <p class="page-subtitle">수백만 원짜리 렌즈를 사놓고 '무거워서' 안 들고 나가시나요? 장롱 카메라의 비용을 계산해드립니다.</p>
+
+            <!-- 인트로: 팩트 제시 -->
+            <section class="intro-box">
+                <h2>📸 렌즈병(LBA) 말기 환자분들께</h2>
+                <p>
+                    바디, 삼각대, 렌즈, 필터, 제습함...<br>
+                    프로 작가도 아니면서 장비만 풀세트로 갖췄습니다.<br>
+                    하지만 1년에 몇 번이나 들고 나가시나요? 당신이 찍은 <strong>사진 한 장의 원가</strong>를 알려드립니다.
+                </p>
+            </section>
+
+            <!-- 계산기 섹션 -->
+            <section id="calculator">
+                <h2>🔭 장비 가성비 견적서</h2>
+                
+                <div class="calc-group">
+                    <label>① 카메라 바디 가격 (만원)</label>
+                    <input type="number" id="bodyPrice" value="300" placeholder="예: 300 (풀프레임 미러리스)">
+                </div>
+
+                <div class="calc-group">
+                    <label>② 보유 렌즈 총액 (만원)</label>
+                    <input type="number" id="lensPrice" value="400" placeholder="예: 400 (단렌즈, 줌렌즈 등)">
+                </div>
+
+                <div class="calc-group">
+                    <label>③ 기타 장비(삼각대/가방/조명) (만원)</label>
+                    <input type="number" id="accPrice" value="50" placeholder="예: 50">
+                </div>
+
+                <div class="calc-group">
+                    <label>④ 연간 실제 출사 횟수 (회)</label>
+                    <input type="number" id="yearlyCount" value="4" placeholder="예: 4 (분기별 1회)">
+                    <div class="help-text">* 동네 카페에서 찍는 거 말고 '각 잡고' 나가는 횟수</div>
+                </div>
+
+                <div class="calc-group">
+                    <label>⑤ 장비 보유 기간 (년)</label>
+                    <input type="number" id="years" value="3" placeholder="예: 3">
+                </div>
+
+                <button id="calcBtn" class="calc-btn">사진 1장값 확인하기</button>
+
+                <!-- 결과창 -->
+                <div id="result-area">
+                    
+                    <div style="margin-bottom:20px;">
+                        <p class="result-title">1번 들고 나갈 때마다 드는 비용 (감가상각)</p>
+                        <span id="resCostPerTrip" class="highlight waste">0원</span>
+                        <p style="font-size:0.9rem; color:#888;">(총 장비값: <span id="resTotal">0</span>만원)</p>
+                    </div>
+
+                    <div style="border-top:1px dashed #aaa; padding-top:20px;">
+                        <p class="result-title" style="margin-bottom:10px;">이 돈이면</p>
+                        <span id="resPro" class="highlight pro" style="font-size:1.8rem;">전문 스냅 작가</span>
+                        <p style="font-size:0.9rem; color:#888;">를 고용해서 인생샷을 남기는 게 쌉니다.</p>
+                    </div>
+
+                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #ffcdd2; font-size:0.95rem;">
+                        <strong>팩트 폭격:</strong><br>
+                        무거워서 안 들고 나가는 카메라는<br>
+                        <strong><span style="color:#d50000;">주머니 속 스마트폰</span></strong>보다 못합니다.
+                    </div>
+                </div>
+            </section>
+
+            <!-- 팩트 체크 리스트 -->
+            <section>
+                <h2>🛑 장비병을 치료하는 처방전</h2>
+                
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">smartphone</span></div>
+                    <div class="reason-content">
+                        <h3>스마트폰의 진화</h3>
+                        <p>최신 스마트폰의 AI 보정 기술은 웬만한 DSLR 원본보다 낫습니다. SNS 업로드용이라면 200만 원짜리 렌즈와 스마트폰의 차이를 구분할 사람은 거의 없습니다.</p>
+                    </div>
+                </div>
+                
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">fitness_center</span></div>
+                    <div class="reason-content">
+                        <h3>무게와의 싸움</h3>
+                        <p>바디+렌즈 합쳐 2kg가 넘는 장비를 메고 여행을 가면, 사진을 찍는 게 아니라 '훈련'을 하는 것입니다. 결국 무거워서 숙소에 두고 다니게 됩니다.</p>
+                    </div>
+                </div>
+
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">edit</span></div>
+                    <div class="reason-content">
+                        <h3>중요한 건 보정 실력</h3>
+                        <p>사진의 완성은 장비가 아니라 '보정(Lightroom)'입니다. 비싼 카메라를 살 돈으로 보정 강의를 듣거나 편집 프로그램을 구독하는 게 결과물이 훨씬 좋습니다.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 하단 광고 -->
+            <div class="ad-box">
+                <span class="ad-label">Sponsored</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="1234567890"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+            </div>
+
+            <!-- common.js가 푸터 자동 추가 -->
+
+        </main>
+
+        <!-- [우측] 사이드바 광고 -->
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
+                <span class="ad-label">Sponsored</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="1234567890" 
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- 계산 로직 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                // 1. 값 가져오기
+                const body = Number(document.getElementById('bodyPrice').value) * 10000;
+                const lens = Number(document.getElementById('lensPrice').value) * 10000;
+                const acc = Number(document.getElementById('accPrice').value) * 10000;
+                const count = Number(document.getElementById('yearlyCount').value);
+                const years = Number(document.getElementById('years').value);
+
+                if(body <= 0 || years <= 0) {
+                    alert("값을 올바르게 입력해주세요.");
+                    return;
+                }
+
+                // 2. 계산 로직
+                // 총 장비값
+                const totalGear = body + lens + acc;
+                
+                // 총 출사 횟수
+                const totalTrips = count * years;
+
+                // 1회 출사 당 장비 감가 비용 (잔존가치 0 가정 - 보수적 계산)
+                // 실제로는 중고로 팔 수 있지만, 기회비용 강조를 위해 전액 계산
+                const costPerTrip = totalGear / totalTrips;
+
+                // 전문 작가 스냅 촬영비 (약 20~30만원 가정)
+                const proCost = 250000;
+                const ratio = (costPerTrip / proCost).toFixed(1);
+
+                // 3. 결과 출력
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+
+                document.getElementById('resTotal').innerText = Math.round(totalGear/10000).toLocaleString();
+                document.getElementById('resCostPerTrip').innerText = Math.round(costPerTrip).toLocaleString() + "원";
+
+                // 4. 비교 로직
+                if (costPerTrip > proCost) {
+                    document.getElementById('resPro').innerText = `전문 작가 ${ratio}회 고용`;
+                    document.getElementById('resPro').style.color = "#d50000";
+                } else {
+                    document.getElementById('resPro').innerText = "가성비 좋음";
+                    document.getElementById('resPro').style.color = "#2e7d32";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
