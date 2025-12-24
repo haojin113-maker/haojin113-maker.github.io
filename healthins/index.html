@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="만기환급형 보험 효율 계산기. 나중에 돌려받는 보험금이 물가 상승을 고려했을 때 얼마의 가치인지 계산해드립니다.">
+    <title>보험 리모델링 판독기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
+    <script src="../common.js"></script>
+
+    <!-- 구글 아이콘 -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+    <style>
+        /* --- [표준 스타일 가이드] --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.7;
+        }
+
+        .wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+        
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        section {
+            background: white;
+            border-radius: 16px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            border: 1px solid #eee;
+        }
+
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        /* [테마 변경] 보험/의료(Light Blue) -> #42a5f5 */
+        h2 { border-left: 5px solid #42a5f5; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+
+        .intro-box { background-color: #e3f2fd; border: 1px solid #bbdefb; color: #0d47a1; }
+        .intro-box strong { color: #42a5f5; background: #fff; padding: 0 5px; border-radius: 4px; }
+
+        /* 계산기 스타일 */
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #42a5f5; }
+        input {
+            width: 100%; padding: 14px; border: 1px solid #ddd;
+            border-radius: 8px; font-size: 1rem; transition: 0.2s;
+        }
+        input:focus { border-color: #42a5f5; outline: none; box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.1); }
+        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
+
+        .calc-btn {
+            width: 100%; padding: 18px;
+            background-color: #42a5f5; color: white;
+            border: none; border-radius: 12px;
+            font-size: 1.2rem; font-weight: bold; cursor: pointer;
+            margin-top: 10px; transition: 0.2s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .calc-btn:hover { background-color: #1e88e5; transform: translateY(-3px); }
+
+        #result-area {
+            display: none; margin-top: 30px; padding: 30px;
+            background-color: #f5f5f5; border-radius: 12px; text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
+        .highlight.loss { color: #d32f2f; } 
+        .highlight.asset { color: #2e7d32; }
+
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box {
+            flex-shrink: 0; width: 40px; height: 40px;
+            background: #42a5f5; color: white;
+            border-radius: 10px; font-weight: bold;
+            display: flex; align-items: center; justify-content: center;
+            margin-right: 20px; margin-top: 5px;
+        }
+        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
+        .reason-content p { font-size: 1rem; color: #666; }
+
+        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
+        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 850px) {
+            .wrapper { flex-direction: column; }
+            .sidebar { width: 100%; position: static; min-width: auto; }
+            .main-content { width: 100%; }
+            h1.page-title { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        
+        <!-- [좌측] 메인 콘텐츠 -->
+        <main class="main-content">
+            
+            <h1 class="page-title">"낸 돈 다 돌려드려요"의 함정</h1>
+            <p class="page-subtitle">20년 뒤에 받는 원금, 과연 그때도 같은 가치일까요? 만기환급형 보험의 배신.</p>
+
+            <!-- 인트로: 팩트 제시 -->
+            <section class="intro-box">
+                <h2>🏥 보험은 저축이 아닙니다</h2>
+                <p>
+                    암보험, 종합보험 가입할 때 "나중에 다 돌려받으니까 공짜"라고 생각하셨나요?<br>
+                    물가 상승률을 고려하면 당신이 돌려받는 돈은 <strong>휴지 조각</strong>이나 다름없습니다. 
+                    순수보장형으로 가입하고 차액을 투자했을 때의 결과를 보여드립니다.
+                </p>
+            </section>
+
+            <!-- 계산기 섹션 -->
+            <section id="calculator">
+                <h2>📉 환급금 가치 분석기</h2>
+                
+                <div class="calc-group">
+                    <label>① 월 보험료 (만원)</label>
+                    <input type="number" id="premium" value="15" placeholder="예: 15 (만기환급형)">
+                </div>
+
+                <div class="calc-group">
+                    <label>② 납입 기간 (년)</label>
+                    <input type="number" id="years" value="20" placeholder="예: 20">
+                </div>
+
+                <div class="calc-group">
+                    <label>③ 순수보장형(소멸성) 예상 보험료 (만원)</label>
+                    <input type="number" id="purePremium" value="5" placeholder="예: 5 (같은 보장일 때)">
+                    <div class="help-text">* 보통 환급형보다 2~3배 저렴함</div>
+                </div>
+
+                <button id="calcBtn" class="calc-btn">내가 손해 보는 금액 확인</button>
+
+                <!-- 결과창 -->
+                <div id="result-area">
+                    
+                    <div style="margin-bottom:20px;">
+                        <p class="result-title">만기 시 돌려받는 원금의 실질 가치</p>
+                        <span id="resRealValue" class="highlight loss">0원</span>
+                        <p style="font-size:0.9rem; color:#888;">(20년 뒤 물가 반영 시 가치 하락)</p>
+                    </div>
+
+                    <div style="border-top:1px dashed #aaa; padding-top:20px;">
+                        <p class="result-title" style="margin-bottom:10px;">차액을 투자했다면 (연 8% 복리)</p>
+                        <span id="resInvest" class="highlight asset" style="font-size:1.8rem;">0원</span>
+                        <p style="font-size:0.9rem; color:#888;">(적립식 투자 시 자산)</p>
+                    </div>
+
+                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #90caf9; font-size:0.95rem;">
+                        환급형 보험에 가입하는 것은<br>
+                        보험사에 <strong><span style="color:#0d47a1;">20년 무이자 대출</span></strong>을 해주는 것과 같습니다.
+                    </div>
+                </div>
+            </section>
+
+            <!-- 팩트 체크 리스트 -->
+            <section>
+                <h2>🛑 보험 리모델링이 시급한 이유</h2>
+                
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">trending_down</span></div>
+                    <div class="reason-content">
+                        <h3>화폐 가치의 하락 (인플레이션)</h3>
+                        <p>20년 전의 1,000만 원과 지금의 1,000만 원은 다릅니다. 지금 내는 돈을 20년 뒤에 숫자 그대로 돌려받는다는 건, 실질적으로는 돈을 잃는 행위입니다.</p>
+                    </div>
+                </div>
+                
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">money_off</span></div>
+                    <div class="reason-content">
+                        <h3>사업비 차감</h3>
+                        <p>보험료에는 설계사 수당과 보험사 운영비(사업비)가 포함되어 있습니다. 저축 목적으로 보험을 드는 것은 수수료 10% 이상 떼고 은행에 맡기는 것과 같습니다.</p>
+                    </div>
+                </div>
+
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">shield</span></div>
+                    <div class="reason-content">
+                        <h3>보험의 본질은 '비용'</h3>
+                        <p>보험은 로또가 아닙니다. 위험에 대비하는 '비용'으로 생각해야 합니다. 최소한의 비용(순수보장형)으로 최대의 보장을 받고, 남은 돈은 내가 직접 굴려야 합니다.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 하단 광고 -->
+            <div class="ad-box">
+                <span class="ad-label">Sponsored</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="1234567890"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+            </div>
+
+            <!-- common.js가 푸터 자동 추가 -->
+
+        </main>
+
+        <!-- [우측] 사이드바 광고 -->
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
+                <span class="ad-label">Sponsored</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="1234567890" 
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- 계산 로직 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                // 1. 값 가져오기
+                const premium = Number(document.getElementById('premium').value) * 10000;
+                const purePremium = Number(document.getElementById('purePremium').value) * 10000;
+                const years = Number(document.getElementById('years').value);
+
+                if(premium <= 0 || years <= 0) {
+                    alert("값을 올바르게 입력해주세요.");
+                    return;
+                }
+
+                if(premium <= purePremium) {
+                    alert("환급형 보험료가 순수보장형보다 싸다니요? 다시 확인해주세요.");
+                    return;
+                }
+
+                // 2. 계산 로직
+                // 총 납입금 (원금)
+                const totalPaid = premium * 12 * years;
+
+                // 물가상승률 반영한 원금의 현재 가치 (연 3% 가정)
+                // FV = PV * (1+r)^n -> PV = FV / (1+r)^n
+                // 만기에 돌려받는 돈(totalPaid)의 n년 뒤 가치를 현재 물가 기준으로 역산하면 더 작아짐.
+                // 더 직관적으로: "지금의 3천만원은 20년 뒤 짜장면 몇 그릇 값일까?"
+                // 20년 뒤 3천만원의 구매력 = 3000 / (1.03)^20
+                const inflationRate = 0.03;
+                const realValue = totalPaid / Math.pow(1 + inflationRate, years);
+
+                // 차액 투자 (적립식 복리 8%)
+                const diff = premium - purePremium;
+                const rate = 0.08 / 12;
+                const months = years * 12;
+                const investValue = diff * ((Math.pow(1 + rate, months) - 1) / rate);
+
+                // 3. 결과 출력
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+
+                document.getElementById('resRealValue').innerText = Math.round(realValue).toLocaleString() + "원";
+                document.getElementById('resInvest').innerText = Math.round(investValue).toLocaleString() + "원";
+
+                // 4. 비교 물건 변경
+                // document.getElementById('compareItem').innerText = item;
+            });
+        });
+    </script>
+</body>
+</html>
