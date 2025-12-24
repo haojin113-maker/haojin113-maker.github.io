@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="홈카페 비용 계산기. 커피 머신 가격과 원두값을 카페 사 먹는 비용과 비교하여 손익분기점을 계산해드립니다.">
+    <title>홈카페 로망 판독기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
+    <script src="../common.js"></script>
+
+    <!-- 구글 아이콘 -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+    <style>
+        /* --- [표준 스타일 가이드] --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.7;
+        }
+
+        .wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+        
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        section {
+            background: white;
+            border-radius: 16px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            border: 1px solid #eee;
+        }
+
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        /* [테마 변경] 커피/감성(Brown) -> #8d6e63 */
+        h2 { border-left: 5px solid #8d6e63; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+
+        .intro-box { background-color: #efebe9; border: 1px solid #d7ccc8; color: #4e342e; }
+        .intro-box strong { color: #8d6e63; background: #fff; padding: 0 5px; border-radius: 4px; }
+
+        /* 계산기 스타일 */
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #8d6e63; }
+        input {
+            width: 100%; padding: 14px; border: 1px solid #ddd;
+            border-radius: 8px; font-size: 1rem; transition: 0.2s;
+        }
+        input:focus { border-color: #8d6e63; outline: none; box-shadow: 0 0 0 3px rgba(141, 110, 99, 0.1); }
+        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
+
+        .calc-btn {
+            width: 100%; padding: 18px;
+            background-color: #8d6e63; color: white;
+            border: none; border-radius: 12px;
+            font-size: 1.2rem; font-weight: bold; cursor: pointer;
+            margin-top: 10px; transition: 0.2s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .calc-btn:hover { background-color: #5f4339; transform: translateY(-3px); }
+
+        #result-area {
+            display: none; margin-top: 30px; padding: 30px;
+            background-color: #efebe9; border-radius: 12px; text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
+        .highlight.waste { color: #8d6e63; } 
+        .highlight.save { color: #2e7d32; }
+
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box {
+            flex-shrink: 0; width: 40px; height: 40px;
+            background: #8d6e63; color: white;
+            border-radius: 10px; font-weight: bold;
+            display: flex; align-items: center; justify-content: center;
+            margin-right: 20px; margin-top: 5px;
+        }
+        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
+        .reason-content p { font-size: 1rem; color: #666; }
+
+        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
+        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 850px) {
+            .wrapper { flex-direction: column; }
+            .sidebar { width: 100%; position: static; min-width: auto; }
+            .main-content { width: 100%; }
+            h1.page-title { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        
+        <!-- [좌측] 메인 콘텐츠 -->
+        <main class="main-content">
+            
+            <h1 class="page-title">커피값 아끼려고 머신 샀다가 '원두의 노예'가 됩니다</h1>
+            <p class="page-subtitle">배보다 배꼽이 더 큰 홈카페. 300만 원짜리 머신으로 본전 뽑으려면 얼마나 마셔야 할까요?</p>
+
+            <!-- 인트로: 팩트 제시 -->
+            <section class="intro-box">
+                <h2>☕ 감성의 가격</h2>
+                <p>
+                    "캡슐은 맛없어서..."라며 반자동 머신과 그라인더를 들이셨나요?<br>
+                    기계값, 원두값, 우유값, 수도세, 전기세, 그리고 <strong>청소 노동비</strong>까지.<br>
+                    집에서 내려 마시는 커피 한 잔이 스타벅스보다 비쌀 수 있다는 사실을 증명해드립니다.
+                </p>
+            </section>
+
+            <!-- 계산기 섹션 -->
+            <section id="calculator">
+                <h2>📉 홈카페 손익분기점 계산기</h2>
+                
+                <div class="calc-group">
+                    <label>① 장비 구매 총액 (만원)</label>
+                    <input type="number" id="gearCost" value="200" placeholder="예: 200 (머신+그라인더+템퍼)">
+                </div>
+
+                <div class="calc-group">
+                    <label>② 월 원두/우유/시럽 비용 (만원)</label>
+                    <input type="number" id="beanCost" value="5" placeholder="예: 5">
+                </div>
+
+                <div class="calc-group">
+                    <label>③ 하루 섭취량 (잔)</label>
+                    <input type="number" id="dailyCups" value="2" placeholder="예: 2">
+                </div>
+
+                <div class="calc-group">
+                    <label>④ 비교할 카페 커피 가격 (원)</label>
+                    <input type="number" id="cafePrice" value="4500" placeholder="예: 4500 (스벅 아메리카노)">
+                </div>
+
+                <button id="calcBtn" class="calc-btn">본전 뽑는 기간 확인하기</button>
+
+                <!-- 결과창 -->
+                <div id="result-area">
+                    
+                    <div style="margin-bottom:20px;">
+                        <p class="result-title">집에서 마시는 커피 1잔의 원가</p>
+                        <span id="resHomeCost" class="highlight waste">0원</span>
+                        <p style="font-size:0.9rem; color:#888;">(장비 감가상각 5년 기준)</p>
+                    </div>
+
+                    <div style="border-top:1px dashed #aaa; padding-top:20px;">
+                        <p class="result-title" style="margin-bottom:10px;">장비값을 멘징(회수)하려면</p>
+                        <span id="resBreakEven" class="highlight save" style="font-size:1.8rem;">0년 0개월</span>
+                        <p style="font-size:0.9rem; color:#888;">동안 매일 마셔야 합니다.</p>
+                    </div>
+
+                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #d7ccc8; font-size:0.95rem;">
+                        <strong>팩트 폭격:</strong><br>
+                        원두는 개봉 2주면 산패됩니다.<br>
+                        결국 맛없어서 <strong><span style="color:#5d4037;">다시 카페</span></strong>를 가게 될 확률 99%입니다.
+                    </div>
+                </div>
+            </section>
+
+            <!-- 팩트 체크 리스트 -->
+            <section>
+                <h2>🛑 머신을 당근마켓에 내놓게 되는 과정</h2>
+                
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">cleaning_services</span></div>
+                    <div class="reason-content">
+                        <h3>청소 지옥</h3>
+                        <p>커피 한 잔 마시고 나면 포터필터 씻고, 그룹헤드 닦고, 트레이 비우고, 바닥에 튄 가루 치워야 합니다. 마시는 시간보다 치우는 시간이 더 깁니다.</p>
+                    </div>
+                </div>
+                
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">science</span></div>
+                    <div class="reason-content">
+                        <h3>원두 세팅의 어려움</h3>
+                        <p>날씨, 습도, 원두 상태에 따라 분쇄도를 매일 조절해야 합니다. "어제는 맛있었는데 오늘은 왜 이러지?" 하며 원두 500g을 세팅 잡느라 다 버리게 됩니다.</p>
+                    </div>
+                </div>
+
+                <div class="reason-card">
+                    <div class="icon-box"><span class="material-icons-round">storefront</span></div>
+                    <div class="reason-content">
+                        <h3>남이 타주는 커피가 제일 맛있다</h3>
+                        <p>카페는 수천만 원짜리 장비와 정수 시스템을 씁니다. 가정용 머신으로 흉내는 낼 수 있지만, 전문가가 타주는 그 맛과 '공간이 주는 편안함'은 살 수 없습니다.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 하단 광고 -->
+            <div class="ad-box">
+                <span class="ad-label">Sponsored</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="1234567890"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+            </div>
+
+            <!-- common.js가 푸터 자동 추가 -->
+
+        </main>
+
+        <!-- [우측] 사이드바 광고 -->
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
+                <span class="ad-label">Sponsored</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="1234567890" 
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- 계산 로직 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                // 1. 값 가져오기
+                const gear = Number(document.getElementById('gearCost').value) * 10000;
+                const monthlyBean = Number(document.getElementById('beanCost').value) * 10000;
+                const dailyCups = Number(document.getElementById('dailyCups').value);
+                const cafePrice = Number(document.getElementById('cafePrice').value);
+
+                if(dailyCups <= 0 || cafePrice <= 0) {
+                    alert("값을 올바르게 입력해주세요.");
+                    return;
+                }
+
+                // 2. 계산 로직
+                // 1잔당 원두/재료 원가
+                // 월 재료비 / (하루잔수 * 30일)
+                const materialCostPerCup = monthlyBean / (dailyCups * 30);
+                
+                // 장비 감가상각 (5년 사용 가정) -> 1잔당 기계값
+                const totalCupsIn5Years = dailyCups * 365 * 5;
+                const gearCostPerCup = gear / totalCupsIn5Years;
+                
+                // 집커피 1잔 총원가
+                const homeCostPerCup = materialCostPerCup + gearCostPerCup;
+
+                // 1잔당 절약액
+                const savePerCup = cafePrice - homeCostPerCup;
+
+                // 손익분기점 (장비값을 절약액으로 메꾸는 기간)
+                // 장비값 / (하루 절약액)
+                let daysToBreakEven = 0;
+                let message = "";
+
+                if (savePerCup <= 0) {
+                    daysToBreakEven = 99999; // 영원히 불가능
+                    message = "평생 본전 못 찾음 (재료비가 더 비쌈)";
+                } else {
+                    const dailySave = savePerCup * dailyCups;
+                    daysToBreakEven = gear / dailySave;
+                }
+
+                const years = Math.floor(daysToBreakEven / 365);
+                const months = Math.round((daysToBreakEven % 365) / 30);
+
+                // 3. 결과 출력
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+
+                document.getElementById('resHomeCost').innerText = Math.round(homeCostPerCup).toLocaleString() + "원";
+                
+                if (daysToBreakEven > 3650) { // 10년 이상
+                     document.getElementById('resBreakEven').innerText = "사실상 불가능";
+                     document.getElementById('resBreakEven').style.color = "#d32f2f";
+                } else {
+                    document.getElementById('resBreakEven').innerText = `${years}년 ${months}개월`;
+                    document.getElementById('resBreakEven').style.color = "#2e7d32";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
