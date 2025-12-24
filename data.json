@@ -788,4 +788,84 @@
   "category": "life",
   "url": "./life/index.html"
 }
+  ,
+{
+  "title": "펫보험 호갱 판독기",
+  "desc": "보험료 5만 원이면 충분하다? 약관에 숨겨진 보장 제외 항목과 펫 적금의 효율성 비교.",
+  "icon": "🐶",
+  "category": "life",
+  "url": "./petins/index.html"
+}
+,
+{
+  "title": "보험 리모델링 판독기",
+  "desc": "낸 돈 다 돌려준다는 만기환급형의 배신. 물가 상승을 고려한 진짜 가치를 알려드립니다.",
+  "icon": "🏥",
+  "category": "money",
+  "url": "./healthins/index.html"
+}
+,
+{
+  "title": "홈카페 로망 판독기",
+  "desc": "머신값 뽑으려면 커피 3,000잔 마셔야 합니다. 장비병 치유를 위한 본전 계산기.",
+  "icon": "☕",
+  "category": "life",
+  "url": "./homecafe/index.html"
+}
+,
+{
+  "title": "대학원 가성비 판독기",
+  "desc": "취업 안 돼서 대학원 가시나요? 등록금과 못 번 연봉을 합치면 1억이 넘습니다.",
+  "icon": "🎓",
+  "category": "life",
+  "url": "./gradschool/index.html"
+}
+,
+{
+  "title": "홈짐 빨래건조대 판독기",
+  "desc": "집에서 운동한다고 200만 원 쓰셨나요? 1회 운동 비용이 호텔 헬스장보다 비쌉니다.",
+  "icon": "🏋️",
+  "category": "life",
+  "url": "./homegym/index.html"
+}
+,
+{
+  "title": "유튜버 장비병 판독기",
+  "desc": "카메라 300만 원, 조명 100만 원... 본전 뽑으려면 조회수 몇 만이 나와야 할까요?",
+  "icon": "📹",
+  "category": "life",
+  "url": "./youtube/index.html"
+}
+,
+{
+  "title": "바디프로필 비용 판독기",
+  "desc": "인생샷 한 장에 300만 원? 사진 찍고 요요 오는 비극적인 결말을 예방하세요.",
+  "icon": "📸",
+  "category": "health",
+  "url": "./bodyprofile/index.html"
+}
+,
+{
+  "title": "필라테스 기부천사 판독기",
+  "desc": "회당 7만 원? 결석한 횟수까지 합치면 1회에 20만 원짜리 운동을 하고 계십니다.",
+  "icon": "🧘‍♀️",
+  "category": "life",
+  "url": "./yoga/index.html"
+}
+,
+{
+  "title": "천원샵 중독 판독기",
+  "desc": "천 원이니까 괜찮다? 싼 맛에 산 물건이 쓰레기가 되는 비용을 계산해드립니다.",
+  "icon": "🛍️",
+  "category": "consumer",
+  "url": "./daiso/index.html"
+}
+,
+{
+  "title": "재수/N수 가성비 판독기",
+  "desc": "대학 간판 바꾸는 데 1억? 학원비와 잃어버린 연봉을 합치면 얼마일까요?",
+  "icon": "📝",
+  "category": "life",
+  "url": "./nsu/index.html"
+}
 ]
