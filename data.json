@@ -868,4 +868,84 @@
   "category": "life",
   "url": "./nsu/index.html"
 }
+  ,
+{
+  "title": "치킨집 창업 현실 판독기",
+  "desc": "닭 한 마리 팔면 얼마 남을까요? 프랜차이즈 본사와 배달앱이 가져가는 돈의 실체.",
+  "icon": "🍗",
+  "category": "life",
+  "url": "./chicken/index.html"
+}
+,
+{
+  "title": "웹툰 쿠키 계산기",
+  "desc": "다음 화 미리보기 하느라 매일 300원? 1년이면 넷플릭스 5년 치 구독료가 나옵니다.",
+  "icon": "🍪",
+  "category": "life",
+  "url": "./webtoon/index.html"
+}
+,
+{
+  "title": "네일아트 비용 판독기",
+  "desc": "한 달에 10만 원? 1년이면 명품 지갑 하나가 사라집니다. 손톱 유지비 계산.",
+  "icon": "💅",
+  "category": "life",
+  "url": "./nail/index.html"
+}
+,
+{
+  "title": "소개팅 어플 호갱 판독기",
+  "desc": "프로필 보는데 5천 원? 만남도 없이 돈만 쓰는 사이버 연애의 비용 계산.",
+  "icon": "💘",
+  "category": "life",
+  "url": "./datingapp/index.html"
+}
+,
+{
+  "title": "미용실 호갱 판독기",
+  "desc": "머리하러 갈 때마다 20만 원? 1년 미용실 비용이면 다이슨 에어랩을 사고도 남습니다.",
+  "icon": "💇‍♀️",
+  "category": "consumer",
+  "url": "./hairshop/index.html"
+}
+,
+{
+  "title": "명품 패딩 계급도 판독기",
+  "desc": "200만 원짜리 패딩, 1년에 며칠 입으시나요? 1회 착용 비용과 세탁비의 진실.",
+  "icon": "🧥",
+  "category": "consumer",
+  "url": "./padding/index.html"
+}
+,
+{
+  "title": "호캉스 허세 판독기",
+  "desc": "1박 50만 원? 잠만 자고 나오기엔 너무 비쌉니다. 당신이 지불한 '시간당 방세'를 계산해드립니다.",
+  "icon": "🏨",
+  "category": "life",
+  "url": "./hotel/index.html"
+}
+,
+{
+  "title": "식집사 가성비 판독기",
+  "desc": "화분 하나에 5만 원? 공기 정화하려고 샀다가 통장이 정화되는 마법.",
+  "icon": "🌿",
+  "category": "life",
+  "url": "./plant/index.html"
+}
+,
+{
+  "title": "스키장 시즌권 판독기",
+  "desc": "시즌권 끊고 3번 가셨나요? 장비값 포함 1회 라이딩 비용을 계산해드립니다.",
+  "icon": "🏂",
+  "category": "life",
+  "url": "./ski/index.html"
+}
+,
+{
+  "title": "공연 덕질 비용 판독기",
+  "desc": "VIP석 19만 원? 같은 공연 10번 보면 200만 원. 한국 티켓값 거품의 현실.",
+  "icon": "🎭",
+  "category": "life",
+  "url": "./musical/index.html"
+}
 ]
