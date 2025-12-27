@@ -948,4 +948,26 @@
   "category": "life",
   "url": "./musical/index.html"
 }
+  ,
+{
+  "title": "치아 교정 견적기",
+  "desc": "철길 까는데 500만 원? 월비와 유지장치 비용까지 합친 총액을 계산해드립니다.",
+  "icon": "😬",
+  "category": "health",
+  "url": "./braces/index.html"
+},
+{
+  "title": "피부과 호갱 판독기",
+  "desc": "10회권 끊고 5번만 가셨나요? 당신의 1회 시술비가 얼마인지 계산해드립니다.",
+  "icon": "💆‍♀️",
+  "category": "health",
+  "url": "./skincare/index.html"
+},
+{
+  "title": "왁싱 비용 판독기",
+  "desc": "평생 뜯으실 건가요? 왁싱 10년 비용과 레이저 제모 비용을 비교해드립니다.",
+  "icon": "👙",
+  "category": "health",
+  "url": "./waxing/index.html"
+}
 ]
