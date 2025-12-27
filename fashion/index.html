@@ -46,7 +46,7 @@
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
 
-        /* [테마 변경] 패션/마젠타(Magenta) -> #c2185b */
+        /* [테마 변경] 패션(Magenta) -> #c2185b */
         h2 { border-left: 5px solid #c2185b; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
 
         .intro-box { background-color: #fce4ec; border: 1px solid #f8bbd0; color: #880e4f; }
@@ -94,8 +94,16 @@
         .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
         .reason-content p { font-size: 1rem; color: #666; }
 
+        /* 하단 광고 박스 */
         .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
         .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+        
+        /* [중요] SEO 텍스트 스타일 */
+        .seo-content { line-height: 1.8; color: #444; }
+        .seo-content h3 { font-size: 1.3rem; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .seo-content p { margin-bottom: 15px; }
+        .seo-content ul { padding-left: 20px; margin-bottom: 20px; }
+        .seo-content li { margin-bottom: 10px; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -117,7 +125,7 @@
             <h1 class="page-title">옷장은 꽉 찼는데 입을 옷이 없나요?</h1>
             <p class="page-subtitle">"싸니까 사자"며 담은 SPA 브랜드 옷들, 결국 비싼 쓰레기가 되었습니다.</p>
 
-            <!-- 인트로: 팩트 제시 -->
+            <!-- 인트로 -->
             <section class="intro-box">
                 <h2>👗 패스트 패션의 유혹</h2>
                 <p>
@@ -129,23 +137,19 @@
             <!-- 계산기 섹션 -->
             <section id="calculator">
                 <h2>📉 옷장 가성비 견적서</h2>
-                <p style="margin-bottom: 25px; color: #666; font-size: 0.95rem;">
-                    평소 의류 지출 습관과 옷장 상태를 입력하세요.
-                </p>
-
+                
                 <div class="calc-group">
                     <label>① 월평균 의류/잡화 구매비 (만원)</label>
-                    <input type="number" id="monthlyCost" value="20" placeholder="예: 20 (인쇼, 백화점)">
+                    <input type="number" id="monthlyCost" value="20" placeholder="예: 20">
                 </div>
 
                 <div class="calc-group">
                     <label>② 사놓고 안 입는 옷의 비율 (%)</label>
-                    <input type="number" id="wasteRate" value="40" placeholder="예: 40 (10벌 중 4벌은 방치)">
-                    <div class="help-text">* 평균적으로 옷의 70%는 자주 입지 않습니다.</div>
+                    <input type="number" id="wasteRate" value="40" placeholder="예: 40 (10벌 중 4벌)">
                 </div>
 
                 <div class="calc-group">
-                    <label>③ 이 습관의 지속 기간 (년)</label>
+                    <label>③ 습관 지속 기간 (년)</label>
                     <input type="number" id="years" value="5" placeholder="예: 5">
                 </div>
 
@@ -160,7 +164,7 @@
                     </div>
 
                     <div style="border-top:1px dashed #aaa; padding-top:20px;">
-                        <p class="result-title" style="margin-bottom:10px;">이 돈을 아껴서 투자했다면 (S&P500 복리)</p>
+                        <p class="result-title" style="margin-bottom:10px;">이 돈을 아껴서 투자했다면 (연 10%)</p>
                         <span id="resInvest" class="highlight asset" style="font-size:1.8rem;">0원</span>
                     </div>
 
@@ -196,9 +200,27 @@
                     <div class="icon-box"><span class="material-icons-round">search</span></div>
                     <div class="reason-content">
                         <h3>나를 찾는 퍼스널 컬러</h3>
-                        <p>옷이 많다고 옷을 잘 입는 게 아닙니다. 내 톤과 체형을 알고 나면 불필요한 쇼핑이 줄어듭니다. 옷 살 돈으로 퍼스널 컬러 진단을 받는 게 평생 이득입니다.</p>
+                        <p>옷이 많다고 옷을 잘 입는 게 아닙니다. 내 톤과 체형을 알고 나면 불필요한 쇼핑 실패를 줄일 수 있습니다. 옷 살 돈으로 퍼스널 컬러 진단을 받아보세요.</p>
                     </div>
                 </div>
+            </section>
+
+            <!-- [NEW] SEO 정보성 텍스트 추가 -->
+            <section class="seo-content">
+                <h2>👗 패스트 패션(Fast Fashion)이 당신을 가난하게 만든다</h2>
+                <p>자라(ZARA), H&M, 유니클로, 그리고 최근의 셰인(Shein)과 알리익스프레스까지. 저렴하고 트렌디한 옷들이 넘쳐납니다. 하지만 "싸니까 산다"는 마인드는 당신의 옷장을 쓰레기통으로 만들고, 통장을 텅장으로 만듭니다. 왜 우리는 입지도 않을 옷을 계속 사는 걸까요?</p>
+
+                <h3>1. 디드로 효과 (Diderot Effect)</h3>
+                <p>새 옷을 사면 그에 어울리는 바지, 신발, 가방을 계속해서 사게 되는 심리 현상을 말합니다. 3만 원짜리 티셔츠 하나가 결국 30만 원어치 쇼핑으로 이어지는 것입니다. 하나의 물건이 전체적인 소비 패턴을 바꿔버리는 무서운 효과입니다. 쇼핑을 하기 전에 "이 옷과 매치할 옷이 집에 3벌 이상 있는가?"를 먼저 고민해야 합니다.</p>
+
+                <h3>2. 옷장 정리가 최고의 재테크</h3>
+                <p>옷이 많아서 입을 게 없는 게 아니라, 정리가 안 돼서 입을 게 없는 것입니다. 옷장 속에 숨어있는 옷들을 꺼내보세요. 유행이 지나거나 사이즈가 안 맞는 옷은 과감히 버리거나 중고로 파세요. 비워낸 공간만큼 당신의 삶과 통장에 여유가 생깁니다. 미니멀 라이프는 돈을 아끼는 가장 쉬운 방법입니다.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 비싼 옷을 사는 게 무조건 좋나요?</strong><br>A. 무조건 비싸다고 좋은 건 아닙니다. 하지만 좋은 소재와 기본에 충실한 디자인의 옷은 유행을 타지 않고 오래 입을 수 있습니다. 10년 입을 코트라면 100만 원도 아깝지 않지만, 한 철 입을 티셔츠에 10만 원을 쓰는 건 낭비입니다.</li>
+                    <li><strong>Q. 쇼핑 중독을 끊으려면 어떻게 해야 하나요?</strong><br>A. 쇼핑 앱 알림을 끄고, 장바구니에 담은 뒤 3일만 기다려보세요. 3일 뒤에도 그 물건이 미친 듯이 갖고 싶다면 그때 사세요. 대부분은 3일 뒤면 그 물건의 존재조차 잊게 됩니다.</li>
+                </ul>
             </section>
 
             <!-- 하단 광고 -->
@@ -249,17 +271,17 @@
 
                 // 2. 계산 로직
                 // 연간 지출
-                const annualCost = monthly * 12;
+                const yearlyCost = monthly * 12;
                 
                 // 연간 낭비액 (입지 않는 옷)
-                const annualWaste = annualCost * rate;
+                const yearlyWaste = yearlyCost * rate;
                 
                 // 총 낭비액 (단순 합계)
-                const totalWaste = annualWaste * years;
+                const totalWaste = yearlyWaste * years;
 
                 // 투자 기회비용 (낭비한 돈을 투자했다면? 연복리 10%)
                 const investRate = 0.10; 
-                const investValue = annualWaste * ((Math.pow(1 + investRate, years) - 1) / investRate);
+                const investValue = yearlyWaste * ((Math.pow(1 + investRate, years) - 1) / investRate);
 
                 // 3. 결과 출력
                 const resultArea = document.getElementById('result-area');
