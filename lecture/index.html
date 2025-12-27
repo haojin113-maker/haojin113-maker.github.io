@@ -3,288 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="온라인 강의, 전자책 지출 효율 계산기. 사놓고 안 보는 강의로 낭비한 돈이 얼마인지 계산해드립니다.">
+    <meta name="description" content="온라인 강의 완강률 및 비용 효율 계산기. 사놓고 안 보는 강의로 낭비한 돈과 기회비용을 분석해드립니다.">
     <title>강의 수집가 판독기 | 팩트 폭격 연구소</title>
-
-    <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
-
-    <!-- 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-
     <style>
-        /* --- [표준 스타일 가이드] --- */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.7;
-        }
-
-        .wrapper {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-        }
-        
-        .main-content { flex: 3; min-width: 0; }
-        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
-
-        section {
-            background: white;
-            border-radius: 16px;
-            padding: 35px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            border: 1px solid #eee;
-        }
-
-        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
-        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
-
-        /* [테마 변경] 지식/학습(Indigo) -> #283593 */
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
+        .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
+        .main-content { flex: 3; } .sidebar { flex: 1; position: sticky; top: 20px; }
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; border: 1px solid #eee; }
+        h1.page-title { font-size: 2.2rem; margin: 20px 0 10px; color: #111; }
         h2 { border-left: 5px solid #283593; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-
         .intro-box { background-color: #e8eaf6; border: 1px solid #c5cae9; color: #1a237e; }
         .intro-box strong { color: #283593; background: #fff; padding: 0 5px; border-radius: 4px; }
-
-        /* 계산기 스타일 */
         .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #283593; }
-        input {
-            width: 100%; padding: 14px; border: 1px solid #ddd;
-            border-radius: 8px; font-size: 1rem; transition: 0.2s;
-        }
-        input:focus { border-color: #283593; outline: none; box-shadow: 0 0 0 3px rgba(40, 53, 147, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-
-        .calc-btn {
-            width: 100%; padding: 18px;
-            background-color: #283593; color: white;
-            border: none; border-radius: 12px;
-            font-size: 1.2rem; font-weight: bold; cursor: pointer;
-            margin-top: 10px; transition: 0.2s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .calc-btn:hover { background-color: #000051; transform: translateY(-3px); }
-
-        #result-area {
-            display: none; margin-top: 30px; padding: 30px;
-            background-color: #e8eaf6; border-radius: 12px; text-align: center;
-            animation: fadeIn 0.5s ease;
-        }
+        label { display: block; margin-bottom: 8px; font-weight: 700; color: #283593; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; }
+        .calc-btn { width: 100%; padding: 18px; background-color: #283593; color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 1.2rem; font-weight: bold; }
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #e8eaf6; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.5rem; font-weight: 900; display: block; margin: 10px 0; color: #283593; }
         
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.waste { color: #c62828; } 
-        .highlight.asset { color: #2e7d32; }
-
-        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box {
-            flex-shrink: 0; width: 40px; height: 40px;
-            background: #283593; color: white;
-            border-radius: 10px; font-weight: bold;
-            display: flex; align-items: center; justify-content: center;
-            margin-right: 20px; margin-top: 5px;
-        }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        @media (max-width: 850px) {
-            .wrapper { flex-direction: column; }
-            .sidebar { width: 100%; position: static; min-width: auto; }
-            .main-content { width: 100%; }
-            h1.page-title { font-size: 1.8rem; }
-        }
+        .seo-content h3 { margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; } }
     </style>
 </head>
 <body>
-
     <div class="wrapper">
-        
-        <!-- [좌측] 메인 콘텐츠 -->
         <main class="main-content">
-            
             <h1 class="page-title">결제만 하면 내 실력이 될 줄 알았나요?</h1>
             <p class="page-subtitle">강의와 전자책을 '수집'만 하고 있는 당신, 그 돈이 다 어디로 갔을까요?</p>
 
-            <!-- 인트로: 팩트 제시 -->
             <section class="intro-box">
                 <h2>📚 디지털 호더(Hoarder)의 착각</h2>
-                <p>
-                    "평생 소장", "얼리버드 특가"에 혹해 20만 원, 30만 원씩 긁으셨나요?<br>
-                    온라인 강의의 평균 완강률은 <strong>5% 미만</strong>입니다.<br>
-                    당신은 지식을 산 게 아니라, <strong>'공부했다는 안도감'</strong>을 산 것입니다.
-                </p>
+                <p>"평생 소장", "얼리버드 특가"에 혹해 20만 원, 30만 원씩 긁으셨나요? 온라인 강의의 평균 완강률은 <strong>5% 미만</strong>입니다. 당신은 지식을 산 게 아니라, <strong>'공부했다는 안도감'</strong>을 산 것입니다.</p>
             </section>
 
-            <!-- 계산기 섹션 -->
             <section id="calculator">
                 <h2>📉 자기계발 비용 효율 측정기</h2>
-                <p style="margin-bottom: 25px; color: #666; font-size: 0.95rem;">
-                    지난 1년간 구매한 강의/전자책/멤버십 비용을 입력하세요.
-                </p>
-
-                <div class="calc-group">
-                    <label>① 1년간 총결제 금액 (만원)</label>
-                    <input type="number" id="totalCost" value="50" placeholder="예: 50 (강의+전자책+구독)">
-                </div>
-
-                <div class="calc-group">
-                    <label>② 실제로 끝까지 본 비율 (%)</label>
-                    <input type="number" id="rate" value="20" placeholder="예: 20 (10개 중 2개 완강)">
-                    <div class="help-text">* 솔직하게 입력하세요!</div>
-                </div>
-
-                <div class="calc-group">
-                    <label>③ 이 습관의 지속 기간 (년)</label>
-                    <input type="number" id="years" value="5" placeholder="예: 5">
-                </div>
-
+                <div class="calc-group"><label>① 1년간 총결제 금액 (만원)</label><input type="number" id="totalCost" value="50" placeholder="예: 50"></div>
+                <div class="calc-group"><label>② 실제로 끝까지 본 비율 (%)</label><input type="number" id="rate" value="20" placeholder="예: 20"></div>
+                <div class="calc-group"><label>③ 이 습관의 지속 기간 (년)</label><input type="number" id="years" value="5" placeholder="예: 5"></div>
                 <button id="calcBtn" class="calc-btn">공중분해된 내 돈 확인하기</button>
 
-                <!-- 결과창 -->
                 <div id="result-area">
-                    
-                    <div style="margin-bottom:20px;">
-                        <p class="result-title">제대로 보지도 않고 버린 돈</p>
-                        <span id="resWasted" class="highlight waste">0원</span>
-                        <p style="font-size:0.9rem; color:#888;">(총지출의 <span id="resPercent">0</span>% 낭비)</p>
-                    </div>
-
-                    <div style="border-top:1px dashed #aaa; padding-top:20px;">
-                        <p class="result-title" style="margin-bottom:10px;">이 돈을 아껴서 투자했다면 (연 10%)</p>
-                        <span id="resInvest" class="highlight asset" style="font-size:1.8rem;">0원</span>
-                    </div>
-
-                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #c5cae9; font-size:0.95rem;">
-                        이 돈이면 그냥<br>
-                        <strong><span id="compareItem" style="background:#e8eaf6; padding:0 4px; color:#283593;">전문가 1:1 과외</span></strong>를<br>
-                        받는 게 훨씬 효과적입니다.
+                    <p>제대로 보지도 않고 버린 돈</p>
+                    <span id="resWasted" class="highlight" style="color:#c62828;">0원</span>
+                    <div style="margin-top:20px; padding-top:20px; border-top:1px dashed #999;">
+                        <p>이 돈이면 차라리</p>
+                        <strong id="compareItem" style="font-size:1.5rem; color:#283593;">전문가 1:1 과외</strong>
+                        <p>를 받는 게 훨씬 효과적입니다.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- 팩트 체크 리스트 -->
-            <section>
-                <h2>🛑 결제 버튼을 누르기 전 체크사항</h2>
-                
-                <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">play_disabled</span></div>
-                    <div class="reason-content">
-                        <h3>완강률 5%의 비밀</h3>
-                        <p>강의 플랫폼의 수익 모델은 '당신이 결제하고 안 보는 것'입니다. 모두가 완강을 한다면 서버 비용 때문에 플랫폼은 망할지도 모릅니다. 당신의 게으름이 그들의 매출입니다.</p>
-                    </div>
-                </div>
-                
-                <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">search</span></div>
-                    <div class="reason-content">
-                        <h3>무료 정보로도 충분하다</h3>
-                        <p>유튜브, 블로그, 도서관에 이미 양질의 정보가 넘쳐납니다. 무료 정보조차 소화하지 못하는 사람이 유료 강의를 산다고 달라질까요? 실행력이 없는 결제는 낭비입니다.</p>
-                    </div>
-                </div>
-
-                <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">psychology</span></div>
-                    <div class="reason-content">
-                        <h3>가짜 성취감 (Dopamine)</h3>
-                        <p>결제 문자를 받는 순간 뇌는 이미 공부를 다 한 것 같은 가짜 성취감을 느낍니다. 이 도파민 중독 때문에 계속해서 새로운 강의만 찾아다니는 '강의 쇼핑'을 하게 됩니다.</p>
-                    </div>
-                </div>
+            <section class="seo-content">
+                <h2>🛑 강의 쇼핑을 멈추고 실행하세요</h2>
+                <h3>1. 무료 정보로도 충분합니다</h3>
+                <p>유튜브, 블로그, 도서관에 이미 양질의 정보가 넘쳐납니다. 무료 정보조차 소화하지 못하고 실행하지 않는 사람이 유료 강의를 산다고 달라질까요? 문제는 정보의 부족이 아니라 '실행력의 부족'입니다. 강의 하나를 결제하기 전에 관련 책 5권부터 읽어보세요.</p>
+                <h3>2. 도파민 중독 소비</h3>
+                <p>강의를 결제하는 순간 뇌는 이미 공부를 다 한 것 같은 가짜 성취감을 느낍니다. 이 도파민 때문에 계속해서 새로운 강의만 찾아다니는 '강의 쇼핑' 중독에 빠지게 됩니다. 진짜 성취감은 결제가 아니라 완강과 적용에서 나옵니다.</p>
             </section>
-
-            <!-- 하단 광고 -->
-            <div class="ad-box">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
-
-            <!-- common.js가 푸터 자동 추가 -->
-
+            
+            <div class="ad-box"><span style="font-size:11px; color:#ccc;">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-
-        <!-- [우측] 사이드바 광고 -->
-        <aside class="sidebar">
-            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890" 
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
-        </aside>
-
+        <aside class="sidebar"><div style="min-height: 600px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div></aside>
     </div>
-
-    <!-- 계산 로직 -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('calcBtn').addEventListener('click', function() {
-                // 1. 값 가져오기
-                const yearlyCost = Number(document.getElementById('totalCost').value) * 10000;
-                const rate = Number(document.getElementById('rate').value);
-                const years = Number(document.getElementById('years').value);
-
-                if(yearlyCost <= 0 || rate < 0 || years <= 0) {
-                    alert("모든 값을 올바르게 입력해주세요.");
-                    return;
-                }
-
-                // 2. 계산 로직
-                // 낭비율 = 100% - 완강률
-                const wasteRate = (100 - rate) / 100;
-                
-                // 연간 낭비 금액
-                const annualWaste = yearlyCost * wasteRate;
-                
-                // 총 낭비 금액 (단순 합계)
-                const totalWaste = annualWaste * years;
-
-                // 기회비용 (투자했다면? 연복리 10%, 연단위 적립)
-                // P * [((1+r)^n - 1) / r]
-                const investRate = 0.10;
-                const investValue = yearlyCost * ((Math.pow(1 + investRate, years) - 1) / investRate);
-
-                // 3. 결과 출력
-                const resultArea = document.getElementById('result-area');
-                resultArea.style.display = 'block';
-
-                document.getElementById('resWasted').innerText = Math.round(totalWaste).toLocaleString() + "원";
-                document.getElementById('resPercent').innerText = (100 - rate);
-                document.getElementById('resInvest').innerText = Math.round(investValue).toLocaleString() + "원";
-
-                // 4. 비교 물건 변경
-                const wasteManwon = totalWaste / 10000;
-                let item = "최신형 태블릿";
-                
-                if(wasteManwon > 5000) item = "유럽 어학연수 1년";
-                else if(wasteManwon > 3000) item = "대학원 등록금 한 학기";
-                else if(wasteManwon > 2000) item = "최고급 사양 맥북 프로 풀옵션";
-                else if(wasteManwon > 1000) item = "1:1 영어회화 평생 수강권";
-                else if(wasteManwon > 500) item = "유명 강사 오프라인 1:1 코칭";
-                else if(wasteManwon > 300) item = "전문 서적 150권";
-                
-                document.getElementById('compareItem').innerText = item;
-            });
+        document.getElementById('calcBtn').addEventListener('click', function() {
+            const yearlyCost = Number(document.getElementById('totalCost').value) * 10000;
+            const rate = Number(document.getElementById('rate').value);
+            const years = Number(document.getElementById('years').value);
+            if(yearlyCost <= 0 || rate < 0 || years <= 0) { alert("값을 입력해주세요."); return; }
+            
+            const wasteRate = (100 - rate) / 100;
+            const totalWaste = yearlyCost * wasteRate * years;
+            const resultArea = document.getElementById('result-area');
+            resultArea.style.display = 'block';
+            document.getElementById('resWasted').innerText = Math.round(totalWaste).toLocaleString() + "원";
+            const wasteManwon = totalWaste / 10000;
+            let item = "최신형 태블릿";
+            if(wasteManwon > 500) item = "유명 강사 오프라인 1:1 코칭";
+            else if(wasteManwon > 300) item = "전문 서적 150권";
+            document.getElementById('compareItem').innerText = item;
         });
     </script>
 </body>
