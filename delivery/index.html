@@ -3,124 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="배달 음식 지출 계산기. 1년 동안 배달앱에 바치는 돈과 그 돈으로 할 수 있는 것들을 확인하세요.">
-    <title>배달앱의 노예 | 팩트 폭격 연구소</title>
+    <meta name="description" content="배달팁 3천원이 문제가 아닙니다. 배달 음식 습관이 갉아먹는 당신의 1년 식비와 건강 자산을 팩트로 계산해드립니다.">
+    <title>배달앱의 노예 판독기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 및 라이브러리 -->
     <script src="../common.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        /* 섹션 스타일 */
         section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
-        h2 { border-left: 5px solid #00acc1; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #e0f7fa; border: 1px solid #b2ebf2; color: #006064; }
-        .intro-box strong { color: #00acc1; background: #fff; padding: 0 5px; border-radius: 4px; }
+
+        /* [가변] 테마 설정: Orange */
+        h2 { border-left: 5px solid #e64a19; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #fff3e0; border: 1px solid #ffe0b2; color: #bf360c; padding: 25px; border-radius: 12px; }
+        
         .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #00acc1; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; transition: 0.2s; }
-        input:focus { border-color: #00acc1; outline: none; box-shadow: 0 0 0 3px rgba(0, 172, 193, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #00acc1; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.2s; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .calc-btn:hover { background-color: #00838f; transform: translateY(-3px); }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #f1f8e9; border-radius: 12px; text-align: center; animation: fadeIn 0.5s ease; }
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.5rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.waste { color: #e91e63; } .highlight.cost { color: #00acc1; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #e64a19; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #e64a19; outline: none; box-shadow: 0 0 0 3px rgba(230, 74, 25, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #e64a19; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(230, 74, 25, 0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fff3e0; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #bf360c; }
+
+        /* 요인 카드 */
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #00acc1; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #e64a19; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
         
         .seo-content { line-height: 1.8; color: #444; }
-        .seo-content h3 { font-size: 1.3rem; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .seo-content p { margin-bottom: 15px; }
-        .seo-content ul { padding-left: 20px; margin-bottom: 20px; }
-        .seo-content li { margin-bottom: 10px; }
-        
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; min-width: auto; } .main-content { width: 100%; } h1.page-title { font-size: 1.8rem; } }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">배달비 3,000원 아끼려고 쿠폰 찾으시나요?</h1>
-            <p class="page-subtitle">문제는 배달비가 아닙니다. 당신의 식습관이 통장을 갉아먹고 있습니다.</p>
+            <h1 class="page-title">오늘 저녁도 배달시키시나요?</h1>
+            <p class="page-subtitle">배달비 3천 원 아끼려다 음식값으로 연봉 10% 날리는 당신에게.</p>
 
             <section class="intro-box">
-                <h2>🛵 당신은 '배달의 민족'이 아니라 '배달의 노예'</h2>
-                <p>퇴근 후 지쳐서 시키는 치킨, 주말 아침 해장을 위한 짬뽕... 습관적으로 결제하는 2~3만 원이 모이면 1년에 얼마나 될까요? <strong>소형차 한 대 값</strong>이 배달 오토바이에 실려 나가는 과정을 보여드립니다.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">pedal_bike</span> 편리함이라는 이름 아래 우리는 스스로 <strong>'가성비'</strong>를 포기하고 있습니다. 당신이 1년 동안 스마트폰 터치 몇 번으로 쏟아부은 돈을 확인해 보세요.</p>
             </section>
 
+            <!-- 계산기 -->
             <section id="calculator">
-                <h2>🍔 식비 지출 팩트 체크</h2>
-                <div class="calc-group"><label>① 주당 배달 횟수 (회)</label><input type="number" id="weeklyCount" value="3"></div>
-                <div class="calc-group"><label>② 1회 평균 주문 금액 (배달비 포함, 원)</label><input type="number" id="orderCost" value="25000"></div>
-                <button id="calcBtn" class="calc-btn">1년 동안 쓴 돈 확인하기</button>
+                <h2>🛵 배달 비용 분석기</h2>
+                <div class="calc-group">
+                    <label>주당 배달 횟수 (번)</label>
+                    <input type="number" id="freq" placeholder="예: 3" value="3">
+                </div>
+                <div class="calc-group">
+                    <label>배달 1회 평균 결제 금액 (원)</label>
+                    <input type="number" id="avgPrice" placeholder="예: 30000" value="30000">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">배달 팁과 최소 주문 금액을 모두 포함하세요.</p>
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">1년 배달 비용 계산하기</button>
+
                 <div id="result-area">
-                    <div style="margin-bottom:20px;"><p class="result-title">1년 동안 배달앱에 갖다 바친 돈</p><span id="resYearly" class="highlight cost">0원</span></div>
-                    <div style="border-top:1px dashed #aaa; padding-top:20px;"><p class="result-title" style="margin-bottom:10px;">이 습관을 10년 유지하면</p><span id="resDecade" class="highlight waste">0원</span><p style="font-size:0.9rem; color:#888;">(물가상승률 미고려 단순 합계)</p></div>
-                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #ddd; font-size:0.95rem;">이 돈이면 <strong><span id="compareItem" style="background:#b2ebf2; padding:0 4px; color:#006064;">5성급 호텔 뷔페</span></strong>를 매주 주말마다 갈 수 있었습니다.</div>
+                    <p class="result-title">당신이 1년에 배달로 쓰는 돈은?</p>
+                    <span id="yearCost" class="highlight">약 0원</span>
+                    <p id="investNote" style="color:#666;"></p>
                 </div>
             </section>
 
+            <!-- 팩트 체크 -->
             <section>
-                <h2>🛑 배달앱을 지워야 하는 이유</h2>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">price_change</span></div><div class="reason-content"><h3>이중 가격의 함정</h3><p>매장에서 먹으면 8,000원인 메뉴가 배달 앱에서는 9,500원인 경우가 많습니다. 당신은 배달비뿐만 아니라 음식값 자체도 더 비싸게 내고 있습니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">health_and_safety</span></div><div class="reason-content"><h3>건강을 해치는 지름길</h3><p>배달 음식은 맛을 내기 위해 나트륨과 설탕, 조미료를 과도하게 사용합니다. 식비로 돈을 쓰고, 나중에는 병원비로 돈을 쓰게 됩니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">delete_forever</span></div><div class="reason-content"><h3>플라스틱 쓰레기 산</h3><p>한 끼 식사에 나오는 플라스틱 용기가 5~6개입니다. 처리하기도 귀찮고 환경 호르몬 문제도 심각합니다. 집밥이 답입니다.</p></div></div>
+                <h2>🛑 배달 앱을 지워야 할 3가지 팩트</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>플랫폼이 가져가는 보이지 않는 할증</h3>
+                        <p>동일한 식당이어도 매장 가격보다 배달 앱 메뉴 가격이 10~20% 더 비싼 경우가 태반입니다. 배달비만 문제가 아닙니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>고나트륨, 고지방으로 늙어가는 혈관</h3>
+                        <p>배달 음식은 자극적인 맛을 위해 집밥보다 월등히 높은 설탕과 소금을 사용합니다. 나중에 약값으로 나갈 돈도 같이 계산하셔야 합니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>불필요한 쓰레기 처리 시간</h3>
+                        <p>음식물을 치우고 일회용기를 닦아서 분리수거하는 시간도 비용입니다. '귀찮아서 시켰다'가 '더 귀찮은 뒷정리'로 돌아옵니다.</p>
+                    </div>
+                </div>
             </section>
 
-            <!-- SEO 텍스트 추가 -->
+            <!-- SEO 텍스트 -->
             <section class="seo-content">
-                <h2>🍔 배달 음식, 지갑과 건강을 동시에 죽인다</h2>
-                <p>한국농수산식품유통공사에 따르면 한국인의 월평균 배달앱 이용 횟수는 3~4회, 1회 주문 금액은 2~3만 원 선입니다. 하지만 1인 가구나 맞벌이 부부의 경우 이보다 2~3배는 더 많이 시켜 먹는 것이 현실입니다. "요리하는 시간과 재료비를 따지면 시켜 먹는 게 싸다"고 합리화하지만, 과연 그럴까요?</p>
+                <h2>배달비 5,000원 시대, 집밥보다 외식이 싼 경우란 없습니다</h2>
+                <p>퇴근길에 손가락 몇 번으로 따뜻한 음식이 문 앞에 오는 것, 분명 놀라운 경험입니다. 하지만 이 달콤한 중독이 1년 동안 당신의 가계부를 얼마나 파괴하고 있는지 냉정하게 바라봐야 합니다. <strong>'배달 음식은 식비가 아니라 유희비'</strong>로 분류되어야 할 만큼 비효율적인 지출입니다.</p>
 
-                <h3>1. 엥겔지수 폭발의 주범</h3>
-                <p>배달 음식은 기본적으로 비쌉니다. 식재료 원가율은 30% 내외지만, 임대료, 인건비, 배달 플랫폼 수수료(약 10~15%), 배달 대행비(3~5천 원)가 얹어져 소비자가는 3배 이상 뜁니다. 직접 해 먹으면 5천 원이면 될 제육볶음을 2만 원 주고 사 먹는 셈입니다. 1년이면 200만 원 이상의 차이가 발생합니다.</p>
+                <h3>1. 보이지 않는 프리미엄 지불의 대가</h3>
+                <p>배달 주문 시 우리가 지불하는 비용은 '재료비+조리비+임대료+플랫폼수수료+광고비+배달비'가 합쳐진 금액입니다. 여기서 실제로 여러분의 몸에 흡수되는 영양가인 '재료비'는 전체 결제 금액의 20~30%에 불과합니다. 즉, 당신은 3만 원짜리 치킨 세트를 시킬 때 2만 원 이상을 '편의성'과 '광고비'를 위해 버리고 있는 것입니다.</p>
 
-                <h3>2. 당신의 몸을 망치는 나트륨 폭탄</h3>
-                <p>배달 음식은 자극적이어야 팔립니다. 맵고, 짜고, 단 맛(단짠단짠)을 내기 위해 엄청난 양의 설탕과 조미료가 들어갑니다. 짬뽕 한 그릇의 나트륨은 하루 권장량의 2배입니다. 지속적인 배달 음식 섭취는 고혈압, 당뇨, 비만 등 대사 증후군으로 이어지며, 이는 40대 이후 막대한 의료비 지출을 예고합니다.</p>
+                <h3>2. 이 돈을 투자로 전환한다면?</h3>
+                <p>일주일에 세 번 배달을 시키던 사람이 횟수를 한 번으로 줄여서 남는 돈 20만 원을 매달 지수 추종 주식에 넣는다면 어떨까요? 연평균 8% 수익률 가정 시, 10년 뒤 당신은 약 3,500만 원의 자산을 갖게 됩니다. 한 입의 즐거움과 맞바꾼 금액이 생각보다 훨씬 크다는 사실에 소름이 돋지 않습니까?</p>
 
                 <h3>자주 묻는 질문 (FAQ)</h3>
                 <ul>
-                    <li><strong>Q. 요리할 시간이 없는데 어떡하죠?</strong><br>A. 밀키트(Meal Kit)나 반찬 가게를 이용하는 것이 훌륭한 대안입니다. 배달 음식보다 30~50% 저렴하면서도 훨씬 건강하고, 조리 시간도 10분 내외로 짧습니다.</li>
-                    <li><strong>Q. 배달비 무료 멤버십(이츠패스 등)을 쓰면 이득 아닌가요?</strong><br>A. 배달비가 무료라고 해서 음식값이 싸지는 것은 아닙니다. 오히려 "배달비 아까워서 안 시키던" 심리적 장벽이 사라져, 주문 횟수가 늘어나고 결과적으로 총지출이 증가하는 '멤버십의 함정'에 빠지기 쉽습니다.</li>
+                    <li><strong>Q. 직접 해 먹으면 남는 식재료 버리는 게 더 손해 아닌가요?</strong><br>A. 그것은 요리 스킬과 장보기 습관의 문제입니다. 소량 구매와 밀프렙을 통해 집밥 효율을 높이는 것이 배달보다 압도적으로 저렴합니다.</li>
+                    <li><strong>Q. 무료 배달 쿠폰이 있을 때는 이득 아닌가요?</strong><br>A. 배달 앱 메뉴판 자체에 녹아있는 가격 거품(단가 인상)을 잊지 마세요. 세상에 '공짜 배달'은 없으며, 어떤 방식으로든 소비자가 부담하게 설계되어 있습니다.</li>
                 </ul>
             </section>
 
-            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div>
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-        <aside class="sidebar"><div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div></aside>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
     </div>
+
+    <!-- 로직 스크립트 -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                const count = Number(document.getElementById('weeklyCount').value);
-                const cost = Number(document.getElementById('orderCost').value);
-                if(count <= 0 || cost <= 0) { alert("횟수와 금액을 올바르게 입력해주세요."); return; }
-                const weeklyCost = count * cost;
-                const yearlyCost = weeklyCost * 52; 
-                const decadeCost = yearlyCost * 10; 
+                const freq = parseFloat(document.getElementById('freq').value);
+                const price = parseFloat(document.getElementById('avgPrice').value);
+                
+                if(!freq || !price) return;
+
+                const weekCost = freq * price;
+                const yearCost = weekCost * 52.14; // 연간 환산
+
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-                document.getElementById('resYearly').innerText = Math.round(yearlyCost).toLocaleString() + "원";
-                document.getElementById('resDecade').innerText = Math.round(decadeCost).toLocaleString() + "원";
-                const yearlyManwon = yearlyCost / 10000;
-                let item = "최신형 아이패드";
-                if(yearlyManwon > 1000) item = "유럽 여행 2번";
-                else if(yearlyManwon > 700) item = "명품 가방 하나";
-                else if(yearlyManwon > 500) item = "최신형 맥북 프로";
-                else if(yearlyManwon > 300) item = "동남아 여행 3번";
-                else if(yearlyManwon > 200) item = "프리미엄 건강검진";
-                else if(yearlyManwon > 100) item = "고급 오마카세 5번";
-                document.getElementById('compareItem').innerText = item;
+                document.getElementById('yearCost').textContent = `약 ${(yearCost/10000).toFixed(0)}만 원`;
+                document.getElementById('investNote').textContent = `매년 배달 대신 집밥을 먹고 이 돈을 8% 주식에 넣으면 10년 뒤 약 ${( (yearCost*12) / 10000 * 0.15 ).toFixed(0)}만 원을 더 벌 수 있습니다.`;
             });
         });
     </script>
