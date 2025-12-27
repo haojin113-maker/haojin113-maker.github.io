@@ -970,4 +970,26 @@
   "category": "health",
   "url": "./waxing/index.html"
 }
+  ,
+{
+  "title": "이사 비용 판독기",
+  "desc": "2년마다 500만 원씩 길바닥에 버리고 계신가요? 잦은 이사가 자산에 미치는 악영향.",
+  "icon": "📦",
+  "category": "life",
+  "url": "./moving/index.html"
+},
+{
+  "title": "애플병 판독기",
+  "desc": "아이폰, 맥북, 워치... 사과 농장 차리는 비용이면 갤럭시 풀세트 2개를 삽니다.",
+  "icon": "🍎",
+  "category": "consumer",
+  "url": "./apple/index.html"
+},
+{
+  "title": "금 투자 판독기",
+  "desc": "골드바 사자마자 -15% 손해? 실물 금 투자의 함정과 세금 없는 진짜 투자법.",
+  "icon": "🧈",
+  "category": "money",
+  "url": "./gold/index.html"
+}
 ]
