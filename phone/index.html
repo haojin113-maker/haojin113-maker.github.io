@@ -3,148 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="스마트폰 성지 vs 자급제 알뜰폰 비교 계산기. 통신사 할부 이자의 진실과 호갱 탈출을 위한 2년 총비용 비교 분석.">
-    <title>스마트폰 호갱 탈출 | 팩트 폭격 연구소</title>
+    <meta name="description" content="자급제와 통신사 할부 이자 5.9%의 함정을 낱낱이 파헤칩니다. 실구매가 0원의 진실을 지금 확인하세요.">
+    <title>스마트폰 호갱 탈출 판독기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 (필수) -->
     <script src="../common.js"></script>
+
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
+        /* --- [표준 스타일 가이드] --- */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
         section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
-        h2 { border-left: 5px solid #304ffe; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #e8eaf6; border: 1px solid #c5cae9; color: #444; }
-        .intro-box strong { color: #304ffe; background: #fff; padding: 0 5px; border-radius: 4px; }
+
+        /* [가변] 테마 컬러: Blue */
+        h2 { border-left: 5px solid #1565c0; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #e3f2fd; border: 1px solid #bbdefb; color: #0d47a1; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #1565c0; background: #fff; padding: 0 5px; border-radius: 4px; }
+        
         .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #555; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; transition: 0.2s; }
-        input:focus { border-color: #304ffe; outline: none; box-shadow: 0 0 0 3px rgba(48, 79, 254, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #212121; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.2s; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .calc-btn:hover { background-color: #000; transform: translateY(-3px); }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #e8f5e9; border-radius: 12px; text-align: center; animation: fadeIn 0.5s ease; }
-        #result-area.bad { background-color: #ffebee; border: 1px solid #ffcdd2; }
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.5rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.good { color: #2e7d32; }
-        .highlight.bad { color: #c62828; }
-        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #304ffe; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #1565c0; }
+        input, select { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #1565c0; outline: none; box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #1565c0; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(21,101,192,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #e3f2fd; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #0d47a1; }
+
+        .reason-card { display: flex; margin-bottom: 25px; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #1565c0; color: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 20px; }
         
         .seo-content { line-height: 1.8; color: #444; }
-        .seo-content h3 { font-size: 1.3rem; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .seo-content p { margin-bottom: 15px; }
-        .seo-content ul { padding-left: 20px; margin-bottom: 20px; }
-        .seo-content li { margin-bottom: 10px; }
-        
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; min-width: auto; } .main-content { width: 100%; } h1.page-title { font-size: 1.8rem; } }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">최신 폰 "공짜"라고요? 60만원 버리셨습니다</h1>
-            <p class="page-subtitle">대리점 직원의 말장난에 속아 노예 계약을 맺지 마세요.</p>
+            <h1 class="page-title">스마트폰 '공짜폰'에 속고 계신가요?</h1>
+            <p class="page-subtitle">할부 이자 5.9%와 비싼 요금제의 숨겨진 진실</p>
 
             <section class="intro-box">
-                <h2>📱 "월 9만원만 내시면 기계값 없애드려요"</h2>
-                <p>아직도 이 말에 속으시나요? 24개월 약정의 뒤에는 <strong>연 5.9%의 할부 이자</strong>와 필요 없는 <strong>고가 요금제 강매</strong>가 숨어 있습니다. 기계값은 할부로 내고 요금제 할인을 받는 게 이득일까요? 자급제로 사고 알뜰폰을 쓰는 게 이득일까요? 숫자로 증명해드립니다.</p>
+                <p>매장에서 설명하는 "기기값 0원"은 당신의 요금 할인 금액을 기기값인 척 속이는 마케팅일 뿐입니다. <strong>자급제 + 알뜰폰</strong> 조합과 얼마나 차이 나는지 24개월 총비용을 비교해보세요.</p>
             </section>
 
             <section id="calculator">
-                <h2>🧮 24개월 총비용 계산기</h2>
-                <p style="margin-bottom: 25px; color: #666; font-size: 0.95rem;">사고 싶은 스마트폰 가격과 월 요금을 입력하면, 2년 동안 나가는 진짜 돈을 비교해드립니다.</p>
-                <div class="calc-group"><label>① 사고 싶은 스마트폰 출고가 (만원)</label><input type="number" id="devicePrice" value="150" placeholder="예: 150"></div>
-                <div style="display:flex; gap:15px; flex-wrap:wrap;">
-                    <div class="calc-group" style="flex:1; min-width:140px;"><label style="color:#c62828;">② 통신사 5G 요금제 (월)</label><input type="number" id="carrierFee" value="95000"></div>
-                    <div class="calc-group" style="flex:1; min-width:140px;"><label style="color:#2e7d32;">③ 알뜰폰 LTE/5G 요금제 (월)</label><input type="number" id="budgetFee" value="33000"></div>
+                <h2>📱 통신비 비교 계산기</h2>
+                <div class="calc-group">
+                    <label>스마트폰 기기값 (만원)</label>
+                    <input type="number" id="phonePrice" value="150" placeholder="예: 150">
                 </div>
-                <button id="calcBtn" class="calc-btn">2년 총지출 비교하기</button>
+                <div class="calc-group">
+                    <label>통신사 제안 월 요금 (만원)</label>
+                    <input type="number" id="telecomPlan" value="9" placeholder="예: 9">
+                </div>
+                <div class="calc-group">
+                    <label>자급제 시 사용할 알뜰폰 요금 (만원)</label>
+                    <input type="number" id="mvnoPlan" value="3" placeholder="예: 3">
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">어디가 더 싼지 비교하기</button>
+
                 <div id="result-area">
-                    <div class="result-title">통신사 대리점에서 개통 시 손해 금액</div>
-                    <span id="resultDiff" class="highlight bad">0만원 손해!</span>
-                    <div style="display:flex; justify-content:space-around; margin-top:20px; border-top:1px dashed #ccc; padding-top:20px;">
-                        <div><p style="font-size:0.9rem; color:#666;">통신사 총비용</p><p id="resCarrier" style="font-weight:bold; font-size:1.2rem; color:#c62828;">0만원</p></div>
-                        <div style="border-left:1px solid #ddd;"></div>
-                        <div><p style="font-size:0.9rem; color:#666;">자급제+알뜰폰</p><p id="resBudget" style="font-weight:bold; font-size:1.2rem; color:#2e7d32;">0만원</p></div>
-                    </div>
-                    <div style="margin-top:20px; font-size:0.95rem;">이 돈이면 <strong><span id="compareItem" style="background:#fff176; padding:0 4px; border-radius:4px;">아이패드</span></strong> 하나를 더 살 수 있습니다.</div>
+                    <p class="result-title">자급제폰을 썼을 때 아끼는 돈</p>
+                    <span id="savings" class="highlight">약 0원</span>
+                    <p id="savings-desc" style="color:#666;"></p>
                 </div>
             </section>
 
             <section>
-                <h2>🚫 대리점에 가면 안 되는 3가지 이유</h2>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">percent</span></div><div class="reason-content"><h3>할부 이자 5.9%의 비밀</h3><p>그냥 5.9%가 아닙니다. 주택담보대출과 똑같은 방식(원리금균등)으로 계산됩니다. 150만원짜리 폰을 사면 이자만 약 10만원을 더 냅니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">signal_cellular_off</span></div><div class="reason-content"><h3>비싼 요금제 강제 가입</h3><p>"6개월만 비싼 거 쓰세요"라고 하죠? 그 6개월 동안 알뜰폰과의 요금 차액만 해도 30만원이 넘습니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">published_with_changes</span></div><div class="reason-content"><h3>'반납 조건'의 함정</h3><p>"2년 뒤 폰 반납하면 반값 깎아줄게"는 혜택이 아닙니다. 멀쩡한 내 폰을 헐값에 넘기는 노예 계약입니다. 내 폰을 중고로 직접 팔면 그보다 훨씬 더 받습니다.</p></div></div>
+                <h2>🛑 스마트폰 호갱 탈출 팩트 체크</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>연 5.9% 할부 이자의 존재</h3>
+                        <p>단말기를 통신사에서 할부로 사면 사실상 제2금융권 이자 수준인 5.9%의 수수료가 매달 청구됩니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>실구매가의 기만적 홍보</h3>
+                        <p>법적으로 누구나 받는 '선택약정 할인'을 대리점 자기들이 특별히 해주는 것처럼 '실구매가'로 둔갑시켜 계산기를 두드립니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>멤버십 포인트의 함정</h3>
+                        <p>편의점 몇백 원 할인받으려고 매달 요금제 4만 원을 더 내는 행동은 수학적으로 엄청난 손해입니다.</p>
+                    </div>
+                </div>
             </section>
 
-            <!-- SEO 텍스트 추가 -->
             <section class="seo-content">
-                <h2>📱 자급제 vs 통신사, 무엇이 정답일까?</h2>
-                <p>스마트폰 교체 주기가 다가오면 누구나 고민에 빠집니다. "성지"라 불리는 대리점에서 불법 보조금을 받고 사는 게 쌀까요, 아니면 쿠팡이나 삼성닷컴에서 기계만 따로 사는 '자급제'가 쌀까요? 결론부터 말씀드리면, <strong>"9만 원대 고가 요금제를 원래 쓰는 사람이 아니라면 자급제가 무조건 이득"</strong>입니다.</p>
+                <h2>실구매가와 공짜폰 광고의 통계적 속임수</h2>
+                <p>스마트폰 시장에서 '공짜폰'만큼 소비자를 완벽하게 기만하는 용어는 없습니다. 통신사 대리점이 기기값 100만 원을 깎아주겠다고 할 때, 그 비용의 출처는 대부분 여러분이 24개월 동안 낼 <strong>비싼 무제한 요금제</strong>에서 나옵니다. 매장 직원은 카드 제휴 할인과 가족 결합까지 마치 자신들이 주는 혜택인 양 포장하지만, 이는 자급제를 써도 누릴 수 있는 혜택이거나 여러분의 실적으로 받는 할인일 뿐입니다.</p>
 
-                <h3>1. 통신사 할부 이자의 무서움</h3>
-                <p>대리점에서는 "월 9만 원만 내시면 기계값은 공짜나 다름없다"고 말합니다. 하지만 계산기를 두드려보면, 24개월 동안 내는 총액에는 <strong>연 5.9%의 할부 이자</strong>가 숨어 있습니다. 200만 원짜리 폰을 할부로 사면 이자만 12만 원이 넘게 나옵니다. 자급제는 카드사 무이자 할부를 이용할 수 있어 이 비용이 0원입니다.</p>
+                <h3>1. 자급제가 가장 저렴할 수밖에 없는 이유</h3>
+                <p>자급제 스마트폰을 쿠팡이나 공식 홈페이지에서 일시불(또는 카드 무이자 할부)로 구매한 뒤 알뜰폰 요금제(LTE/5G 동일 품질)를 사용하는 조합은 항상 통신사 약정 구매보다 저렴합니다. 통신사는 약정의 노예를 만들기 위해 초기에 기기값을 낮춰주는 척하지만, 24개월간 납부할 총액을 합산해 보면 적게는 30만 원에서 많게는 100만 원 가까이 더 비쌉니다.</p>
 
-                <h3>2. 알뜰폰 요금제의 압도적 가성비</h3>
-                <p>알뜰폰은 통신 3사의 망을 그대로 빌려 쓰기 때문에 통화 품질과 데이터 속도가 100% 동일합니다. 그런데 가격은 절반 이하입니다. 월 100GB 데이터를 주는 요금제를 통신 3사에서는 6~7만 원에 팔지만, 알뜰폰에서는 프로모션을 잘 타면 2~3만 원대에 가입할 수 있습니다. 2년이면 통신비 차이만 100만 원 가까이 납니다.</p>
+                <h3>2. 중고 기기 반납 프로그램의 진실</h3>
+                <p>2년 뒤 기기를 반납하면 나머지 할부금을 면제해준다는 '중고폰 가격 보장 프로그램' 또한 팩트를 따져봐야 합니다. 2년 뒤 중고폰 시세가 할부 잔금보다 높을 가능성이 큼에도 불구하고, 소유권을 통신사에 강제로 넘기게 설계된 제도입니다. 여기에 가입비까지 매달 따박따박 받아 갑니다.</p>
 
                 <h3>자주 묻는 질문 (FAQ)</h3>
                 <ul>
-                    <li><strong>Q. 자급제 폰은 개통 방법이 어렵나요?</strong><br>A. 전혀 어렵지 않습니다. 쿠팡 등에서 기계를 주문하고, 도착하면 기존 폰에 있던 유심(USIM) 칩을 빼서 새 폰에 꽂기만 하면 바로 쓸 수 있습니다.</li>
-                    <li><strong>Q. 성지에서 페이백(현금) 받는 게 더 싸지 않나요?</strong><br>A. 불법 보조금을 30~40만 원 받는다고 해도, 6개월 동안 9~10만 원짜리 비싼 요금제를 써야 하고 부가서비스까지 가입해야 한다면 결국 조삼모사입니다. 계산기를 두드려보면 자급제+알뜰폰 조합이 총비용 면에서 승리하는 경우가 대부분입니다.</li>
+                    <li><strong>Q. 대형 통신사 결합 할인을 받고 있는데도 알뜰폰이 싼가요?</strong><br>A. 인터넷+TV 결합 할인이 2~3만 원 이상 강력하지 않은 이상, 알뜰폰의 저렴한 기본료가 훨씬 경제적입니다.</li>
+                    <li><strong>Q. 기기값을 완납하고 25% 선택약정을 받으면 안 되나요?</strong><br>A. 가장 흔한 선택이지만, 여전히 통신사 요금제 자체가 알뜰폰보다 비싸다는 근본적인 문제가 남습니다.</li>
                 </ul>
             </section>
-
-            <div class="ad-box">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
         </main>
+
         <aside class="sidebar">
-            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </aside>
     </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                const devicePrice = Number(document.getElementById('devicePrice').value) * 10000;
-                const carrierFee = Number(document.getElementById('carrierFee').value);
-                const budgetFee = Number(document.getElementById('budgetFee').value);
-                const months = 24;
-                const rate = 0.059 / 12; 
-                const monthlyInstallment = devicePrice * rate * Math.pow(1+rate, months) / (Math.pow(1+rate, months) - 1);
-                const totalInstallment = monthlyInstallment * months; 
-                const totalCarrierFee = carrierFee * months; 
-                const finalCarrierCost = totalInstallment + totalCarrierFee;
-                const finalBudgetCost = devicePrice + (budgetFee * months);
-                const diff = finalCarrierCost - finalBudgetCost;
+                const phonePrice = parseFloat(document.getElementById('phonePrice').value) * 10000;
+                const telecomPlan = parseFloat(document.getElementById('telecomPlan').value) * 10000;
+                const mvnoPlan = parseFloat(document.getElementById('mvnoPlan').value) * 10000;
+                
+                // 통신사: (요금제 * 24 * 0.75 - 선택약정 적용시) + (기기값 * 1.059 - 할부이자)
+                // 보수적으로 기기값 할인(공시지원금 40만원) vs 자급제 무이자 비교
+                const totalTelecom = (telecomPlan * 24) + phonePrice; // 약정 요금 + 기기값
+                const totalMvno = (mvnoPlan * 24) + phonePrice; // 알뜰폰 요금 + 기기값 (무이자할인 등 배제)
+                
+                const gap = totalTelecom - totalMvno;
+
                 const resultArea = document.getElementById('result-area');
-                const diffElem = document.getElementById('resultDiff');
                 resultArea.style.display = 'block';
-                document.getElementById('resCarrier').innerText = Math.round(finalCarrierCost / 10000).toLocaleString() + "만원";
-                document.getElementById('resBudget').innerText = Math.round(finalBudgetCost / 10000).toLocaleString() + "만원";
-                if (diff > 0) { diffElem.innerText = Math.round(diff / 10000).toLocaleString() + "만원 손해!"; diffElem.className = "highlight bad"; resultArea.className = "bad"; } 
-                else { diffElem.innerText = Math.round(Math.abs(diff) / 10000).toLocaleString() + "만원 이득!"; diffElem.className = "highlight good"; resultArea.className = ""; }
-                const diffManwon = diff / 10000;
-                let item = "치킨 30마리";
-                if(diffManwon > 130) item = "맥북 에어"; else if(diffManwon > 80) item = "최신 아이패드"; else if(diffManwon > 50) item = "플레이스테이션 5"; else if(diffManwon > 30) item = "애플워치";
-                document.getElementById('compareItem').innerText = item;
+                document.getElementById('savings').textContent = `약 ${(gap/10000).toFixed(0)}만 원`;
+                document.getElementById('savings-desc').textContent = `통신사 약정 노예가 되지 않고 알뜰폰 조합을 썼을 때, 24개월 동안 해외 여행 비즈니스석 한 번 더 탈 수 있는 돈을 아낄 수 있습니다.`;
             });
         });
     </script>
