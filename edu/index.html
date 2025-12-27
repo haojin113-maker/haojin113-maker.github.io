@@ -3,279 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="사교육비 투자 가치 계산기. 학원비 대신 주식을 물려주면 자녀의 미래가 어떻게 바뀔까요?">
-    <title>사교육비 vs 증여세 | 팩트 폭격 연구소</title>
+    <meta name="description" content="남들 다 보내는 학원, 보낸 만큼 수익률이 나올까요? 우리 아이 사교육비와 주식 증여 시의 자산 차이를 적나라하게 시뮬레이션해 드립니다.">
+    <title>사교육비 vs 주식 증여 계산기 | 팩트 폭격 연구소</title>
 
-    <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
-
-    <!-- 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
     <style>
-        /* --- [표준 스타일 가이드] --- */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.7;
-        }
-
-        .wrapper {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-        }
-        
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
+        .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
 
-        section {
-            background: white;
-            border-radius: 16px;
-            padding: 35px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            border: 1px solid #eee;
-        }
-
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
 
-        /* [테마 변경] 교육/자산(Navy) -> #1a237e */
-        h2 { border-left: 5px solid #1a237e; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-
-        .intro-box { background-color: #e8eaf6; border: 1px solid #c5cae9; color: #1a237e; }
-        .intro-box strong { color: #1a237e; background: #fff; padding: 0 5px; border-radius: 4px; }
-
-        /* 계산기 스타일 */
-        .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #1a237e; }
-        input {
-            width: 100%; padding: 14px; border: 1px solid #ddd;
-            border-radius: 8px; font-size: 1rem; transition: 0.2s;
-        }
-        input:focus { border-color: #1a237e; outline: none; box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-
-        .calc-btn {
-            width: 100%; padding: 18px;
-            background-color: #1a237e; color: white;
-            border: none; border-radius: 12px;
-            font-size: 1.2rem; font-weight: bold; cursor: pointer;
-            margin-top: 10px; transition: 0.2s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .calc-btn:hover { background-color: #121858; transform: translateY(-3px); }
-
-        #result-area {
-            display: none; margin-top: 30px; padding: 30px;
-            background-color: #e8eaf6; border-radius: 12px; text-align: center;
-            animation: fadeIn 0.5s ease;
-        }
+        /* [가변] 테마 컬러: Indigo */
+        h2 { border-left: 5px solid #3949ab; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #e8eaf6; border: 1px solid #c5cae9; color: #1a237e; padding: 25px; border-radius: 12px; }
         
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.asset { color: #1a237e; } /* 자산 색상 */
-        .highlight.lost { color: #999; text-decoration: line-through; font-size: 1.5rem; } /* 사라진 돈 색상 */
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #3949ab; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #3949ab; outline: none; box-shadow: 0 0 0 3px rgba(57, 73, 171, 0.1); }
 
-        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box {
-            flex-shrink: 0; width: 40px; height: 40px;
-            background: #1a237e; color: #ffd700; /* 골드 아이콘 */
-            border-radius: 10px; font-weight: bold;
-            display: flex; align-items: center; justify-content: center;
-            margin-right: 20px; margin-top: 5px;
-        }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
+        .calc-btn { width: 100%; padding: 18px; background-color: #3949ab; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(57,73,171,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
 
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #e8eaf6; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #1a237e; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        @media (max-width: 850px) {
-            .wrapper { flex-direction: column; }
-            .sidebar { width: 100%; position: static; min-width: auto; }
-            .main-content { width: 100%; }
-            h1.page-title { font-size: 1.8rem; }
-        }
+        .reason-card { display: flex; margin-bottom: 25px; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #3949ab; color: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 20px; }
+        
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
-
     <div class="wrapper">
-        
-        <!-- [좌측] 메인 콘텐츠 -->
         <main class="main-content">
-            
-            <h1 class="page-title">자녀에게 '1등급 성적표'보다 '5억 자산'을 물려주세요</h1>
-            <p class="page-subtitle">사라지는 학원비 vs 불어나는 투자금, 당신의 선택은?</p>
+            <h1 class="page-title">내 아이 영어가 중요할까, 시드머니가 중요할까?</h1>
+            <p class="page-subtitle">매달 내는 학원비 100만원의 20년 뒤 결과를 비교해드립니다.</p>
 
-            <!-- 인트로: 팩트 제시 -->
             <section class="intro-box">
-                <h2>📉 학원비, 정말 투자가 맞습니까?</h2>
-                <p>
-                    대한민국 평균 사교육비 월 50~100만원. 아이가 대학 갈 때쯤이면 이 돈은 흔적도 없이 사라집니다.<br><br>
-                    하지만 이 돈을 학원이 아닌 <strong>세계 1등 기업(미국 S&P500)</strong>에 투자해서 물려줬다면? 아이의 출발선이 어떻게 달라지는지 확인해보세요.
-                </p>
+                <p>학원을 보지 말라는 이야기가 아닙니다. 투자 효율(ROI)을 따져보자는 것입니다. 우리 아이가 <strong>고학력 백수</strong>가 될지, <strong>경제적 자유를 얻은 자본가</strong>가 될지는 부모의 선택에 달렸습니다.</p>
             </section>
 
-            <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>📊 자녀 미래 자산 시뮬레이터</h2>
-                <p style="margin-bottom: 25px; color: #666; font-size: 0.95rem;">
-                    월 학원비와 지출 기간을 입력하면, 그 돈의 <strong>기회비용</strong>을 계산해드립니다.
-                </p>
-
+                <h2>🎓 사교육비 vs 주식투자 시뮬레이터</h2>
                 <div class="calc-group">
-                    <label>① 월평균 사교육비 (만원)</label>
-                    <input type="number" id="monthlyCost" value="70" placeholder="예: 70">
+                    <label>월 평균 사교육비 (만원)</label>
+                    <input type="number" id="monthlyEdu" value="100" placeholder="예: 100">
                 </div>
-
                 <div class="calc-group">
-                    <label>② 지출 기간 (년)</label>
-                    <input type="number" id="years" value="12" placeholder="예: 12">
-                    <div class="help-text">예: 초1 ~ 고3 (12년)</div>
+                    <label>투자 기간 (아이가 독립할 때까지)</label>
+                    <input type="number" id="eduYears" value="20" placeholder="예: 20">
                 </div>
+                
+                <button id="calcBtn" class="calc-btn">증여 시뮬레이션 결과 보기</button>
 
-                <button id="calcBtn" class="calc-btn">아이의 미래 자산 확인하기</button>
-
-                <!-- 결과창 -->
                 <div id="result-area">
-                    
-                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                        <div style="flex:1;">
-                            <p class="result-title">학원비로 그냥 썼다면</p>
-                            <span id="resLost" class="highlight lost">0원</span>
-                            <p style="font-size:0.8rem; color:#888;">(전액 소멸)</p>
-                        </div>
-                    </div>
-                    
-                    <div style="background: white; padding: 20px; border-radius: 10px; border: 2px solid #1a237e; margin-top:10px;">
-                        <p class="result-title" style="color:#1a237e;">주식으로 물려줬다면 (연 10% 복리)</p>
-                        <span id="resInvest" class="highlight asset">0원</span>
-                        <p style="font-size:0.9rem; color:#555;">원금 대비 <strong id="resMultiple">0</strong>배 성장</p>
-                    </div>
-
-                    <div style="margin-top:25px; font-size:1rem;">
-                        당신의 자녀는 사회생활을<br>
-                        <strong><span id="compareItem" style="background:#fff9c4; padding:0 4px; color:#c62828;">서울 아파트 전세금</span></strong><br>
-                        을 손에 쥐고 시작할 수 있었습니다.
-                    </div>
+                    <p class="result-title">이 학원비를 S&P500에 넣었다면?</p>
+                    <span id="finalAsset" class="highlight">약 0원</span>
+                    <p id="asset-desc" style="color:#666;"></p>
                 </div>
             </section>
 
-            <!-- 팩트 체크 리스트 -->
             <section>
-                <h2>💡 부모가 알아야 할 3가지 팩트</h2>
-                
+                <h2>🛑 교육열에 가려진 냉정한 진실</h2>
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">school</span></div>
+                    <div class="icon-box">1</div>
                     <div class="reason-content">
-                        <h3>사교육의 가성비</h3>
-                        <p>명문대 졸업장만으로 부자가 되는 시대는 끝났습니다. 어설픈 학벌보다 확실한 '자본 소득 시스템'을 만들어주는 것이 진짜 사랑입니다.</p>
+                        <h3>학력의 수익률은 폭락 중입니다</h3>
+                        <p>명문대를 나와도 대기업 취업이 보장되지 않는 시대입니다. 교육의 수익률보다 자산의 성장률이 압도적으로 높습니다.</p>
                     </div>
                 </div>
-                
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">account_balance</span></div>
+                    <div class="icon-box">2</div>
                     <div class="reason-content">
-                        <h3>증여세 면제 한도 (꿀팁)</h3>
-                        <p>미성년 자녀에게는 10년 단위로 2천만 원씩(성인은 5천만 원) 세금 없이 증여할 수 있습니다. 태어나자마자 증여하고 투자를 시작하세요.</p>
+                        <h3>시간은 아이의 가장 큰 무기입니다</h3>
+                        <p>아이 이름으로 20년 동안 복리로 굴려진 우량 주식은, 아이가 어떤 직장을 잡든 든든한 평생의 뒷배가 됩니다.</p>
                     </div>
                 </div>
-
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">hourglass_bottom</span></div>
+                    <div class="icon-box">3</div>
                     <div class="reason-content">
-                        <h3>복리의 마법은 '시간' 싸움</h3>
-                        <p>아이에게는 '시간'이라는 가장 강력한 무기가 있습니다. 20살에 1억을 투자하는 것보다, 0살에 1천만 원을 투자하는 것이 훨씬 강력합니다.</p>
+                        <h3>상위 1%가 아니라면 차라리 자본을</h3>
+                        <p>아이가 공부에 압도적 재능이 없다면, 교육비를 줄여 자본가로 만들어주는 것이 진정으로 아이를 사랑하는 방법일 수 있습니다.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- 하단 광고 -->
-            <div class="ad-box">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <section class="seo-content">
+                <h2>대치동 학원가로 향하는 돈, 월가로 돌린다면?</h2>
+                <p>대한민국 부모들의 평균 사교육비는 해마다 최고치를 경신합니다. 하지만 인서울 대학에 합격해도 신입사원 초봉은 주택 가격 상승률을 따라가지 못합니다. <strong>'학력은 더 이상 계층 이동의 사다리가 아닙니다.'</strong> 냉정하게 들리겠지만, 지금 여러분이 영어 학원에 갖다 바치는 돈이 아이의 미래 자산을 갉아먹고 있는 것은 아닌지 따져봐야 합니다.</p>
 
-            <!-- common.js가 푸터 자동 추가 -->
+                <h3>1. 교육비 지출의 기회비용</h3>
+                <p>매달 100만 원씩 20년 동안 학원에 보낸 비용은 단순히 2억 4천만 원이 아닙니다. 이 돈을 연평균 8% 수익률인 지수 추종 ETF에 투자했다면, 아이가 사회에 나가는 시점에 <strong>약 6억 원</strong>에 달하는 시드머니가 됩니다. 6억 원이면 아이가 첫 출발을 전세 사기 걱정 없는 자가에서 시작하거나, 사업을 도전할 수 있는 엄청난 기회입니다.</p>
 
+                <h3>2. 공부 재능과 자본의 차이</h3>
+                <p>재능은 타고나야 하지만, 자본은 시간이 만들어줍니다. 아이가 공부로 상위 0.1%에 들어 전문직이 될 확률보다, 인덱스 펀드가 20년 뒤 3배로 불어날 확률이 훨씬 높습니다. 지식을 물려주기보다 자본을 굴리는 '시스템'을 물려주는 것이 21세기형 부모의 전략입니다.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 그래도 대학은 보내야 하지 않나요?</strong><br>A. 교육을 포기하라는 뜻이 아닙니다. '무분별한' 사교육, 남들 하니까 따라가는 공포 마케팅에 휘둘리는 비용을 줄여 '자산'으로 치환하라는 조언입니다.</li>
+                    <li><strong>Q. 증여세 문제가 있지 않나요?</strong><br>A. 10년마다 2천만 원(미성년자 기준)까지는 증여세가 면제됩니다. 어릴 때부터 신고하고 투자하면 수익에 대해서는 과세되지 않는 큰 장점이 있습니다.</li>
+                </ul>
+            </section>
         </main>
 
-        <!-- [우측] 사이드바 광고 -->
         <aside class="sidebar">
-            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890" 
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </aside>
-
     </div>
 
-    <!-- 계산 로직 -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                // 1. 값 가져오기
-                const monthly = Number(document.getElementById('monthlyCost').value) * 10000;
-                const years = Number(document.getElementById('years').value);
-                const rate = 0.10 / 12; // 월이율 (연 10% 기준)
-                const months = years * 12;
-
-                if(monthly <= 0 || years <= 0) {
-                    alert("금액과 기간을 올바르게 입력해주세요.");
-                    return;
-                }
-
-                // 2. 계산 로직
-                // 단순 비용 합계
-                const simpleCost = monthly * months;
+                const monthly = parseFloat(document.getElementById('monthlyEdu').value) * 10000;
+                const yrs = parseFloat(document.getElementById('eduYears').value);
+                const rate = 0.08;
                 
-                // 월복리 미래가치 FV = P * { (1+r)^n - 1 } / r
-                const futureValue = monthly * ((Math.pow(1 + rate, months) - 1) / rate);
+                if(!monthly || !yrs) return;
 
-                const multiple = (futureValue / simpleCost).toFixed(1);
-
-                // 3. 결과 출력
+                let total = 0;
+                for(let i=0; i < yrs * 12; i++) {
+                    total = (total + monthly) * (1 + rate/12);
+                }
+                
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-
-                document.getElementById('resLost').innerText = Math.round(simpleCost/10000).toLocaleString() + "만원";
-                document.getElementById('resInvest').innerText = Math.round(futureValue/10000).toLocaleString() + "만원";
-                document.getElementById('resMultiple').innerText = multiple;
-
-                // 4. 비교 물건 변경
-                const fvOk = futureValue / 100000000; // 억 단위
-                let item = "지방 아파트 한 채";
-                
-                if(fvOk > 15) item = "강남 아파트 한 채";
-                else if(fvOk > 10) item = "서울 브랜드 아파트 매매";
-                else if(fvOk > 5) item = "서울 소형 아파트 매매";
-                else if(fvOk > 3) item = "서울 아파트 전세금";
-                else if(fvOk > 1) item = "수도권 오피스텔 한 채";
-                else item = "든든한 사회초년생 시드머니";
-                
-                document.getElementById('compareItem').innerText = item;
+                document.getElementById('finalAsset').textContent = `약 ${(total/100000000).toFixed(1)}억 원`;
+                document.getElementById('asset-desc').textContent = `매달 학원에 갖다 바친 돈을 아이 주식 계좌에 넣어줬다면, 아이는 사회 진출 시점에 ${(total/10000).toLocaleString()}만 원을 가진 자산가로 시작할 수 있었습니다.`;
             });
         });
     </script>
