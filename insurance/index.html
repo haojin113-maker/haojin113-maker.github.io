@@ -1,124 +1,145 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="종신보험 해지환급금 vs 정기보험 차액 투자 계산기. 보험사가 숨기는 사업비와 기회비용을 분석해드립니다.">
-    <title>보험 푸어 탈출 | 팩트 폭격 연구소</title>
+    <meta name="description" content="남 좋은 일 시키는 보험, 혹시 필요 이상으로 많이 내고 계시지는 않나요? 보장성 보험과 저축성 보험의 실체를 파헤치고 내 기회비용을 계산해드립니다.">
+    <title>보험 푸어 탈출 판독기 | 팩트 폭격 연구소</title>
+
     <script src="../common.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
         section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
-        h2 { border-left: 5px solid #006064; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #e0f2f1; border: 1px solid #80cbc4; color: #004d40; }
-        .intro-box strong { color: #006064; background: #fff; padding: 0 5px; border-radius: 4px; }
+
+        h2 { border-left: 5px solid #00897b; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #e0f2f1; border: 1px solid #b2dfdb; color: #004d40; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #00897b; background: #fff; padding: 0 5px; border-radius: 4px; }
+        
         .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #006064; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; transition: 0.2s; }
-        input:focus { border-color: #006064; outline: none; box-shadow: 0 0 0 3px rgba(0, 96, 100, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #006064; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.2s; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .calc-btn:hover { background-color: #00363a; transform: translateY(-3px); }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #f1f8e9; border-radius: 12px; text-align: center; animation: fadeIn 0.5s ease; }
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.good { color: #2e7d32; } .highlight.bad { color: #666; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #00897b; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #00897b; outline: none; box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #00897b; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(0,137,123,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #e0f2f1; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #004d40; }
+
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #006064; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #00897b; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
         
         .seo-content { line-height: 1.8; color: #444; }
-        .seo-content h3 { font-size: 1.3rem; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .seo-content p { margin-bottom: 15px; }
-        .seo-content ul { padding-left: 20px; margin-bottom: 20px; }
-        .seo-content li { margin-bottom: 10px; }
-        
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; min-width: auto; } .main-content { width: 100%; } h1.page-title { font-size: 1.8rem; } }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">보험은 '저축'이 아닙니다, '비용'입니다</h1>
-            <p class="page-subtitle">"나중에 연금으로 전환돼요"라는 설계사의 말에 속아 비싼 종신보험에 가입하셨나요?</p>
+            <h1 class="page-title">불안을 담보로 사는 미래, 과연 합리적인가?</h1>
+            <p class="page-subtitle">보험사에 월급을 바치는 당신을 위한 팩트 체크.</p>
 
             <section class="intro-box">
-                <h2>🚑 BTID 전략 (Buy Term, Invest Difference)</h2>
-                <p>금융 선진국에서는 상식으로 통하는 전략입니다. 비싼 <strong>종신보험</strong> 대신 저렴한 <strong>정기보험</strong>을 들고, 남은 차액을 <strong>투자</strong>했을 때 당신의 자산이 얼마나 달라지는지 보여드립니다.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">verified_user</span> 보험은 저축이 아닙니다. 보험사가 떼가는 <strong>'사업비'</strong>는 이미 당신의 원금을 깎아먹고 시작합니다. 보장과 투자를 분리했을 때 생기는 엄청난 차액을 계산해 보세요.</p>
             </section>
 
             <section id="calculator">
-                <h2>📉 보험 리모델링 계산기</h2>
-                <div class="calc-group"><label>① 종신보험 월 납입료 (만원)</label><input type="number" id="wholeLife" value="30" placeholder="예: 30"></div>
-                <div class="calc-group"><label>② 정기보험 월 납입료 (만원)</label><input type="number" id="termLife" value="4" placeholder="예: 4"><div class="help-text">* 같은 보장이지만 소멸성이라 1/5~1/10 가격</div></div>
-                <div class="calc-group"><label>③ 납입 기간 (년)</label><input type="number" id="years" value="20" placeholder="예: 20"></div>
-                <button id="calcBtn" class="calc-btn">20년 뒤 자산 차이 확인</button>
+                <h2>🏥 보험 기회비용 계산기</h2>
+                <div class="calc-group">
+                    <label>매월 납입하는 총 보험료 (만원)</label>
+                    <input type="number" id="monthlyIns" placeholder="예: 30" value="30">
+                </div>
+                <div class="calc-group">
+                    <label>납입 기간 (년)</label>
+                    <input type="number" id="insYears" placeholder="예: 20" value="20">
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">보험 대신 주식을 샀다면?</button>
+
                 <div id="result-area">
-                    <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
-                        <div style="flex:1; text-align:center;"><p class="result-title">종신보험 환급금</p><span id="resWhole" class="highlight bad" style="font-size:1.5rem;">0원</span></div>
-                        <div style="width:1px; background:#ddd; margin:0 10px;"></div>
-                        <div style="flex:1; text-align:center;"><p class="result-title" style="color:#2e7d32;">차액 투자금 (S&P500)</p><span id="resInvest" class="highlight good" style="font-size:1.5rem;">0원</span></div>
-                    </div>
-                    <div style="background:white; padding:15px; border-radius:8px; border:2px solid #d32f2f; margin-top:10px;">당신은 보험사에 사업비 명목으로 <strong><span id="diffVal" style="color:#d32f2f; font-size:1.3rem;">0만원</span></strong>의 손해를 보게 됩니다.</div>
+                    <p class="result-title">납입 기간 종료 후 예상 자산 격차</p>
+                    <span id="finalAsset" class="highlight">약 0원</span>
+                    <p id="assetDesc" style="color:#666;"></p>
                 </div>
             </section>
 
             <section>
-                <h2>🛑 종신보험 가입 전 필수 체크</h2>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">money_off</span></div><div class="reason-content"><h3>사업비의 비밀</h3><p>내가 낸 돈이 전부 적립되지 않습니다. 월 납입금의 20~30%는 설계사 수당과 보험사 운영비로 먼저 떼어갑니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">umbrella</span></div><div class="reason-content"><h3>목적의 분리 (보장 vs 저축)</h3><p>보장은 '비용'으로 처리하고, 저축은 '투자'로 해야 합니다. 두 가지를 섞은 상품은 수수료 때문에 이도 저도 아닌 상품이 됩니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">family_restroom</span></div><div class="reason-content"><h3>가장의 책임 기간</h3><p>사망 보장이 평생 필요할까요? 자녀가 독립하면(보통 60세 전후) 가장의 사망 리스크는 줄어듭니다. 그때까지만 보장받는 '정기보험'이 합리적입니다.</p></div></div>
+                <h2>🛑 보험 다이어트가 시급한 이유</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>사업비라는 이름의 약탈</h3>
+                        <p>저축성 보험이나 종신보험은 당신이 낸 돈의 10~30%를 수수료와 설계사 수당으로 떼어갑니다. 복리의 마법이 아니라 역복리의 마법이 일어납니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>화폐 가치 하락의 직격탄</h3>
+                        <p>30년 뒤 암 진단비 3,000만 원? 그때 3,000만 원은 물가 상승률을 고려하면 현재의 수백만 원 가치도 안 될 가능성이 큽니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>최고의 보험은 든든한 '현금'입니다</h3>
+                        <p>보험은 약관에 명시된 사건에만 작동하지만, 현금은 모든 인생의 변수(사고, 기회, 투자)에 즉시 대응할 수 있는 만능 보험입니다.</p>
+                    </div>
+                </div>
             </section>
 
-            <!-- SEO 텍스트 추가 -->
             <section class="seo-content">
-                <h2>🏥 보험은 재테크 수단이 아닙니다</h2>
-                <p>많은 분들이 "아는 이모가 권유해서", "나중에 연금으로 쓸 수 있대서" 덜컥 비싼 종신보험에 가입합니다. 하지만 보험의 본질은 '위험 대비'이지 '자산 증식'이 아닙니다. 보험사를 통해 저축을 하려는 것은, 수수료가 가장 비싼 은행을 이용하는 것과 같습니다.</p>
-                <h3>1. 사업비 떼고 나면 마이너스</h3>
-                <p>보험료 10만 원을 내면 약 2~3만 원은 '사업비'라는 명목으로 보험사 운영비와 설계사 수당으로 빠져나갑니다. 실제 적립되는 돈은 7만 원 남짓입니다. 이 구조 때문에 보험은 가입 후 7~10년이 지나야 겨우 원금에 도달합니다. 그 기간 동안의 물가 상승률을 고려하면 실질적인 가치는 마이너스입니다.</p>
-                <h3>2. 정기보험으로 충분합니다</h3>
-                <p>가장의 사망 보장이 필요하다면, 자녀가 성인이 될 때까지만 보장받는 '정기보험'을 이용하세요. 종신보험료의 1/5~1/10 수준으로 같은 보장을 받을 수 있습니다. 아낀 돈으로 삼성전자 주식이나 S&P500 ETF를 사 모으는 것이 가족을 위한 훨씬 더 큰 안전장치가 됩니다.</p>
+                <h2>당신이 몰랐던 보험사의 수익 구조와 종신보험의 함정</h2>
+                <p>보험은 만약을 대비하는 최소한의 안전장치여야 합니다. 하지만 우리나라의 가계 당 보험 가입 비중은 소득 대비 지나치게 높은 편입니다. 특히 <strong>'종신보험'을 연금이나 저축처럼 설명하는 판매 방식</strong>에 속아 수십 년 동안 거액의 월급을 묶어버리는 사례가 속출하고 있습니다. 보험의 본질은 비용이지 투자가 아님을 명심해야 합니다.</p>
+
+                <h3>1. 보장성 보험(실비)만으로 충분한 이유</h3>
+                <p>우리가 반드시 갖춰야 할 보험은 실손의료보험(실비)과 치료비가 많이 드는 3대 질병(암, 뇌, 심장)에 대한 가성비 좋은 정기보험뿐입니다. 해지환급금이 없는 '무해지 환급형'이나 만기에 돈을 돌려받지 않는 '순수보장형'을 선택하여 납입료를 최소화하고, 남는 돈으로 차라리 우량 주식을 사는 것이 자산 형성에 훨씬 유리합니다.</p>
+
+                <h3>2. '만기 환급형'의 달콤한 거짓말</h3>
+                <p>보험사들이 가장 많이 사용하는 멘트는 "나중에 낸 돈 다 돌려받으세요"입니다. 하지만 20년 뒤 돌려받는 원금은 인플레이션을 고려할 때 실질적으로 반 토막 난 돈입니다. 보험사는 여러분의 돈을 20년 동안 굴려 큰 수익을 내고, 여러분에게는 명목상 원금만 돌려주는 식입니다. 이것이 바로 보험사들이 강남에 거대한 빌딩을 세울 수 있는 이유입니다.</p>
+
                 <h3>자주 묻는 질문 (FAQ)</h3>
                 <ul>
-                    <li><strong>Q. 이미 5년 넘게 넣었는데 해지해야 하나요?</strong><br>A. 이미 납입 기간의 절반 이상을 채웠다면 신중해야 합니다. '감액 완납' 제도를 활용하여 더 이상 돈을 내지 않고 보장 금액을 줄이는 방법을 고려해보세요.</li>
-                    <li><strong>Q. 실비 보험은 꼭 필요한가요?</strong><br>A. 네, 실비 보험은 '제2의 건강보험'이라 불릴 만큼 필수적입니다. 단, 다른 특약 없이 단독 실비로 가입하는 것이 가장 저렴하고 효율적입니다.</li>
+                    <li><strong>Q. 설계사가 좋은 상품이라며 권하는데 어떡하죠?</strong><br>A. 설계사의 수익(수수료)과 고객의 이익은 상충합니다. 수수료가 높은 상품일수록 여러분의 원금에서 빠져나가는 사업비가 크다는 뜻입니다. 온라인 다이렉트 보험을 통해 스스로 가입하는 습관을 들이세요.</li>
+                    <li><strong>Q. 이미 오래 부은 보험을 해지하는 게 맞을까요?</strong><br>A. 만기가 얼마 남지 않았다면 유지하는 것이 낫지만, 여전히 10년 이상 남았다면 '해지 시 발생하는 손실'보다 '앞으로 기회비용으로 얻을 수익'이 훨씬 큽니다. 냉정하게 계산해 보십시오.</li>
                 </ul>
             </section>
 
-            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div>
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-        <aside class="sidebar"><div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div></aside>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
     </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                const whole = Number(document.getElementById('wholeLife').value) * 10000;
-                const term = Number(document.getElementById('termLife').value) * 10000;
-                const years = Number(document.getElementById('years').value);
-                if(whole <= 0 || term <= 0 || years <= 0) { alert("금액과 기간을 올바르게 입력해주세요."); return; }
-                const months = years * 12;
-                const totalPremium = whole * months;
-                const wholeReturn = totalPremium * 1.05; 
-                const diff = whole - term;
-                const rate = 0.10 / 12;
-                const investReturn = diff * ((Math.pow(1 + rate, months) - 1) / rate);
-                const loss = investReturn - wholeReturn;
+                const monthly = parseFloat(document.getElementById('monthlyIns').value) * 10000;
+                const yrs = parseFloat(document.getElementById('insYears').value);
+                const rate = 0.08;
+                
+                if(!monthly || !yrs) return;
+
+                let total = 0;
+                for(let i=0; i < yrs * 12; i++) {
+                    total = (total + monthly) * (1 + rate/12);
+                }
+                
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-                document.getElementById('resWhole').innerText = "약 " + Math.round(wholeReturn/10000).toLocaleString() + "만원";
-                document.getElementById('resInvest').innerText = Math.round(investReturn/10000).toLocaleString() + "만원";
-                document.getElementById('diffVal').innerText = Math.round(loss/10000).toLocaleString() + "만원";
+                document.getElementById('finalAsset').textContent = `약 ${Math.round(total / 10000).toLocaleString()}만 원`;
+                document.getElementById('assetDesc').textContent = `동일한 금액을 주식 시장에 맡겼다면 얻었을 자산입니다. 보장받으려다 정작 내 노후 자금을 삭제하고 있었던 건 아닌지 확인해 보세요.`;
             });
         });
     </script>
