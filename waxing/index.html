@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="왁싱 vs 레이저 제모 비용 비교 계산기. 평생 왁싱하는 비용과 레이저 제모의 가성비를 비교해드립니다.">
+    <title>왁싱 호갱 판독기 | 팩트 폭격 연구소</title>
+    <script src="../common.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
+        .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
+        .main-content { flex: 3; } .sidebar { flex: 1; position: sticky; top: 20px; }
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; border: 1px solid #eee; }
+        h1.page-title { font-size: 2.2rem; margin: 20px 0 10px; color: #111; }
+        h2 { border-left: 5px solid #ff7043; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #fbe9e7; border: 1px solid #ffccbc; color: #bf360c; }
+        .intro-box strong { color: #ff7043; background: #fff; padding: 0 5px; border-radius: 4px; }
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; color: #ff7043; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; }
+        .calc-btn { width: 100%; padding: 18px; background-color: #ff7043; color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 1.2rem; font-weight: bold; }
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fff3e0; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.5rem; font-weight: 900; display: block; margin: 10px 0; color: #ff7043; }
+        
+        .seo-content h3 { margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; } }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <main class="main-content">
+            <h1 class="page-title">평생 뜯으실 건가요? 고통의 비용 계산</h1>
+            <p class="page-subtitle">매달 10만 원씩 왁싱샵에 바치는 돈. 레이저 제모와 비교하면 얼마나 손해일까요?</p>
+
+            <section class="intro-box">
+                <h2>👙 밑 빠진 독에 왁싱 붓기</h2>
+                <p>왁싱은 영구적이지 않습니다. 한 달만 지나면 다시 자라납니다.<br>평생 왁싱을 받는 비용과, 10회면 끝나는 <strong>레이저 제모</strong> 비용을 비교해드립니다.</p>
+            </section>
+
+            <section id="calculator">
+                <h2>📉 제모 가성비 견적서</h2>
+                <label>① 1회 왁싱 비용 (만원)</label>
+                <input type="number" id="waxPrice" value="8" placeholder="예: 8 (브라질리언 기준)">
+                <label>② 연간 시술 횟수 (회)</label>
+                <input type="number" id="waxFreq" value="10" placeholder="예: 10 (5주 간격)">
+                <label>③ 비교할 레이저 제모 10회 패키지 가격 (만원)</label>
+                <input type="number" id="laserPrice" value="60" placeholder="예: 60 (요즘 시세)">
+                <button id="calcBtn" class="calc-btn">10년치 비용 차이 확인</button>
+
+                <div id="result-area">
+                    <p>10년 동안 왁싱샵에 바칠 돈</p>
+                    <span id="resTotal" class="highlight">0원</span>
+                    <div style="margin-top:20px; padding-top:20px; border-top:1px dashed #999;">
+                        <p>레이저 제모를 했다면 아꼈을 돈</p>
+                        <strong id="resSave" style="font-size:1.8rem; color:#2e7d32;">0원</strong>
+                        <p style="font-size:0.9rem;">(약 <span id="resTimes">0</span>배 더 비쌈)</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="seo-content">
+                <h2>🛑 레이저가 답인 이유</h2>
+                <h3>1. 고통의 총량</h3>
+                <p>왁싱은 할 때마다 아픕니다. 평생 수백 번의 고통을 참아야 합니다. 레이저는 10번만 참으면 반영구적으로 털이 나지 않거나 솜털처럼 변합니다. 고통의 총량이 다릅니다.</p>
+                <h3>2. 인그로운 헤어의 악몽</h3>
+                <p>왁싱 후 관리를 잘못하면 털이 살 안으로 파고드는 인그로운 헤어가 생겨 염증을 유발합니다. 레이저는 모근 자체를 파괴하므로 인그로운 헤어 걱정이 없습니다.</p>
+            </section>
+            
+            <div class="ad-box"><span style="font-size:11px; color:#ccc;">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </main>
+        <aside class="sidebar"><div style="min-height: 600px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div></aside>
+    </div>
+    <script>
+        document.getElementById('calcBtn').addEventListener('click', function() {
+            const wax = Number(document.getElementById('waxPrice').value) * 10000;
+            const freq = Number(document.getElementById('waxFreq').value);
+            const laser = Number(document.getElementById('laserPrice').value) * 10000;
+            if(wax <= 0 || freq <= 0) { alert("값을 입력해주세요."); return; }
+            
+            const tenYearWax = wax * freq * 10;
+            // 레이저는 10회 패키지 + 유지관리비(10년에 1번 추가패키지 가정)
+            const tenYearLaser = laser * 2; 
+
+            const save = tenYearWax - tenYearLaser;
+            const multiple = (tenYearWax / tenYearLaser).toFixed(1);
+
+            const resultArea = document.getElementById('result-area');
+            resultArea.style.display = 'block';
+            document.getElementById('resTotal').innerText = Math.round(tenYearWax).toLocaleString() + "원";
+            document.getElementById('resSave').innerText = Math.round(save).toLocaleString() + "원";
+            document.getElementById('resTimes').innerText = multiple;
+        });
+    </script>
+</body>
+</html>
