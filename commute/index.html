@@ -3,124 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="출퇴근 시간 기회비용 계산기. 길바닥에 버리는 시간과 기회비용을 연봉으로 환산해드립니다.">
+    <meta name="description" content="출퇴근 시간, 단순히 힘든 게 아니라 당신의 자산을 갉아먹고 있습니다. 도로 위에 버리는 시간의 기회비용과 인생의 길이를 계산해드립니다.">
     <title>길바닥 인생 계산기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 및 라이브러리 -->
     <script src="../common.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Pretendard', sans-serif; background: #fff3e0; color: #333; line-height: 1.7; }
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
-        section { background: white; padding: 35px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #ffcc80; }
-        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #e65100; }
+
+        /* 섹션 공통 스타일 */
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
-        h2 { border-left: 5px solid #e65100; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #bf360c; }
-        .intro-box { background-color: #fff8e1; border: 1px solid #ffe0b2; color: #e65100; }
-        .intro-box strong { color: #e65100; background: #fff; padding: 0 5px; border-radius: 4px; }
-        .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #e65100; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; transition: 0.2s; }
-        input:focus { border-color: #e65100; outline: none; box-shadow: 0 0 0 3px rgba(230, 81, 0, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #e65100; color: #fff; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.2s; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .calc-btn:hover { background-color: #bf360c; transform: translateY(-3px); }
-        #result-area { display: none; background: #fff8e1; padding: 25px; border-radius: 10px; text-align: center; margin-top: 20px; border: 1px solid #ffe0b2; }
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.2rem; font-weight: 800; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.time { color: #d84315; } .highlight.money { color: #e65100; }
-        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #e65100; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-        .ad-box { background: #fff; padding: 10px; text-align: center; border-radius: 12px; margin-bottom: 20px; border: 1px solid #eee; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+
+        /* [가변] 테마 설정: Brown */
+        h2 { border-left: 5px solid #5d4037; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #efebe9; border: 1px solid #d7ccc8; color: #3e2723; padding: 25px; border-radius: 12px; }
         
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #5d4037; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; transition: 0.2s; }
+        input:focus { border-color: #5d4037; outline: none; box-shadow: 0 0 0 3px rgba(93, 64, 55, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #5d4037; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(93, 64, 55, 0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과창 스타일 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #efebe9; border-radius: 12px; text-align: center; animation: fadeIn 0.5s ease; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #3e2723; }
+
+        /* 팩트 체크 카드 */
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #5d4037; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        /* SEO 콘텐츠 스타일 */
         .seo-content { line-height: 1.8; color: #444; }
-        .seo-content h3 { font-size: 1.3rem; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .seo-content p { margin-bottom: 15px; }
-        .seo-content ul { padding-left: 20px; margin-bottom: 20px; }
-        .seo-content li { margin-bottom: 10px; }
+        .seo-content h3 { font-size: 1.3rem; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; color: #111; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; min-width: auto; } .main-content { width: 100%; } h1.page-title { font-size: 1.8rem; } }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } .main-content { width: 100%; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">싼 집을 찾아 멀리 가셨나요? 당신은 '수명'을 팔고 있습니다</h1>
-            <p class="page-subtitle">월세 20만원 아끼려다 50만원어치 인생을 낭비하는 건 아닌지 확인해보세요.</p>
+            <h1 class="page-title">도로 위에서 늙어가는 당신의 인생</h1>
+            <p class="page-subtitle">왕복 3시간? 당신이 평생 길바닥에 버리는 시간을 계산해드립니다.</p>
 
             <section class="intro-box">
-                <h2>🚌 도로 위에서 버려지는 인생</h2>
-                <p>경기도에서 서울로 출퇴근하는 직장인의 평균 소요 시간은 왕복 2시간 30분입니다. 하루 2시간이 쌓이면 1년에 며칠이나 될까요? 그 시간을 <strong>최저시급</strong>으로만 환산해도 월세보다 비싸다는 충격적인 진실을 알려드립니다.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">directions_bus</span> "직장만 가까워도 삶의 질이 달라진다"는 말, 과학적 팩트입니다. 통근 시간은 단순한 지루함이 아니라 <strong>실제 수명과 자산의 손실</strong>을 의미합니다.</p>
             </section>
 
+            <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>⏳ 도로 위 인생 비용 계산기</h2>
-                <div class="calc-group"><label>① 왕복 출퇴근 시간 (분)</label><input type="number" id="minutes" value="120" placeholder="예: 120 (왕복 2시간)"></div>
-                <div class="calc-group"><label>② 당신의 시급 가치 (원)</label><input type="number" id="wage" value="15000" placeholder="예: 15000"><div class="help-text">* 2025년 최저시급(10,030원) 이상 입력 권장.</div></div>
-                <button id="calcBtn" class="calc-btn">1년 동안 버리는 비용 확인</button>
+                <h2>🚌 길바닥 비용 계산기</h2>
+                <div class="calc-group">
+                    <label>일일 왕복 출퇴근 시간 (시간)</label>
+                    <input type="number" id="commuteTime" placeholder="예: 3" step="0.5" value="3">
+                </div>
+                <div class="calc-group">
+                    <label>나의 세후 시급 (원)</label>
+                    <input type="number" id="hourlyWage" placeholder="예: 15000" value="15000">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">월급 ÷ 209로 계산하면 대략적인 시급이 나옵니다.</p>
+                </div>
+                <div class="calc-group">
+                    <label>예상 근속 기간 (년)</label>
+                    <input type="number" id="workYears" placeholder="예: 30" value="30">
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">사라진 인생 계산하기</button>
+
                 <div id="result-area">
-                    <div style="margin-bottom:20px;"><p class="result-title">당신은 1년에 <strong><span style="color:#d84315;">꼬박</span></strong></p><span id="resDays" class="highlight time">0일</span><p class="result-title">동안 버스/지하철에 갇혀 지냅니다.</p></div>
-                    <div style="border-top:1px dashed #aaa; padding-top:20px;"><p class="result-title" style="color:#555;">돈으로 환산한 연간 손실액</p><span id="resCost" class="highlight money">0원</span></div>
-                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #ffe0b2; font-size:0.95rem;">이 돈과 시간이면 회사 근처 오피스텔을 구하고,<br><strong><span id="compareItem" style="color:#e65100; font-weight:bold;">매일 2시간 운동</span></strong>을 할 수 있습니다.</div>
+                    <p class="result-title">평생 길바닥에서 보낼 시간은?</p>
+                    <span id="lostTime" class="highlight">약 0일</span>
+                    <p id="lostMoney" style="color:#666; margin-top:10px; font-weight:bold;"></p>
                 </div>
             </section>
 
+            <!-- 팩트체크 섹션 -->
             <section>
-                <h2>🛑 장거리 출퇴근의 부작용</h2>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">mood_bad</span></div><div class="reason-content"><h3>행복도와 이혼율</h3><p>스웨덴 우메아 대학 연구에 따르면, 출퇴근 시간이 45분 이상인 부부는 그렇지 않은 부부보다 이혼율이 40% 더 높았습니다. 길바닥 스트레스가 가정 불화로 이어집니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">accessibility_new</span></div><div class="reason-content"><h3>척추 건강과 만성 피로</h3><p>흔들리는 대중교통 안에서 쪽잠을 자는 것은 피로 회복에 도움이 되지 않습니다. 거북목, 허리 디스크의 주원인이며 수면 부족을 야기합니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">trending_up</span></div><div class="reason-content"><h3>자기계발 기회 비용</h3><p>하루 2시간이면 1년에 책 50권을 읽거나, 새로운 언어를 마스터하거나, 부업을 할 수 있는 시간입니다. 당신은 그 시간을 도로 위에 버리고 있습니다.</p></div></div>
+                <h2>🛑 장거리 출퇴근이 위험한 3가지 이유</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>건강 수명을 직접적으로 깎아먹습니다</h3>
+                        <p>장거리 통근자는 비만, 고혈압, 불면증 발생 확률이 훨씬 높습니다. 도로 위에서의 스트레스는 흡연만큼이나 해롭습니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>'연봉 20% 상승' 이상의 가치</h3>
+                        <p>연구에 따르면 통근 시간을 1시간 줄이는 것은 행복도 관점에서 연봉을 약 40% 올리는 것과 같은 효과를 줍니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>자기계발 시간의 완전한 상실</h3>
+                        <p>하루 3시간, 30년이면 약 3만 시간입니다. 이는 언어 5개를 완벽히 익히거나 악기 하나를 마스터하고도 남을 방대한 시간입니다.</p>
+                    </div>
+                </div>
             </section>
 
-            <!-- SEO 텍스트 추가 -->
+            <!-- SEO 블로그 콘텐츠 -->
             <section class="seo-content">
-                <h2>🚌 직주근접, 최고의 재테크입니다</h2>
-                <p>"경기도 신축 아파트냐, 서울 썩은 빌라냐." 많은 직장인의 고민입니다. 쾌적한 주거 환경을 위해 경기도로 이사 가지만, 매일 왕복 3~4시간의 지옥철을 경험하고 나면 "삶의 질이 오히려 떨어졌다"고 호소합니다. 출퇴근 시간은 단순히 '이동 시간'이 아니라 '버려지는 생명'입니다.</p>
+                <h2>출퇴근 시간 왕복 3시간의 지옥, 비용으로 환산하면?</h2>
+                <p>수도권 직장인들의 평균 출퇴근 시간은 1시간 24분, 왕복으로는 거의 3시간에 육박합니다. 많은 이들이 집값을 아끼기 위해 혹은 더 좋은 주거 환경을 위해 먼 거리를 이동하지만, 이는 경제학적으로 <strong>'인생에서 가장 비싼 비용'</strong>을 지불하는 행위입니다. 시간은 누구에게나 유한한 자원이기 때문입니다.</p>
 
-                <h3>1. 시간 빈곤 (Time Poverty)</h3>
-                <p>하루 24시간은 누구에게나 공평하지만, 장거리 출퇴근자는 자유 시간이 절대적으로 부족합니다. 퇴근하고 집에 오면 8시, 밥 먹고 씻으면 9시. 아무것도 할 수 없는 상태로 잠들고 다시 새벽에 일어나는 다람쥐 쳇바퀴 같은 삶이 반복됩니다. 이 시간 빈곤은 우울증과 번아웃의 주된 원인입니다.</p>
+                <h3>1. 보이지 않는 비용: 시급으로 계산해 본 통근 시간</h3>
+                <p>단순히 대중교통 요금이나 기름값만 비용이 아닙니다. 만약 당신의 시급이 1.5만 원이고 하루에 3시간을 길 위에서 버린다면, 당신은 매일 4.5만 원을 도로에 기부하는 셈입니다. 한 달이면 90만 원, 1년이면 1,000만 원이 넘는 금액입니다. 직장 근처의 비싼 월세를 피하려고 선택한 먼 거리의 집이, 실제로는 월세보다 더 큰 기회비용을 앗아가고 있지는 않은지 따져봐야 합니다.</p>
 
-                <h3>2. 월세 30만 원 더 내는 게 이득인 이유</h3>
-                <p>회사 근처 월세가 30만 원 더 비싸더라도, 하루 2시간을 아낄 수 있다면 시급 1만 원만 잡아도 월 40만 원 이상의 가치가 있습니다. 여기에 교통비 절감, 체력 비축, 수면 시간 확보까지 고려하면 직주근접은 비용이 아니라 투자입니다.</p>
+                <h3>2. 관계와 건강의 붕괴</h3>
+                <p>장거리 출퇴근은 가족과의 대화 시간, 운동 시간, 그리고 충분한 수면 시간을 뺏어갑니다. 스웨덴의 한 연구에 따르면 장거리 통근자의 이혼율은 일반인보다 40% 높습니다. 단순히 피곤한 것이 문제가 아니라, 삶의 본질적인 행복을 구성하는 요소들이 '이동'이라는 무의미한 행위로 대체되고 있다는 사실이 무서운 팩트입니다.</p>
 
                 <h3>자주 묻는 질문 (FAQ)</h3>
                 <ul>
-                    <li><strong>Q. 대중교통에서 책 읽거나 공부하면 되지 않나요?</strong><br>A. 콩나물시루 같은 지하철에서 집중하기란 불가능에 가깝습니다. 소음과 흔들림은 뇌에 스트레스를 줍니다. 온전한 휴식이나 집중은 정지된 공간에서만 가능합니다.</li>
-                    <li><strong>Q. 이사 갈 형편이 안 되는데 어떡하죠?</strong><br>A. 이사가 불가능하다면 출근 시간을 1시간 앞당기거나 늦추는 유연 근무제를 활용해 '지옥철'이라도 피해야 합니다. 또는 회사 근처 헬스장을 등록해 출근 전 운동을 하는 등 시간을 주도적으로 쓰는 노력이 필요합니다.</li>
+                    <li><strong>Q. 대중교통에서 책을 보거나 강의를 들으면 되지 않나요?</strong><br>A. 보충은 가능하지만, 집이나 조용한 공간에서 집중하는 것과는 뇌의 피로도와 몰입도 면에서 천지 차이입니다. 최고의 휴식은 이동하지 않는 것입니다.</li>
+                    <li><strong>Q. 이사를 가고 싶지만 집값이 감당이 안 됩니다.</strong><br>A. 집값 상승분과 본인이 통근하며 잃어버리는 시간당 가치를 냉정하게 비교해 보십시오. 만약 직주근접이 가능하다면, 조금 작은 집에 살더라도 얻는 건강과 행복의 경제적 가치가 더 클 수 있습니다.</li>
                 </ul>
             </section>
 
-            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div>
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-        <aside class="sidebar"><div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div></aside>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
     </div>
+
+    <!-- 로직 스크립트 -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                const mins = Number(document.getElementById('minutes').value);
-                const wage = Number(document.getElementById('wage').value);
-                if(mins <= 0 || wage <= 0) { alert("시간과 시급을 올바르게 입력해주세요."); return; }
-                const daysWorked = 250; 
-                const totalHours = (mins / 60) * daysWorked; 
-                const totalDays = totalHours / 24; 
-                const totalCost = totalHours * wage;
+                const hours = parseFloat(document.getElementById('commuteTime').value);
+                const wage = parseFloat(document.getElementById('hourlyWage').value);
+                const years = parseFloat(document.getElementById('workYears').value);
+                
+                if(!hours || !wage || !years) { alert('값을 입력해주세요.'); return; }
+
+                const dailyCost = hours * wage;
+                const yearlyHours = hours * 20 * 12; // 연간 240일 근무 기준
+                const totalHours = yearlyHours * years;
+                const totalDays = totalHours / 24; // 인생에서 통으로 날린 일수
+                const totalCost = dailyCost * 20 * 12 * years;
+
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-                document.getElementById('resDays').innerText = totalDays.toFixed(1) + "일";
-                document.getElementById('resCost').innerText = Math.round(totalCost).toLocaleString() + "원";
-                const costManwon = totalCost / 10000;
-                let item = "매일 스타벅스 커피";
-                if(costManwon > 2000) item = "회사 근처 오피스텔 월세";
-                else if(costManwon > 1000) item = "해외 여행 3번";
-                else if(costManwon > 500) item = "최신형 아이맥";
-                else if(costManwon > 300) item = "고급 PT 1년 회원권";
-                else if(costManwon > 100) item = "최신 스마트폰";
-                document.getElementById('compareItem').innerText = item;
+                document.getElementById('lostTime').textContent = `약 ${Math.floor(totalDays).toLocaleString()}일 (통째로)`;
+                document.getElementById('lostMoney').textContent = `금전적 손실: 약 ${(totalCost/100000000).toFixed(1)}억 원`;
             });
         });
     </script>
