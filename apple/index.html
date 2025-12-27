@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="애플 생태계 비용 계산기. 아이폰, 맥북, 아이패드 풀세트 가격과 갤럭시 생태계 가격을 비교해드립니다.">
+    <title>애플병(사과농장) 판독기 | 팩트 폭격 연구소</title>
+    <script src="../common.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
+        .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
+        .main-content { flex: 3; } .sidebar { flex: 1; position: sticky; top: 20px; }
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; border: 1px solid #eee; }
+        h1.page-title { font-size: 2.2rem; margin: 20px 0 10px; color: #111; }
+        h2 { border-left: 5px solid #424242; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #eeeeee; border: 1px solid #e0e0e0; color: #212121; }
+        .intro-box strong { color: #424242; background: #fff; padding: 0 5px; border-radius: 4px; }
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; color: #424242; }
+        input, select { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; }
+        .calc-btn { width: 100%; padding: 18px; background-color: #424242; color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 1.2rem; font-weight: bold; }
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #f5f5f5; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.5rem; font-weight: 900; display: block; margin: 10px 0; color: #424242; }
+        
+        .seo-content h3 { margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; } }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <main class="main-content">
+            <h1 class="page-title">사과 농장 차리는 데 500만 원?</h1>
+            <p class="page-subtitle">"연동성이 좋아서"라며 하나둘 모은 애플 기기들. 당신의 책상 위 전자제품 총액을 알려드립니다.</p>
+
+            <section class="intro-box">
+                <h2>🍎 앱등이 탈출 비용</h2>
+                <p>아이폰 사니까 에어팟 사고 싶고, 워치 사고 싶고, 맥북까지...<br>이른바 <strong>'애플 생태계'</strong>에 갇힌 당신. 삼성 갤럭시 풀세트와 비교했을 때 얼마나 더 비싼지 팩트로 확인하세요.</p>
+            </section>
+
+            <section id="calculator">
+                <h2>💻 사과 농장 견적서</h2>
+                <label>① 아이폰 (모델 선택)</label>
+                <select id="iphone">
+                    <option value="0">없음</option>
+                    <option value="125">일반 모델 (약 125만)</option>
+                    <option value="155" selected>프로 모델 (약 155만)</option>
+                    <option value="190">프로 맥스 (약 190만)</option>
+                </select>
+                <div class="calc-group" style="margin-top:15px;">
+                    <label>② 맥북 / 아이맥</label>
+                    <select id="mac">
+                        <option value="0">없음</option>
+                        <option value="150">맥북 에어 (약 150만)</option>
+                        <option value="250">맥북 프로 14 (약 250만)</option>
+                        <option value="350">맥북 프로 16 (약 350만)</option>
+                    </select>
+                </div>
+                <div class="calc-group">
+                    <label>③ 아이패드 + 펜슬 + 키보드</label>
+                    <select id="ipad">
+                        <option value="0">없음</option>
+                        <option value="80">일반/미니 세트 (약 80만)</option>
+                        <option value="130">에어 세트 (약 130만)</option>
+                        <option value="200">프로 세트 (약 200만)</option>
+                    </select>
+                </div>
+                <div class="calc-group">
+                    <label>④ 워치 + 에어팟</label>
+                    <input type="number" id="wearable" value="80" placeholder="예: 80 (워치+에어팟프로)">
+                </div>
+                <button id="calcBtn" class="calc-btn">내 생태계 총액 확인</button>
+
+                <div id="result-area">
+                    <p>당신의 사과 농장 가치</p>
+                    <span id="resTotal" class="highlight">0원</span>
+                    <div style="margin-top:20px; padding-top:20px; border-top:1px dashed #999;">
+                        <p>갤럭시 생태계로 갔다면</p>
+                        <strong id="resSave" style="font-size:1.8rem; color:#2e7d32;">0원</strong>
+                        <p>을 아끼고, <strong><span style="color:#424242;">남은 돈으로 주식</span></strong>을 샀을 겁니다.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="seo-content">
+                <h2>🛑 감성의 가격표</h2>
+                <h3>1. 압도적인 가격 차이</h3>
+                <p>애플 기기는 동급 성능의 타사 제품보다 30~50% 비쌉니다. 램(RAM)과 스토리지(용량) 업그레이드 비용은 '사악하다'는 표현이 어울립니다. SSD 256GB 올리는 데 27만 원을 받는 건 애플뿐입니다.</p>
+                <h3>2. 수리비(애플케어)의 압박</h3>
+                <p>기계값도 비싼데 보험료(애플케어플러스)도 비쌉니다. 맥북 수리비는 웬만한 중고차 한 대 값입니다. "떨어뜨리면 끝장"이라는 불안감을 안고 사는 비용도 포함해야 합니다.</p>
+                <h3>3. 중고가 방어의 양면성</h3>
+                <p>"애플은 중고가 방어가 잘 돼서 이득"이라고요? 그만큼 처음에 비싸게 샀기 때문입니다. 그리고 최근에는 예전만큼 방어가 잘 되지 않습니다. 전자기기는 결국 소모품입니다.</p>
+            </section>
+            
+            <div class="ad-box"><span style="font-size:11px; color:#ccc;">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </main>
+        <aside class="sidebar"><div style="min-height: 600px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div></aside>
+    </div>
+    <script>
+        document.getElementById('calcBtn').addEventListener('click', function() {
+            const iphone = Number(document.getElementById('iphone').value) * 10000;
+            const mac = Number(document.getElementById('mac').value) * 10000;
+            const ipad = Number(document.getElementById('ipad').value) * 10000;
+            const wearable = Number(document.getElementById('wearable').value) * 10000;
+            
+            const total = iphone + mac + ipad + wearable;
+            
+            // 갤럭시 생태계 비교 (대략 30~40% 저렴하다고 가정)
+            const galaxyTotal = total * 0.65;
+            const save = total - galaxyTotal;
+
+            const resultArea = document.getElementById('result-area');
+            resultArea.style.display = 'block';
+            document.getElementById('resTotal').innerText = Math.round(total).toLocaleString() + "원";
+            document.getElementById('resSave').innerText = Math.round(save).toLocaleString() + "원";
+        });
+    </script>
+</body>
+</html>
