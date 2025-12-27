@@ -3,282 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="결혼정보회사 가입비 비용 효율 계산기. 결정사 만남 1회당 비용과 자기관리 투자 비용을 비교해드립니다.">
+    <meta name="description" content="결혼정보회사 가입비 비용 효율 계산기. 만남 1회당 비용을 계산하고 자기관리 투자와 비교해드립니다.">
     <title>결정사 가성비 판독기 | 팩트 폭격 연구소</title>
-
-    <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
-
-    <!-- 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-
     <style>
-        /* --- [표준 스타일 가이드] --- */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.7;
-        }
-
-        .wrapper {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-        }
-        
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
+        .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
-
-        section {
-            background: white;
-            border-radius: 16px;
-            padding: 35px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            border: 1px solid #eee;
-        }
-
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
-
-        /* [테마 변경] 결혼/소개팅(Pink) -> #f06292 */
         h2 { border-left: 5px solid #f06292; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-
         .intro-box { background-color: #fce4ec; border: 1px solid #f8bbd0; color: #880e4f; }
         .intro-box strong { color: #f06292; background: #fff; padding: 0 5px; border-radius: 4px; }
-
-        /* 계산기 스타일 */
         .calc-group { margin-bottom: 20px; }
         label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #f06292; }
-        input {
-            width: 100%; padding: 14px; border: 1px solid #ddd;
-            border-radius: 8px; font-size: 1rem; transition: 0.2s;
-        }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; transition: 0.2s; }
         input:focus { border-color: #f06292; outline: none; box-shadow: 0 0 0 3px rgba(240, 98, 146, 0.1); }
         .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-
-        .calc-btn {
-            width: 100%; padding: 18px;
-            background-color: #f06292; color: white;
-            border: none; border-radius: 12px;
-            font-size: 1.2rem; font-weight: bold; cursor: pointer;
-            margin-top: 10px; transition: 0.2s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
+        .calc-btn { width: 100%; padding: 18px; background-color: #f06292; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.2s; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         .calc-btn:hover { background-color: #c2185b; transform: translateY(-3px); }
-
-        #result-area {
-            display: none; margin-top: 30px; padding: 30px;
-            background-color: #fce4ec; border-radius: 12px; text-align: center;
-            animation: fadeIn 0.5s ease;
-        }
-        
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fce4ec; border-radius: 12px; text-align: center; animation: fadeIn 0.5s ease; }
         .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
         .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.waste { color: #f06292; } 
-        .highlight.value { color: #2e7d32; }
-
+        .highlight.waste { color: #f06292; } .highlight.value { color: #2e7d32; }
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box {
-            flex-shrink: 0; width: 40px; height: 40px;
-            background: #f06292; color: white;
-            border-radius: 10px; font-weight: bold;
-            display: flex; align-items: center; justify-content: center;
-            margin-right: 20px; margin-top: 5px;
-        }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #f06292; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
         .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
         .reason-content p { font-size: 1rem; color: #666; }
-
         .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
         .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+        
+        .seo-content { line-height: 1.8; color: #444; }
+        .seo-content h3 { font-size: 1.3rem; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .seo-content p { margin-bottom: 15px; }
+        .seo-content ul { padding-left: 20px; margin-bottom: 20px; }
+        .seo-content li { margin-bottom: 10px; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        @media (max-width: 850px) {
-            .wrapper { flex-direction: column; }
-            .sidebar { width: 100%; position: static; min-width: auto; }
-            .main-content { width: 100%; }
-            h1.page-title { font-size: 1.8rem; }
-        }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; min-width: auto; } .main-content { width: 100%; } h1.page-title { font-size: 1.8rem; } }
     </style>
 </head>
 <body>
-
     <div class="wrapper">
-        
-        <!-- [좌측] 메인 콘텐츠 -->
         <main class="main-content">
-            
             <h1 class="page-title">가입비 500만 원, 이상형을 만날 확률은?</h1>
             <p class="page-subtitle">조건 보고 만나는 만남 시장. 당신의 가입비가 얼마나 허무하게 쓰이는지 계산해드립니다.</p>
 
-            <!-- 인트로: 팩트 제시 -->
             <section class="intro-box">
                 <h2>💍 만남 1회당 50만 원?</h2>
-                <p>
-                    결혼정보회사는 당신에게 '횟수'를 팝니다.<br>
-                    가입비를 횟수로 나누면, 커피 한 잔 마시고 헤어지는 1시간 만남에 <strong>수십만 원</strong>을 태우는 꼴입니다. 
-                    이 돈을 <strong>'나'</strong>에게 투자했다면 어땠을까요?
-                </p>
+                <p>결혼정보회사는 당신에게 '횟수'를 팝니다. 가입비를 횟수로 나누면, 커피 한 잔 마시고 헤어지는 1시간 만남에 <strong>수십만 원</strong>을 태우는 꼴입니다. 이 돈을 <strong>'나'</strong>에게 투자했다면 어땠을까요?</p>
             </section>
 
-            <!-- 계산기 섹션 -->
             <section id="calculator">
                 <h2>💘 소개팅 단가 계산기</h2>
-                
-                <div class="calc-group">
-                    <label>① 결정사 가입비 (만원)</label>
-                    <input type="number" id="signupFee" value="300" placeholder="예: 300 (노블레스/일반)">
-                </div>
-
-                <div class="calc-group">
-                    <label>② 보장된 만남 횟수 (회)</label>
-                    <input type="number" id="count" value="5" placeholder="예: 5 (서비스 횟수 포함)">
-                </div>
-
-                <div class="calc-group">
-                    <label>③ 1회 만남 시 데이트 비용 (만원)</label>
-                    <input type="number" id="dateCost" value="10" placeholder="예: 10 (식사+카페)">
-                </div>
-
+                <div class="calc-group"><label>① 결정사 가입비 (만원)</label><input type="number" id="signupFee" value="300" placeholder="예: 300"></div>
+                <div class="calc-group"><label>② 보장된 만남 횟수 (회)</label><input type="number" id="count" value="5" placeholder="예: 5"></div>
+                <div class="calc-group"><label>③ 1회 만남 시 데이트 비용 (만원)</label><input type="number" id="dateCost" value="10" placeholder="예: 10"></div>
                 <button id="calcBtn" class="calc-btn">1번 만날 때마다 깨지는 돈 확인</button>
-
-                <!-- 결과창 -->
                 <div id="result-area">
-                    
-                    <div style="margin-bottom:20px;">
-                        <p class="result-title">이성을 한 번 만나는 데 든 진짜 비용</p>
-                        <span id="resCostPerMeet" class="highlight waste">0원</span>
-                        <p style="font-size:0.9rem; color:#888;">(가입비 포함 단가)</p>
-                    </div>
-
-                    <div style="border-top:1px dashed #aaa; padding-top:20px;">
-                        <p class="result-title" style="margin-bottom:10px;">가입비 총액이면</p>
-                        <span id="resInvest" class="highlight value" style="font-size:1.8rem;">PT 0회</span>
-                        <p style="font-size:0.9rem; color:#888;">를 받고 몸짱이 될 수 있습니다.</p>
-                    </div>
-
-                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #f8bbd0; font-size:0.95rem;">
-                        <strong>조언:</strong><br>
-                        조건 만남에 돈을 쓰느니, 그 돈으로<br>
-                        <strong><span style="color:#d81b60;">나를 가꿔서</span></strong> 자연스럽게 만나는 게 확률이 높습니다.
-                    </div>
+                    <div style="margin-bottom:20px;"><p class="result-title">이성을 한 번 만나는 데 든 진짜 비용</p><span id="resCostPerMeet" class="highlight waste">0원</span><p style="font-size:0.9rem; color:#888;">(가입비 포함 단가)</p></div>
+                    <div style="border-top:1px dashed #aaa; padding-top:20px;"><p class="result-title" style="margin-bottom:10px;">가입비 총액이면</p><span id="resInvest" class="highlight value" style="font-size:1.8rem;">PT 0회</span><p style="font-size:0.9rem; color:#888;">를 받고 몸짱이 될 수 있습니다.</p></div>
+                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #f8bbd0; font-size:0.95rem;"><strong>조언:</strong><br>조건 만남에 돈을 쓰느니, 그 돈으로<br><strong><span style="color:#d81b60;">나를 가꿔서</span></strong> 자연스럽게 만나는 게 확률이 높습니다.</div>
                 </div>
             </section>
 
-            <!-- 팩트 체크 리스트 -->
             <section>
                 <h2>🛑 결정사가 알려주지 않는 진실</h2>
-                
-                <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">format_list_numbered</span></div>
-                    <div class="reason-content">
-                        <h3>잔인한 등급표</h3>
-                        <p>당신은 가입과 동시에 연봉, 직업, 외모, 집안 재력으로 등급이 매겨집니다. 당신이 원하는 이상형은 당신보다 높은 등급일 확률이 99%입니다. 만남 자체가 성사되지 않습니다.</p>
-                    </div>
-                </div>
-                
-                <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">person_outline</span></div>
-                    <div class="reason-content">
-                        <h3>알바 회원의 존재</h3>
-                        <p>횟수 차감을 위해 억지로 나오는 '알바 회원'이나, 결혼 생각이 없는 '바람잡이'가 존재한다는 의혹은 끊이지 않습니다. 영혼 없는 대화에 돈과 시간을 버리게 됩니다.</p>
-                    </div>
-                </div>
-
-                <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">money_off</span></div>
-                    <div class="reason-content">
-                        <h3>성혼 사례금 (추가 비용)</h3>
-                        <p>가입비가 끝이 아닙니다. 만약 결혼에 성공하면 수백만 원의 성혼 사례금을 추가로 요구합니다. 사랑을 비즈니스로 만드는 순간, 순수함은 사라집니다.</p>
-                    </div>
-                </div>
+                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">format_list_numbered</span></div><div class="reason-content"><h3>잔인한 등급표</h3><p>당신은 가입과 동시에 연봉, 직업, 외모, 집안 재력으로 등급이 매겨집니다. 당신이 원하는 이상형은 당신보다 높은 등급일 확률이 99%입니다. 만남 자체가 성사되지 않습니다.</p></div></div>
+                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">person_outline</span></div><div class="reason-content"><h3>알바 회원의 존재</h3><p>횟수 차감을 위해 억지로 나오는 '알바 회원'이나, 결혼 생각이 없는 '바람잡이'가 존재한다는 의혹은 끊이지 않습니다. 영혼 없는 대화에 돈과 시간을 버리게 됩니다.</p></div></div>
+                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">money_off</span></div><div class="reason-content"><h3>성혼 사례금 (추가 비용)</h3><p>가입비가 끝이 아닙니다. 만약 결혼에 성공하면 수백만 원의 성혼 사례금을 추가로 요구합니다. 사랑을 비즈니스로 만드는 순간, 순수함은 사라집니다.</p></div></div>
             </section>
 
-            <!-- 하단 광고 -->
-            <div class="ad-box">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <!-- SEO 텍스트 추가 -->
+            <section class="seo-content">
+                <h2>💍 결혼정보회사, 가입만 하면 결혼할 수 있을까?</h2>
+                <p>결혼 적령기에 접어든 미혼 남녀라면 한 번쯤 결혼정보회사 가입을 고민합니다. "전문가가 매칭해주니까 확실하겠지", "신원 인증된 사람만 만나니까 안전하겠지"라는 기대를 안고 수백만 원의 가입비를 결제합니다. 하지만 통계에 따르면 결정사 가입 회원의 성혼율은 20% 내외에 불과합니다. 나머지 80%는 횟수만 차감하다가 끝납니다.</p>
 
-            <!-- common.js가 푸터 자동 추가 -->
+                <h3>1. 철저한 자본주의 등급 사회</h3>
+                <p>결정사는 철저하게 조건(Spec)으로 사람을 평가합니다. 전문직, 대기업, 부모님 자산, 학벌 등 모든 것이 점수화되어 등급이 매겨집니다. 내가 원하는 '괜찮은 사람'은 이미 더 높은 등급의 이성을 찾고 있거나, 결정사에 가입할 필요 없이 주변에서 소개가 들어옵니다. 결국 비슷한 조건의 사람끼리 매칭되거나, 내가 원하지 않는 상대만 소개받는 '미스매칭'이 반복됩니다.</p>
 
+                <h3>2. 최고의 투자는 '자기 자신'</h3>
+                <p>가입비 300~500만 원은 결코 적은 돈이 아닙니다. 이 돈을 자기계발에 투자한다면 어떨까요? PT를 받아 몸매를 가꾸거나, 피부 관리를 받거나, 패션 스타일링을 받는 것이 매력을 높이는 데 훨씬 효과적입니다. 매력이 높아지면 자연스러운 만남의 기회도 늘어납니다. 누군가에게 나를 소개해달라고 돈을 내는 것보다, 내가 빛나는 사람이 되는 것이 가장 확실한 결혼 준비입니다.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 횟수 차감은 어떻게 되나요?</strong><br>A. 보통 가입 시 5회~10회 등 횟수가 정해져 있습니다. 상대방이 만남을 거절해도 프로필을 받아보는 것만으로 횟수가 차감되거나, 만났는데 마음에 안 들어도 1회가 소진됩니다.</li>
+                    <li><strong>Q. 환불은 가능한가요?</strong><br>A. 소비자분쟁해결기준에 따라 환불은 가능하지만, 위약금과 이미 진행된 횟수에 대한 비용(회당 수십만 원)을 공제하면 돌려받을 수 있는 돈은 거의 없습니다. 가입은 신중해야 합니다.</li>
+                </ul>
+            </section>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div>
         </main>
-
-        <!-- [우측] 사이드바 광고 -->
-        <aside class="sidebar">
-            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890" 
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
-        </aside>
-
+        <aside class="sidebar"><div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div></aside>
     </div>
-
-    <!-- 계산 로직 -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                // 1. 값 가져오기
                 const fee = Number(document.getElementById('signupFee').value) * 10000;
                 const count = Number(document.getElementById('count').value);
                 const dateCost = Number(document.getElementById('dateCost').value) * 10000;
-
-                if(fee <= 0 || count <= 0) {
-                    alert("가입비와 횟수를 올바르게 입력해주세요.");
-                    return;
-                }
-
-                // 2. 계산 로직
-                // 1회 주선 단가 (가입비 / 횟수)
+                if(fee <= 0 || count <= 0) { alert("가입비와 횟수를 올바르게 입력해주세요."); return; }
                 const costPerMatch = fee / count;
-                
-                // 1회 만남 총비용 (주선비 + 데이트비)
                 const totalCostPerMeet = costPerMatch + dateCost;
-
-                // PT 횟수 환산 (회당 5만원 가정)
                 const ptCost = 50000;
                 const ptCount = Math.floor(fee / ptCost);
-
-                // 피부과 관리 환산 (회당 10만원 가정)
-                const skinCareCount = Math.floor(fee / 100000);
-
-                // 3. 결과 출력
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-
                 document.getElementById('resCostPerMeet').innerText = Math.round(totalCostPerMeet).toLocaleString() + "원";
                 document.getElementById('resInvest').innerText = "PT " + ptCount + "회";
-
-                // 4. 비교 물건 변경
-                const feeManwon = fee / 10000;
-                let item = "최신형 아이폰";
-                
-                if(feeManwon > 1000) item = "전신 성형 수술";
-                else if(feeManwon > 500) item = "유럽 여행 + 명품백";
-                else if(feeManwon > 300) item = "치아 교정 + 피부과 패키지";
-                else if(feeManwon > 200) item = "퍼스널 트레이닝 40회";
-                else if(feeManwon > 100) item = "최고급 맞춤 정장/원피스";
-                
-                // 텍스트를 좀 더 구체적으로 변경 (JS로 제어)
-                // 위 HTML에서 '조언' 박스의 내용을 상황에 맞게 바꿀 수도 있음
             });
         });
     </script>
