@@ -3,277 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="구독료 지출 계산기. 넷플릭스, 유튜브, 쿠팡 등 매달 빠져나가는 고정 지출의 무서움을 확인하세요.">
+    <meta name="description" content="OTT 구독료 지출 계산기. 넷플릭스, 유튜브 등 숨만 쉬어도 나가는 고정비를 S&P500 투자 수익과 비교해드립니다.">
     <title>구독의 늪 | 팩트 폭격 연구소</title>
-
-    <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
-
-    <!-- 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-
     <style>
-        /* --- [표준 스타일 가이드] --- */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.7;
-        }
-
-        .wrapper {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-        }
-        
-        .main-content { flex: 3; min-width: 0; }
-        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
-
-        section {
-            background: white;
-            border-radius: 16px;
-            padding: 35px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            border: 1px solid #eee;
-        }
-
-        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
-        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
-
-        /* [테마 변경] 구독/스트리밍(Pink) -> #e91e63 */
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
+        .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
+        .main-content { flex: 3; } .sidebar { flex: 1; position: sticky; top: 20px; }
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; border: 1px solid #eee; }
+        h1.page-title { font-size: 2.2rem; margin: 20px 0 10px; color: #111; }
         h2 { border-left: 5px solid #e91e63; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-
         .intro-box { background-color: #fce4ec; border: 1px solid #f8bbd0; color: #880e4f; }
         .intro-box strong { color: #e91e63; background: #fff; padding: 0 5px; border-radius: 4px; }
-
-        /* 계산기 스타일 */
         .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #e91e63; }
-        input {
-            width: 100%; padding: 14px; border: 1px solid #ddd;
-            border-radius: 8px; font-size: 1rem; transition: 0.2s;
-        }
-        input:focus { border-color: #e91e63; outline: none; box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-
-        .calc-btn {
-            width: 100%; padding: 18px;
-            background-color: #e91e63; color: white;
-            border: none; border-radius: 12px;
-            font-size: 1.2rem; font-weight: bold; cursor: pointer;
-            margin-top: 10px; transition: 0.2s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .calc-btn:hover { background-color: #c2185b; transform: translateY(-3px); }
-
-        #result-area {
-            display: none; margin-top: 30px; padding: 30px;
-            background-color: #fce4ec; border-radius: 12px; text-align: center;
-            animation: fadeIn 0.5s ease;
-        }
+        label { display: block; margin-bottom: 8px; font-weight: 700; color: #e91e63; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; }
+        .calc-btn { width: 100%; padding: 18px; background-color: #e91e63; color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 1.2rem; font-weight: bold; }
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fce4ec; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.5rem; font-weight: 900; display: block; margin: 10px 0; color: #e91e63; }
         
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.waste { color: #e91e63; } 
-        .highlight.asset { color: #2e7d32; }
-
-        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box {
-            flex-shrink: 0; width: 40px; height: 40px;
-            background: #e91e63; color: white;
-            border-radius: 10px; font-weight: bold;
-            display: flex; align-items: center; justify-content: center;
-            margin-right: 20px; margin-top: 5px;
-        }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        @media (max-width: 850px) {
-            .wrapper { flex-direction: column; }
-            .sidebar { width: 100%; position: static; min-width: auto; }
-            .main-content { width: 100%; }
-            h1.page-title { font-size: 1.8rem; }
-        }
+        .seo-content h3 { margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; } }
     </style>
 </head>
 <body>
-
     <div class="wrapper">
-        
-        <!-- [좌측] 메인 콘텐츠 -->
         <main class="main-content">
-            
             <h1 class="page-title">숨만 쉬어도 통장에서 돈이 사라집니다</h1>
             <p class="page-subtitle">나도 모르게 결제되는 구독 서비스, 10년이면 차 한 대 값입니다.</p>
 
-            <!-- 인트로 -->
             <section class="intro-box">
                 <h2>📺 '스트림플레이션'의 습격</h2>
-                <p>
-                    넷플릭스, 유튜브, 쿠팡, 멜론, 클라우드...<br>
-                    개별적으로 보면 커피 한 잔 값이지만, 합치면 무시무시한 고정 지출이 됩니다. 
-                    <strong>"안 보면 해지해야지"</strong>라고 생각하지만, 귀찮아서 방치하고 계시진 않나요?
-                </p>
+                <p>넷플릭스, 유튜브, 쿠팡, 멜론, 클라우드... 개별적으로 보면 커피 한 잔 값이지만, 합치면 무시무시한 고정 지출이 됩니다. <strong>"안 보면 해지해야지"</strong>라고 생각하지만, 귀찮아서 방치하고 계시진 않나요?</p>
             </section>
 
-            <!-- 계산기 섹션 -->
             <section id="calculator">
                 <h2>✂️ 고정 지출 팩트 체크</h2>
-                <p style="margin-bottom: 25px; color: #666; font-size: 0.95rem;">
-                    이용 중인 월 구독료를 모두 더해서 입력해주세요.
-                </p>
-
-                <div class="calc-group">
-                    <label>① 월 총 구독료 (원)</label>
-                    <input type="number" id="monthlyCost" value="35000" placeholder="예: 35000">
-                    <div class="help-text">
-                        예: 넷플릭스(1.7만) + 유튜브(1.5만) + 쿠팡(0.8만) + 멜론(1만)...
-                    </div>
-                </div>
-
-                <div class="calc-group">
-                    <label>② 유지 기간 (년)</label>
-                    <input type="number" id="years" value="10" placeholder="예: 10">
-                    <div class="help-text">"앞으로 몇 년이나 더 쓸 것 같나요?"</div>
-                </div>
-
+                <label>① 월 총 구독료 (원)</label>
+                <input type="number" id="monthlyCost" value="35000" placeholder="예: 35000">
+                <label>② 유지 기간 (년)</label>
+                <input type="number" id="years" value="10" placeholder="예: 10">
                 <button id="calcBtn" class="calc-btn">사라지는 내 돈 확인하기</button>
 
-                <!-- 결과창 -->
                 <div id="result-area">
-                    
-                    <div style="margin-bottom:20px;">
-                        <p class="result-title">단순히 구독만 했을 뿐인데</p>
-                        <span id="resTotal" class="highlight waste">0원</span>
-                        <p class="result-title">이 증발했습니다.</p>
-                    </div>
-
-                    <div style="background:white; padding:15px; border-radius:8px; border:2px solid #2e7d32; margin-top:20px;">
-                        <p class="result-title" style="color:#2e7d32; font-size:0.95rem;">이 돈을 S&P500(연 10%)에 투자했다면?</p>
-                        <span id="resInvest" class="highlight asset" style="font-size:1.8rem;">0원</span>
-                    </div>
-
-                    <div style="margin-top:25px; font-size:0.95rem;">
-                        당신은 보지도 않는 영상을 위해<br>
-                        <strong><span id="compareItem" style="background:#f8bbd0; padding:0 4px; color:#880e4f;">최고급 안마의자</span></strong>를<br>
-                        포기한 것과 같습니다.
+                    <p>단순히 구독만 했을 뿐인데</p>
+                    <span id="resTotal" class="highlight">0원</span>
+                    <div style="margin-top:20px; padding-top:20px; border-top:1px dashed #999;">
+                        <p>이 돈을 S&P500(연 10%)에 투자했다면</p>
+                        <strong id="resInvest" style="font-size:1.8rem; color:#2e7d32;">0원</strong>
+                        <p>이 되었습니다.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- 팩트 체크 리스트 (텍스트 보강) -->
-            <section>
+            <section class="seo-content">
                 <h2>🛑 구독 다이어트가 시급한 이유</h2>
-                
-                <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">lock</span></div>
-                    <div class="reason-content">
-                        <h3>'락인(Lock-in) 효과'의 노예</h3>
-                        <p>기업들은 처음에 무료 체험이나 할인가로 당신을 유혹한 뒤, 자동 결제로 전환하여 빠져나가지 못하게 가둡니다. 당신이 해지 버튼을 찾기 귀찮아하는 그 심리가 바로 그들의 수익 모델입니다.</p>
-                    </div>
-                </div>
-                
-                <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">trending_up</span></div>
-                    <div class="reason-content">
-                        <h3>소리 없는 가격 인상</h3>
-                        <p>유튜브 프리미엄 43% 인상, 넷플릭스 계정 공유 금지 등 플랫폼들은 시장을 장악한 후 가격을 올립니다. 월급은 안 오르는데 고정비만 계속 늘어나는 구조입니다.</p>
-                    </div>
-                </div>
-
-                <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">schedule</span></div>
-                    <div class="reason-content">
-                        <h3>시간을 뺏고 돈도 뺏는다</h3>
-                        <p>구독 서비스를 본전 뽑으려면 시간을 써야 합니다. 퇴근 후 자기계발이나 휴식 대신, 억지로 드라마를 보며 시간을 때우게 됩니다. 돈을 내고 당신의 소중한 시간을 파는 셈입니다.</p>
-                    </div>
-                </div>
+                <h3>1. '락인(Lock-in) 효과'의 노예</h3>
+                <p>기업들은 처음에 무료 체험이나 할인가로 당신을 유혹한 뒤, 자동 결제로 전환하여 빠져나가지 못하게 가둡니다. 해지 버튼을 찾기 어렵게 숨겨놓거나, 포인트를 잃는다는 경고 문구로 당신을 붙잡습니다. 당신이 귀찮아하는 그 심리가 바로 그들의 수익 모델입니다.</p>
+                <h3>2. 소리 없는 가격 인상 (스트림플레이션)</h3>
+                <p>스트리밍(Streaming)과 인플레이션(Inflation)의 합성어인 '스트림플레이션'이 현실화되었습니다. 유튜브 프리미엄은 43% 인상되었고, 넷플릭스는 계정 공유를 금지했습니다. 월급은 안 오르는데 고정비만 계속 늘어나는 구조입니다. 보지 않는 서비스는 지금 당장 끊어야 합니다.</p>
             </section>
-
-            <!-- 하단 광고 -->
-            <div class="ad-box">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
-
-            <!-- common.js가 푸터 자동 추가 -->
-
+            
+            <div class="ad-box"><span style="font-size:11px; color:#ccc;">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-
-        <!-- [우측] 사이드바 광고 -->
-        <aside class="sidebar">
-            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890" 
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
-        </aside>
-
+        <aside class="sidebar"><div style="min-height: 600px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div></aside>
     </div>
-
-    <!-- 계산 로직 -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('calcBtn').addEventListener('click', function() {
-                // 1. 값 가져오기
-                const monthly = Number(document.getElementById('monthlyCost').value);
-                const years = Number(document.getElementById('years').value);
+        document.getElementById('calcBtn').addEventListener('click', function() {
+            const monthly = Number(document.getElementById('monthlyCost').value);
+            const years = Number(document.getElementById('years').value);
+            if(monthly <= 0 || years <= 0) { alert("값을 입력해주세요."); return; }
+            
+            const totalCost = monthly * 12 * years;
+            const rate = 0.10 / 12;
+            const months = years * 12;
+            const investValue = monthly * ((Math.pow(1 + rate, months) - 1) / rate);
 
-                if(monthly <= 0 || years <= 0) {
-                    alert("금액과 기간을 올바르게 입력해주세요.");
-                    return;
-                }
-
-                // 2. 계산 로직
-                // 단순 합계
-                const totalCost = monthly * 12 * years;
-
-                // 기회비용 (월복리 10%)
-                const rate = 0.10 / 12;
-                const months = years * 12;
-                const investValue = monthly * ((Math.pow(1 + rate, months) - 1) / rate);
-
-                // 3. 결과 출력
-                const resultArea = document.getElementById('result-area');
-                resultArea.style.display = 'block';
-
-                document.getElementById('resTotal').innerText = Math.round(totalCost).toLocaleString() + "원";
-                document.getElementById('resInvest').innerText = Math.round(investValue).toLocaleString() + "원";
-
-                // 4. 비교 물건 변경
-                const costManwon = totalCost / 10000;
-                let item = "최신형 스마트폰";
-                
-                if(costManwon > 2000) item = "경차 한 대";
-                else if(costManwon > 1000) item = "유럽 여행 패키지";
-                else if(costManwon > 500) item = "최고급 안마의자";
-                else if(costManwon > 300) item = "고성능 게이밍 PC";
-                else if(costManwon > 100) item = "명품 지갑";
-                
-                document.getElementById('compareItem').innerText = item;
-            });
+            const resultArea = document.getElementById('result-area');
+            resultArea.style.display = 'block';
+            document.getElementById('resTotal').innerText = Math.round(totalCost).toLocaleString() + "원";
+            document.getElementById('resInvest').innerText = Math.round(investValue).toLocaleString() + "원";
         });
     </script>
 </body>
