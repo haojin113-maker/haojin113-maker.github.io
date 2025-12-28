@@ -3,124 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="등산 장비 비용 계산기. 뒷산 가는데 쓰는 고어텍스와 중등산화 비용이 1회 등산당 얼마인지 계산해드립니다.">
+    <meta name="description" content="집 앞 뒷산 가는데 히말라야 장비가 필요할까요? 수백만 원어치 아웃도어 장비와 실제 산행 횟수를 바탕으로 '1회 등산 단가'를 팩트로 계산해드립니다.">
     <title>등산 장비병 판독기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
+
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        /* 섹션 공통 스타일 */
         section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
-        h2 { border-left: 5px solid #33691e; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #f1f8e9; border: 1px solid #dcedc8; color: #1b5e20; }
-        .intro-box strong { color: #33691e; background: #fff; padding: 0 5px; border-radius: 4px; }
-        .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #33691e; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; transition: 0.2s; }
-        input:focus { border-color: #33691e; outline: none; box-shadow: 0 0 0 3px rgba(51, 105, 30, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #33691e; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.2s; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .calc-btn:hover { background-color: #204413; transform: translateY(-3px); }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #f9fbe7; border-radius: 12px; text-align: center; animation: fadeIn 0.5s ease; }
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.waste { color: #33691e; } .highlight.ticket { color: #0277bd; }
-        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #33691e; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
-        
-        /* SEO Text */
-        .seo-content { line-height: 1.8; color: #444; }
-        .seo-content h3 { font-size: 1.3rem; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .seo-content p { margin-bottom: 15px; }
-        .seo-content ul { padding-left: 20px; margin-bottom: 20px; }
-        .seo-content li { margin-bottom: 10px; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; min-width: auto; } .main-content { width: 100%; } h1.page-title { font-size: 1.8rem; } }
+        /* [가변] 테마 설정: Dark Green */
+        h2 { border-left: 5px solid #388e3c; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #e8f5e9; border: 1px solid #c8e6c9; color: #1b5e20; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #388e3c; background: #fff; padding: 0 5px; border-radius: 4px; }
+        
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #388e3c; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #388e3c; outline: none; box-shadow: 0 0 0 3px rgba(56, 142, 60, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #388e3c; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(56,142,60,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #e8f5e9; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #1b5e20; }
+
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #388e3c; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">뒷산 가는데 에베레스트 장비가 왜 필요하죠?</h1>
-            <p class="page-subtitle">"산은 장비빨"이라며 결제한 고어텍스와 중등산화. 과연 제값을 하고 있을까요?</p>
+            <!-- [제목 섹션] -->
+            <h1 class="page-title">정복할 산은 '인스타'인가 '관악산'인가</h1>
+            <p class="page-subtitle">뒷산 가는데 에베레스트 장비? 당신의 과시적 취미 비용을 계산해드립니다.</p>
 
+            <!-- [도입 섹션] -->
             <section class="intro-box">
-                <h2>⛰️ 아웃도어 런웨이(Runway)</h2>
-                <p>한국 산에는 히말라야 원정대가 넘쳐납니다. 머리부터 발끝까지 200만 원. 하지만 당신이 오르는 산은 해발 600m 관악산입니다. 등산 한 번 갈 때마다 장비 감가상각으로 얼마를 쓰고 있는지 계산해드립니다.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">hiking</span> 대한민국 등산로는 전 세계에서 가장 화려한 패션쇼장입니다. "생존을 위한 도구"라는 핑계로 수백만 원을 긁었지만, 일 년에 산에 몇 번이나 가시나요? <strong>고어텍스의 유통기한</strong>이 다 가기 전에 당신의 1회 등산 단가를 확인하세요.</p>
             </section>
 
+            <!-- [계산기 섹션] -->
             <section id="calculator">
-                <h2>🥾 등산 가성비 견적서</h2>
-                <div class="calc-group"><label>① 의류 및 신발 구매 총액 (만원)</label><input type="number" id="wearCost" value="100" placeholder="예: 100"></div>
-                <div class="calc-group"><label>② 배낭 및 장비/소품 총액 (만원)</label><input type="number" id="gearCost" value="50" placeholder="예: 50"></div>
-                <div class="calc-group"><label>③ 연간 등산 횟수 (회)</label><input type="number" id="yearlyCount" value="4" placeholder="예: 4 (분기별 1회)"></div>
-                <div class="calc-group"><label>④ 장비 사용 예상 기간 (년)</label><input type="number" id="years" value="5" placeholder="예: 5"></div>
-                <button id="calcBtn" class="calc-btn">1회 등산 비용 확인하기</button>
+                <h2>⛰️ 아웃도어 기회비용 계산기</h2>
+                <div class="calc-group">
+                    <label>의류 및 등산 장비 총 구매가 (만원)</label>
+                    <input type="number" id="gearTotal" placeholder="예: 300" value="300">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">재킷, 등산화, 배낭, 스틱, 시계 등 합산</p>
+                </div>
+                <div class="calc-group">
+                    <label>연간 실제 산행 횟수 (회)</label>
+                    <input type="number" id="annualCount" placeholder="예: 12" value="12">
+                </div>
+                <div class="calc-group">
+                    <label>장비 유지 예상 기간 (년)</label>
+                    <input type="number" id="lifeSpan" placeholder="예: 5" value="5">
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">나의 1회 산행 단가 확인</button>
+
                 <div id="result-area">
-                    <div style="margin-bottom:20px;"><p class="result-title">당신은 산에 한 번 갈 때마다</p><span id="resCostPerHike" class="highlight waste">0원</span><p class="result-title">어치의 장비를 마모시키고 있습니다.</p></div>
-                    <div style="border-top:1px dashed #aaa; padding-top:20px;"><p class="result-title" style="margin-bottom:10px;">이 돈이면</p><span id="resTicket" class="highlight ticket" style="font-size:1.8rem;">케이블카 0회</span><p style="font-size:0.9rem; color:#888;">왕복 탑승이 가능합니다.</p></div>
-                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #c5e1a5; font-size:0.95rem;"><strong>팩트 폭격:</strong><br>히말라야 셰르파들은 <strong><span style="color:#33691e;">슬리퍼</span></strong> 신고도 당신보다 산을 잘 탑니다.</div>
+                    <p class="result-title">당신이 산을 오를 때마다 바닥에 버리는 돈</p>
+                    <span id="costPerHike" class="highlight">약 0원</span>
+                    <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
+            <!-- [팩트체크 섹션] -->
             <section>
-                <h2>🛑 고기능성 장비의 불편한 진실</h2>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">water_drop</span></div><div class="reason-content"><h3>고어텍스의 세탁 딜레마</h3><p>비싼 고어텍스 재킷, 세탁기에 돌리면 기능이 망가집니다. 관리가 까다로워 모셔두기만 하다가 기능성 막(멤브레인)이 삭아서 버리게 됩니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">hiking</span></div><div class="reason-content"><h3>중등산화와 무릎 통증</h3><p>동네 뒷산 흙길에 무거운 중등산화는 오히려 독입니다. 발이 무거우면 피로도가 급증하고 무릎 관절에 무리가 갑니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">shopping_bag</span></div><div class="reason-content"><h3>패션쇼가 된 등산로</h3><p>정상석 인증샷을 위해 매 시즌 신상 옷을 삽니다. 건강을 위해 산을 오르는 건지, 옷 자랑을 위해 오르는 건지 주객이 전도되었습니다.</p></div></div>
+                <h2>🛑 장비병 산행이 위험한 3가지 이유</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>오버스펙(Over-spec)의 과세</h3>
+                        <p>동네 산에서 히말라야급 3레이어 고어텍스를 입는 것은 정장에서 운동복의 편안함을 기대하는 격입니다. 무겁고 불편한 사치를 부리고 계십니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>감가상각과 소재의 수명</h3>
+                        <p>방수 기능은 사용하지 않아도 습기와 온도에 의해 매달 저하됩니다. 당신의 시드머니가 옷장 속에서 소리 없이 분해되고 있습니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>등산 후 '하산 지출'의 함정</h3>
+                        <p>비싼 장비를 갖춘 이들은 뒤풀이(먹거리)에서도 남들에게 밀리지 않으려 과도하게 지출합니다. 산은 건강을 주지만 뒤풀이는 가계부를 망칩니다.</p>
+                    </div>
+                </div>
             </section>
 
-            <!-- SEO 텍스트 추가 -->
+            <!-- [SEO 블로그 콘텐츠] -->
             <section class="seo-content">
-                <h2>⛰️ 등산은 '가장 저렴한 취미'여야 합니다</h2>
-                <p>등산은 원래 입장료도 없고, 큰 장비 없이 튼튼한 다리만 있으면 즐길 수 있는 최고의 가성비 취미였습니다. 하지만 아웃도어 마케팅에 휩쓸려 '장비병'에 걸리는 순간, 등산은 골프 못지않은 '돈 먹는 하마'가 됩니다. 한국의 산악 지형은 대부분 당일 산행 코스로, 전문적인 히말라야급 장비가 필요한 곳은 극히 드뭅니다.</p>
+                <h2>등산 장비병과 보여주기 문화: 당신의 등산이 가난을 부르는 이유</h2>
+                <p>한국의 등산 인구는 천만 명에 육박합니다. 하지만 해외 언론은 한국인들이 동네 뒷산을 오르면서도 에베레스트를 정복할 법한 차림으로 나타나는 것을 기이하게 여깁니다. <strong>'장비의 평등화'</strong>가 일어난 것 같지만, 실상은 아웃도어 브랜드들이 만든 정교한 마케팅 함정에 전 세대가 빠져있는 것과 같습니다. 등산의 본질인 '자연과의 교감'과 '건강 증진'은 뒷전이 된 채, 누구 배낭이 더 비싼가를 겨루는 장이 되었습니다.</p>
 
-                <h3>1. 고어텍스 재킷, 꼭 필요할까?</h3>
-                <p>고어텍스는 방수와 투습 기능을 동시에 갖춘 훌륭한 소재입니다. 하지만 맑은 날씨에 당일 산행을 주로 하는 일반인에게는 '오버스펙(Over-spec)'입니다. 비가 오면 등산을 안 가면 그만입니다. 50만 원짜리 고어텍스 재킷 대신, 5만 원짜리 경량 바람막이와 우비 하나면 충분합니다.</p>
+                <h3>1. 보이지 않는 손실: 고어텍스의 시간당 렌탈료</h3>
+                <p>300만 원어치 장비를 갖춘 사람이 한 달에 한 번(연 12회) 산에 간다면, 5년 동안 그의 산행 1회당 감가상각 비용은 약 5만 원입니다. 산 정상에서 내려와 먹는 1.5만 원짜리 도토리묵보다, 당신이 걸치고 있는 옷의 시간당 단가가 훨씬 비싼 셈입니다. 5만 원이면 서울 시내 호텔 수영장 일일권을 끊거나 고급 스테이크 한 끼를 먹을 수 있는 돈입니다. 오직 인스타그램 인증샷을 위해 '히말라야용 기능성'을 구매했다면, 당신은 자본주의 체제에서 가장 비효율적인 임대업을 스스로에게 행하고 있는 것입니다.</p>
 
-                <h3>2. 등산화 선택의 기준</h3>
-                <p>발목을 덮는 중등산화는 장거리 산행이나 무거운 배낭을 멨을 때 필요합니다. 가벼운 둘레길이나 뒷산을 가는데 무거운 등산화를 신으면 오히려 피로가 빨리 오고 무릎에 무리가 갑니다. 자신의 산행 스타일에 맞는 가벼운 트레킹화나 경등산화가 훨씬 효율적입니다.</p>
+                <h3>2. 기능성의 허상과 자산 보호의 우선순위</h3>
+                <p>진정으로 실력이 있는 알피니스트들은 도구에 매몰되지 않습니다. 체력을 기르고 지형을 숙지하는 소프트웨어적 자산이 생존에 더 중요함을 알기 때문입니다. 하지만 하수는 장비라는 하드웨어를 구매함으로써 실력의 부재를 가리려 합니다. 이 현상을 재테크로 투영하면, 공부하기 싫어서 비싼 유료 리딩방에 가입하는 것과 정확히 일치합니다. 오늘 장바구니에 담아둔 브랜드 재킷을 결제하기 전, 그 돈을 당신의 노후 자금이나 우량주에 넣어 보십시오. 20년 뒤 그 자산은 당신을 에베레스트 베이스캠프가 아닌, 진짜 평화로운 은퇴 생활로 인도해 줄 것입니다.</p>
 
                 <h3>자주 묻는 질문 (FAQ)</h3>
                 <ul>
-                    <li><strong>Q. 스틱은 꼭 있어야 하나요?</strong><br>A. 스틱은 무릎 하중을 30% 정도 분산시켜 주므로 장비 중에서는 가장 추천하는 아이템입니다. 하지만 비싼 카본 스틱을 살 필요는 없습니다. 3~5만 원대 두랄루민 소재 스틱으로도 충분히 효과를 볼 수 있습니다.</li>
-                    <li><strong>Q. 등산복은 기능성이라 비싼 거 아닌가요?</strong><br>A. 기능성 소재(흡한속건)는 중요하지만, 브랜드 로고값이 가격의 대부분을 차지합니다. SPA 브랜드의 스포츠 라인이나 이월 상품을 이용하면 1/5 가격으로 동일한 기능을 누릴 수 있습니다.</li>
+                    <li><strong>Q. 장비가 좋으면 안전하지 않나요?</strong><br>A. 안전의 핵심은 '준비'와 '날씨 확인'이지 비싼 재킷이 아닙니다. 비가 쏟아지는데 고어텍스 하나 믿고 산에 오르는 것은 만용일 뿐입니다.</li>
+                    <li><strong>Q. 나중에 당근마켓에 팔면 되잖아요.</strong><br>A. 아웃도어 의류는 세탁과 착용에 따른 성능 저하가 뚜렷하여 중고 시장에서 가치 방어가 가장 안 되는 품목 중 하나입니다.</li>
                 </ul>
             </section>
 
-            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div>
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-        <aside class="sidebar"><div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div></aside>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
     </div>
+
+    <!-- [계산 로직] -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                const wear = Number(document.getElementById('wearCost').value) * 10000;
-                const gear = Number(document.getElementById('gearCost').value) * 10000;
-                const count = Number(document.getElementById('yearlyCount').value);
-                const years = Number(document.getElementById('years').value);
-                if(wear < 0 || gear < 0 || count <= 0 || years <= 0) { alert("모든 값을 올바르게 입력해주세요."); return; }
-                const totalGear = wear + gear;
-                const totalHikes = count * years;
-                const costPerHike = totalGear / totalHikes;
-                const cableCarCost = 15000;
-                const ticketCount = (costPerHike / cableCarCost).toFixed(1);
+                const total = (parseFloat(document.getElementById('gearTotal').value) || 0) * 10000;
+                const freq = parseFloat(document.getElementById('annualCount').value) || 1;
+                const yrs = parseFloat(document.getElementById('lifeSpan').value) || 1;
+                
+                const costPerTime = total / (freq * yrs);
+
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-                document.getElementById('resCostPerHike').innerText = Math.round(costPerHike).toLocaleString() + "원";
-                document.getElementById('resTicket').innerText = "케이블카 " + ticketCount + "회";
-                if (costPerHike > 50000) { document.getElementById('resCostPerHike').style.color = "#d32f2f"; } 
-                else { document.getElementById('resCostPerHike').style.color = "#33691e"; }
+                document.getElementById('costPerHike').textContent = `약 ${Math.round(costPerTime).toLocaleString()}원`;
+                
+                let feedback = "";
+                if(costPerHike > 100000) feedback = "이 정도면 한 번 오를 때마다 5성급 호텔 숙박비를 땅에 버리는 셈입니다. 장비 자랑보다 건강이 우선입니다.";
+                else if(costPerHike > 30000) feedback = "비행기 타고 제주도 가는 게 더 경제적일 수 있습니다. '히말라야급' 과시욕을 조금 내려놓으세요.";
+                else feedback = "매우 실용적인 알피니스트시군요! 본전을 충분히 뽑고 계십니다.";
+
+                document.getElementById('resultText').textContent = feedback;
             });
         });
     </script>
