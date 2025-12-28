@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="철길 까는데 500만 원? 치아 교정의 총비용과 방치 시 발생할 치과 치료비 예방 효과를 팩트로 계산해드립니다.">
+    <meta name="description" content="치아 교정 600만 원, 사치일까요? 임플란트 예방 효과와 인상 자산 가치를 숫자로 환산한 진짜 교정 가성비를 팩트로 계산해드립니다.">
     <title>치아 교정 견적기 | 팩트 폭격 연구소</title>
+
     <script src="../common.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
@@ -16,72 +18,103 @@
         section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
-        h2 { border-left: 5px solid #0d47a1; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #e3f2fd; border: 1px solid #bbdefb; color: #0d47a1; padding: 25px; border-radius: 12px; }
-        .intro-box strong { color: #0d47a1; background: #fff; padding: 0 5px; border-radius: 4px; }
+        h2 { border-left: 5px solid #1a237e; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #e8eaf6; border: 1px solid #c5cae9; color: #1a237e; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #1a237e; background: #fff; padding: 0 5px; border-radius: 4px; }
         .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #0d47a1; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #1a237e; }
         input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
-        input:focus { border-color: #0d47a1; outline: none; box-shadow: 0 0 0 3px rgba(13, 71, 161, 0.1); }
-        .calc-btn { width: 100%; padding: 18px; background-color: #0d47a1; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(13, 71, 161, 0.2); }
-        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #e3f2fd; border-radius: 12px; text-align: center; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #0d47a1; }
+        .calc-btn { width: 100%; padding: 18px; background-color: #1a237e; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(26,35,126,0.2); }
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #e8eaf6; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #1a237e; }
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #0d47a1; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #1a237e; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
         .seo-content { line-height: 1.8; color: #444; }
+        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
+        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">철길 까는 비용, '본전'은 미소에서 나옵니다</h1>
-            <p class="page-subtitle">단순히 예뻐지는 비용이 아닙니다. 평생 건강을 위한 가장 확실한 베팅입니다.</p>
+            <h1 class="page-title">내 인생의 2년을 '철길'에 바칠 가치</h1>
+            <p class="page-subtitle">단순한 성형이 아닙니다. 노년의 임플란트 값을 아끼는 투자입니다.</p>
 
             <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">health_and_safety</span> 치아 교정비 500만 원. 2년이라는 인고의 시간. 하지만 부정교합을 방치했을 때 훗날 지불해야 할 <strong>임플란트와 풍치 치료비</strong>를 생각하면, 교정은 현존하는 가장 가성비 높은 '안티 에이징' 투자입니다.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">check_circle</span> 치아 교정 비용 600만 원. 누군가는 차라리 명품 가방을 사겠다고 합니다. 하지만 부정교합을 방치했을 때 50대 이후에 마주할 <strong>임플란트 10개와 틀니 비용</strong>을 합치면, 교정은 연 수익률 수백 퍼센트의 확실한 '방어적 재테크'입니다.</p>
             </section>
 
             <section id="calculator">
-                <h2>😬 교체 기회비용 시뮬레이터</h2>
+                <h2>😬 교정 가성비 정산기</h2>
                 <div class="calc-group">
                     <label>장치비 + 월 치료비 총 예상액 (만원)</label>
-                    <input type="number" id="bracesTotal" placeholder="예: 600" value="600">
+                    <input type="number" id="bracesTotal" value="600">
                 </div>
                 <div class="calc-group">
                     <label>나의 현재 나이 (세)</label>
-                    <input type="number" id="currentAge" placeholder="예: 25" value="25">
+                    <input type="number" id="currentAge" value="25">
                 </div>
-                
-                <button id="calcBtn" class="calc-btn">하루에 얼마씩 투자하는 건가요?</button>
+                <button id="calcBtn" class="calc-btn">미래 자산 가치 확인하기</button>
 
                 <div id="result-area">
-                    <p class="result-title">교정된 미소로 보낼 평생 하루 평균 비용</p>
+                    <p class="result-title">교정 후 평생 하루 평균 비용</p>
                     <span id="dailyCost" class="highlight">약 0원</span>
                     <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
             <section>
-                <h2>🛑 교정을 고민할 때 알아야 할 3가지 팩트</h2>
-                <div class="reason-card"><div class="icon-box">1</div><div class="reason-content"><h3>치주 질환 예방의 경제적 가치</h3><p>치열이 고르면 양치가 훨씬 쉬워집니다. 평생 지출할 치과비를 약 40% 이상 절감하는 '보험'과 같은 효과가 있습니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box">2</div><div class="reason-content"><h3>인상(Impression) 자산의 가치</h3><p>밝은 미소는 당신의 사회적 신뢰도를 높입니다. 이는 연봉 협상이나 계약 체결 등 무형의 자산 가치로 환산 시 수천만 원에 달합니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box">3</div><div class="reason-content"><h3>고통과 기간의 기회비용</h3><p>2년 동안 마음껏 먹지 못하는 스트레스를 고려해야 합니다. 교정은 현금뿐만 아니라 '시간과 정서적 자원'을 함께 투입하는 장기 투자입니다.</p></div></div>
+                <h2>🛑 치아 교정의 3가지 숨겨진 팩트</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>풍치와 잇몸병의 강력한 예방 수단</h3>
+                        <p>고르지 못한 치열은 칫솔질의 사각지대를 만듭니다. 결국 40대에 찾아올 치주 질환 치료비 수천만 원을 지금 막는 것입니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>사회적 자신감의 무형 자산 가치</h3>
+                        <p>환한 미소는 면접과 비즈니스에서 신뢰를 줍니다. 이는 연봉 협상에서 1%의 유리함만 가져와도 이미 교정비를 상쇄하고 남습니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>발치와 비발치, 시간의 기회비용</h3>
+                        <p>비용만 따지지 마세요. 2년이라는 인고의 시간 또한 당신의 자산입니다. 신중한 결정이 매몰 비용을 막는 유일한 길입니다.</p>
+                    </div>
+                </div>
             </section>
 
             <section class="seo-content">
-                <h2>치아 교정 600만 원, 사치인가 투자인가?</h2>
-                <p>치아 교정을 미용 목적으로만 생각하는 분들이 많습니다. 하지만 교정의 본질은 **'기능의 정상화'**에 있습니다. 부정교합은 단순히 보기 싫은 것이 아니라, 특정 치아에 무리한 힘이 가해져 잇몸 뼈를 약하게 만들고 치아 파손의 원인이 됩니다. 20대에 하는 600만 원의 교정 투자는, 50대 이후에 마주할 수천만 원의 전악 임플란트 비용을 방어하는 최상의 경제적 방패입니다.</p>
-                <h3>자주 묻는 질문</h3>
+                <h2>치아 교정 600만 원, 인생에서 가장 수익률 높은 선행 투자</h2>
+                <p>많은 분들이 교정기를 낀 자신의 모습을 두려워하며 결정을 미룹니다. 하지만 재테크와 건강의 관점에서 볼 때 치아 교정은 **'나이가 들수록 가격이 오르는 역방향 자산'**입니다. 어린 시절에 할수록 뼈의 반응 속도가 빨라 기간이 단축되고, 평생 그 혜택을 누리는 기간이 길어지기 때문입니다. 반대로 성인이 되어 미루다가 잇몸이 망가진 후에는 수천만 원을 들여도 원래의 치아를 살릴 수 없는 비극이 일어납니다.</p>
+
+                <h3>1. 보이지 않는 금융 손실: 방치 시 마주할 청구서</h3>
+                <p>부정교합이 있는 치아는 음식물을 씹을 때 특정 치아에만 과도한 힘이 집중되게 만듭니다. 이는 멀쩡한 치아의 뿌리를 약하게 하고, 결국 40대 중반부터 치아가 하나둘 빠지게 되는 근본적인 원인이 됩니다. 현재 임플란트 1개당 평균 비용이 150만 원임을 감안할 때, 단 4개의 임플란트만 예방해도 당신은 이미 600만 원의 교정비 본전을 완벽하게 찾은 셈입니다. 당신의 20대에 투자한 소액이 노년의 거대 의료비를 막는 <strong>'슈퍼 방어 자산'</strong>이 됩니다.</p>
+
+                <h3>2. 이미지 메이킹의 경제적 효율성</h3>
+                <p>단순히 예뻐지는 것을 넘어, 인상의 개선은 커리어에 지대한 영향을 미칩니다. 대중 앞에 서거나 고객을 상대하는 전문직군에서 깔끔한 치열이 주는 '신뢰 지표'는 수치화하기 어려울 만큼 큽니다. 성공한 사람들은 자신의 몸을 '생산 도구'로 인식하고 최상의 상태를 유지하는 데 아낌없이 투자합니다. 지저분한 치아를 보이며 미소 짓지 못하는 소심함이 당신의 잠재 수익을 얼마나 갉아먹고 있는지 팩트로 인지해야 합니다. 교정은 소모품인 옷을 사는 것과는 결이 다른, 평생을 함께할 당신의 신체적 프레임을 강화하는 활동입니다.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
                 <ul>
-                    <li><strong>Q. 성인 교정도 효과가 있나요?</strong><br>A. 잇몸 건강만 허락된다면 50대에도 가능합니다. 오히려 노년기의 건강한 저작 작용을 위해 성인 교정 인구는 계속 늘고 있습니다.</li>
-                    <li><strong>Q. 유지 장치를 꼭 해야 하나요?</strong><br>A. 유지 장치를 소홀히 하면 치아는 원래대로 돌아가려 합니다. 그렇게 되면 지난 수백만 원은 100% 매몰 비용이 됩니다.</li>
+                    <li><strong>Q. 너무 늦은 나이 아닐까요?</strong><br>A. 최근 40~50대 교정 인구가 급격히 늘고 있습니다. 치아가 흔들려 뽑기 전에 전체적인 구조를 바로잡는 것이 가장 경제적인 수명 연장 기술입니다.</li>
+                    <li><strong>Q. 비용 할인이 많이 되는 치과가 좋겠죠?</strong><br>A. 과도한 할인을 미끼로 환자를 모으는 이른바 '이벤트 치과'는 사후 관리가 안 되거나 도산할 위험이 큽니다. 당신의 평생 미소를 싸구려 박리다매에 맡기지 마세요.</li>
                 </ul>
             </section>
+
+            <!-- 광고 슬롯 -->
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-        <aside class="sidebar"><div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"></div></aside>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
     </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
@@ -90,10 +123,11 @@
                 const lifeExpectancy = 85; 
                 const daysLeft = (lifeExpectancy - age) * 365;
                 const costPerDay = total / daysLeft;
+                
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-                document.getElementById('dailyCost').textContent = `약 ${Math.round(costPerDay).toLocaleString()}원`;
-                document.getElementById('resultText').textContent = `앞으로 살면서 껌 한 통 값도 안 되는 돈으로 완벽한 미소와 건강을 소유하는 셈입니다. 이보다 수익률 높은 투자가 있을까요?`;
+                document.getElementById('dailyCost').textContent = `평생 일당 약 ${Math.round(costPerDay).toLocaleString()}원`;
+                document.getElementById('resultText').textContent = `지금부터 ${daysLeft.toLocaleString()}일 동안 껌 한 통 값도 안 되는 돈으로 완벽한 미소와 건강을 소유하게 됩니다. 노후 임플란트 비용 1,000만 원 세이브는 덤입니다.`;
             });
         });
     </script>
