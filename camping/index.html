@@ -3,162 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="캠핑 장비 비용 계산기. 텐트, 타프 등 장비값과 1회 출정 비용을 합쳐 호텔 숙박비와 가성비를 비교해드립니다.">
+    <meta name="description" content="텐트에서 자는데 5성급 호텔보다 비싸다고? 당신의 캠핑 장비값과 실제 이용 횟수를 바탕으로 '1박당 진짜 숙박비'를 팩트로 계산해드립니다.">
     <title>캠핑 장비병 판독기 | 팩트 폭격 연구소</title>
 
-    <!-- [1] 공통 모듈 연결 (네비게이션, 푸터, 광고 자동 설정) -->
+    <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
 
-    <!-- [2] 폰트 및 아이콘 로드 -->
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
-    <!-- [3] 페이지 전용 스타일 -->
     <style>
-        /* 기본 설정 */
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.7;
-        }
-
-        /* 레이아웃 */
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
 
-        /* 박스 디자인 */
+        /* 섹션 공통 스타일 */
         section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
-        
-        /* [테마 컬러] 캠핑/자연 -> #558b2f (Olive Green) */
-        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; color: #111; }
-        h2 { border-left: 5px solid #558b2f; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #f1f8e9; border: 1px solid #c5e1a5; color: #33691e; }
-        .intro-box strong { color: #558b2f; background: #fff; padding: 0 5px; border-radius: 4px; }
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
 
-        /* 입력 폼 스타일 */
+        /* [가변] 테마 설정: Moss Green */
+        h2 { border-left: 5px solid #4b5320; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #f1f8e9; border: 1px solid #dcedc8; color: #33691e; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #4b5320; background: #fff; padding: 0 5px; border-radius: 4px; }
+        
         .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; color: #558b2f; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; transition: 0.2s; }
-        input:focus { border-color: #558b2f; outline: none; box-shadow: 0 0 0 3px rgba(85, 139, 47, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #4b5320; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #4b5320; outline: none; box-shadow: 0 0 0 3px rgba(75, 83, 32, 0.1); }
 
-        /* 버튼 스타일 */
-        .calc-btn { width: 100%; padding: 18px; background-color: #558b2f; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; }
-        .calc-btn:hover { background-color: #33691e; transform: translateY(-3px); }
+        .calc-btn { width: 100%; padding: 18px; background-color: #4b5320; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(75,83,32,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
 
-        /* 결과창 스타일 */
+        /* 결과 영역 */
         #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #f1f8e9; border-radius: 12px; text-align: center; }
-        .highlight { font-size: 2.5rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.waste { color: #558b2f; }
-        .highlight.hotel { color: #0277bd; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #1b5e20; }
 
-        /* 팩트 체크 리스트 스타일 */
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #558b2f; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #4b5320; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
         
-        /* SEO 텍스트 스타일 */
         .seo-content { line-height: 1.8; color: #444; }
-        .seo-content h3 { font-size: 1.3rem; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        
-        /* 광고 박스 */
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
-
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; } }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">감성 캠핑? 현실은 '돈 내고 하는 극기훈련'</h1>
-            <p class="page-subtitle">텐트 치다 싸우고, 철수하다 병나고... 힐링하러 갔다가 킬링하고 오셨나요?</p>
+            <!-- [제목 섹션] -->
+            <h1 class="page-title">감성 캠핑? 장비빨 뒤에 숨겨진 잔인한 비용</h1>
+            <p class="page-subtitle">불멍 한 번에 50만 원? 당신이 노지에서 럭셔리 호텔가를 지불하는 이유.</p>
 
+            <!-- [도입 섹션] -->
             <section class="intro-box">
-                <h2>⛺ 개미지옥 입성 환영</h2>
-                <p>처음엔 "간단하게 의자랑 테이블만 사자"로 시작합니다. 하지만 곧 텐트, 타프, 침낭, 난로, 그리들... 그리고 결국엔 <strong>SUV 차량 교체</strong>까지 이어집니다. 당신의 1박 2일 야외 취침 비용이 5성급 호텔보다 비싸다는 사실, 알고 계셨나요?</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">terrain</span> 힐링하러 갔다가 장비 나르느라 몸살 나고, 지갑은 이미 빈사 상태인가요? 캠핑은 자연을 즐기는 스포츠가 아니라 <strong>'고가의 이삿짐 나르기'</strong>로 변질되기 쉽습니다. 장비 1회 사용 단가를 확인하세요.</p>
             </section>
 
-            <!-- [4] 계산기 섹션 -->
+            <!-- [계산기 섹션] -->
             <section id="calculator">
-                <h2>🔥 장비병 비용 시뮬레이터</h2>
+                <h2>🏕️ 캠핑 가성비 진단기</h2>
                 <div class="calc-group">
-                    <label>① 구매한(할) 총 장비 가격 (만원)</label>
-                    <input type="number" id="gearPrice" value="300" placeholder="예: 300 (텐트+침구+주방)">
+                    <label>총 장비 구입비 (만원)</label>
+                    <input type="number" id="gearTotal" placeholder="예: 500" value="500">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">텐트, 릴선, 화로대, 타프, 캠핑 전용 차량 튜닝비 등</p>
                 </div>
                 <div class="calc-group">
-                    <label>② 1회 출정 비용 (만원)</label>
-                    <input type="number" id="tripCost" value="20" placeholder="예: 20 (사이트비+식비+기름값)">
+                    <label>연간 평균 캠핑 횟수 (회)</label>
+                    <input type="number" id="annualFrequency" placeholder="예: 10" value="10">
                 </div>
                 <div class="calc-group">
-                    <label>③ 연간 캠핑 횟수 (회)</label>
-                    <input type="number" id="yearlyCount" value="5" placeholder="예: 5 (봄/가을)">
+                    <label>사용 예상 기간 (년)</label>
+                    <input type="number" id="usageYears" placeholder="예: 5" value="5">
                 </div>
-                <div class="calc-group">
-                    <label>④ 장비 사용 예상 기간 (년)</label>
-                    <input type="number" id="years" value="3" placeholder="예: 3 (기변병 오기 전까지)">
-                </div>
-                <button id="calcBtn" class="calc-btn">1박당 '진짜 비용' 확인하기</button>
+                
+                <button id="calcBtn" class="calc-btn">나의 1박당 숙박비 계산하기</button>
 
                 <div id="result-area">
-                    <p>당신은 노숙 1박에</p>
-                    <span id="resCostPerNight" class="highlight waste">0원</span>
-                    <div style="margin-top:20px; padding-top:20px; border-top:1px dashed #aaa;">
-                        <p>이 돈이면</p>
-                        <strong id="compareItem" class="highlight hotel" style="font-size:1.6rem;">호텔 스위트룸</strong>
-                        <p>에서 조식 먹으며 잘 수 있습니다.</p>
+                    <p class="result-title">당신의 캠핑 1회당 감가상각비는?</p>
+                    <span id="costPerNight" class="highlight">0원</span>
+                    <p id="resultText" style="color:#666;"></p>
+                </div>
+            </section>
+
+            <!-- [팩트체크 섹션] -->
+            <section>
+                <h2>🛑 장비병이 인생에 해로운 3가지 팩트</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>집의 상당 부분을 '창고'로 씁니다</h3>
+                        <p>장비를 보관하기 위해 방 하나를 내주거나 거실을 점령당하지 않았나요? 당신은 쓰지도 않는 물건을 위해 고가의 평당 집값을 낭비하고 있습니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>중고 시장은 장비병의 장례식장입니다</h3>
+                        <p>명품 캠핑 브랜드도 중고 시장에 나오는 순간 가격이 급락합니다. 유행이 지난 '지난 시즌 감성'은 누구도 거들떠보지 않는 쓰레기가 됩니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>설치와 해체에 뺏기는 진짜 휴식 시간</h3>
+                        <p>3시간 동안 텐트 치고, 3시간 동안 짐 싸느라 진을 다 뺍니다. 정작 멍하니 하늘을 볼 시간은 30분뿐인 노동형 취미임을 팩트로 직시하세요.</p>
                     </div>
                 </div>
             </section>
 
-            <section>
-                <h2>🛑 캠핑을 다시 생각해야 하는 이유</h2>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">upgrade</span></div><div class="reason-content"><h3>끝없는 장비 업그레이드</h3><p>처음엔 가성비 텐트로 시작하지만, 캠핑장에 가면 남들의 '명품 텐트'만 보입니다. 결국 중복 투자를 하게 되고, 통장은 텅장이 됩니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">fitness_center</span></div><div class="reason-content"><h3>힐링인가 킬링인가</h3><p>짐 싣고(테트리스), 운전하고, 텐트 치고, 요리하고, 설거지하고, 철수하고, 집에 와서 또 짐 정리... 2박 3일 내내 노동만 하다가 월요일에 병가 내는 게 현실입니다.</p></div></div>
-            </section>
-
-            <!-- [5] SEO 정보성 텍스트 -->
+            <!-- [SEO 블로그 콘텐츠] -->
             <section class="seo-content">
-                <h2>🏕️ 캠핑, 취미인가 부동산인가?</h2>
-                <p>코로나19 이후 캠핑 인구가 폭발적으로 늘었지만, 그만큼 중고 장터에 쏟아져 나오는 '은퇴 매물'도 많습니다. 캠핑은 초기 진입 장벽은 낮아 보이지만, 제대로 즐기려면 수백만 원에서 수천만 원의 비용이 드는 고가 취미입니다.</p>
+                <h2>풀소유 캠핑 vs 무소유 힐링: 당신은 무엇을 굽고 계십니까?</h2>
+                <p>대한민국 캠핑 열풍은 '장비의 고급화'라는 기이한 방향으로 흐르고 있습니다. 어느덧 캠핑장은 누가 더 비싼 면 텐트를 치고, 어떤 브랜드의 화로대를 가졌는지 경쟁하는 전시장으로 전락했습니다. 자연을 만나러 갔지만, 정작 우리가 만나는 것은 <strong>신용카드 할부 영수증과 테트리스하듯 차곡차곡 쌓인 짐 덩어리</strong>들입니다.</p>
 
-                <h3>1. 보관 비용 (공간의 가치)</h3>
-                <p>텐트, 타프, 아이스박스, 난로, 테이블, 의자... 이 짐들을 다 어디에 두시나요? 아파트 베란다나 방 하나를 창고로 쓰고 계실 겁니다. 서울 아파트 평당 가격이 3~4천만 원인 점을 감안하면, 당신은 캠핑 장비를 보관하기 위해 수천만 원짜리 공간을 할애하고 있는 셈입니다.</p>
+                <h3>1. 보이지 않는 비용: 유지비와 감가상각의 진실</h3>
+                <p>캠핑 장비 1,000만 원어치를 샀다고 가정합시다. 이를 5년 동안 연 10회 사용한다면, 캠핑장 입실료(평균 5만 원)를 제외하고도 매번 텐트를 칠 때마다 당신은 약 20만 원의 감가상각 비용을 지불하는 셈입니다. 즉, 캠핑 한 번에 최소 25만 원에서 30만 원 이상이 드는 것입니다. 이는 성수기 제주도 특급 호텔 숙박비나 동남아 풀빌라 여행과 맞먹는 수준입니다. 불편함을 사서 고생하는 대가로 호텔보다 더 비싼 비용을 지불하고 있지는 않은지 따져봐야 합니다.</p>
 
-                <h3>2. 글램핑/카라반이 더 경제적일 수도</h3>
-                <p>장비를 사고, 관리하고, 설치/철수하는 노동력까지 비용으로 환산해보세요. 1년에 5번 미만으로 간다면, 모든 것이 갖춰진 글램핑이나 카라반을 이용하는 것이 경제적으로도, 정신적으로도 훨씬 이득일 수 있습니다. 장비병에 걸려 '보여주기식 캠핑'을 하고 있는 건 아닌지 점검이 필요합니다.</p>
+                <h3>2. 물욕이 망치는 취미의 본질</h3>
+                <p>진정한 휴식은 비싼 의자에서 나오는 것이 아니라 마음의 평온에서 나옵니다. 장비 하나를 더 사기 위해 회사에서 추가 노동을 하고 스트레스를 받는다면, 그 장비가 주는 힐링은 기만일 뿐입니다. 미니멀 캠핑으로 돌아가 보십시오. 짐이 줄어들수록 차의 연비가 좋아지고, 세팅 시간은 짧아지며, 진짜 대화와 쉼이 있는 공간이 확보됩니다. 장비로 자신을 정의하려는 '장비빨'에서 벗어나는 순간, 당신의 통장 잔고와 캠핑의 질은 동시에 올라갑니다.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 장비는 자산이라 나중에 팔 수 있지 않나요?</strong><br>A. 유행에 민감한 캠핑 기어는 전자제품과 같습니다. 시간이 흐를수록 성능이 아닌 '이미지'가 노후화되어 제값을 받기란 거의 불가능합니다.</li>
+                    <li><strong>Q. 캠핑카나 트레일러는 어떤가요?</strong><br>A. 관리비, 보험료, 주차 공간 확보 등 부대 비용이 어마어마합니다. 1년 365일 중 며칠이나 그 차에서 자는지 계산해보면 최악의 가성비 투자임을 알게 됩니다.</li>
+                </ul>
             </section>
 
-            <!-- [6] 하단 광고 -->
             <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-        <aside class="sidebar"><div style="min-height: 600px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div></aside>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
     </div>
 
-    <!-- [7] 계산 로직 -->
+    <!-- [계산 로직] -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                const gear = Number(document.getElementById('gearPrice').value) * 10000;
-                const trip = Number(document.getElementById('tripCost').value) * 10000;
-                const count = Number(document.getElementById('yearlyCount').value);
-                const years = Number(document.getElementById('years').value);
-                if(gear <= 0 || years <= 0) { alert("값을 올바르게 입력해주세요."); return; }
+                const total = (parseFloat(document.getElementById('gearTotal').value) || 0) * 10000;
+                const freq = parseFloat(document.getElementById('annualFrequency').value) || 1;
+                const yrs = parseFloat(document.getElementById('usageYears').value) || 1;
                 
-                const totalTrips = count * years;
-                const gearPerTrip = gear / totalTrips;
-                const costPerTrip = gearPerTrip + trip;
+                const costPerTime = total / (freq * yrs);
 
-                document.getElementById('result-area').style.display = 'block';
-                document.getElementById('resCostPerNight').innerText = Math.round(costPerTrip).toLocaleString() + "원";
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+                document.getElementById('costPerNight').textContent = `약 ${Math.round(costPerTime).toLocaleString()}원`;
+                
+                let feedback = "";
+                if(costPerTime > 400000) feedback = "이 정도면 시그니엘 숙박비입니다. 야생 호텔에서 아주 호화로운 고생을 하고 계시네요.";
+                else if(costPerTime > 150000) feedback = "전국 비즈니스 호텔이나 고급 펜션 가격입니다. 장비빨보다 실제 사용에 더 집중하세요.";
+                else feedback = "합리적인 캠퍼시군요. 장비를 본전 뽑을 때까지 알차게 쓰고 계십니다.";
 
-                let item = "깨끗한 모텔";
-                if(costPerTrip > 500000) item = "6성급 럭셔리 호텔 스위트룸";
-                else if(costPerTrip > 300000) item = "5성급 호텔 (조식 포함)";
-                else if(costPerTrip > 200000) item = "4성급 비즈니스 호텔";
-                else if(costPerTrip > 100000) item = "고급 펜션";
-                document.getElementById('compareItem').innerText = item;
+                document.getElementById('resultText').textContent = feedback;
             });
         });
     </script>
