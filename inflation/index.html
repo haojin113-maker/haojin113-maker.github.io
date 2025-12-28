@@ -3,297 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="실질 금리 계산기. 물가상승률과 이자소득세를 뺀 당신의 진짜 예금 수익률을 계산해드립니다.">
-    <title>예적금의 배신 | 팩트 폭격 연구소</title>
+    <meta name="description" content="은행 이자 4%? 세금 떼고 물가 오르면 사실상 내 돈은 삭제되고 있습니다. 예적금의 치명적인 함정과 실질 수익률을 팩트로 계산해드립니다.">
+    <title>예적금의 배신 판독기 | 팩트 폭격 연구소</title>
 
-    <!-- [1] 공통 모듈 연결 -->
+    <!-- [1] 공통 모듈 및 라이브러리 -->
     <script src="../common.js"></script>
-
-    <!-- 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
     <style>
-        /* --- [표준 스타일 가이드] --- */
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.7;
-        }
-
-        .wrapper {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-        }
-        
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
+        .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
 
-        section {
-            background: white;
-            border-radius: 16px;
-            padding: 35px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            border: 1px solid #eee;
-        }
-
+        /* 섹션 공통 스타일 */
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
 
-        /* [테마 변경] 냉정함/금융(Blue Grey) -> #546e7a */
-        h2 { border-left: 5px solid #546e7a; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-
-        .intro-box { background-color: #eceff1; border: 1px solid #cfd8dc; color: #37474f; }
-        .intro-box strong { color: #546e7a; background: #fff; padding: 0 5px; border-radius: 4px; }
-
-        /* 계산기 스타일 */
-        .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #546e7a; }
-        input {
-            width: 100%; padding: 14px; border: 1px solid #ddd;
-            border-radius: 8px; font-size: 1rem; transition: 0.2s;
-        }
-        input:focus { border-color: #546e7a; outline: none; box-shadow: 0 0 0 3px rgba(84, 110, 122, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-
-        .calc-btn {
-            width: 100%; padding: 18px;
-            background-color: #546e7a; color: white;
-            border: none; border-radius: 12px;
-            font-size: 1.2rem; font-weight: bold; cursor: pointer;
-            margin-top: 10px; transition: 0.2s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .calc-btn:hover { background-color: #263238; transform: translateY(-3px); }
-
-        #result-area {
-            display: none; margin-top: 30px; padding: 30px;
-            background-color: #eceff1; border-radius: 12px; text-align: center;
-            animation: fadeIn 0.5s ease;
-        }
+        /* [가변] 테마 설정: Slate Gray */
+        h2 { border-left: 5px solid #455a64; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #eceff1; border: 1px solid #cfd8dc; color: #263238; padding: 25px; border-radius: 12px; }
         
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.plus { color: #2e7d32; } 
-        .highlight.minus { color: #d32f2f; }
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #455a64; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; transition: 0.2s; }
+        input:focus { border-color: #455a64; outline: none; box-shadow: 0 0 0 3px rgba(69, 90, 100, 0.1); }
 
+        .calc-btn { width: 100%; padding: 18px; background-color: #455a64; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(69, 90, 100, 0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과창 스타일 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #eceff1; border-radius: 12px; text-align: center; animation: fadeIn 0.5s ease; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #b71c1c; }
+
+        /* 요인 카드 스타일 */
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box {
-            flex-shrink: 0; width: 40px; height: 40px;
-            background: #546e7a; color: white;
-            border-radius: 10px; font-weight: bold;
-            display: flex; align-items: center; justify-content: center;
-            margin-right: 20px; margin-top: 5px;
-        }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #455a64; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        /* SEO 콘텐츠 스타일 */
+        .seo-content { line-height: 1.8; color: #444; }
+        .seo-content h3 { font-size: 1.3rem; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; color: #111; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        @media (max-width: 850px) {
-            .wrapper { flex-direction: column; }
-            .sidebar { width: 100%; position: static; min-width: auto; }
-            .main-content { width: 100%; }
-            h1.page-title { font-size: 1.8rem; }
-        }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } .main-content { width: 100%; } }
     </style>
 </head>
 <body>
-
     <div class="wrapper">
-        
-        <!-- [좌측] 메인 콘텐츠 -->
         <main class="main-content">
-            
-            <h1 class="page-title">열심히 저축했는데 왜 가난해질까요?</h1>
-            <p class="page-subtitle">통장의 돈은 늘었지만, 당신이 살 수 있는 물건은 줄어들었습니다.</p>
+            <h1 class="page-title">원금 보장? 사실은 '원금 파괴'입니다</h1>
+            <p class="page-subtitle">물가 상승률을 이기지 못하는 예적금은 저축이 아닌 손실입니다.</p>
 
-            <!-- 인트로: 팩트 제시 -->
             <section class="intro-box">
-                <h2>📉 돈이 녹고 있습니다 (인플레이션)</h2>
-                <p>
-                    "은행 이자 4% 준대!"라며 좋아하셨나요?<br>
-                    <strong>이자소득세 15.4%</strong>를 떼고, 매년 오르는 <strong>물가상승률(3~4%)</strong>을 빼면 남는 게 있을까요?<br>
-                    안전하다고 믿었던 예적금이 당신의 자산 가치를 갉아먹는 범인일 수 있습니다.
-                </p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">trending_down</span> 예금은 안전한가요? 숫자만 그대로일 뿐, 당신이 살 수 있는 물건의 양은 매일 줄어듭니다. <strong>실질 마이너스 금리</strong>의 공포를 계산해 보세요.</p>
             </section>
 
             <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>💰 실질 금리 판독기</h2>
-                <p style="margin-bottom: 25px; color: #666; font-size: 0.95rem;">
-                    예금 조건과 물가상승률을 입력하면 '진짜 수익'을 계산해드립니다.
-                </p>
-
+                <h2>📉 실질 수익률 계산기</h2>
                 <div class="calc-group">
-                    <label>① 예치할 원금 (만원)</label>
-                    <input type="number" id="principal" value="1000" placeholder="예: 1000">
+                    <label>예치/적금 금액 (만원)</label>
+                    <input type="number" id="principal" placeholder="예: 1000" value="1000">
                 </div>
-
                 <div class="calc-group">
-                    <label>② 은행 예금 금리 (연 %)</label>
-                    <input type="number" id="bankRate" value="3.5" placeholder="예: 3.5">
+                    <label>은행 약정 이자율 (연 %)</label>
+                    <input type="number" id="nominalRate" placeholder="예: 4" value="4">
                 </div>
-
                 <div class="calc-group">
-                    <label>③ 예상 물가상승률 (연 %)</label>
-                    <input type="number" id="inflationRate" value="3.0" placeholder="평균 3.0">
-                    <div class="help-text">* 최근 외식비, 생활물가 상승률 고려</div>
+                    <label>체감 물가 상승률 (연 %)</label>
+                    <input type="number" id="inflationRate" placeholder="예: 5" value="5">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">자산 가치는 물가만큼 비례해서 하락합니다.</p>
                 </div>
+                
+                <button id="calcBtn" class="calc-btn">진짜 수익 확인하기</button>
 
-                <div class="calc-group">
-                    <label>④ 예치 기간 (년)</label>
-                    <input type="number" id="years" value="10" placeholder="예: 10">
-                </div>
-
-                <button id="calcBtn" class="calc-btn">내 돈의 '진짜 가치' 확인하기</button>
-
-                <!-- 결과창 -->
                 <div id="result-area">
-                    
-                    <div style="margin-bottom:20px;">
-                        <p class="result-title">10년 뒤 통장에 찍히는 돈 (명목 금액)</p>
-                        <span id="resNominal" style="font-size:1.5rem; color:#37474f; font-weight:bold;">0원</span>
-                        <p style="font-size:0.9rem; color:#888;">(세후 이자 포함)</p>
-                    </div>
-
-                    <div style="border-top:1px dashed #999; padding-top:20px;">
-                        <p class="result-title" style="margin-bottom:10px;">하지만 물가 상승을 고려한</p>
-                        <p class="result-title">당신의 <strong>진짜 수익금</strong>은</p>
-                        <span id="resRealProfit" class="highlight minus">0원</span>
-                        <p style="font-size:0.9rem; color:#555;">실질 금리: <strong id="resRealRate">0%</strong></p>
-                    </div>
-
-                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #cfd8dc; font-size:0.95rem;">
-                        당신은 저축을 한 것이 아니라,<br>
-                        구매력(돈의 가치)을 <span style="color:#d32f2f; font-weight:bold;">잃어버렸습니다.</span>
-                    </div>
+                    <p class="result-title">1년 뒤 당신의 '실질적' 가치 변화는?</p>
+                    <span id="realProfit" class="highlight">0원</span>
+                    <p id="resultText" style="color:#666; margin-top:10px; font-weight:bold;"></p>
                 </div>
             </section>
 
-            <!-- 팩트 체크 리스트 -->
+            <!-- 팩트체크 섹션 -->
             <section>
-                <h2>🛑 예적금만 고집하면 안 되는 이유</h2>
-                
+                <h2>🛑 은행이 가르쳐주지 않는 3가지 팩트</h2>
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">trending_down</span></div>
+                    <div class="icon-box">1</div>
                     <div class="reason-content">
-                        <h3>마이너스 실질 금리 시대</h3>
-                        <p>금리가 3%라도 세금(15.4%)을 떼면 약 2.5%가 됩니다. 그런데 물가가 3% 오르면? 가만히 앉아서 내 돈의 가치가 매년 0.5%씩 삭제되는 것입니다.</p>
+                        <h3>15.4%라는 가혹한 이자소득세</h3>
+                        <p>애써 모은 이자에서 국가는 따박따박 세금을 떼어갑니다. 명목 금리가 4%여도 세후 실제 금리는 3.3%대에 불과합니다.</p>
                     </div>
                 </div>
-                
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">local_pizza</span></div>
+                    <div class="icon-box">2</div>
                     <div class="reason-content">
-                        <h3>짜장면 가격의 법칙</h3>
-                        <p>10년 전 4,000원 하던 짜장면이 지금 7,000원입니다. 은행에 4,000원을 넣어뒀다면 지금 5,000원이 되었을 겁니다. 예전엔 사 먹을 수 있었는데, 지금은 못 사 먹습니다. 이게 '구매력 손실'입니다.</p>
+                        <h3>화폐 인쇄는 멈추지 않습니다</h3>
+                        <p>전 세계 중앙은행이 돈을 찍어낼수록 당신이 쥐고 있는 현금의 희소성은 낮아집니다. 예금은 가난해지는 가장 확실한 방법입니다.</p>
                     </div>
                 </div>
-
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">show_chart</span></div>
+                    <div class="icon-box">3</div>
                     <div class="reason-content">
-                        <h3>투자(Hedge)는 선택이 아닌 필수</h3>
-                        <p>인플레이션을 방어하기 위해서는 최소한 물가상승률 이상의 수익을 내는 자산(주식, 부동산, 금 등)에 투자해야 내 돈의 가치를 '지킬 수' 있습니다.</p>
+                        <h3>구매력 평당 가격의 배신</h3>
+                        <p>10년 전 짜장면 값과 지금의 값을 비교해 보세요. 은행 이자가 그 상승분을 따라잡았나요? 당신의 구매력은 우하향하고 있습니다.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- 하단 광고 -->
-            <div class="ad-box">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <!-- SEO 콘텐츠 -->
+            <section class="seo-content">
+                <h2>원금 보장의 역설: 왜 예금만 하면 가난해질까?</h2>
+                <p>대한민국 국민 대다수의 안전 자산 1순위는 예적금입니다. 하지만 자본주의 경제 시스템에서 <strong>'원금이 보장된다는 것'은 '가치가 하락한다는 것'</strong>과 동의어입니다. 물가는 매년 복리로 상승하는데, 은행 이자는 세금 15.4%를 떼고 나면 물가 상승분조차 방어하지 못하는 경우가 태반이기 때문입니다.</p>
 
-            <!-- common.js가 푸터 자동 추가 -->
+                <h3>1. 이자소득세와 물가의 합작 공격</h3>
+                <p>예를 들어 연 4% 예금에 1,000만 원을 넣었다면, 1년 뒤 이자는 40만 원입니다. 하지만 여기서 이자소득세 61,600원을 떼고 나면 내 손에 쥐어지는 건 338,400원입니다. 그 사이 물가가 5% 올랐다면? 작년에 1,000만 원으로 살 수 있었던 물건들은 이제 1,050만 원이 되어 있습니다. 당신은 숫자상으로 돈을 번 것 같지만, 실질적으로는 11만 원 이상의 손해를 본 셈입니다.</p>
 
+                <h3>2. 실물 자산으로 갈아타야 하는 이유</h3>
+                <p>현금을 쥐고 있는 것은 가라앉는 배에 올라탄 것과 같습니다. 부자들은 현금을 '보유'하지 않고 주식, 부동산, 금과 같은 '실물 자산'으로 즉시 교환합니다. 실물 자산은 인플레이션이 발생할 때 화폐 가치 하락만큼 가격이 함께 오르며 내 구매력을 지켜주기 때문입니다. 예적금은 오직 '기회를 기다리는 단기 대기 자금' 용도로만 사용해야지, 장기 자산 증식의 수단으로 삼는 것은 위험한 전략입니다.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 그래도 원금 손실이 나는 주식보다 안전하지 않나요?</strong><br>A. 단기적으로는 안전해 보이지만, 장기적으로(10~20년) 예금의 실질 가치가 하락할 확률은 100%입니다. 주식의 변동성보다 예금의 확실한 가치 하락이 더 큰 위험입니다.</li>
+                    <li><strong>Q. 그럼 적금을 당장 해지해야 할까요?</strong><br>A. 당장 쓸 돈이나 비상금은 예금이 적합합니다. 하지만 노후 자금과 같이 장기적인 자금은 물가 상승률 + 알파의 수익을 낼 수 있는 투자 자산으로 분산해야 합니다.</li>
+                </ul>
+            </section>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
 
-        <!-- [우측] 사이드바 광고 -->
         <aside class="sidebar">
-            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890" 
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </aside>
-
     </div>
 
-    <!-- 계산 로직 -->
+    <!-- 로직 스크립트 -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                // 1. 값 가져오기
-                const principal = Number(document.getElementById('principal').value) * 10000;
-                const bankRate = Number(document.getElementById('bankRate').value) / 100;
-                const inflationRate = Number(document.getElementById('inflationRate').value) / 100;
-                const years = Number(document.getElementById('years').value);
-
-                if(principal <= 0 || years <= 0) {
-                    alert("원금과 기간을 올바르게 입력해주세요.");
-                    return;
-                }
-
-                // 2. 계산 로직
-                // (1) 명목상 세후 수익률 (단리 기준)
-                // 보통 예금은 단리 계산이 많지만, 10년이면 복리 효과를 기대하므로 연복리로 계산
-                const taxRate = 0.154; // 이자소득세
-                const netRate = bankRate * (1 - taxRate); // 세후 이자율
+                const principal = parseFloat(document.getElementById('principal').value) * 10000;
+                const nominalRate = parseFloat(document.getElementById('nominalRate').value) / 100;
+                const inflationRate = parseFloat(document.getElementById('inflationRate').value) / 100;
                 
-                // 명목 미래 가치 (통장에 찍히는 돈)
-                const nominalValue = principal * Math.pow((1 + netRate), years);
+                if(!principal || !nominalRate || !inflationRate) { alert('값을 입력해주세요.'); return; }
 
-                // (2) 실질 미래 가치 (인플레이션 반영)
-                // 구매력 기준 가치 = 명목가치 / (1 + 물가상승률)^년
-                const realPurchasingPower = nominalValue / Math.pow((1 + inflationRate), years);
-
-                // (3) 실질 수익금 (구매력 기준 - 원금)
-                const realProfit = realPurchasingPower - principal;
+                // 세후 이자 계산
+                const interest = principal * nominalRate;
+                const afterTaxInterest = interest * (1 - 0.154);
                 
-                // 실질 수익률
-                const realRatePercent = ((realProfit / principal) / years * 100).toFixed(2); // 연평균 단순 환산
+                // 물가 반영 실질 가치 하락분
+                const inflationLoss = principal * inflationRate;
+                
+                // 최종 실질 수익 (세후 이자 - 물가상승분)
+                const realProfit = afterTaxInterest - inflationLoss;
 
-                // 3. 결과 출력
                 const resultArea = document.getElementById('result-area');
-                const profitElem = document.getElementById('resRealProfit');
-                
                 resultArea.style.display = 'block';
-
-                document.getElementById('resNominal').innerText = Math.round(nominalValue).toLocaleString() + "원";
+                document.getElementById('realProfit').textContent = `${(realProfit/10000).toFixed(1)}만 원`;
                 
-                if (realProfit >= 0) {
-                    profitElem.innerText = "+" + Math.round(realProfit).toLocaleString() + "원";
-                    profitElem.className = "highlight plus";
-                    document.getElementById('resRealRate').style.color = "#2e7d32";
+                let text = "";
+                if(realProfit < 0) {
+                    text = `세금과 물가를 고려하면 당신의 자산은 1년 만에 사실상 ${(Math.abs(realProfit)/10000).toFixed(1)}만 원 삭제되었습니다. 열심히 모았는데 가난해진 셈입니다.`;
+                    document.getElementById('realProfit').style.color = "#b71c1c";
                 } else {
-                    profitElem.innerText = Math.round(realProfit).toLocaleString() + "원";
-                    profitElem.className = "highlight minus";
-                    document.getElementById('resRealRate').style.color = "#d32f2f";
+                    text = `다행히 물가보다는 많이 벌었네요. 하지만 실질 수익금 ${(realProfit/10000).toFixed(1)}만 원은 노력에 비해 너무나 초라합니다.`;
+                    document.getElementById('realProfit').style.color = "#2e7d32";
                 }
-                
-                document.getElementById('resRealRate').innerText = realRatePercent + "%";
+                document.getElementById('resultText').textContent = text;
             });
         });
     </script>
