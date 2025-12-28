@@ -3,277 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="바디프로필 준비 비용 계산기. PT, 태닝, 스튜디오 촬영비 등 인생샷 한 장에 들어가는 총비용을 계산해드립니다.">
+    <meta name="description" content="인생샷 한 장에 500만 원? 바디프로필 준비 비용과 촬영 후 요요 현상의 경제적 손실을 팩트로 계산해드립니다. 사진 한 장의 진짜 가격을 확인하세요.">
     <title>바디프로필 비용 판독기 | 팩트 폭격 연구소</title>
 
     <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
 
-    <!-- 구글 아이콘 -->
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
     <style>
-        /* --- [표준 스타일 가이드] --- */
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.7;
-        }
-
-        .wrapper {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-        }
-        
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
+        .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
 
-        section {
-            background: white;
-            border-radius: 16px;
-            padding: 35px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            border: 1px solid #eee;
-        }
-
+        /* 섹션 공통 스타일 */
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
 
-        /* [테마 변경] 근육/태닝(Bronze) -> #ef6c00 */
-        h2 { border-left: 5px solid #ef6c00; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-
-        .intro-box { background-color: #fff3e0; border: 1px solid #ffe0b2; color: #e65100; }
-        .intro-box strong { color: #ef6c00; background: #fff; padding: 0 5px; border-radius: 4px; }
-
-        /* 계산기 스타일 */
-        .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #ef6c00; }
-        input {
-            width: 100%; padding: 14px; border: 1px solid #ddd;
-            border-radius: 8px; font-size: 1rem; transition: 0.2s;
-        }
-        input:focus { border-color: #ef6c00; outline: none; box-shadow: 0 0 0 3px rgba(239, 108, 0, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-
-        .calc-btn {
-            width: 100%; padding: 18px;
-            background-color: #ef6c00; color: white;
-            border: none; border-radius: 12px;
-            font-size: 1.2rem; font-weight: bold; cursor: pointer;
-            margin-top: 10px; transition: 0.2s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .calc-btn:hover { background-color: #e65100; transform: translateY(-3px); }
-
-        #result-area {
-            display: none; margin-top: 30px; padding: 30px;
-            background-color: #fff8e1; border-radius: 12px; text-align: center;
-            animation: fadeIn 0.5s ease;
-        }
+        /* [가변] 테마 설정: Burning Orange */
+        h2 { border-left: 5px solid #e64a19; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #fff3e0; border: 1px solid #ffe0b2; color: #bf360c; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #e64a19; background: #fff; padding: 0 5px; border-radius: 4px; }
         
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.waste { color: #d84315; } 
-        .highlight.health { color: #2e7d32; }
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #e64a19; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #e64a19; outline: none; box-shadow: 0 0 0 3px rgba(230, 74, 25, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #e64a19; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(230,74,25,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fff3e0; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #bf360c; }
 
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box {
-            flex-shrink: 0; width: 40px; height: 40px;
-            background: #ef6c00; color: white;
-            border-radius: 10px; font-weight: bold;
-            display: flex; align-items: center; justify-content: center;
-            margin-right: 20px; margin-top: 5px;
-        }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        @media (max-width: 850px) {
-            .wrapper { flex-direction: column; }
-            .sidebar { width: 100%; position: static; min-width: auto; }
-            .main-content { width: 100%; }
-            h1.page-title { font-size: 1.8rem; }
-        }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #e64a19; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
-
     <div class="wrapper">
-        
-        <!-- [좌측] 메인 콘텐츠 -->
         <main class="main-content">
-            
-            <h1 class="page-title">사진 한 장 남기려다 몸도 돈도 축납니다</h1>
-            <p class="page-subtitle">"인생샷 남겨야지"라며 시작한 바디프로필. PT값만 생각하셨나요? 숨겨진 추가 비용을 공개합니다.</p>
+            <!-- [제목 섹션] -->
+            <h1 class="page-title">사진 찍고 '요요' 오면 남는 건 영수증뿐</h1>
+            <p class="page-subtitle">단 3개월의 근육 전시를 위해 당신이 지불한 '인생 사진'의 가격.</p>
 
-            <!-- 인트로: 팩트 제시 -->
+            <!-- [도입 섹션] -->
             <section class="intro-box">
-                <h2>📸 3개월의 기적? 300만 원의 기적</h2>
-                <p>
-                    PT비용은 시작일 뿐입니다.<br>
-                    태닝, 왁싱, 스튜디오 대관, 헤어/메이크업, 의상 대여, 식단 비용...<br>
-                    인스타그램 '좋아요'를 받기 위해 당신이 지불해야 할 <strong>총 견적서</strong>를 뽑아드립니다.
-                </p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">camera_enhance</span> 인스타그램에 올릴 사진 한 장을 위해 수백만 원을 태우고 계신가요? 고강도 PT와 닭가슴살 지옥을 견딘 보상이 **'건강 악화'와 '빈 통장'**이라면 그것은 투자가 아니라 사치입니다. 사진 1장당 리얼 단가를 확인하세요.</p>
             </section>
 
-            <!-- 계산기 섹션 -->
+            <!-- [계산기 섹션] -->
             <section id="calculator">
-                <h2>💪 바프 준비 비용 시뮬레이터</h2>
+                <h2>📸 인생샷 단가 계산기</h2>
+                <div class="calc-group">
+                    <label>PT 및 헬스장 등록 총 비용 (만원)</label>
+                    <input type="number" id="ptCost" placeholder="예: 300" value="300">
+                </div>
+                <div class="calc-group">
+                    <label>촬영/태닝/의상/헤메 총 지출 (만원)</label>
+                    <input type="number" id="studioCost" placeholder="예: 100" value="100">
+                </div>
+                <div class="calc-group">
+                    <label>최종적으로 건진 '베스트 컷' 장 수</label>
+                    <input type="number" id="photoCount" placeholder="예: 4" value="4">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">전문가 보정을 거친 최종 인화/파일 장 수</p>
+                </div>
                 
-                <div class="calc-group">
-                    <label>① PT 등록 비용 (만원)</label>
-                    <input type="number" id="ptCost" value="150" placeholder="예: 150 (30회 기준)">
-                </div>
+                <button id="calcBtn" class="calc-btn">사진 1장당 가격 확인하기</button>
 
-                <div class="calc-group">
-                    <label>② 태닝 + 왁싱 비용 (만원)</label>
-                    <input type="number" id="beautyCost" value="50" placeholder="예: 50 (태닝 20회+브라질리언)">
-                </div>
-
-                <div class="calc-group">
-                    <label>③ 스튜디오 + 헤메 + 의상 (만원)</label>
-                    <input type="number" id="studioCost" value="60" placeholder="예: 60 (작가+메이크업+옷)">
-                </div>
-
-                <div class="calc-group">
-                    <label>④ 3개월 식단 추가 비용 (만원)</label>
-                    <input type="number" id="foodCost" value="40" placeholder="예: 40 (닭가슴살/소고기)">
-                    <div class="help-text">* 일반식보다 비싼 단백질 식단</div>
-                </div>
-
-                <button id="calcBtn" class="calc-btn">총 프로젝트 비용 확인하기</button>
-
-                <!-- 결과창 -->
                 <div id="result-area">
-                    
-                    <div style="margin-bottom:20px;">
-                        <p class="result-title">인생샷 건지는 데 쓴 총액</p>
-                        <span id="resTotal" class="highlight waste">0원</span>
-                    </div>
-
-                    <div style="border-top:1px dashed #aaa; padding-top:20px;">
-                        <p class="result-title" style="margin-bottom:10px;">이 돈이면</p>
-                        <span id="compareItem" class="highlight health" style="font-size:1.6rem;">0</span>
-                        <p class="result-title" style="margin-top:10px;">을(를) 할 수 있습니다.</p>
-                    </div>
-
-                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #ffe0b2; font-size:0.95rem;">
-                        <strong>팩트 폭격:</strong><br>
-                        사진은 영원하지만,<br>
-                        당신의 복근은 촬영 후 <strong><span style="color:#ef6c00;">3일 만에</span></strong> 사라집니다.
-                    </div>
+                    <p class="result-title">당신의 사진 1장당 투입된 비용</p>
+                    <span id="pricePerPhoto" class="highlight">약 0원</span>
+                    <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
-            <!-- 팩트 체크 리스트 -->
+            <!-- [팩트체크 섹션] -->
             <section>
-                <h2>🛑 바프의 부작용을 아시나요?</h2>
-                
+                <h2>🛑 바디프로필이 건강과 지갑에 독인 3가지 팩트</h2>
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">restaurant</span></div>
+                    <div class="icon-box">1</div>
                     <div class="reason-content">
-                        <h3>섭식 장애와 폭식증</h3>
-                        <p>극단적인 절식 후 찾아오는 보상 심리는 폭식증을 유발합니다. 촬영 다음 날부터 빵과 떡볶이를 흡입하다가, 한 달 만에 원래 몸무게보다 더 찌는 요요가 옵니다.</p>
+                        <h3>'가짜 건강'의 전시를 위해 지불하는 대가</h3>
+                        <p>바디프로필 촬영 당일의 몸은 극한의 탈수와 영양실조 상태입니다. 가장 아픈 상태의 사진을 위해 수백만 원을 쓰는 아이러니를 기억하세요.</p>
                     </div>
                 </div>
-                
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">auto_fix_high</span></div>
+                    <div class="icon-box">2</div>
                     <div class="reason-content">
-                        <h3>보정의 힘 (Photoshop)</h3>
-                        <p>완벽한 몸매의 30%는 조명과 보정 빨입니다. 굳이 수분을 끊고 몸을 혹사시키지 않아도, 현대 기술은 당신을 몸짱으로 만들어줄 수 있습니다.</p>
+                        <h3>피부와 간의 가속 노화 비용</h3>
+                        <p>인위적인 기계 태닝과 과도한 단백질 섭취, 다이어트 약물 사용. 사진 촬영 후 당신이 치러야 할 '병원비' 고지서는 아직 오지 않았습니다.</p>
                     </div>
                 </div>
-
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">mood_bad</span></div>
+                    <div class="icon-box">3</div>
                     <div class="reason-content">
-                        <h3>호르몬 불균형과 탈모</h3>
-                        <p>체지방을 급격히 줄이면 성호르몬 분비에 문제가 생겨 생리 불순이나 성욕 감퇴, 탈모가 올 수 있습니다. 건강해지려고 운동했다가 병을 얻습니다.</p>
+                        <h3>요요 현상의 심리적 기회비용</h3>
+                        <p>촬영 후 3개월 안에 원상복구되는 체중. 공들여 쌓은 자본과 노력이 한순간에 증발할 때 느끼는 무력감은 자산 형성의 큰 적입니다.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- 하단 광고 -->
-            <div class="ad-box">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <!-- [SEO 블로그 콘텐츠] -->
+            <section class="seo-content">
+                <h2>바디프로필 열풍과 매몰 비용의 비극: 왜 당신은 사진 한 장에 목숨 거는가?</h2>
+                <p>MZ세대의 새로운 '통과의례'처럼 굳어진 바디프로필. 성공한 인생의 상징처럼 여겨지지만, 경제적·생리적 관점에서 이는 <strong>'최악의 감가상각을 가진 자기만족형 소비'</strong>입니다. 평범한 직장인이 바디프로필을 위해 쏟아붓는 돈은 평균 300만 원에서 500만 원에 육박합니다. 문제는 이 돈이 미래의 자산을 만드는 '시드머니'에서 나온다는 점입니다.</p>
 
-            <!-- common.js가 푸터 자동 추가 -->
+                <h3>1. 보이지 않는 손실: 사진 한 장이 100만 원인 이유</h3>
+                <p>300만 원의 PT비와 100만 원의 스튜디오 및 의상비를 들였다면 총액은 400만 원입니다. 최종 수정본을 4장 받는다면 당신은 사진 1장당 100만 원을 지출한 셈입니다. 100만 원이면 한 달 생활비이거나, 연 수익률 10%의 우량주를 1년 넘게 굴린 결과물과 같습니다. 사진은 액자 속에서 점점 낡아가고 유행에 뒤처지지만, 그 돈으로 산 주식은 매년 배당금을 낳습니다. 화려한 복근 사진 한 장의 대가가 당신의 든든한 비상금 계좌를 삭제하고 있지는 않은지 냉정하게 따져보십시오.</p>
 
+                <h3>2. '보여지는 나'를 위한 과지출의 굴레</h3>
+                <p>바디프로필의 가장 큰 위험은 촬영이 끝난 후입니다. 극한의 식단 조절이 끝나면 뇌는 보상 기제로 폭식을 유도하고, 이는 곧 '요요 현상'으로 이어집니다. 살이 다시 찌기 시작하면 "예전 몸으로 돌아가야 해"라는 압박감에 다시 비싼 PT를 등록하는 악순환이 반복됩니다. 당신은 지금 운동을 하는 게 아니라 **'신체 렌탈'**을 하고 있는 것입니다. 진정한 자기관리는 단기 프로젝트가 아니라 평생 유지 가능한 습관의 형성입니다. 보여주기 위한 3개월보다, 30년을 버틸 수 있는 완만한 건강 관리 습관을 들이는 것이 가장 위대한 자산 관리입니다. 지금 결제하려는 고가의 바디프로필 패키지가 당신의 인생을 강화해줄지, 아니면 일시적인 도파민 후에 후회만 남길지 팩트로 분석하십시오.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 그래도 평생 한 번은 해보고 싶은데 어떡하죠?</strong><br>A. 상업적 스튜디오의 화려한 연출 없이도 충분합니다. 꾸준히 운동하여 만든 자연스러운 몸을 야외 공원이나 자연광 아래서 가볍게 기록하는 것만으로도 충분히 아름답습니다.</li>
+                    <li><strong>Q. 사진이 있으면 운동 자극이 되지 않을까요?</strong><br>A. 오히려 고점에 도달했다는 느낌 때문에 촬영 직후 운동을 손에서 놓는 경우가 90%입니다. 정점 지향적 사고방식을 버려야 합니다.</li>
+                </ul>
+            </section>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
 
-        <!-- [우측] 사이드바 광고 -->
         <aside class="sidebar">
-            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890" 
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </aside>
-
     </div>
 
-    <!-- 계산 로직 -->
+    <!-- [계산 로직] -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                // 1. 값 가져오기
-                const pt = Number(document.getElementById('ptCost').value) * 10000;
-                const beauty = Number(document.getElementById('beautyCost').value) * 10000;
-                const studio = Number(document.getElementById('studioCost').value) * 10000;
-                const food = Number(document.getElementById('foodCost').value) * 10000;
+                const pt = (parseFloat(document.getElementById('ptCost').value) || 0) * 10000;
+                const studio = (parseFloat(document.getElementById('studioCost').value) || 0) * 10000;
+                const count = parseFloat(document.getElementById('photoCount').value) || 1;
+                
+                const total = pt + studio;
+                const perPhoto = total / count;
 
-                if(pt < 0 || beauty < 0) {
-                    alert("모든 값을 올바르게 입력해주세요.");
-                    return;
-                }
-
-                // 2. 계산 로직
-                // 총 비용
-                const totalCost = pt + beauty + studio + food;
-
-                // 3. 결과 출력
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-
-                document.getElementById('resTotal').innerText = Math.round(totalCost).toLocaleString() + "원";
-
-                // 4. 비교 물건 변경
-                const totalManwon = totalCost / 10000;
-                let item = "최신형 스마트폰";
+                document.getElementById('pricePerPhoto').textContent = `1장당 약 ${Math.round(perPhoto).toLocaleString()}원`;
                 
-                if(totalManwon > 500) item = "유럽 여행 (비수기)";
-                else if(totalManwon > 300) item = "명품 가방 (입문용)";
-                else if(totalManwon > 200) item = "5성급 호텔 멤버십 1년";
-                else if(totalManwon > 150) item = "전신 정밀 건강검진 (MRI 포함)";
-                else if(totalManwon > 100) item = "최신형 노트북";
-                else if(totalManwon > 50) item = "고급 호텔 뷔페 5회";
-                
-                document.getElementById('compareItem').innerText = item;
+                let feedback = "";
+                if(perPhoto > 500000) feedback = "이 정도면 한 장 찍을 때마다 최신형 스마트폰 한 대를 찢어버리는 수준입니다.";
+                else if(perPhoto > 100000) feedback = "중저가 외식 20번을 할 수 있는 거액을 한 컷에 태우셨네요. 가성비가 매우 낮습니다.";
+                else feedback = "비교적 합리적인 소비였네요. 그래도 사진 너머의 건강 관리를 잊지 마세요.";
+
+                document.getElementById('resultText').textContent = feedback;
             });
         });
     </script>
