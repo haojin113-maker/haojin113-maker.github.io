@@ -3,136 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="모바일 게임 과금 효율 계산기. 확률형 아이템(가챠)에 쓰는 돈과 천장 비용을 현실 자산 가치로 환산해드립니다.">
-    <title>게임 과금 현실 자각 | 팩트 폭격 연구소</title>
+    <meta name="description" content="확률 0.8% 뽑기에 월급을 태우고 계신가요? 데이터 쪼가리에 부은 당신의 현금 총액과 그 기회비용을 팩트로 계산해드립니다.">
+    <title>게임 현질 계산기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 및 라이브러리 -->
     <script src="../common.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        /* 섹션 공통 스타일 */
         section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
-        h2 { border-left: 5px solid #6200ea; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #f3e5f5; border: 1px solid #d1c4e9; color: #4a148c; }
-        .intro-box strong { color: #6200ea; background: #fff; padding: 0 5px; border-radius: 4px; }
-        .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #6200ea; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; transition: 0.2s; }
-        input:focus { border-color: #6200ea; outline: none; box-shadow: 0 0 0 3px rgba(98, 0, 234, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #6200ea; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.2s; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .calc-btn:hover { background-color: #311b92; transform: translateY(-3px); }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #ede7f6; border-radius: 12px; text-align: center; animation: fadeIn 0.5s ease; }
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.game { color: #6200ea; } .highlight.real { color: #2e7d32; }
-        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #6200ea; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
-        
-        /* SEO Text Style */
-        .seo-content { line-height: 1.8; color: #444; }
-        .seo-content h3 { font-size: 1.3rem; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .seo-content p { margin-bottom: 15px; }
-        .seo-content ul { padding-left: 20px; margin-bottom: 20px; }
-        .seo-content li { margin-bottom: 10px; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; min-width: auto; } .main-content { width: 100%; } h1.page-title { font-size: 1.8rem; } }
+        /* [가변] 테마 설정: Deep Purple */
+        h2 { border-left: 5px solid #6a1b9a; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #f3e5f5; border: 1px solid #e1bee7; color: #4a148c; padding: 25px; border-radius: 12px; }
+        
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #6a1b9a; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #6a1b9a; outline: none; box-shadow: 0 0 0 3px rgba(106, 27, 154, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #6a1b9a; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(106,27,154,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과창 스타일 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #f3e5f5; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #4a148c; }
+
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #6a1b9a; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">데이터 조각에 집 한 채를 태우셨나요?</h1>
-            <p class="page-subtitle">서버가 종료되면 0원이 될 캐릭터에 당신의 인생을 걸지 마세요.</p>
+            <h1 class="page-title">강화 실패? 당신의 인생도 강화 중입니다</h1>
+            <p class="page-subtitle">디지털 조각에 바치는 현금, 3년이면 벤츠 계약금입니다.</p>
 
             <section class="intro-box">
-                <h2>🎮 "이번엔 천장 치기 전에 뜨겠지?"</h2>
-                <p>0.005% 확률의 아이템을 얻기 위해 밤새 결제 버튼을 누르시나요? 게임사는 당신의 <strong>도파민</strong>을 인질로 잡고 지갑을 텁니다. 당신이 뽑으려는 그 캐릭터 하나가 현실 세계에서 어떤 가치를 가지는지 계산해드립니다.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">videogame_asset</span> 서비스가 종료되면 사라질 0과 1의 조합을 위해 당신의 노동력을 태우고 있지는 않나요? <strong>과금의 늪</strong>에서 빠져나와 실물 자산의 가치를 확인해 보세요.</p>
             </section>
 
+            <!-- 계산기 -->
             <section id="calculator">
-                <h2>🎲 가챠(뽑기) 비용 시뮬레이터</h2>
-                <div class="calc-group"><label>① 1회 뽑기 비용 (원)</label><input type="number" id="drawCost" value="3000" placeholder="예: 3000"></div>
-                <div class="calc-group"><label>② 목표 아이템 확률 (%)</label><input type="number" id="prob" value="0.8" placeholder="예: 0.8"></div>
-                <div class="calc-group"><label>③ 천장(확정 획득) 횟수 (회)</label><input type="number" id="ceiling" value="200" placeholder="예: 200"><div class="help-text">* 천장 없으면 0 입력</div></div>
-                <button id="calcBtn" class="calc-btn">이 캐릭터의 '진짜 가격' 확인</button>
+                <h2>🎮 게임 과금 기회비용 계산기</h2>
+                <div class="calc-group">
+                    <label>월 평균 결제 금액 (원)</label>
+                    <input type="number" id="monthlyPay" placeholder="예: 300000" value="300000">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">정액제, 패키지, 뽑기(가차) 비용을 모두 포함하세요.</p>
+                </div>
+                <div class="calc-group">
+                    <label>과금 기간 (년)</label>
+                    <input type="number" id="yrs" placeholder="예: 5" value="5">
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">사라진 내 돈 계산하기</button>
+
                 <div id="result-area">
-                    <div style="margin-bottom:20px;"><p class="result-title">평균적으로 써야 하는 돈 (기대값)</p><span id="resExpected" class="highlight game">0원</span><p id="ceilingText" style="font-size:0.9rem; color:#888; margin-top:5px;"></p></div>
-                    <div style="border-top:1px dashed #aaa; padding-top:20px;"><p class="result-title" style="margin-bottom:10px;">이 돈이면 현실에서</p><span id="compareItem" class="highlight real">최신형 스마트폰</span><p class="result-title" style="margin-top:10px;">을(를) 살 수 있습니다.</p></div>
-                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #d1c4e9; font-size:0.95rem;"><strong>기억하세요:</strong> 게임 서버가 종료되는 순간, 당신의 아이템 가치는 <span style="color:#d32f2f; font-weight:bold;">정확히 0원</span>이 됩니다.</div>
+                    <p class="result-title">그동안 게임사에 갖다 바친 돈은?</p>
+                    <span id="totalSpend" class="highlight">0원</span>
+                    <p id="resultDesc" style="color:#666;"></p>
                 </div>
             </section>
 
+            <!-- 팩트 체크 -->
             <section>
-                <h2>🛑 과금을 멈춰야 하는 이유</h2>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">psychology</span></div><div class="reason-content"><h3>도박과 똑같은 뇌 구조</h3><p>가챠 버튼을 누를 때 뇌에서는 도박할 때와 똑같은 도파민이 분비됩니다. "다음엔 뜨겠지"라는 생각은 투자가 아니라 중독 증상입니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">anchor</span></div><div class="reason-content"><h3>매몰 비용의 오류</h3><p>"지금까지 쓴 돈이 얼마인데..."라며 접지 못하시나요? 그 돈은 이미 사라진 돈입니다. 지금 멈추는 것이 가장 돈을 아끼는 방법입니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">cloud_off</span></div><div class="reason-content"><h3>디지털 자산의 허무함</h3><p>명품 가방은 중고로 팔 수 있고, 금은 변하지 않지만, 게임 아이템은 계정 귀속이거나 회수 불가능합니다. 서비스 종료 공지 하나면 모든 게 사라집니다.</p></div></div>
+                <h2>🛑 게임 과금이 당신을 가난하게 만드는 이유</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>소유권이 없는 대여일 뿐입니다</h3>
+                        <p>당신이 1억을 써도 그 캐릭터의 소유권은 게임사에 있습니다. 서버가 닫히는 날, 당신의 자산은 0원으로 초기화됩니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>도박보다 무서운 '확률의 농락'</h3>
+                        <p>0.몇 퍼센트의 확률에 거는 것은 투자가 아니라 파산의 지름길입니다. '천장' 시스템은 당신을 위로하는 게 아니라 마지막 한 푼까지 쥐어짜기 위한 설계입니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>강해질수록 현실의 나는 약해집니다</h3>
+                        <p>게임 안에서의 지위가 올라갈수록 당신의 현실 통장과 자기계발 시간은 줄어듭니다. 진짜 강화가 필요한 건 캐릭터가 아니라 '당신 자신'입니다.</p>
+                    </div>
+                </div>
             </section>
 
-            <!-- SEO 텍스트 추가 -->
+            <!-- SEO 텍스트 -->
             <section class="seo-content">
-                <h2>💸 리니지 집행검이 강남 아파트값?</h2>
-                <p>게임 아이템 하나가 수억 원을 호가한다는 뉴스를 보신 적이 있을 겁니다. 하지만 그건 극소수의 '랭커'들 이야기입니다. 일반 유저들이 모바일 게임에 쏟아붓는 월 10~50만 원의 돈은 대부분 <strong>'데이터 조각'</strong>을 사는 데 쓰입니다. 게임사는 정교하게 설계된 확률형 아이템(가챠) 시스템으로 유저들의 경쟁 심리를 자극하고, 지갑을 열게 만듭니다.</p>
+                <h2>모바일 게임 가차와 현질의 심리적 함정</h2>
+                <p>오늘날의 게임 산업은 '재미'보다 '결제 유도'에 더 최적화되어 있습니다. "커피 몇 잔 값으로 즐기자"고 시작한 <strong>소액 과금(Microtransaction)</strong>은 정신을 차려보니 한 달 생활비를 웃도는 수준이 됩니다. 특히 한국형 MMORPG나 수집형 RPG의 뽑기 시스템은 슬롯머신의 메커니즘을 그대로 빌려와 소비자의 도파민을 자극하며 판단력을 흐리게 만듭니다.</p>
 
-                <h3>1. 확률형 아이템의 수학적 진실</h3>
-                <p>당첨 확률 0.1%인 아이템을 얻기 위해 1,000번을 뽑으면 무조건 나올까요? 수학적으로는 1,000번을 시도해도 <strong>못 뽑을 확률이 약 36.8%</strong>나 됩니다. 이것이 바로 '독립 시행'의 함정입니다. 운이 나쁘면 기대 비용의 2~3배를 써도 원하는 것을 얻지 못할 수 있습니다. 그래서 '천장(확정 획득)' 시스템이 있는 게임을 하거나, 아예 무과금으로 즐기는 것이 정신 건강에 이롭습니다.</p>
+                <h3>1. 보이지 않는 지출: 매몰 비용의 오류</h3>
+                <p>과금을 중단하지 못하는 가장 큰 이유는 이미 쓴 돈이 아까워서입니다. "여기까지 썼는데 이번에 접으면 다 손해야"라는 생각이 당신을 더 깊은 늪으로 빠뜨립니다. 하지만 냉정하게 생각하십시오. 오늘 그만두면 내일의 현금을 지킬 수 있지만, 오늘 계속하면 내일의 현금까지 날리게 됩니다. 게임 아이템은 중고 거래를 하더라도 원금의 10%도 건지기 어려운 소모성 취미입니다.</p>
 
-                <h3>2. 게임 계정은 자산이 아니다</h3>
-                <p>많은 게이머들이 "나중에 계정 팔면 회수할 수 있다"고 생각합니다. 하지만 게임 약관상 계정 거래는 대부분 불법이며, 게임의 인기가 식으면 계정 가치는 휴지 조각이 됩니다. 1,000만 원을 과금한 계정이 1년 뒤 100만 원에도 안 팔리는 것이 현실입니다. 게임 과금은 '투자'가 아니라 100% '소비'임을 명심해야 합니다.</p>
+                <h3>2. 10년 뒤 당신이 가졌을 수도 있는 것들</h3>
+                <p>한 달에 50만 원씩 게임에 과금하는 사람이 10년 동안 그 돈을 미국 기술주 지수에 투자했다면? 10년 뒤 당신은 약 1억 원에 달하는 시드머니를 쥐고 있었을 것입니다. 누군가는 데이터 쪼가리 검 한 자루를 쥐고 있을 때, 누군가는 그 돈으로 부동산 투자를 시작하거나 인생의 새로운 기회를 잡습니다. 찰나의 스트레스 해소를 위해 너무 비싼 대가를 치르고 있는 것은 아닌지 계산해 봐야 합니다.</p>
 
                 <h3>자주 묻는 질문 (FAQ)</h3>
                 <ul>
-                    <li><strong>Q. 월정액(패스) 상품은 괜찮나요?</strong><br>A. 월 5,000원~1만 원 정도의 월정액이나 배틀패스 상품은 게임을 즐기는 '구독료' 개념으로 볼 수 있어 합리적입니다. 문제는 확률에 의존하는 '가챠' 상품입니다.</li>
-                    <li><strong>Q. 무과금으로 게임을 즐기는 방법은?</strong><br>A. 경쟁(PVP) 요소가 적은 게임을 선택하거나, 랭킹에 연연하지 않는 마인드셋이 필요합니다. 게임은 스트레스를 풀기 위한 취미여야지, 돈을 써서 스트레스를 사는 주객전도가 되어서는 안 됩니다.</li>
+                    <li><strong>Q. 취미 생활인데 돈 좀 쓰는 게 죄인가요?</strong><br>A. 아닙니다. 다만 그 '취미'의 비용이 본인의 소득 수준을 넘어서거나 미래 자산 형성에 심각한 타격을 준다면, 그것은 취미가 아니라 '중독'입니다.</li>
+                    <li><strong>Q. 효율적으로 과금하는 법은 없나요?</strong><br>A. 가장 효율적인 과금은 무과금입니다. "월 정액권만 산다"고 다짐해도 게임사는 교묘한 이벤트로 당신의 추가 결제를 유도할 것입니다. 결제 수단을 앱스토어에서 아예 삭제하는 것이 답입니다.</li>
                 </ul>
             </section>
 
-            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div>
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-        <aside class="sidebar"><div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div></aside>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
     </div>
+
+    <!-- 로직 스크립트 -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                const cost = Number(document.getElementById('drawCost').value);
-                const prob = Number(document.getElementById('prob').value);
-                const ceiling = Number(document.getElementById('ceiling').value);
-                if(cost <= 0 || prob <= 0) { alert("비용과 확률을 올바르게 입력해주세요."); return; }
-                const avgTries = 1 / (prob / 100);
-                let expectedCost = avgTries * cost;
-                let ceilingCost = 0;
-                if (ceiling > 0) {
-                    ceilingCost = ceiling * cost;
-                }
+                const monthly = parseFloat(document.getElementById('monthlyPay').value) || 0;
+                const yrs = parseFloat(document.getElementById('yrs').value) || 1;
+                
+                const total = monthly * 12 * yrs;
+
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-                document.getElementById('resExpected').innerText = Math.round(expectedCost).toLocaleString() + "원";
-                if(ceiling > 0) {
-                    document.getElementById('ceilingText').innerText = `(운이 나빠서 천장을 칠 경우: ${Math.round(ceilingCost).toLocaleString()}원)`;
-                } else {
-                    document.getElementById('ceilingText').innerText = "(천장 시스템 없음: 비용 무한대 가능)";
-                }
-                const compareVal = (ceiling > 0) ? ceilingCost : expectedCost;
-                const costManwon = compareVal / 10000;
-                let item = "치킨 5마리";
-                if(costManwon > 5000) item = "중고차 한 대";
-                else if(costManwon > 3000) item = "최신형 게이밍 PC 풀세트";
-                else if(costManwon > 2000) item = "프리미엄 명품 패딩";
-                else if(costManwon > 1000) item = "최신 아이폰 프로";
-                else if(costManwon > 500) item = "플레이스테이션 5";
-                else if(costManwon > 300) item = "닌텐도 스위치";
-                else if(costManwon > 100) item = "고급 기계식 키보드";
-                document.getElementById('compareItem').innerText = item;
+                document.getElementById('totalSpend').textContent = `${(total/10000).toLocaleString()}만 원`;
+                
+                let compare = "";
+                if(total > 50000000) compare = "이미 제네시스 한 대 뽑으셨네요. 게임사에 사옥 벽돌 몇 장 기부하신 셈입니다.";
+                else if(total > 10000000) compare = "샤넬 가방 서너 개, 혹은 최고급 맥북 풀세트를 여러 번 살 수 있었던 돈입니다.";
+                else compare = "이 돈이면 부모님께 매달 소고기를 사드리거나, 본인 치아 임플란트를 할 수 있는 거금입니다.";
+
+                document.getElementById('resultDesc').textContent = compare;
             });
         });
     </script>
