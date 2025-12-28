@@ -3,289 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="축의금, 경조사비 지출 계산기. 인맥 유지를 위해 뿌리는 돈이 1년에 얼마인지, 회수 가능한지 계산해드립니다.">
+    <meta name="description" content="결혼식, 장례식, 돌잔치... 청첩장 받을 때마다 가슴이 답답하신가요? 평생 지출할 경조사비 총액을 계산하여 인간관계의 경제적 가격표를 보여드립니다.">
     <title>경조사비 계산기 | 팩트 폭격 연구소</title>
 
     <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
 
-    <!-- 구글 아이콘 -->
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
     <style>
-        /* --- [표준 스타일 가이드] --- */
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.7;
-        }
-
-        .wrapper {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-        }
-        
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
+        .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
 
-        section {
-            background: white;
-            border-radius: 16px;
-            padding: 35px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            border: 1px solid #eee;
-        }
-
+        /* 섹션 공통 스타일 */
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
 
-        /* [테마 변경] 인맥/관계(Teal) -> #009688 */
-        h2 { border-left: 5px solid #009688; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-
-        .intro-box { background-color: #e0f2f1; border: 1px solid #b2dfdb; color: #00695c; }
-        .intro-box strong { color: #009688; background: #fff; padding: 0 5px; border-radius: 4px; }
-
-        /* 계산기 스타일 */
-        .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #009688; }
-        input {
-            width: 100%; padding: 14px; border: 1px solid #ddd;
-            border-radius: 8px; font-size: 1rem; transition: 0.2s;
-        }
-        input:focus { border-color: #009688; outline: none; box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-
-        .calc-btn {
-            width: 100%; padding: 18px;
-            background-color: #009688; color: white;
-            border: none; border-radius: 12px;
-            font-size: 1.2rem; font-weight: bold; cursor: pointer;
-            margin-top: 10px; transition: 0.2s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .calc-btn:hover { background-color: #00695c; transform: translateY(-3px); }
-
-        #result-area {
-            display: none; margin-top: 30px; padding: 30px;
-            background-color: #e0f2f1; border-radius: 12px; text-align: center;
-            animation: fadeIn 0.5s ease;
-        }
+        /* [가변] 테마 설정: Peach */
+        h2 { border-left: 5px solid #f06292; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #fce4ec; border: 1px solid #f8bbd0; color: #880e4f; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #f06292; background: #fff; padding: 0 5px; border-radius: 4px; }
         
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.cost { color: #009688; } 
-        .highlight.waste { color: #d32f2f; }
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #f06292; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #f06292; outline: none; box-shadow: 0 0 0 3px rgba(240, 98, 146, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #f06292; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(240,98,146,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fce4ec; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #880e4f; }
 
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box {
-            flex-shrink: 0; width: 40px; height: 40px;
-            background: #009688; color: white;
-            border-radius: 10px; font-weight: bold;
-            display: flex; align-items: center; justify-content: center;
-            margin-right: 20px; margin-top: 5px;
-        }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        @media (max-width: 850px) {
-            .wrapper { flex-direction: column; }
-            .sidebar { width: 100%; position: static; min-width: auto; }
-            .main-content { width: 100%; }
-            h1.page-title { font-size: 1.8rem; }
-        }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #f06292; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
-
     <div class="wrapper">
-        
-        <!-- [좌측] 메인 콘텐츠 -->
         <main class="main-content">
-            
-            <h1 class="page-title">남의 잔치에 뿌린 돈, 돌아올까요?</h1>
-            <p class="page-subtitle">"청첩장 받으면 얼마 내야 하나..." 고민하는 당신의 인맥 유지비를 계산해드립니다.</p>
+            <h1 class="page-title">정으로 내는 돈, 통장엔 '멍'이 듭니다</h1>
+            <p class="page-subtitle">매달 평균 20만 원의 경조사비, 평생 모으면 얼마일까요?</p>
 
-            <!-- 인트로: 팩트 제시 -->
             <section class="intro-box">
-                <h2>💌 축의금 5만원 vs 10만원</h2>
-                <p>
-                    밥값이 올라서 5만 원 내기는 눈치 보이고, 10만 원은 부담스럽죠?<br>
-                    얼굴도 잘 기억 안 나는 직장 동료, 동창에게 의무적으로 내는 경조사비가 10년이면 <strong>중형차 한 대 값</strong>이 됩니다.
-                </p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">card_giftcard</span> 관계의 도리라는 이름 하에 거절하지 못하고 낸 봉투값. "나중에 다 돌려받는다"는 말을 아직도 믿으시나요? 인맥 유지를 위한 <strong>'사회적 비용'</strong>을 지금 바로 계산해보세요.</p>
             </section>
 
             <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>💸 인맥 유지비 견적서</h2>
-                <p style="margin-bottom: 25px; color: #666; font-size: 0.95rem;">
-                    청첩장, 부고 문자, 각종 모임 회비를 입력하세요.
-                </p>
-
+                <h2>💌 사회 생활 유지 비용 계산기</h2>
                 <div class="calc-group">
-                    <label>① 월평균 경조사 참석 횟수 (회)</label>
-                    <input type="number" id="monthlyCount" value="2" placeholder="예: 2 (결혼식, 장례식 등)">
+                    <label>한 달 평균 경조사 참여 횟수 (건)</label>
+                    <input type="number" id="freq" placeholder="예: 2" value="2">
                 </div>
-
                 <div class="calc-group">
-                    <label>② 1회 평균 부조금 (만원)</label>
-                    <input type="number" id="avgCost" value="10" placeholder="예: 10">
-                    <div class="help-text">* 축의금, 조의금, 돌잔치 등</div>
+                    <label>건당 평균 축의/조의금 (원)</label>
+                    <input type="number" id="avgGift" placeholder="예: 100000" value="100000">
                 </div>
-
                 <div class="calc-group">
-                    <label>③ 기타 모임 회비/선물비 (월, 만원)</label>
-                    <input type="number" id="etcCost" value="5" placeholder="예: 5">
-                    <div class="help-text">* 계모임, 동창회비, 생일 선물 등</div>
+                    <label>사회 생활 예상 기간 (년)</label>
+                    <input type="number" id="socialLifeYears" placeholder="예: 30" value="30">
                 </div>
+                
+                <button id="calcBtn" class="calc-btn">평생 뿌릴 돈 확인하기</button>
 
-                <div class="calc-group">
-                    <label>④ 사회생활 지속 기간 (년)</label>
-                    <input type="number" id="years" value="10" placeholder="예: 10">
-                </div>
-
-                <button id="calcBtn" class="calc-btn">내가 뿌린 돈 확인하기</button>
-
-                <!-- 결과창 -->
                 <div id="result-area">
-                    
-                    <div style="margin-bottom:20px;">
-                        <p class="result-title">1년 동안 남을 위해 쓴 돈</p>
-                        <span id="resYearly" class="highlight cost">0원</span>
-                    </div>
-
-                    <div style="border-top:1px dashed #aaa; padding-top:20px;">
-                        <p class="result-title" style="margin-bottom:10px;">이 기간 동안 뿌린 총액</p>
-                        <span id="resTotal" class="highlight waste" style="font-size:1.8rem;">0원</span>
-                        <p style="font-size:0.9rem; color:#888;">(회수율 50% 가정 시, <span id="resLost">0</span>원은 소멸)</p>
-                    </div>
-
-                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #b2dfdb; font-size:0.95rem;">
-                        이 돈이면 나를 위해<br>
-                        <strong><span id="compareItem" style="background:#e0f2f1; padding:0 4px; color:#00695c;">유럽 일주 여행</span></strong>을<br>
-                        선물할 수 있었습니다.
-                    </div>
+                    <p class="result-title">은퇴할 때까지 봉투로 나갈 총액</p>
+                    <span id="totalGift" class="highlight">약 0원</span>
+                    <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
-            <!-- 팩트 체크 리스트 -->
+            <!-- 팩트 체크 -->
             <section>
-                <h2>🛑 '기브 앤 테이크'의 허상</h2>
-                
+                <h2>🛑 경조사비에 휘둘리지 않아야 할 팩트</h2>
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">call_missed</span></div>
+                    <div class="icon-box">1</div>
                     <div class="reason-content">
-                        <h3>연락 두절의 법칙</h3>
-                        <p>내가 결혼할 때, 내가 힘들 때 그 사람들이 다 올까요? 통계적으로 내가 낸 경조사비의 회수율은 50% 미만입니다. 퇴사하거나 이사 가면 남이 되는 관계에 너무 많은 돈을 쓰지 마세요.</p>
+                        <h3>'기브 앤 테이크'의 불균형</h3>
+                        <p>당신이 낸 돈을 상대방이 갚으리라는 보장은 없습니다. 비혼주의자라면 사실상 마이너스 100%의 수익률을 보이는 지출임을 인정해야 합니다.</p>
                     </div>
                 </div>
-                
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">restaurant_menu</span></div>
+                    <div class="icon-box">2</div>
                     <div class="reason-content">
-                        <h3>식대 인플레이션</h3>
-                        <p>웨딩홀 식대가 6~8만 원입니다. 5만 원을 내면 욕먹는다는 말은 웨딩 업계와 혼주들의 논리입니다. 축하하는 마음보다 돈 액수가 중요해진 문화, 무리할 필요 없습니다.</p>
+                        <h3>체면의 가격표가 너무 비쌉니다</h3>
+                        <p>친하지도 않은 동료의 결혼식에 10만 원을 내는 것은 배려가 아니라 '두려움'에 의한 지출입니다. 그 돈이면 본인의 부모님께 한 끼 대접할 수 있습니다.</p>
                     </div>
                 </div>
-
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">person_off</span></div>
+                    <div class="icon-box">3</div>
                     <div class="reason-content">
-                        <h3>인맥 다이어트</h3>
-                        <p>진정한 친구는 돈 때문에 멀어지지 않습니다. 경조사비로 스트레스를 주는 관계라면 과감히 정리하는 것이 정신 건강과 통장에 이롭습니다.</p>
+                        <h3>진짜 인맥은 '돈'이 아닌 '마음'으로 지킵니다</h3>
+                        <p>봉투만 보내는 인맥보다 정작 어려울 때 곁에 있어 주는 것이 중요합니다. 무분별한 참석은 시드머니 형성을 심각하게 방해합니다.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- 하단 광고 -->
-            <div class="ad-box">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <!-- SEO 텍스트 -->
+            <section class="seo-content">
+                <h2>경조사비 10만 원의 시대, 당신의 관계는 얼마짜리입니까?</h2>
+                <p>청첩장이 공포탄처럼 날아드는 결혼의 계절, 대한민국 직장인들의 가장 큰 스트레스 중 하나는 경조사비 지출입니다. 5만 원을 하자니 식장 밥값이 비싸서 눈치가 보이고, 10만 원을 하자니 내 한 달 생활비가 깎입니다. 이 <strong>'눈치 보기 비용'</strong>이 수십 년간 쌓인다면 당신의 자산 관리 체계는 완전히 무너질 수밖에 없습니다.</p>
 
-            <!-- common.js가 푸터 자동 추가 -->
+                <h3>1. 보이지 않는 금융 비용: 관계를 유지하기 위한 이자</h3>
+                <p>매달 20만 원씩 경조사비를 지출하는 사람은 연간 240만 원, 30년이면 7,200만 원이라는 현금을 소비합니다. 단순히 돈만 나가는 것이 아닙니다. 주말 시간을 이동과 예식 참여에 쏟아붓는 시간적 비용까지 합산하면 그 손실은 기하급수적으로 커집니다. 자본주의 관점에서 경조사비는 투자라기보다는 <strong>'불필요한 관계의 이자'</strong>를 지불하는 행위와 같습니다. 특히 '돌려받지 못할 확률'이 높은 현대 사회의 관계망 속에서 과도한 품앗이는 구시대의 유물이 되어가고 있습니다.</p>
 
+                <h3>2. 똑똑하게 관계를 관리하는 '경조사 가이드라인'</h3>
+                <p>이제는 체면이 아닌 데이터를 바탕으로 지출해야 합니다. '단순 직장 동료 5만 원', '찐친 20만 원 이상', '직접 가지 못하면 5만 원'과 같이 자신만의 명확한 기준을 세우십시오. 남들의 시선을 위해 10만 원을 억지로 내는 대신, 진심으로 축하해주고 싶은 사람에게 집중하는 것이 훨씬 높은 삶의 질과 건강한 가계부를 만들어줍니다. 부자는 경조사비 1,000원을 아끼지는 않지만, 의미 없는 곳에 흘러나가는 단돈 10원도 용납하지 않는다는 사실을 기억하십시오.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 아예 안 내면 인맥이 끊기지 않을까요?</strong><br>A. 경조사비 5만 원 때문에 끊길 인맥이라면 언제든 사라질 '가짜 인맥'입니다. 진정한 친구라면 당신의 경제적 상황과 가치관을 존중해 줄 것입니다.</li>
+                    <li><strong>Q. 호텔 예식은 기본 10만 원이라던데?</strong><br>A. 식사를 포기하고 봉투만 보내거나, 진심 어린 축하 메시지와 함께 정중히 불참을 알리는 것이 서로에게 가장 깔끔한 방법일 수 있습니다.</li>
+                </ul>
+            </section>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
 
-        <!-- [우측] 사이드바 광고 -->
         <aside class="sidebar">
-            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890" 
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </aside>
-
     </div>
 
-    <!-- 계산 로직 -->
+    <!-- [계산 로직] -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                // 1. 값 가져오기
-                const count = Number(document.getElementById('monthlyCount').value);
-                const avgCost = Number(document.getElementById('avgCost').value) * 10000;
-                const etcCost = Number(document.getElementById('etcCost').value) * 10000;
-                const years = Number(document.getElementById('years').value);
-
-                if(count < 0 || avgCost < 0 || years <= 0) {
-                    alert("모든 값을 올바르게 입력해주세요.");
-                    return;
-                }
-
-                // 2. 계산 로직
-                // 월 지출
-                const monthlyTotal = (count * avgCost) + etcCost;
-                // 연간 지출
-                const yearlyTotal = monthlyTotal * 12;
-                // 총 지출
-                const totalCost = yearlyTotal * years;
+                const freq = parseFloat(document.getElementById('freq').value) || 0;
+                const gift = parseFloat(document.getElementById('avgGift').value) || 0;
+                const yrs = parseFloat(document.getElementById('socialLifeYears').value) || 1;
                 
-                // 회수율 50% 가정 시 손실액
-                const lostCost = totalCost * 0.5;
+                const yearlyTotal = freq * gift * 12;
+                const totalAll = yearlyTotal * yrs;
 
-                // 3. 결과 출력
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-
-                document.getElementById('resYearly').innerText = Math.round(yearlyTotal).toLocaleString() + "원";
-                document.getElementById('resTotal').innerText = Math.round(totalCost).toLocaleString() + "원";
-                document.getElementById('resLost').innerText = Math.round(lostCost).toLocaleString();
-
-                // 4. 비교 물건 변경
-                const totalManwon = totalCost / 10000;
-                let item = "최신형 아이패드";
-                
-                if(totalManwon > 10000) item = "중형차 한 대 (신차)";
-                else if(totalManwon > 5000) item = "소형차 한 대";
-                else if(totalManwon > 3000) item = "명품 시계 (롤렉스 급)";
-                else if(totalManwon > 2000) item = "유럽 여행 2인 패키지";
-                else if(totalManwon > 1000) item = "최고급 안마의자";
-                else if(totalManwon > 500) item = "명품 가방 하나";
-                
-                document.getElementById('compareItem').innerText = item;
+                document.getElementById('totalGift').textContent = `약 ${Math.round(totalAll/10000).toLocaleString()}만 원`;
+                document.getElementById('resultText').textContent = `30년 동안 이 돈을 복리 8% 주식에 넣었다면 약 ${( (yearlyTotal * 12 * 30 * 0.1) / 10000 ).toFixed(0)}만 원이 넘는 자산이 되었습니다. "정" 때문에 "내 집"이 멀어지고 있었군요.`;
             });
         });
     </script>
