@@ -3,84 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="인테리어 리모델링 비용 계산기. 올수리 비용의 감가상각과 기회비용을 계산하여 가성비를 진단해드립니다.">
-    <title>인테리어 가성비 판독기 | 팩트 폭격 연구소</title>
+    <meta name="description" content="5천만 원 들여 고친 집, 팔 때도 5천만 원 더 받을까요? 인테리어의 잔인한 감가상각과 거주 기간 대비 '월간 할부금'을 팩트로 계산해드립니다.">
+    <title>인테리어 호갱 판독기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
+
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
+        /* 기본 레이아웃 */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
-        .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; }
-        .main-content { flex: 3; } .sidebar { flex: 1; }
-        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; border: 1px solid #eee; }
-        h1 { font-size: 2.2rem; margin: 20px 0 10px; } h2 { border-left: 5px solid #3f51b5; padding-left: 15px; margin: 40px 0 20px; }
-        .intro-box { background-color: #e8eaf6; border: 1px solid #c5cae9; padding: 20px; border-radius: 12px; }
-        input { width: 100%; padding: 14px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #3f51b5; color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 1.2rem; }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #e8eaf6; border-radius: 12px; text-align: center; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #3f51b5; }
+        .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        /* [가변] 테마 설정: Beige Brown */
+        h2 { border-left: 5px solid #8d6e63; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #efebe9; border: 1px solid #d7ccc8; color: #4e342e; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #8d6e63; background: #fff; padding: 0 5px; border-radius: 4px; }
         
-        .seo-content h3 { margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; } }
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #8d6e63; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #8d6e63; outline: none; box-shadow: 0 0 0 3px rgba(141, 110, 99, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #8d6e63; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(141,110,99,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #efebe9; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #b71c1c; }
+
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #8d6e63; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1>인테리어에 5,000만 원? 집값 1원도 안 오릅니다</h1>
-            <p>"올수리하면 나중에 비싸게 팔리겠지"라는 착각. 인테리어는 소멸되는 비용입니다.</p>
+            <h1 class="page-title">새로 바꾼 타일, 사실은 '증발하는 돈'</h1>
+            <p class="page-subtitle">평생 살 집 아니라면 인테리어는 투자가 아니라 기부입니다.</p>
 
             <section class="intro-box">
-                <h2>🏚️ 예쁜 집의 유효기간</h2>
-                <p>평당 200만 원씩 들여 최고급 자재로 고쳤나요? 안타깝게도 인테리어의 수명은 <strong>최대 10년</strong>입니다. 당신이 예쁜 벽지를 보는 대가로 매달 얼마의 월세를 내고 있는지 계산해드립니다.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">design_services</span> "집 고치면 집값이 오르겠지"라는 착각은 부동산업자가 가장 좋아하는 시나리오입니다. <strong>남 좋은 일 시키는 화려한 수리비</strong>를 거주 기간으로 환산해보세요. 무서운 '감성 할부금'이 도출됩니다.</p>
             </section>
 
+            <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>📉 리모델링 감가상각 계산기</h2>
-                <label>① 인테리어 총 공사비 (만원)</label>
-                <input type="number" id="cost" value="5000" placeholder="예: 5000">
-                <label>② 집 평수 (평)</label>
-                <input type="number" id="size" value="32" placeholder="예: 32">
-                <label>③ 예상 거주 기간 (년)</label>
-                <input type="number" id="years" value="10" placeholder="예: 10">
-                <button id="calcBtn" class="calc-btn">사라지는 돈 확인하기</button>
+                <h2>🏠 인테리어 실질 비용 계산기</h2>
+                <div class="calc-group">
+                    <label>인테리어/리모델링 총 비용 (만원)</label>
+                    <input type="number" id="interiorCost" placeholder="예: 5000" value="5000">
+                </div>
+                <div class="calc-group">
+                    <label>이 집에서 거주할 예상 기간 (년)</label>
+                    <input type="number" id="liveYears" placeholder="예: 4" value="4">
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">나의 월간 감성 지출 확인하기</button>
 
                 <div id="result-area">
-                    <p>인테리어 때문에 매달 나가는 비용</p>
-                    <span id="resMonthly" class="highlight">0원</span>
-                    <div style="margin-top:20px; padding-top:20px; border-top:1px dashed #999;">
-                        <p>이 돈을 투자했다면 (연 5% 배당)</p>
-                        <span id="resInvest" class="highlight" style="color:#2e7d32;">월 0원</span>
-                        <p style="font-size:0.9rem;">의 현금 흐름을 평생 받을 수 있습니다.</p>
+                    <p class="result-title">집값 상승에 도움 안 되는 '순수 매몰 비용'</p>
+                    <span id="monthlyLoss" class="highlight">약 0원</span>
+                    <p id="resultText" style="color:#666;"></p>
+                </div>
+            </section>
+
+            <!-- 팩트 체크 -->
+            <section>
+                <h2>🛑 리모델링 전 마주해야 할 냉정한 팩트</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>구매자는 당신의 취향을 무너뜨립니다</h3>
+                        <p>화이트 우드 감성? 다음 주인은 모던 블랙을 원합니다. 집을 파는 순간, 당신이 들인 인테리어 비용은 철거 대상이 될 뿐입니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>감가상각률 20%의 자산</h3>
+                        <p>인테리어 유행은 5년을 가지 못합니다. 시공 후 2년만 지나도 "요즘 스타일 아니네" 소리를 들으며 자산 가치는 수직 낙하합니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>전세/월세 거주자의 최대 실수</h3>
+                        <p>남의 집 벽지에 내 돈 수백만 원을 바르는 것은, 건물주에게 무이자로 거액을 기부하고 증발시키는 것과 다름없습니다.</p>
                     </div>
                 </div>
             </section>
 
+            <!-- SEO 텍스트 -->
             <section class="seo-content">
-                <h2>🛑 '오늘의 집' 사진에 속지 마세요</h2>
-                <h3>1. 매도 시 인정 못 받음</h3>
-                <p>집을 팔 때 "인테리어 1억 했으니 1억 더 주세요"라고 하면 아무도 안 삽니다. 매수자는 당신의 취향을 싫어해서 "철거하고 다시 하겠다"고 할 확률이 높습니다. 인테리어는 소모품일 뿐 자산 가치에 반영되지 않습니다.</p>
-                <h3>2. 유행의 유효기간 5년</h3>
-                <p>10년 전 유행하던 체리색 몰딩을 기억하시나요? 지금 유행하는 화이트 우드, 템바보드도 5년 뒤면 촌스러운 옛날 스타일이 됩니다. 5천만 원 올수리 대신 500만 원으로 도배/장판만 깔끔하게 하고, 나머지는 좋은 가구와 소품으로 채우는 게 현명합니다.</p>
+                <h2>인테리어의 함정: 5,000만 원 공사비가 매달 100만 원씩 녹는 과정</h2>
+                <p>오늘날 인스타그램은 인테리어 열풍의 근원지입니다. 낡은 구축 아파트를 사서 수억 원을 들여 싹 뜯어고친 뒤 '랜선 집들이'를 하는 것이 성공의 증표가 되었습니다. 하지만 경제학적으로 인테리어는 <strong>'가장 빠르게 감가되는 무형의 자본'</strong>입니다. 건물 구조 자체가 바뀌는 리모델링이 아닌 단순 미적 시공은 부동산 가격 형성 요인 중 가장 하위 단계에 머물러 있습니다.</p>
+
+                <h3>1. 보이지 않는 손실: 월 100만 원의 프리미엄 월세</h3>
+                <p>5,000만 원을 들여 인테리어를 하고 4년(48개월) 뒤 이사를 갈 예정이라고 가정해 봅시다. 당신은 매달 약 104만 원을 <strong>'예쁜 집에서 살기 위한 할부금'</strong>으로 지출하는 것입니다. 이 집을 팔 때 다음 매수인이 "인테리어가 예쁘니까 5,000만 원 더 드릴게요"라고 할 확률은 0%에 수렴합니다. 결국 당신은 매달 100만 원을 공중에 뿌리며 자기만족을 산 셈입니다. 이 돈을 우량주에 넣어두었다면 4년 뒤 약 7,000만 원의 자산이 되었을 텐데, 당신은 대신 매일 아침 보는 '세련된 수전'을 택했습니다. 선택은 당신의 몫이지만 팩트는 잔인합니다.</p>
+
+                <h3>2. 본질은 입지(Location), 껍데기는 소비</h3>
+                <p>부동산의 본질 가치는 땅값이지 도배/장판 가격이 아닙니다. 인테리어에 큰돈을 들이기보다 그 돈을 시드머니에 보태어 **'한 급지 높은 지역'**의 낡은 집을 사는 것이 10년 뒤 자산 가치 면에서 500% 이상 유리합니다. 수리는 거주에 불편함이 없을 정도로(누수, 결로, 기본 청소 등) 최소화하십시오. 껍데기에 치장하는 돈은 소모되어 없어지지만, 입지에 묻어둔 돈은 시간이 흐를수록 불어납니다. 화려한 조명 아래서 텅 빈 통장을 위로하지 말고, 수수한 방등 아래에서 두툼해지는 계좌를 감상하십시오.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 그래도 내가 살 집인데 만족감을 위해 해야 하지 않을까요?</strong><br>A. 실거주의 만족도는 중요합니다. 다만 그 만족도를 위해 지불하는 비용이 본인의 총자산 증식 속도를 5년 이상 늦춘다는 팩트를 인지하고 예산을 짜라는 조언입니다.</li>
+                    <li><strong>Q. 구축 아파트는 인테리어 안 하면 안 팔리잖아요.</strong><br>A. 매수인은 어차피 본인 스타일대로 고쳐 들어오고 싶어 합니다. 깔끔하게 비우고 짐을 최소화하는 것만으로도 수천만 원 인테리어보다 집이 더 잘 팔릴 수 있습니다.</li>
+                </ul>
             </section>
 
-            <div class="ad-box"><span style="font-size:11px; color:#ccc;">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-        <aside class="sidebar"><div style="min-height: 600px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div></aside>
-    </div>
-    <script>
-        document.getElementById('calcBtn').addEventListener('click', function() {
-            const cost = Number(document.getElementById('cost').value) * 10000;
-            const years = Number(document.getElementById('years').value);
-            if(cost <= 0 || years <= 0) { alert("값을 입력해주세요."); return; }
-            const totalMonths = years * 12;
-            const monthlyWaste = cost / totalMonths;
-            const annualDividend = cost * 0.05 * 0.846; 
-            const monthlyDividend = annualDividend / 12;
 
-            const resultArea = document.getElementById('result-area');
-            resultArea.style.display = 'block';
-            document.getElementById('resMonthly').innerText = Math.round(monthlyWaste).toLocaleString() + "원";
-            document.getElementById('resInvest').innerText = "월 " + Math.round(monthlyDividend).toLocaleString() + "원";
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
+    </div>
+
+    <!-- [계산 로직] -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                const totalCost = (parseFloat(document.getElementById('interiorCost').value) || 0) * 10000;
+                const yrs = parseFloat(document.getElementById('liveYears').value) || 1;
+                
+                const monthlyLossValue = totalCost / (yrs * 12);
+
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+                document.getElementById('monthlyLoss').textContent = `월 약 ${Math.round(monthlyLossValue).toLocaleString()}원`;
+                
+                document.getElementById('resultText').textContent = `당신은 지금 예쁜 집에서 산다는 만족감을 위해 매달 ${(monthlyLossValue/10000).toFixed(1)}만 원을 아무 대가 없이 태워버리고 계십니다. 웬만한 원룸 월세를 한 번 더 내고 있는 셈입니다.`;
+            });
         });
     </script>
 </body>
