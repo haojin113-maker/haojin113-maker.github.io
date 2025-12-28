@@ -3,91 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="탈모 관리 비용 효율 계산기. 비싼 샴푸와 영양제에 쓰는 돈이 모발이식 비용과 비교해 얼마나 되는지 확인하세요.">
-    <title>탈모 관리 가성비 계산기 | 팩트 폭격 연구소</title>
+    <meta name="description" content="검증 안 된 탈모 샴푸에 쏟아붓는 돈, 10년이면 모발이식 두 번 하고도 남습니다. 가성비 있는 탈모 관리 전략을 팩트로 계산해드립니다.">
+    <title>탈모 관리 가성비 판독기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
+
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
-        .main-content { flex: 3; } .sidebar { flex: 1; position: sticky; top: 20px; }
-        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; border: 1px solid #eee; }
-        h1.page-title { font-size: 2.2rem; margin: 20px 0 10px; color: #111; }
-        h2 { border-left: 5px solid #212121; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #eceff1; border: 1px solid #cfd8dc; color: #263238; }
-        .intro-box strong { color: #212121; background: #fff; padding: 0 5px; border-radius: 4px; }
-        .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; color: #212121; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #212121; color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 1.2rem; font-weight: bold; }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #f5f5f5; border-radius: 12px; text-align: center; }
-        .highlight { font-size: 2.5rem; font-weight: 900; display: block; margin: 10px 0; color: #212121; }
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        /* 섹션 공통 스타일 */
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        /* [가변] 테마 설정: Steel Blue Gray */
+        h2 { border-left: 5px solid #455a64; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #f1f3f4; border: 1px solid #cfd8dc; color: #37474f; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #455a64; background: #fff; padding: 0 5px; border-radius: 4px; }
         
-        .seo-content h3 { margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; } }
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #455a64; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #455a64; outline: none; box-shadow: 0 0 0 3px rgba(69, 90, 100, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #455a64; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(69, 90, 100, 0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #f1f3f4; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #1a237e; }
+
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #455a64; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">샴푸로 머리가 나면 노벨상 감입니다</h1>
-            <p class="page-subtitle">"탈모 완화 기능성"이라는 말에 속아 쓴 돈, 모발이식 비용과 비교해드립니다.</p>
+            <h1 class="page-title">탈모 샴푸에 속아 날린 내 돈, 내 머리카락</h1>
+            <p class="page-subtitle">씻어내는 액체에 기부하지 마세요. 진짜 가성비 있는 관리법을 계산해드립니다.</p>
 
             <section class="intro-box">
-                <h2>🧬 탈모 관리의 진실</h2>
-                <p>수만 원짜리 탈모 샴푸, 두피 마사지기, 검은콩... 심리적 위안을 얻는 동안 당신의 통장과 모발은 동시에 가늘어지고 있습니다. <strong>'검증된 약'</strong>을 제외한 나머지에 쓴 돈이 얼마나 큰 낭비인지 확인하세요.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">face_retouching_off</span> 탈모 관리는 '공포 마케팅'의 결정체입니다. 의학적 효능이 없는 기능성 제품에 쓰는 돈을 모았다면, 이미 풍성한 모발을 가졌을지도 모릅니다. <strong>10년 누적 관리비</strong>의 실체를 공개합니다.</p>
             </section>
 
+            <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>📉 득모(得毛) 가성비 계산기</h2>
-                <label>① 월 탈모약 비용 (만원)</label>
-                <input type="number" id="drugCost" value="3" placeholder="예: 3 (유일한 효과)">
-                <label>② 월 샴푸/토닉/영양제/관리 비용 (만원)</label>
-                <input type="number" id="shampooCost" value="10" placeholder="예: 10 (보조 수단)">
-                <label>③ 관리 지속 기간 (년)</label>
-                <input type="number" id="years" value="10" placeholder="예: 10">
-                <button id="calcBtn" class="calc-btn">모발이식 몇 번 할 수 있을까?</button>
+                <h2>💆‍♂️ 모발 수호 기회비용 계산기</h2>
+                <div class="calc-group">
+                    <label>매월 탈모 샴푸/에센스/영양제 지출 (원)</label>
+                    <input type="number" id="monthlyShampoo" placeholder="예: 50000" value="50000">
+                </div>
+                <div class="calc-group">
+                    <label>검증 안 된 관리(탈모 관리 샵 등) 월 지출 (원)</label>
+                    <input type="number" id="monthlyCare" placeholder="예: 100000" value="0">
+                </div>
+                <div class="calc-group">
+                    <label>관리 유지 예상 년수 (년)</label>
+                    <input type="number" id="years" placeholder="예: 10" value="10">
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">사라진 내 모발이식비 계산하기</button>
 
                 <div id="result-area">
-                    <p>10년간 보조 용품(샴푸 등)에 낭비한 돈</p>
-                    <span id="resWaste" class="highlight">0원</span>
-                    <div style="margin-top:20px; padding-top:20px; border-top:1px dashed #999;">
-                        <p>이 돈이면</p>
-                        <strong id="resTransplant" style="font-size:1.8rem; color:#2e7d32;">모발이식 0회</strong>
-                        <p>를 하고도 돈이 남습니다.</p>
+                    <p class="result-title">그동안 '액체'에 쏟아부을 총액</p>
+                    <span id="totalCost" class="highlight">약 0원</span>
+                    <p id="resultText" style="color:#666;"></p>
+                </div>
+            </section>
+
+            <!-- 팩트 체크 -->
+            <section>
+                <h2>🛑 머리카락을 지키기 위한 뼈 아픈 팩트</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>샴푸는 머리를 심어주지 않습니다</h3>
+                        <p>화장품인 '기능성 샴푸'는 두피 청결을 돕는 도구일 뿐입니다. 이미 죽어가는 모근을 되살리는 마법의 약은 샴푸 코너에 없습니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>검증된 '약'이 가장 저렴합니다</h3>
+                        <p>식약처 승인을 받은 피나스테리드/두타스테리드 계열의 약은 한 달에 커피 몇 잔 값이면 충분합니다. 가성비 최고의 투자는 병원 처방입니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>타이밍을 놓치면 비용은 기하급수</h3>
+                        <p>효과 없는 보조제에 의지하다 '골든 타임'을 놓치면, 나중에 수천만 원을 들여도 원래의 밀도를 되찾을 수 없습니다. 시간도 돈입니다.</p>
                     </div>
                 </div>
             </section>
 
+            <!-- SEO 텍스트 -->
             <section class="seo-content">
-                <h2>🛑 탈모 샴푸의 한계</h2>
-                <h3>1. 씻어내는 제품의 한계</h3>
-                <p>샴푸의 주 목적은 '세정'입니다. 유효 성분이 두피에 닿아있는 시간은 고작 1~2분입니다. 그 짧은 시간에 발모 성분이 모낭 깊숙이 침투하여 머리카락을 자라게 한다는 것은 의학적으로 매우 어렵습니다. 탈모 샴푸는 두피 환경을 깨끗하게 해 줄 뿐, 머리를 나게 하지는 못합니다.</p>
-                <h3>2. 골든타임을 놓치지 마세요</h3>
-                <p>민간요법과 비싼 샴푸에 의존하다가 치료 시기를 놓치면, 나중에는 약으로도 돌이킬 수 없는 상태가 됩니다. 탈모 징후가 보이면 피부과를 찾아가 FDA 승인을 받은 약물(피나스테리드, 두타스테리드, 미녹시딜)을 처방받는 것이 가장 저렴하고 확실한 방법입니다.</p>
-                <h3>3. 결국 답은 모발이식</h3>
-                <p>이미 진행된 M자 탈모나 정수리 탈모를 완벽하게 복구하는 방법은 모발이식뿐입니다. 검증되지 않은 관리실에 수백만 원을 쓰느니, 그 돈을 모아 확실한 모발이식을 받는 것이 시간과 정신 건강을 지키는 길입니다.</p>
-            </section>
-            
-            <div class="ad-box"><span style="font-size:11px; color:#ccc;">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
-        </main>
-        <aside class="sidebar"><div style="min-height: 600px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div></aside>
-    </div>
-    <script>
-        document.getElementById('calcBtn').addEventListener('click', function() {
-            const shampoo = Number(document.getElementById('shampooCost').value) * 10000;
-            const years = Number(document.getElementById('years').value);
-            if(years <= 0) { alert("값을 입력해주세요."); return; }
-            
-            const totalWaste = shampoo * 12 * years;
-            const transplantCost = 6000000; // 600만원 가정
-            const count = (totalWaste / transplantCost).toFixed(1);
+                <h2>탈모 관리 샴푸의 마케팅 함정과 진짜 의학적 비용</h2>
+                <p>한국인 5명 중 1명이 탈모를 고민하는 시대, 관련 시장은 수조 원대로 성장했습니다. 하지만 이 시장의 상당 부분은 의학적으로 입증되지 않은 **'코스메틱 제품'**들이 차지하고 있습니다. "지금 안 하면 다 빠진다"는 공포를 주입하여, 성분 함량 미미한 고가의 기능성 제품을 정기 결제하게 만드는 것이 탈모 산업의 핵심 전략입니다.</p>
 
-            const resultArea = document.getElementById('result-area');
-            resultArea.style.display = 'block';
-            document.getElementById('resWaste').innerText = Math.round(totalWaste).toLocaleString() + "원";
-            document.getElementById('resTransplant').innerText = "모발이식 " + count + "회 가능";
+                <h3>1. 보이지 않는 손실: 모발이식 1회 vs 샴푸 10년</h3>
+                <p>매달 탈모 방지라는 명목으로 5만 원을 쓴다고 가정해 봅시다. 10년이면 600만 원입니다. 대한민국 최고 수준의 모발이식 병원에서 3,000모를 심는 비용이 평균 400~600만 원 선임을 감안하면, 당신은 이미 <strong>뒤통수의 풍성한 모발을 이식하고도 남을 돈</strong>을 거품과 함께 하수구로 흘려보낸 것입니다. 가장 효율적인 탈모 관리는 효능 없는 제품에 대한 지출을 즉시 중단하고, 그 돈을 복리로 굴려 훗날 확실한 '이식 수술비'로 확보해두는 것입니다.</p>
+
+                <h3>2. 탈모약 한 알의 경제적 수익률</h3>
+                <p>의학적으로 유일하게 입증된 경구 투여 탈모약의 비용은 복제약 기준으로 한 달에 약 1.5만 원에서 2만 원 내외입니다. 이 작은 알약 한 알이 지켜주는 모발의 가치를 팩트로 계산한다면 연 수익률 수만 퍼센트의 우량 주식과 같습니다. '풍성한 머리'라는 자산을 지키는 데는 비싼 백화점 샴푸보다 저렴한 의사 처방이 훨씬 위력적입니다. 불확실한 곳에 베팅하지 말고 데이터와 과학에 기반한 투자를 시작하십시오.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 비싼 탈모 샴푸를 쓰면 시원한 느낌이 들던데요?</strong><br>A. 멘톨 성분이 주는 일시적인 청량감일 뿐 모근 성장과는 관계없습니다. 시원함에 속아 지갑을 비우지 마세요.</li>
+                    <li><strong>Q. 어차피 유전이라 포기해야 하나요?</strong><br>A. 유전이라도 약물 치료를 병행하면 가치 하락(탈모 진행)의 속도를 극적으로 늦출 수 있습니다. 이는 부동산의 감가상각을 막는 관리와도 같습니다.</li>
+                </ul>
+            </section>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </main>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
+    </div>
+
+    <!-- [계산 로직] -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                const sCost = parseFloat(document.getElementById('monthlyShampoo').value) || 0;
+                const cCost = parseFloat(document.getElementById('monthlyCare').value) || 0;
+                const yrs = parseFloat(document.getElementById('years').value) || 1;
+                
+                const total = (sCost + cCost) * 12 * yrs;
+
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+                document.getElementById('totalCost').textContent = `약 ${Math.round(total/10000).toLocaleString()}만 원`;
+                
+                let feedback = "";
+                if(total > 10000000) feedback = "축하합니다! 당신은 이미 모발이식을 전후좌우 두 번이나 할 수 있는 거금을 액체에 쏟아부으셨습니다.";
+                else if(total > 4000000) feedback = "이 돈이면 당장 강남 유명 병원에서 3,000모를 풍성하게 심고도 고기가 남습니다.";
+                else feedback = "더 큰 손실이 나기 전에 '진짜 치료'로 전환하세요. 가성비 떨어지는 지출이 누적되고 있습니다.";
+
+                document.getElementById('resultText').textContent = feedback;
+            });
         });
     </script>
 </body>
