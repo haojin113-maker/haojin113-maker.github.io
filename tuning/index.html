@@ -3,94 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="자동차 튜닝 비용 계산기. 휠, 배기, 랩핑에 쓴 돈이 중고차 가격에 미치는 영향과 기회비용을 계산해드립니다.">
-    <title>튜닝 호갱 판독기 | 팩트 폭격 연구소</title>
+    <meta name="description" content="아반떼에 1,000만 원 바르면 벤츠 될까요? 중고차 시장에서 인정받지 못하는 튜닝 비용의 '가치 0원' 팩트와 기회비용을 계산해드립니다.">
+    <title>자동차 튜닝비 판독기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
+
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
+        /* 기본 레이아웃 및 리셋 */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
-        .main-content { flex: 3; } .sidebar { flex: 1; position: sticky; top: 20px; }
-        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; border: 1px solid #eee; }
-        h1 { font-size: 2.2rem; margin: 20px 0 10px; } h2 { border-left: 5px solid #d50000; padding-left: 15px; margin: 40px 0 20px; }
-        .intro-box { background-color: #ffebee; border: 1px solid #ffcdd2; padding: 20px; border-radius: 12px; }
-        input { width: 100%; padding: 14px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #d50000; color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 1.2rem; font-weight: bold; }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fafafa; border-radius: 12px; text-align: center; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #d50000; }
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        /* 섹션 공통 스타일 */
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        /* [가변] 테마 설정: Racing Black */
+        h2 { border-left: 5px solid #212121; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #eeeeee; border: 1px solid #e0e0e0; color: #212121; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #000; background: #fff; padding: 0 5px; border-radius: 4px; }
         
-        /* SEO Text */
-        .seo-content h3 { margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; } }
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #212121; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #212121; outline: none; box-shadow: 0 0 0 3px rgba(33, 33, 33, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #212121; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .calc-btn:hover { filter: brightness(0.8); transform: translateY(-3px); }
+
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #eeeeee; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #c62828; }
+
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #212121; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1>아반떼에 1,000만 원 바르면 벤츠 되나요?</h1>
-            <p>자기만족이라기엔 너무나 뼈아픈 감가상각. 튜닝카의 말로를 알려드립니다.</p>
+            <h1 class="page-title">순정이 최고인 이유, 영수증이 증명합니다</h1>
+            <p class="page-subtitle">자기만족의 끝판왕 자동차 튜닝. 당신이 버린 돈의 행방을 찾습니다.</p>
 
             <section class="intro-box">
-                <h2>🏎️ 튜닝의 끝은 '순정'</h2>
-                <p>휠, 배기, 브레이크, 랩핑... 하나둘 꾸미다 보니 차값만큼 돈을 쓰셨나요? 슬픈 소식이지만, 중고차 시장에서 당신의 튜닝비는 <strong>'0원'</strong>이거나 오히려 <strong>'감가 사유'</strong>가 됩니다.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">build</span> 튜닝 업계에는 "튜닝의 끝은 순정"이라는 명언이 있습니다. 이는 미적 감각의 회귀가 아니라 **'경제적 파산'** 끝에 얻은 결론입니다. 중고차 딜러가 "0원"으로 후려칠 당신의 튜닝 내역서 가치를 확인하세요.</p>
             </section>
 
+            <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>📉 튜닝 매몰 비용 계산기</h2>
-                <label>① 현재 내 차의 중고 시세 (순정 기준, 만원)</label>
-                <input type="number" id="carValue" value="2000">
-                <label>② 튜닝 총 지출액 (휠/배기/랩핑 등, 만원)</label>
-                <input type="number" id="tuningCost" value="1000">
-                <label>③ 검사 대행비 및 원복 예상 비용 (만원)</label>
-                <input type="number" id="restoreCost" value="100">
-                <button id="calcBtn" class="calc-btn">증발한 내 돈 확인하기</button>
+                <h2>🏎️ 튜닝 자본 삭제 계산기</h2>
+                <div class="calc-group">
+                    <label>지금까지 쏟아부은 튜닝 총액 (만원)</label>
+                    <input type="number" id="tuningTotal" placeholder="예: 1000" value="1000">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">휠, 서스펜션, 배기, 랩핑, 엠비언트 등 모두 합산</p>
+                </div>
+                <div class="calc-group">
+                    <label>이 차를 앞으로 탈 기간 (년)</label>
+                    <input type="number" id="keepYears" placeholder="예: 3" value="3">
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">사라질 내 현금 확인하기</button>
 
                 <div id="result-area">
-                    <p>허공으로 사라진 튜닝 비용</p>
-                    <span id="resWaste" class="highlight">0원</span>
-                    <p style="color:#666;">(차값의 <span id="resPercent">0</span>% 추가 지출)</p>
-                    <div style="margin-top:20px; padding-top:20px; border-top:1px dashed #ddd;">
-                        <p>이 돈을 보탰으면 탈 수 있었던 차</p>
-                        <strong id="resCar" style="font-size:1.5rem; color:#333;">상급 모델 신차</strong>
+                    <p class="result-title">매일 주차장에서 '기화'되고 있는 돈</p>
+                    <span id="dailyBurn" class="highlight">약 0원</span>
+                    <p id="resultText" style="color:#666;"></p>
+                </div>
+            </section>
+
+            <!-- 팩트 체크 -->
+            <section>
+                <h2>🛑 튜닝이 재테크의 적인 3가지 이유</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>중고차 시장의 '비선호' 옵션</h3>
+                        <p>구매자는 남의 취향이 덕지덕지 묻은 차를 싫어합니다. 당신이 1,000만 원 들인 튜닝카는 순정차보다 더 낮은 가격에 팔릴 확률이 큽니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>보험 처리가 안 되는 무형 자산</h3>
+                        <p>사고가 났을 때 보험사는 튜닝 파츠의 가치를 제대로 인정해주지 않습니다. 억울해도 쥐어지는 건 순정 부품 가격뿐입니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>결국 원복(순정 복구) 비용의 이중 지출</h3>
+                        <p>차를 팔 때 안 팔려서 결국 자기 돈 들여 순정으로 다시 돌립니다. 튜닝비, 원복비, 시간까지 합치면 사실상 3중 손실입니다.</p>
                     </div>
                 </div>
             </section>
 
+            <!-- SEO 텍스트 -->
             <section class="seo-content">
-                <h2>🛑 튜닝을 멈춰야 하는 이유</h2>
-                <h3>1. 중고차 시장의 기피 대상</h3>
-                <p>튜닝카는 중고차 딜러들이 가장 꺼리는 매물 중 하나입니다. 전 차주가 차를 험하게 몰았을 것이라는 인식이 강하고, 대중적인 취향이 아니기 때문에 판매가 어렵습니다. 결국 "순정 부품 있나요?"라는 질문과 함께 가격을 깎이거나, 각개전투(부품 따로 판매)를 해야 하는 번거로움을 겪습니다.</p>
-                <h3>2. 체급은 못 넘습니다</h3>
-                <p>아반떼에 터보를 올리고 서스펜션을 바꿔도 그랜저의 승차감과 하차감을 따라갈 수 없습니다. 튜닝비 1,000만 원을 모아서 차급을 올리는 것이 진정한 업그레이드입니다. 튜닝은 자기만족이라지만, 그 만족의 유효기간은 생각보다 짧습니다.</p>
+                <h2>자동차 튜닝과 감가상각의 진실: 왜 당신의 취향은 0원인가?</h2>
+                <p>자동차를 좋아하는 사람들에게 튜닝은 나만의 개성을 표현하는 수단입니다. 하지만 경제적 관점에서 튜닝은 **'자발적인 자산 소멸'** 행위입니다. 수천만 원을 들여 외관을 바꾸고 성능을 개선했다고 자부하지만, 이는 지불한 즉시 가치가 사라지는 전형적인 소모적 소비입니다. 튜닝카는 중고 시장에서 '감가의 아이콘'으로 불린다는 사실을 팩트로 직시해야 합니다.</p>
+
+                <h3>1. 보이지 않는 손실: 취향의 프리미엄은 존재하지 않는다</h3>
+                <p>많은 튜너들이 "나중에 동호인에게 팔면 제값 받는다"고 말합니다. 하지만 동호인 시장은 매우 좁고, 당신과 완벽히 같은 취향을 가진 구매자를 찾기란 로또 당첨만큼 힘듭니다. 결국 급하게 차를 팔아야 할 때 딜러는 당신의 튜닝 내역을 '복원해야 할 결함'으로 간주합니다. 1,000만 원짜리 정품 휠을 껴도 차값에 100만 원조차 반영되지 않는 것이 현실입니다. 이 돈을 아껴서 상위 모델을 샀다면, 감가상각 방어는 물론이고 애초에 더 높은 사회적 지위를 얻었을 것입니다. 하위 등급 차량에 상급 모델 튜닝을 하는 것은 돈으로 열등감을 감추려는 가장 비싼 선택일 뿐입니다.</p>
+
+                <h3>2. 기회비용: 튜닝비 2,000만 원의 20년 뒤 미래</h3>
+                <p>20대에 차를 좋아해 야금야금 튜닝에 쏟아부은 2,000만 원. 이를 20년 동안 지수 추종 ETF(연 8% 복리)에 넣어두었다면 약 <strong>9,300만 원</strong>이 되었을 것입니다. 당신이 10년 전 도로 위에서 뿜어냈던 배기음과 화려한 랩핑의 대가는 현재 당신의 아파트 잔금을 치를 수도 있었던 소중한 자본입니다. 진짜 부자는 '굴러가는 기계'를 강화하지 않고 자신의 '자본 시스템'을 강화합니다. 차는 당신을 목적지까지 데려다주는 도구여야지, 당신의 미래 자산을 잡아먹는 괴물이 되어서는 안 됩니다.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 성능 튜닝은 연비 개선에 도움 되지 않나요?</strong><br>A. 극미한 개선을 위해 수백만 원을 쓰는 것은 배보다 배꼽이 큰 일입니다. 차라리 그 돈으로 정비 지침서대로 제때 소모품을 가는 것이 최고의 성능 유지법입니다.</li>
+                    <li><strong>Q. 인증 튜닝은 중고가에 반영되지 않나요?</strong><br>A. 극히 드물게 정식 브랜드의 튜닝 킷은 일부 인정받기도 합니다. 하지만 그마저도 들인 비용의 10~20% 수준이며, 일반적인 사제 튜닝은 가치가 0원임을 명심하세요.</li>
+                </ul>
             </section>
 
-            <div class="ad-box"><span style="font-size:11px; color:#ccc;">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-        <aside class="sidebar"><div style="min-height: 600px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div></aside>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
     </div>
+
+    <!-- [계산 로직] -->
     <script>
-        document.getElementById('calcBtn').addEventListener('click', function() {
-            const carValue = Number(document.getElementById('carValue').value) * 10000;
-            const tuningCost = Number(document.getElementById('tuningCost').value) * 10000;
-            const restoreCost = Number(document.getElementById('restoreCost').value) * 10000;
-            if(carValue <= 0) { alert("차량 가격을 입력해주세요."); return; }
-            
-            const totalWaste = tuningCost + restoreCost;
-            const totalInvest = carValue + totalWaste;
-            const percent = (totalWaste / carValue) * 100;
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                const total = (parseFloat(document.getElementById('tuningTotal').value) || 0) * 10000;
+                const yrs = parseFloat(document.getElementById('keepYears').value) || 1;
+                
+                const dailyBurnValue = total / (yrs * 365);
 
-            const resultArea = document.getElementById('result-area');
-            resultArea.style.display = 'block';
-            document.getElementById('resWaste').innerText = Math.round(totalWaste).toLocaleString() + "원";
-            document.getElementById('resPercent').innerText = percent.toFixed(1);
-
-            const totalManwon = totalInvest / 10000;
-            let item = "동급 신차 풀옵션";
-            if(totalManwon > 8000) item = "벤츠 E-클래스 / BMW 5시리즈";
-            else if(totalManwon > 6000) item = "제네시스 G80";
-            else if(totalManwon > 4000) item = "그랜저 / K8 하이브리드";
-            else if(totalManwon > 3000) item = "쏘나타 / K5 풀옵션";
-            document.getElementById('resCar').innerText = item;
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+                document.getElementById('dailyBurn').textContent = `약 ${Math.round(dailyBurnValue).toLocaleString()}원`;
+                
+                document.getElementById('resultText').textContent = `중고차 시장에서 가치를 1원도 인정받지 못한다고 가정할 때, 당신은 매일 약 ${(dailyBurnValue/1000).toFixed(1)}천 원을 지갑에서 꺼내 길바닥에 버리고 계십니다.`;
+            });
         });
     </script>
 </body>
