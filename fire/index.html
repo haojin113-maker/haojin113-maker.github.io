@@ -3,287 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="파이어족 은퇴 계산기. 경제적 자유를 위해 얼마가 필요하고 언제 은퇴할 수 있는지 시뮬레이션해보세요.">
-    <title>파이어족 계산기 | 팩트 폭격 연구소</title>
+    <meta name="description" content="언제쯤 회사를 그만둘 수 있을까요? 4%의 법칙을 활용하여 당신의 은퇴 목표 자산과 은퇴 가능 시기를 팩트로 계산해드립니다.">
+    <title>파이어족 은퇴 계산기 | 팩트 폭격 연구소</title>
 
     <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
 
-    <!-- 구글 아이콘 -->
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
     <style>
-        /* --- [표준 스타일 가이드] --- */
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.7;
-        }
-
-        .wrapper {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-        }
-        
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
+        .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
 
-        section {
-            background: white;
-            border-radius: 16px;
-            padding: 35px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            border: 1px solid #eee;
-        }
-
+        /* 섹션 공통 스타일 */
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
 
-        /* [테마 변경] 자유/성장(Emerald) -> #00695c */
-        h2 { border-left: 5px solid #00695c; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-
-        .intro-box { background-color: #e0f2f1; border: 1px solid #b2dfdb; color: #004d40; }
-        .intro-box strong { color: #00695c; background: #fff; padding: 0 5px; border-radius: 4px; }
-
-        /* 계산기 스타일 */
-        .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #00695c; }
-        input {
-            width: 100%; padding: 14px; border: 1px solid #ddd;
-            border-radius: 8px; font-size: 1rem; transition: 0.2s;
-        }
-        input:focus { border-color: #00695c; outline: none; box-shadow: 0 0 0 3px rgba(0, 105, 92, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-
-        .calc-btn {
-            width: 100%; padding: 18px;
-            background-color: #00695c; color: white;
-            border: none; border-radius: 12px;
-            font-size: 1.2rem; font-weight: bold; cursor: pointer;
-            margin-top: 10px; transition: 0.2s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .calc-btn:hover { background-color: #003d33; transform: translateY(-3px); }
-
-        #result-area {
-            display: none; margin-top: 30px; padding: 30px;
-            background-color: #e0f2f1; border-radius: 12px; text-align: center;
-            animation: fadeIn 0.5s ease;
-        }
+        /* [가변] 테마 설정: Deep Orange */
+        h2 { border-left: 5px solid #ff5722; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #fff3e0; border: 1px solid #ffccbc; color: #e64a19; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #ff5722; background: #fff; padding: 0 5px; border-radius: 4px; }
         
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.target { color: #00695c; } 
-        .highlight.age { color: #d32f2f; text-decoration: underline; }
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #ff5722; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #ff5722; outline: none; box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #ff5722; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(255,87,34,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fff3e0; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #e64a19; }
 
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box {
-            flex-shrink: 0; width: 40px; height: 40px;
-            background: #00695c; color: white;
-            border-radius: 10px; font-weight: bold;
-            display: flex; align-items: center; justify-content: center;
-            margin-right: 20px; margin-top: 5px;
-        }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        @media (max-width: 850px) {
-            .wrapper { flex-direction: column; }
-            .sidebar { width: 100%; position: static; min-width: auto; }
-            .main-content { width: 100%; }
-            h1.page-title { font-size: 1.8rem; }
-        }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #ff5722; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
-
     <div class="wrapper">
-        
-        <!-- [좌측] 메인 콘텐츠 -->
         <main class="main-content">
-            
-            <h1 class="page-title">회사, 언제 때려치울 수 있을까요?</h1>
-            <p class="page-subtitle">막연한 부자가 아닌, '구체적인 은퇴 목표'를 세워야 탈출할 수 있습니다.</p>
+            <!-- [제목 섹션] -->
+            <h1 class="page-title">회사 대신 '나'를 위해 일하고 싶다면</h1>
+            <p class="page-subtitle">경제적 자유(FIRE)를 얻기 위한 당신의 목표 금액은 얼마입니까?</p>
 
-            <!-- 인트로: 팩트 제시 -->
+            <!-- [도입 섹션] -->
             <section class="intro-box">
-                <h2>🔥 파이어(FIRE)족의 공식</h2>
-                <p>
-                    경제적 자유(Financial Independence)를 달성하고 조기 은퇴(Retire Early)하는 사람들에겐 공식이 있습니다.<br>
-                    <strong>"연 생활비의 25배를 모으면 은퇴해도 좋다"</strong>는 4%의 법칙. 당신은 언제쯤 이 목표를 달성할 수 있을까요?
-                </p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">local_fire_department</span> 파이어(FIRE)족은 단순히 일을 안 하는 사람이 아니라, 자본 소득이 생활비를 앞지른 사람을 뜻합니다. <strong>'4%의 법칙'</strong>에 기반하여 당신의 조기 은퇴를 가속화할 팩트를 체크하세요.</p>
             </section>
 
-            <!-- 계산기 섹션 -->
+            <!-- [계산기 섹션] -->
             <section id="calculator">
-                <h2>📅 은퇴 시기 시뮬레이터</h2>
+                <h2>🔥 경제적 자유 목표 계산기</h2>
+                <div class="calc-group">
+                    <label>한 달 평균 생활비 (만원)</label>
+                    <input type="number" id="monthlyExpense" placeholder="예: 300" value="300">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">은퇴 후 당신이 누리고 싶은 월간 최소 비용입니다.</p>
+                </div>
+                <div class="calc-group">
+                    <label>현재 모아둔 총 순자산 (만원)</label>
+                    <input type="number" id="currentAsset" placeholder="예: 5000" value="5000">
+                </div>
+                <div class="calc-group">
+                    <label>한 달 평균 추가 저축 가능액 (만원)</label>
+                    <input type="number" id="monthlySaving" placeholder="예: 150" value="150">
+                </div>
                 
-                <div class="calc-group">
-                    <label>① 현재 만 나이 (세)</label>
-                    <input type="number" id="age" value="30" placeholder="예: 30">
-                </div>
+                <button id="calcBtn" class="calc-btn">나의 은퇴 카운트다운 시작</button>
 
-                <div class="calc-group">
-                    <label>② 은퇴 후 희망 월 생활비 (만원)</label>
-                    <input type="number" id="monthlySpend" value="300" placeholder="예: 300 (현재 물가 기준)">
-                    <div class="help-text">* 300만원이면 1년 3600만원 필요</div>
-                </div>
-
-                <div class="calc-group">
-                    <label>③ 현재 모은 자산 (순자산, 만원)</label>
-                    <input type="number" id="currentAssets" value="5000" placeholder="예: 5000 (부채 제외)">
-                </div>
-
-                <div class="calc-group">
-                    <label>④ 매월 저축/투자 가능액 (만원)</label>
-                    <input type="number" id="monthlySaving" value="200" placeholder="예: 200">
-                </div>
-
-                <button id="calcBtn" class="calc-btn">나는 언제 사표를 낼 수 있을까?</button>
-
-                <!-- 결과창 -->
                 <div id="result-area">
-                    
-                    <div style="margin-bottom:20px;">
-                        <p class="result-title">당신의 은퇴 목표 자산 (4% 룰)</p>
-                        <span id="resTarget" class="highlight target">0원</span>
-                        <p style="font-size:0.9rem; color:#888;">(연 생활비의 25배)</p>
-                    </div>
-
-                    <div style="border-top:1px dashed #aaa; padding-top:20px;">
-                        <p class="result-title" style="margin-bottom:10px;">이 속도라면 은퇴 가능한 나이는</p>
-                        <span id="resAge" class="highlight age">0세</span>
-                        <p style="font-size:1.1rem; color:#555; margin-top:5px;">(약 <span id="resYears">0</span>년 뒤)</p>
-                    </div>
-
-                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #b2dfdb; font-size:0.95rem;">
-                        <strong>Tip:</strong> 월 생활비를 <span style="color:#00695c; font-weight:bold;">50만원</span> 줄이면,<br>
-                        은퇴 시기를 <span style="color:#d32f2f; font-weight:bold;">약 5년</span> 앞당길 수 있습니다.
-                    </div>
+                    <p class="result-title">당신이 필요한 FIRE 자산 규모</p>
+                    <span id="fireNumber" class="highlight">약 0원</span>
+                    <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
-            <!-- 팩트 체크 리스트 -->
+            <!-- [팩트체크 섹션] -->
             <section>
-                <h2>🛑 파이어족을 꿈꾼다면 알아야 할 것</h2>
-                
+                <h2>🛑 파이어족이 되기 전 마주해야 할 팩트</h2>
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">rule</span></div>
+                    <div class="icon-box">1</div>
                     <div class="reason-content">
-                        <h3>4%의 법칙 (The 4% Rule)</h3>
-                        <p>미국 트리니티 대학 연구에 따르면, 은퇴 자금의 4%만 매년 꺼내 쓰면 원금이 줄어들지 않고 영원히(30년 이상) 생활할 수 있다고 합니다. 단, 자산이 주식/채권 등에 투자되어 있어야 합니다.</p>
+                        <h3>월급을 '현금 흐름'으로 대체해야 합니다</h3>
+                        <p>단순히 큰돈을 모으는 것보다 중요한 것은 자본이 스스로 돈을 벌어오는 구조(배당, 이자, 월세 등)를 완성하는 것입니다.</p>
                     </div>
                 </div>
-                
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">trending_down</span></div>
+                    <div class="icon-box">2</div>
                     <div class="reason-content">
-                        <h3>인플레이션이라는 적</h3>
-                        <p>지금의 300만 원은 20년 뒤 300만 원의 가치가 아닙니다. 현금만 모아서는 절대 은퇴할 수 없습니다. 물가 상승률(3%) 이상의 수익을 내는 투자가 필수입니다.</p>
+                        <h3>생활비 절감이 가장 빠른 길입니다</h3>
+                        <p>수익을 1% 늘리는 것보다 지출을 10만 원 줄이는 것이 FIRE 달성 시점을 몇 년이나 앞당깁니다. 당신의 욕망을 통제하세요.</p>
                     </div>
                 </div>
-
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">accessibility</span></div>
+                    <div class="icon-box">3</div>
                     <div class="reason-content">
-                        <h3>국민연금은 '디저트'다</h3>
-                        <p>국민연금은 65세부터 나옵니다. 파이어족의 목표인 40~50대 은퇴를 위해서는 연금 없이 버틸 수 있는 '소득 공백기(크레바스)' 자금이 반드시 필요합니다.</p>
+                        <h3>건강보험과 인플레이션의 공격</h3>
+                        <p>직장을 그만두는 순간 지역 가입자 건강보험료와 매년 오르는 물가는 당신의 FIRE 목표액을 상향 조절하게 만드는 최대 변수입니다.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- 하단 광고 -->
-            <div class="ad-box">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <!-- [SEO 블로그 콘텐츠] -->
+            <section class="seo-content">
+                <h2>파이어족(FIRE)이란? 조기 은퇴를 꿈꾸는 이들의 필독 가이드</h2>
+                <p>Financial Independence, Retire Early의 약자인 FIRE. 이는 무조건 일을 하지 않고 노는 것을 목표로 하지 않습니다. 돈 때문에 하기 싫은 일을 하지 않아도 되는 **'시간의 주권'**을 되찾는 활동입니다. 파이어족의 성서와 같은 공식은 트리니티 대학의 연구에서 시작된 '4%의 법칙'입니다. 은퇴 자산의 4%만 생활비로 사용한다면, 주식과 채권의 평균 수익률 덕분에 자산이 줄어들지 않고 평생 유지될 확률이 높다는 이론입니다.</p>
 
-            <!-- common.js가 푸터 자동 추가 -->
+                <h3>1. 나의 파이어 숫자(FIRE Number) 계산하는 법</h3>
+                <p>목표 자산을 계산하는 방법은 의외로 간단합니다. 당신의 연간 생활비에 25를 곱하면 됩니다. 예를 들어 월 300만 원, 즉 연 3,600만 원을 쓴다면 3,600 * 25 = 9억 원이 당신의 FIRE 목표액입니다. 9억 원을 배당 성장주나 지수 추종 ETF에 거치했을 때, 매년 발생하는 약 3,600만 원의 수익만으로도 당신은 영원히 경제적 자립을 누릴 수 있습니다. 문제는 이 숫자를 위해 당신이 얼마나 지독하게 소비를 통제하고 시드머니를 굴릴 수 있느냐에 달렸습니다.</p>
 
+                <h3>2. 린 파이어(Lean FIRE) vs 팻 파이어(Fat FIRE)</h3>
+                <p>본인의 라이프스타일에 따라 전략은 나뉩니다. 극단적으로 지출을 줄여 4~5억 원으로 빠르게 은퇴하는 것이 '린 파이어'라면, 여유로운 삶을 위해 20~30억 원을 모으는 것이 '팻 파이어'입니다. 중요한 점은 어떤 전략을 선택하든 현재 당신의 가처분 소득의 50~70% 이상을 자본 시스템 구축에 쏟아부어야 한다는 것입니다. 소비가 주는 찰나의 기쁨을 포기한 사람만이 자유라는 위대한 보상을 받게 됩니다.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 폭락장이 오면 4%의 법칙이 깨지지 않나요?</strong><br>A. 하락장에서도 견딜 수 있도록 2~3년 치 생활비는 현금성 자산이나 채권으로 보유하는 전략(Bucket Strategy)이 병행되어야 합니다.</li>
+                    <li><strong>Q. 아이가 생기면 FIRE는 불가능한가요?</strong><br>A. 육아 비용은 은퇴 예산을 드라마틱하게 높입니다. 하지만 부부가 같은 가치관을 공유한다면, 조기 은퇴 후 직접 아이와 시간을 보내는 가치가 학원비 몇 푼보다 더 클 수 있습니다.</li>
+                </ul>
+            </section>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
 
-        <!-- [우측] 사이드바 광고 -->
         <aside class="sidebar">
-            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890" 
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </aside>
-
     </div>
 
-    <!-- 계산 로직 -->
+    <!-- [계산 로직] -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                // 1. 값 가져오기
-                const age = Number(document.getElementById('age').value);
-                const monthlySpend = Number(document.getElementById('monthlySpend').value) * 10000;
-                let currentAssets = Number(document.getElementById('currentAssets').value) * 10000;
-                const monthlySaving = Number(document.getElementById('monthlySaving').value) * 10000;
-
-                if(age <= 0 || monthlySpend <= 0 || monthlySaving <= 0) {
-                    alert("모든 항목을 올바르게 입력해주세요.");
-                    return;
-                }
-
-                // 2. 계산 로직
-                // 목표 자산 = 연간 생활비 * 25
-                const targetAssets = (monthlySpend * 12) * 25;
+                const monthlyExp = parseFloat(document.getElementById('monthlyExpense').value) || 0;
+                const current = parseFloat(document.getElementById('currentAsset').value) || 0;
+                const saving = parseFloat(document.getElementById('monthlySaving').value) || 0;
                 
-                // 투자 수익률 가정 (연 7% - 물가상승 고려한 실질 수익률 개념으로 4~5% 잡기도 하지만, 
-                // 여기선 명목 성장률로 계산하고 목표액은 현재가치 기준으로 비교)
-                // 보수적으로 연 5% 복리 가정
-                const annualReturn = 0.05; 
-                let yearsNeeded = 0;
-                let assets = currentAssets;
+                if(monthlyExp <= 0) { alert('생활비를 입력해주세요.'); return; }
 
-                // 목표 달성할 때까지 루프
-                while(assets < targetAssets && yearsNeeded < 100) {
-                    // 1년치 저축
-                    assets += (monthlySaving * 12);
-                    // 1년치 투자 수익
-                    assets *= (1 + annualReturn);
-                    yearsNeeded++;
+                const fireGoal = monthlyExp * 12 * 25; // 연 생활비의 25배
+                const gap = fireGoal - current;
+                
+                let text = "";
+                if(gap <= 0) {
+                    text = "축하합니다! 이미 경제적 독립의 기초를 완성하셨습니다. 이제 자유로운 인생을 설계하세요.";
+                } else if(saving <= 0) {
+                    text = "현재의 순자산으로는 부족합니다. 저축액이 없으면 은퇴 시기는 영영 오지 않을 수 있습니다.";
+                } else {
+                    const monthsNeeded = gap / saving; // 수익률 제외한 단순 산술 (보수적)
+                    text = `현재 저축 속도라면 앞으로 약 ${Math.round(monthsNeeded/12)}년 뒤에 은퇴가 가능합니다. 투자 수익률을 높이면 기간은 더 단축됩니다.`;
                 }
 
-                // 3. 결과 출력
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-
-                document.getElementById('resTarget').innerText = Math.round(targetAssets/100000000).toLocaleString() + "억 " + Math.round((targetAssets%100000000)/10000).toLocaleString() + "만원";
-                
-                if (yearsNeeded >= 80) {
-                    document.getElementById('resAge').innerText = "불가능";
-                    document.getElementById('resYears').innerText = "평생";
-                } else {
-                    document.getElementById('resAge').innerText = (age + yearsNeeded) + "세";
-                    document.getElementById('resYears').innerText = yearsNeeded;
-                }
+                document.getElementById('fireNumber').textContent = `약 ${(fireGoal/10000).toFixed(1)}억 원`;
+                document.getElementById('resultText').textContent = text;
             });
         });
     </script>
