@@ -3,117 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="카페 창업 수익률 계산기. 일매출, 월세, 재료비를 입력하면 사장님의 실제 순수익과 시급을 계산해드립니다.">
+    <meta name="description" content="퇴사하고 카페나 차릴까? 로망 뒤에 숨겨진 월세와 인건비의 지옥. 당신이 카페로 100만 원을 벌기 위해 팔아야 할 커피 잔 수를 계산해드립니다.">
     <title>카페 창업 현실 계산기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
+
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
-        .main-content { flex: 3; } .sidebar { flex: 1; position: sticky; top: 20px; }
-        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; border: 1px solid #eee; }
-        h1.page-title { font-size: 2.2rem; margin: 20px 0 10px; color: #111; }
-        h2 { border-left: 5px solid #5d4037; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #efebe9; border: 1px solid #d7ccc8; color: #4e342e; }
-        .intro-box strong { color: #5d4037; background: #fff; padding: 0 5px; border-radius: 4px; }
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        /* 섹션 공통 스타일 */
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        /* [가변] 테마 설정: Coffee Brown */
+        h2 { border-left: 5px solid #4e342e; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #efebe9; border: 1px solid #d7ccc8; color: #3e2723; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #4e342e; background: #fff; padding: 0 5px; border-radius: 4px; }
+        
         .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; color: #5d4037; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #5d4037; color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 1.2rem; font-weight: bold; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #4e342e; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #4e342e; outline: none; box-shadow: 0 0 0 3px rgba(78, 52, 46, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #4e342e; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(78,52,46,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과 영역 */
         #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #efebe9; border-radius: 12px; text-align: center; }
-        .highlight { font-size: 2.5rem; font-weight: 900; display: block; margin: 10px 0; color: #5d4037; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #3e2723; }
+
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #5d4037; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #4e342e; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
         
         .seo-content { line-height: 1.8; color: #444; }
-        .seo-content h3 { font-size: 1.3rem; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .seo-content p { margin-bottom: 15px; }
-        .seo-content ul { padding-left: 20px; margin-bottom: 20px; }
-        .seo-content li { margin-bottom: 10px; }
-
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; } }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">"퇴사하고 카페나 할까?"의 최후</h1>
-            <p class="page-subtitle">우아하게 커피 내리는 사장님? 현실은 설거지와 월세에 치이는 자영업자입니다.</p>
+            <h1 class="page-title">로망이었던 카페, 사실은 '중노동의 현장'</h1>
+            <p class="page-subtitle">하루에 커피를 몇 잔 팔아야 월급만큼 가져갈 수 있을까요?</p>
 
             <section class="intro-box">
-                <h2>☕ 지옥의 레드오션, 카페 창업</h2>
-                <p>한 집 건너 하나가 카페입니다. 저가 커피와의 전쟁, 배달비 부담, 인건비 상승... 하루에 몇 잔을 팔아야 알바비와 월세를 내고 <strong>'내 월급'</strong>을 챙길 수 있을까요? 냉혹한 수익률 계산기를 돌려보세요.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">coffee_maker</span> 카페 창업은 인테리어가 전부가 아닙니다. 숨 가쁘게 밀려오는 <strong>고정비와 인건비</strong>를 버텨낼 체력이 있나요? 로망을 숫자로 파괴해 드립니다.</p>
             </section>
 
+            <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>📉 사장님 순수익 시뮬레이터</h2>
-                <div class="calc-group"><label>① 하루 예상 판매량 (잔)</label><input type="number" id="cups" value="100" placeholder="예: 100"></div>
-                <div class="calc-group"><label>② 평균 객단가 (원)</label><input type="number" id="price" value="4000" placeholder="예: 4000"></div>
-                <div class="calc-group"><label>③ 상가 월세 + 관리비 (만원)</label><input type="number" id="rent" value="200" placeholder="예: 200"></div>
-                <div class="calc-group"><label>④ 알바생 수 (명)</label><input type="number" id="staff" value="1" placeholder="예: 1"></div>
-                <button id="calcBtn" class="calc-btn">한 달 순수익 확인하기</button>
+                <h2>☕ 카페 생존 잔 수 계산기</h2>
+                <div class="calc-group">
+                    <label>희망 월 순수익 (만원)</label>
+                    <input type="number" id="desiredProfit" placeholder="예: 300" value="300">
+                </div>
+                <div class="calc-group">
+                    <label>월 예상 고정비 (임대료 + 인건비 + 관리비)</label>
+                    <input type="number" id="fixedCost" placeholder="예: 500" value="500">
+                </div>
+                <div class="calc-group">
+                    <label>커피 한 잔당 예상 마진액 (원)</label>
+                    <input type="number" id="marginPerCup" placeholder="예: 1500" value="1500">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">판매가 - (원두+우유+컵+플랫폼 수수료)</p>
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">하루 목표 잔 수 계산하기</button>
 
                 <div id="result-area">
-                    <p>재료비, 월세, 인건비 떼고 남는 돈</p>
-                    <span id="resNetProfit" class="highlight">0원</span>
-                    <div style="margin-top:20px; padding-top:20px; border-top:1px dashed #999;">
-                        <p>사장님이 하루 12시간 일했을 때 시급</p>
-                        <strong id="resHourly" style="font-size:2rem; color:#d32f2f;">0원</strong>
-                        <p style="margin-top:10px;" id="verdictText">진단 중...</p>
+                    <p class="result-title">매일 팔아야 할 최소 커피 양은?</p>
+                    <span id="targetCups" class="highlight">0잔</span>
+                    <p id="resultText" style="color:#666;"></p>
+                </div>
+            </section>
+
+            <!-- 팩트 체크 -->
+            <section>
+                <h2>🛑 카페 창업을 말리고 싶은 3가지 팩트</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>플랫폼 수수료의 무서움</h3>
+                        <p>배달 앱은 당신의 매출에서 배달비와 수수료로 20~30%를 가져갑니다. 열심히 팔아도 배달 대행사 좋은 일만 시킬 수 있습니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>감가상각과 트렌드의 변화</h3>
+                        <p>1억 들인 인테리어는 2년만 지나면 올드해집니다. 커피 머신과 에어컨 수리비는 당신의 소중한 주말 수익을 앗아갑니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>사장님의 '무보수 노동'</h3>
+                        <p>순이익 300만 원은 당신의 시급으로 환산하면 편의점 알바보다 낮을 수 있습니다. 퇴사가 자유를 뜻하진 않습니다.</p>
                     </div>
                 </div>
             </section>
 
+            <!-- SEO 텍스트 -->
             <section class="seo-content">
-                <h2>🛑 카페 창업, 낭만은 없습니다</h2>
-                <p>드라마 속 우아한 카페 사장님은 없습니다. 현실은 원두 찌꺼기 치우기, 화장실 청소, 진상 손님 응대의 연속입니다. 2023년 기준 카페 폐업률은 역대 최고치를 기록했습니다.</p>
-                
-                <h3>1. 재료비 35%의 압박</h3>
-                <p>매출의 35~40%는 원두, 우유, 컵, 빨대 등 재료비로 나갑니다. 4,000원짜리 아메리카노 한 잔 팔면 재료비 1,400원이 빠집니다. 여기에 월세, 전기세, 수도세, 알바비, 배달 앱 수수료, 부가세까지 내고 나면 사장님 손에 쥐어지는 돈은 500원도 안 될 수 있습니다.</p>
-                
-                <h3>2. 카공족과 회전율</h3>
-                <p>카페 수익의 핵심은 '회전율'입니다. 하지만 4,000원짜리 커피 한 잔 시키고 4시간 동안 노트북을 하는 '카공족'이 늘면서 회전율은 바닥을 칩니다. 전기세와 냉난방비를 생각하면 손해를 보면서 장사하는 꼴입니다. 저가 커피 프랜차이즈가 테이크아웃 위주로 운영하는 이유가 있습니다.</p>
+                <h2>대한민국 카페 10만 개 시대, 당신의 카페가 생존할 확률은?</h2>
+                <p>퇴사 후 가장 많이 고민하는 창업 1순위, 카페. 화이트 톤 인테리어에 직접 고른 원두 향을 맡으며 일하는 모습은 상상만으로도 즐겁습니다. 하지만 자본주의는 냉정합니다. 대한민국은 이미 인구 대비 카페 숫자가 포화 상태를 넘어 <strong>'생존 게임'</strong>의 단계에 진입해 있습니다. 임대료와 인건비라는 거대한 파도 앞에서 사장님의 로망은 순식간에 난파될 수 있습니다.</p>
+
+                <h3>1. 마진율의 비밀: 아메리카노 한 잔의 현실</h3>
+                <p>4,000원짜리 커피 한 잔을 팔면 사장님은 얼마를 남길까요? 원두값과 우유값만 빼면 다 이익일 것 같지만, 임대료, 전기료, 수도세, 포장 용기 비용, 그리고 결제 수수료까지 공제하고 나면 실제 마진은 생각보다 박합니다. 특히 저가형 커피 프랜차이즈의 경우, 한 잔 팔아 남기는 돈이 500원 미만인 경우도 허다합니다. 이 구조에서 한 달에 500만 원의 고정비를 내고 본인의 인건비를 건지려면 하루에 최소 100~200잔 이상을 쉬지 않고 팔아야 합니다.</p>
+
+                <h3>2. '시간'이라는 매몰 비용</h3>
+                <p>카페 사장님은 정해진 영업시간 동안 매장에 묶여있어야 합니다. 주 6~7일 근무가 당연시되며, 아르바이트생의 갑작스러운 퇴사나 노쇼(No-show)는 온전히 사장님의 몫입니다. 만약 본인이 투자한 초기 창업비 1억 원을 안전한 고배당주에 넣고 직장 생활을 계속했다면 얻었을 수익과 본인의 현재 시급을 비교해 보십시오. 카페 운영은 '사업'이라기보다 <strong>'자기 고용(Self-employment)'</strong>인 경우가 대부분입니다.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 그래도 개인 카페는 감성으로 승부하면 되지 않나요?</strong><br>A. 감성은 유행이 가장 빠릅니다. 옆집에 더 감각적인 카페가 생기는 순간 당신의 고객은 미련 없이 떠납니다. 맛보다 중요한 것은 철저한 상권 분석과 비용 통제력입니다.</li>
+                    <li><strong>Q. 프랜차이즈는 교육도 해주니 안전하겠죠?</strong><br>A. 교육은 공짜가 아닙니다. 가맹비, 교육비, 인테리어 강제 시행 등으로 이미 당신의 초기 자본 중 상당 부분을 본사가 가져갑니다. 높은 브랜드 로열티 또한 당신의 수익성을 갉아먹는 주범입니다.</li>
+                </ul>
             </section>
-            
-            <div class="ad-box"><span style="font-size:11px; color:#ccc;">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-        <aside class="sidebar"><div style="min-height: 600px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div></aside>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
     </div>
+
+    <!-- [계산 로직] -->
     <script>
-        document.getElementById('calcBtn').addEventListener('click', function() {
-            const cups = Number(document.getElementById('cups').value);
-            const price = Number(document.getElementById('price').value);
-            const rent = Number(document.getElementById('rent').value) * 10000;
-            const staff = Number(document.getElementById('staff').value);
-            if(cups <= 0 || price <= 0) { alert("값을 입력해주세요."); return; }
-            
-            const monthlySales = cups * price * 30;
-            const foodCost = monthlySales * 0.35;
-            const laborCost = staff * 2500000;
-            const utilityCost = monthlySales * 0.05;
-            const totalCost = rent + foodCost + laborCost + utilityCost;
-            const netProfit = monthlySales - totalCost;
-            const bossHours = 12 * 30;
-            const bossWage = netProfit / bossHours;
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                const profit = (parseFloat(document.getElementById('desiredProfit').value) || 0) * 10000;
+                const fixed = (parseFloat(document.getElementById('fixedCost').value) || 0) * 10000;
+                const margin = parseFloat(document.getElementById('marginPerCup').value) || 1;
+                
+                const totalTarget = profit + fixed;
+                const cupsPerMonth = totalTarget / margin;
+                const cupsPerDay = cupsPerMonth / 30;
 
-            const resultArea = document.getElementById('result-area');
-            resultArea.style.display = 'block';
-            document.getElementById('resNetProfit').innerText = Math.round(netProfit).toLocaleString() + "원";
-            document.getElementById('resHourly').innerText = Math.round(bossWage).toLocaleString() + "원";
-
-            const verdict = document.getElementById('verdictText');
-            if (bossWage < 10030) {
-                verdict.innerText = "알바보다 못 버는 사장님입니다. (폐업 고려)";
-                verdict.style.color = "#d32f2f";
-            } else {
-                verdict.innerText = "노동의 대가는 건지고 계십니다. (생존)";
-                verdict.style.color = "#2e7d32";
-            }
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+                document.getElementById('targetCups').textContent = `하루 평균 ${Math.ceil(cupsPerDay)}잔`;
+                
+                document.getElementById('resultText').textContent = `한 달에 ${Math.ceil(cupsPerMonth).toLocaleString()}잔을 팔아야 합니다. 10시간 영업 기준, 최소 ${ (60 / (cupsPerDay/10)).toFixed(0) }분마다 한 명의 손님이 끊임없이 들어와야 당신의 로망이 유지됩니다.`;
+            });
         });
     </script>
 </body>
