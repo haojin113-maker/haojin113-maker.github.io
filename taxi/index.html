@@ -3,125 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="택시비 지출 계산기. 지각비와 회식 귀가비로 길바닥에 버리는 돈을 연봉으로 환산해드립니다.">
+    <meta name="description" content="편리함에 속아 매일 타는 택시, 1년이면 중고차 한 대 값입니다. 택시비 지출이 당신의 부의 축적을 얼마나 가로막는지 계산해드립니다.">
     <title>택시 VIP 판독기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 및 라이브러리 -->
     <script src="../common.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
+        /* 기본 레이아웃 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
         section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        /* [가변] 테마 설정: Gold */
         h2 { border-left: 5px solid #fbc02d; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #fffde7; border: 1px solid #fff59d; color: #f57f17; }
-        .intro-box strong { color: #f9a825; background: #fff; padding: 0 5px; border-radius: 4px; }
+        .intro-box { background-color: #fff9c4; border: 1px solid #fff59d; color: #f57f17; padding: 25px; border-radius: 12px; }
+        
         .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #f9a825; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; transition: 0.2s; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #e65100; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
         input:focus { border-color: #fbc02d; outline: none; box-shadow: 0 0 0 3px rgba(251, 192, 45, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #fbc02d; color: #333; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.2s; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .calc-btn:hover { background-color: #f9a825; transform: translateY(-3px); }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fff9c4; border-radius: 12px; text-align: center; animation: fadeIn 0.5s ease; }
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.waste { color: #e65100; } .highlight.work { color: #333; text-decoration: underline; }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #fbc02d; color: #333; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(251,192,45,0.2); transition: 0.2s; }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fff9c4; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #e65100; }
+
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #fbc02d; color: #fff; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #fbc02d; color: #333; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
         
         .seo-content { line-height: 1.8; color: #444; }
-        .seo-content h3 { font-size: 1.3rem; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .seo-content p { margin-bottom: 15px; }
-        .seo-content ul { padding-left: 20px; margin-bottom: 20px; }
-        .seo-content li { margin-bottom: 10px; }
-        
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; min-width: auto; } .main-content { width: 100%; } h1.page-title { font-size: 1.8rem; } }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">5분 더 자려다 2만 원 태우셨나요?</h1>
-            <p class="page-subtitle">지각비, 회식비, 귀차니즘 비용... 당신이 길바닥에 뿌리는 돈을 계산해드립니다.</p>
+            <h1 class="page-title">지각비와 귀차니즘, 당신은 택시 VIP입니까?</h1>
+            <p class="page-subtitle">"택시비는 아깝지만 몸이 힘드니까"라는 합리화의 가격표.</p>
 
             <section class="intro-box">
-                <h2>🚖 도로 위의 VIP 고객님</h2>
-                <p>"오늘만 타자"라고 생각하지만 카드 내역서를 보면 한숨만 나옵니다. 택시비는 단순한 교통비가 아닙니다. <strong>'게으름에 대한 벌금'</strong>입니다. 1년 동안 당신이 택시 기사님에게 바치는 월급이 얼마인지 확인해보세요.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">local_taxi</span> 술 마시고 택시, 늦잠 자서 택시... 무심코 부른 카카오택시가 당신의 시드머니를 태우고 있습니다. <strong>편안함의 대가</strong>가 얼마나 가혹한지 계산해 드립니다.</p>
             </section>
 
+            <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>💸 택시비 누수 진단</h2>
-                <div class="calc-group"><label>① 주당 택시 이용 횟수 (회)</label><input type="number" id="weeklyCount" value="2" placeholder="예: 2"></div>
-                <div class="calc-group"><label>② 1회 평균 요금 (원)</label><input type="number" id="avgCost" value="15000" placeholder="예: 15000"></div>
-                <div class="calc-group"><label>③ 당신의 시급 (원)</label><input type="number" id="wage" value="15000" placeholder="예: 15000"><div class="help-text">* 2025년 최저시급 약 1만원, 본인 연봉÷2090</div></div>
-                <button id="calcBtn" class="calc-btn">1년 치 손실액 확인하기</button>
+                <h2>🚖 택시비 기회비용 계산기</h2>
+                <div class="calc-group">
+                    <label>주당 택시 탑승 횟수 (번)</label>
+                    <input type="number" id="freq" placeholder="예: 4" value="4">
+                </div>
+                <div class="calc-group">
+                    <label>1회 탑승 시 평균 요금 (원)</label>
+                    <input type="number" id="avgFare" placeholder="예: 12000" value="12000">
+                </div>
+                <div class="calc-group">
+                    <label>유지 예상 기간 (년)</label>
+                    <input type="number" id="yrs" placeholder="예: 10" value="10">
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">사라진 벤츠값 계산하기</button>
+
                 <div id="result-area">
-                    <div style="margin-bottom:20px;"><p class="result-title">1년 동안 길바닥에 버리는 돈</p><span id="resTotal" class="highlight waste">0원</span></div>
-                    <div style="border-top:1px dashed #aaa; padding-top:20px;"><p class="result-title" style="margin-bottom:10px;">이 돈을 메꾸기 위해 당신은 회사에서</p><span id="resWorkHours" class="highlight work">0시간</span><p class="result-title">을 공짜로 일해야 합니다.</p></div>
-                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #f9a825; font-size:0.95rem;">택시를 끊으면 매년 <strong><span id="compareItem" style="background:#fff59d; padding:0 4px; color:#f57f17;">최신형 아이폰 프로</span></strong>를 공짜로 받을 수 있습니다.</div>
+                    <p class="result-title">이 돈을 주식에 넣었을 때의 가치는?</p>
+                    <span id="finalAsset" class="highlight">약 0원</span>
+                    <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
+            <!-- 팩트체크 섹션 -->
             <section>
-                <h2>🛑 택시 호출 앱을 지워야 하는 이유</h2>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">snooze</span></div><div class="reason-content"><h3>가장 비싼 5분 (게으름 비용)</h3><p>아침에 5분 더 자는 대가로 1~2만 원을 지불합니다. 분당 4,000원짜리 잠을 자는 셈입니다. 5성급 호텔 스위트룸보다 비싼 낮잠입니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">local_taxi</span></div><div class="reason-content"><h3>심야 할증의 공포</h3><p>밤 10시부터 할증이 시작되고, 11시~2시 사이에는 최대 40%까지 비싸집니다. 회식하고 늦게 들어가면 술값보다 택시비가 더 나오는 주객전도 현상이 발생합니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">directions_bus</span></div><div class="reason-content"><h3>대중교통과의 비교</h3><p>지하철/버스 요금은 약 1,500원입니다. 택시비 15,000원이면 대중교통을 10번 탈 수 있습니다. 택시 한 번 안 타면 일주일 출퇴근비가 해결됩니다.</p></div></div>
+                <h2>🛑 택시가 당신의 지갑을 찢는 이유</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>시간을 아끼려다 '돈 벌 시간'을 뺏깁니다</h3>
+                        <p>지각해서 타는 택시비 1.5만 원. 당신의 시급이 1만 원이라면, 당신은 지각을 만회하기 위해 1.5시간을 무료로 봉사하는 셈입니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>할증과 배차비라는 보이지 않는 할증</h3>
+                        <p>기본요금이 전부는 아닙니다. 밤 10시 이후 할증과 블루/모범 배차 추가비는 당신의 1km당 단가를 비트코인보다 빠르게 올립니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>대중교통의 10배에 달하는 비용</h3>
+                        <p>버스나 지하철은 1,500원입니다. 택시는 보통 1.5만 원입니다. 매일 타는 당신은 한 달에 남들보다 30만 원 이상을 길바닥에 뿌리고 있습니다.</p>
+                    </div>
+                </div>
             </section>
 
-            <!-- SEO 텍스트 추가 -->
+            <!-- SEO 콘텐츠 -->
             <section class="seo-content">
-                <h2>🚖 택시비, 당신의 연봉을 갉아먹는 주범</h2>
-                <p>직장인들이 가장 많이 하는 후회 중 하나가 "택시비만 아꼈어도..."입니다. 야근하고 피곤해서, 아침에 늦잠 자서, 술 마시고 대리 부르기 귀찮아서 타는 택시. 한 번 탈 때는 큰돈 같지 않지만, 한 달에 20~30만 원, 1년이면 200~300만 원이 순식간에 증발합니다. 이는 당신의 한 달 월급과 맞먹는 금액입니다.</p>
+                <h2>택시비 절약의 경제학: 편리함과 맞바꾼 부의 사다리</h2>
+                <p>퇴근 후 지친 몸을 이끌고 지하철 역으로 향하는 대신 호출 앱을 켜는 순간, 당신은 소중한 자산 형성의 기회를 잃게 됩니다. 많은 이들이 택시비를 <strong>'어쩌다 발생하는 비용'</strong>이라고 생각하지만, 주당 3~4회 이상 이용하는 습관이 굳어지면 이는 매달 고정 지출인 임대료나 보험료 수준의 거대한 지출이 됩니다.</p>
 
-                <h3>1. 할증 요금의 무서움 (최대 40%)</h3>
-                <p>2023년부터 서울시 택시 심야 할증 시간이 밤 10시로 앞당겨지고, 할증률도 최대 40%까지 인상되었습니다. 자정 무렵 강남에서 택시를 잡으면 기본요금만으로도 1만 원 가까이 나옵니다. 회식이나 야근이 잦은 직장인에게는 치명적인 지출입니다.</p>
+                <h3>1. 택시비 지출의 복리 가치 분석</h3>
+                <p>매주 택시비로 5만 원을 쓰는 사람과 그 돈을 대중교통으로 아끼고 저축하는 사람의 10년 뒤 차이는 얼마일까요? 단순히 계산하면 연간 260만 원, 10년이면 2,600만 원입니다. 하지만 이 돈을 연 8% 수익률의 인덱스 펀드에 넣었다면, 그 가치는 약 4,000만 원이 됩니다. 편안하게 집에 오는 20분이 10년 뒤 쏘나타 한 대 가격으로 돌아오는 마법 같은 손실이 발생하는 것입니다.</p>
 
-                <h3>2. 택시비 아끼는 꿀팁</h3>
-                <p>가장 좋은 방법은 '카카오T', '우티' 같은 호출 앱을 삭제하는 것입니다. 호출이 쉬우면 그만큼 쉽게 타게 됩니다. 부득이하게 타야 한다면 '올댓택시' 같은 택시비 할인 카드를 사용하거나, 지역 화폐를 이용해 7~10% 할인을 받는 것이 좋습니다. 하지만 무엇보다 중요한 것은 '5분 일찍 일어나는 습관'입니다.</p>
+                <h3>2. 택시 중독에서 벗어나는 법</h3>
+                <p>택시를 타는 가장 큰 이유는 '지각'과 '체력적 소모'입니다. 하지만 냉정하게 짚어봅시다. 5분 더 일찍 일어나는 노력이 월 20만 원의 수익을 가져다준다면, 어떤 알바보다 고수익이지 않나요? 대중교통 이용 시간을 독서나 뉴스 청취의 시간으로 치환해 보십시오. 택시는 정말 위급한 상황이나 이동 수단이 전무한 시간대에만 활용하는 '비상수단'이지 결코 일상적인 교통수단이 되어서는 안 됩니다.</p>
 
                 <h3>자주 묻는 질문 (FAQ)</h3>
                 <ul>
-                    <li><strong>Q. 너무 피곤한데 택시 타면 안 되나요?</strong><br>A. 체력 관리를 위해 가끔 타는 것은 괜찮습니다. 하지만 '습관성 택시'는 문제입니다. 주 1회를 넘지 않도록 스스로 규칙을 정해보세요.</li>
-                    <li><strong>Q. 야근 택시비는 회사에서 주는데요?</strong><br>A. 회사 지원이 있다면 당연히 타야죠. 하지만 지원 한도를 넘어서거나, 지원되지 않는 개인적인 약속에 택시를 남용하는 것을 경계해야 합니다.</li>
+                    <li><strong>Q. 비가 오거나 짐이 많을 때는 타도 되지 않을까요?</strong><br>A. 특수한 상황까지 아끼라는 것은 아닙니다. 팩트 폭격의 대상은 '아무 이유 없이 귀찮아서' 습관적으로 부르는 택시입니다.</li>
+                    <li><strong>Q. 법인 카드로 타는데 상관없지 않나요?</strong><br>A. 회사 돈을 아끼는 습관은 자신의 자산 관리 습관으로 직결됩니다. 내 지갑에서 나가는 돈이 아니라는 이유로 낭비하는 태도는 자본가로 가는 길을 방해합니다.</li>
                 </ul>
             </section>
 
-            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div>
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-        <aside class="sidebar"><div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div></aside>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
     </div>
+
+    <!-- 로직 스크립트 -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                const count = Number(document.getElementById('weeklyCount').value);
-                const cost = Number(document.getElementById('avgCost').value);
-                const wage = Number(document.getElementById('wage').value);
-                if(count <= 0 || cost <= 0 || wage <= 0) { alert("모든 항목을 0보다 크게 입력해주세요."); return; }
-                const weeklyCost = count * cost;
-                const yearlyCost = weeklyCost * 52; 
-                const workHours = yearlyCost / wage;
+                const freq = parseFloat(document.getElementById('freq').value) || 0;
+                const avgFare = parseFloat(document.getElementById('avgFare').value) || 0;
+                const yrs = parseFloat(document.getElementById('yrs').value) || 1;
+                const rate = 0.08;
+                
+                const monthly = freq * avgFare * 4.345;
+                let total = 0;
+                for(let i=0; i < yrs * 12; i++) {
+                    total = (total + monthly) * (1 + rate/12);
+                }
+
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-                document.getElementById('resTotal').innerText = Math.round(yearlyCost).toLocaleString() + "원";
-                document.getElementById('resWorkHours').innerText = Math.round(workHours).toLocaleString() + "시간";
-                const totalManwon = yearlyCost / 10000;
-                let item = "에어팟 프로";
-                if(totalManwon > 500) item = "유럽 왕복 항공권";
-                else if(totalManwon > 300) item = "최신형 맥북 에어";
-                else if(totalManwon > 200) item = "동남아 여행 패키지";
-                else if(totalManwon > 150) item = "최신 아이폰";
-                else if(totalManwon > 80) item = "아이패드 에어";
-                document.getElementById('compareItem').innerText = item;
+                document.getElementById('finalAsset').textContent = `약 ${(total/10000).toFixed(0)}만 원`;
+                document.getElementById('resultText').textContent = `${yrs}년 동안 택시 대신 지하철을 타고 그 차액을 모았다면 당신의 계좌에 찍혔을 금액입니다. 택시가 아니라 미래를 태운 셈이죠.`;
             });
         });
     </script>
