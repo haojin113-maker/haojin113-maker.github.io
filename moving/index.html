@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="이사 비용 계산기. 포장이사, 중개수수료, 입주청소비 등 2년마다 이사 다니며 길바닥에 버리는 돈을 계산해드립니다.">
+    <meta name="description" content="2년마다 500만 원씩 길바닥에 버리고 계신가요? 복비와 이사비를 포함한 진짜 주거 유지 비용을 팩트로 계산해드립니다.">
     <title>이사 비용 판독기 | 팩트 폭격 연구소</title>
     <script src="../common.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
@@ -11,96 +11,73 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
-        .main-content { flex: 3; } .sidebar { flex: 1; position: sticky; top: 20px; }
-        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; border: 1px solid #eee; }
-        h1.page-title { font-size: 2.2rem; margin: 20px 0 10px; color: #111; }
-        h2 { border-left: 5px solid #8d6e63; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #efebe9; border: 1px solid #d7ccc8; color: #3e2723; }
-        .intro-box strong { color: #8d6e63; background: #fff; padding: 0 5px; border-radius: 4px; }
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+        h2 { border-left: 5px solid #795548; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #efebe9; border: 1px solid #d7ccc8; color: #4e342e; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #795548; background: #fff; padding: 0 5px; border-radius: 4px; }
         .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; color: #8d6e63; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #8d6e63; color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 1.2rem; font-weight: bold; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #795548; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        .calc-btn { width: 100%; padding: 18px; background-color: #795548; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(121, 85, 72, 0.2); }
         #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #efebe9; border-radius: 12px; text-align: center; }
-        .highlight { font-size: 2.5rem; font-weight: 900; display: block; margin: 10px 0; color: #8d6e63; }
-        
-        .seo-content h3 { margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; } }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #b71c1c; }
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">2년마다 500만 원씩 버리고 계십니다</h1>
-            <p class="page-subtitle">"전세 살면 돈 굳는다?" 이사비, 복비, 청소비로 증발하는 돈을 계산해드립니다.</p>
+            <h1 class="page-title">정들자마자 떠나는 당신의 돈</h1>
+            <p class="page-subtitle">이사는 단순히 짐을 옮기는 게 아니라 현금을 도로에 버리는 행위입니다.</p>
 
             <section class="intro-box">
-                <h2>📦 메뚜기족의 설움</h2>
-                <p>전세 재계약 실패, 월세 인상... 어쩔 수 없이 2년마다 짐을 쌉니다.<br>포장이사 부르고, 부동산 복비 내고, 새집 도배하고 나면 통장이 텅 빕니다. 당신이 길바닥에 뿌린 이사 비용 총액을 확인하세요.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">local_shipping</span> 잦은 이사는 자산 성장을 가로막는 보이지 않는 장애물입니다. 포장 이사비, 부동산 복비, 도배장판비... 이 소멸성 지출들이 당신의 <strong>실질 월세</strong>를 얼마나 올리고 있는지 확인해보세요.</p>
             </section>
 
             <section id="calculator">
-                <h2>🚚 이사 견적 시뮬레이터</h2>
-                <label>① 전세/월세 보증금 (만원)</label>
-                <input type="number" id="deposit" value="30000" placeholder="예: 30000 (3억)">
-                <div class="help-text">* 중개수수료 계산용 (0.3~0.5% 가정)</div>
-                <label>② 포장이사 + 입주청소 비용 (만원)</label>
-                <input type="number" id="movingCost" value="150" placeholder="예: 150 (5톤 기준)">
-                <label>③ 도배/장판/수리 등 기타비용 (만원)</label>
-                <input type="number" id="etcCost" value="50" placeholder="예: 50">
-                <label>④ 이사 횟수 (회)</label>
-                <input type="number" id="count" value="5" placeholder="예: 5 (10년 동안 5번)">
-                <button id="calcBtn" class="calc-btn">이사 다니느라 쓴 돈 확인</button>
+                <h2>📦 이사 비용 월세 환산 계산기</h2>
+                <div class="calc-group">
+                    <label>이사 시 발생한 총 부대비용 (만원)</label>
+                    <input type="number" id="movingTotal" placeholder="예: 400" value="400">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">복비+이사비+입주청소+인테리어 복구비 등</p>
+                </div>
+                <div class="calc-group">
+                    <label>그 집에서 거주한(할) 총 기간 (개월)</label>
+                    <input type="number" id="stayMonths" placeholder="예: 24" value="24">
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">사라지는 내 한 달 월세 확인하기</button>
 
                 <div id="result-area">
-                    <p>길바닥에 버린 총 이사 비용</p>
-                    <span id="resTotal" class="highlight">0원</span>
-                    <div style="margin-top:20px; padding-top:20px; border-top:1px dashed #999;">
-                        <p>이 돈이면</p>
-                        <strong id="compareItem" style="font-size:1.5rem; color:#5d4037;">최신형 가전 풀세트</strong>
-                        <p>를 바꾸고도 남습니다.</p>
-                    </div>
+                    <p class="result-title">이사를 위해 추가로 지불하는 월간 비용</p>
+                    <span id="extraRent" class="highlight">약 0원</span>
+                    <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
             <section class="seo-content">
-                <h2>🛑 이사가 당신의 자산을 갉아먹는다</h2>
-                <h3>1. 숨만 쉬어도 나가는 '복비'</h3>
-                <p>3억 원 전세 계약 시 중개수수료는 최대 120만 원(0.4% 기준, 부가세 별도)입니다. 2년마다 이사를 다니면 10년 동안 복비로만 600만 원 이상을 쓰게 됩니다. 이는 웬만한 중고차 한 대 값입니다.</p>
-                <h3>2. 가구/가전의 수명 단축</h3>
-                <p>이사를 할 때마다 냉장고, 세탁기, 장롱은 미세하게 파손되고 뒤틀립니다. "이사 세 번 하면 살림살이 다 망가진다"는 옛말은 틀린 말이 아닙니다. 잦은 이사는 자산 가치를 떨어뜨립니다.</p>
-                <h3>3. 내 집 마련이 답이다</h3>
-                <p>취등록세가 아까워서 집을 안 산다고요? 2년마다 나가는 이사 비용과 이사 스트레스, 전세 사기 리스크를 비용으로 환산하면 취등록세가 오히려 쌉니다. 안정적인 주거는 재테크의 기본입니다.</p>
+                <h2>잦은 이사가 '가난'을 부르는 수학적 이유</h2>
+                <p>2년 단위 계약이 만료될 때마다 새로운 보금자리를 찾는 분들이 많습니다. "기분 전환"이나 "더 넓은 곳"으로 가기 위한 이사가 실제 당신의 총자산을 갉아먹는 속도는 가공할 수준입니다. 주택이라는 자산을 고르는 데 신중하지 못한 대가는 평생 <strong>'길바닥 이자'</strong>로 지출됩니다.</p>
             </section>
-            
-            <div class="ad-box"><span style="font-size:11px; color:#ccc;">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-        <aside class="sidebar"><div style="min-height: 600px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div></aside>
+        <aside class="sidebar"><div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"></div></aside>
     </div>
     <script>
-        document.getElementById('calcBtn').addEventListener('click', function() {
-            const deposit = Number(document.getElementById('deposit').value) * 10000;
-            const moving = Number(document.getElementById('movingCost').value) * 10000;
-            const etc = Number(document.getElementById('etcCost').value) * 10000;
-            const count = Number(document.getElementById('count').value);
-            if(deposit <= 0 || count <= 0) { alert("값을 입력해주세요."); return; }
-            
-            // 중개수수료 (대략 0.4% 가정)
-            const brokerage = deposit * 0.004;
-            const costPerMove = brokerage + moving + etc;
-            const totalCost = costPerMove * count;
-
-            const resultArea = document.getElementById('result-area');
-            resultArea.style.display = 'block';
-            document.getElementById('resTotal').innerText = Math.round(totalCost).toLocaleString() + "원";
-
-            const totalManwon = totalCost / 10000;
-            let item = "최신형 건조기";
-            if(totalManwon > 2000) item = "아반떼 신차 (깡통)";
-            else if(totalManwon > 1000) item = "유럽 여행 (4인 가족)";
-            else if(totalManwon > 500) item = "샤넬 가방";
-            else if(totalManwon > 300) item = "혼수 가전 풀세트";
-            document.getElementById('compareItem').innerText = item;
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                const total = (parseFloat(document.getElementById('movingTotal').value) || 0) * 10000;
+                const months = parseFloat(document.getElementById('stayMonths').value) || 1;
+                const monthlyLoss = total / months;
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+                document.getElementById('extraRent').textContent = `월 약 ${Math.round(monthlyLoss).toLocaleString()}원`;
+                document.getElementById('resultText').textContent = `당신은 관리비 외에 매달 ${(monthlyLoss/10000).toFixed(1)}만 원씩 이사비를 할부로 내며 살고 있는 것과 같습니다. 더 오래 머무를 집을 찾는 것이 최고의 투자입니다.`;
+            });
         });
     </script>
 </body>
