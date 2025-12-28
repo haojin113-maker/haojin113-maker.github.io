@@ -991,5 +991,19 @@
   "icon": "🧈",
   "category": "money",
   "url": "./gold/index.html"
+},
+  {
+  "title": "카메라 장비병 판독기",
+  "desc": "렌즈 하나 살 돈이면 벤츠 계약금? 셔터 한 번 누를 때마다 지출하는 팩트 가격을 계산해드립니다.",
+  "icon": "📸",
+  "category": "life",
+  "url": "./camera/index.html"
+},
+{
+  "title": "주류 수집 판독기",
+  "desc": "마시지도 않을 위스키가 자산? 장식장 속의 현금이 썩어가며 잃고 있는 기회비용을 팩트로 보여드립니다.",
+  "icon": "🥃",
+  "category": "life",
+  "url": "./liquor/index.html"
 }
 ]
