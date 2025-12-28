@@ -3,118 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="결혼정보회사 가입비 비용 효율 계산기. 만남 1회당 비용을 계산하고 자기관리 투자와 비교해드립니다.">
+    <meta name="description" content="가입비 300만 원, 미팅 1번에 얼마짜리 소개팅을 하고 계신가요? 결혼정보회사의 무서운 가격표와 가성비를 팩트로 계산해드립니다.">
     <title>결정사 가성비 판독기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
+
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        /* 섹션 공통 스타일 */
         section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
-        h2 { border-left: 5px solid #f06292; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #fce4ec; border: 1px solid #f8bbd0; color: #880e4f; }
-        .intro-box strong { color: #f06292; background: #fff; padding: 0 5px; border-radius: 4px; }
+
+        /* [가변] 테마 설정: Lavender */
+        h2 { border-left: 5px solid #9575cd; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #f3e5f5; border: 1px solid #d1c4e9; color: #4527a0; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #9575cd; background: #fff; padding: 0 5px; border-radius: 4px; }
+        
         .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #f06292; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; transition: 0.2s; }
-        input:focus { border-color: #f06292; outline: none; box-shadow: 0 0 0 3px rgba(240, 98, 146, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #f06292; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.2s; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .calc-btn:hover { background-color: #c2185b; transform: translateY(-3px); }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fce4ec; border-radius: 12px; text-align: center; animation: fadeIn 0.5s ease; }
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.waste { color: #f06292; } .highlight.value { color: #2e7d32; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #9575cd; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #9575cd; outline: none; box-shadow: 0 0 0 3px rgba(149, 117, 205, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #9575cd; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(149,117,205,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #f3e5f5; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #4527a0; }
+
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #f06292; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #9575cd; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
         
         .seo-content { line-height: 1.8; color: #444; }
-        .seo-content h3 { font-size: 1.3rem; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .seo-content p { margin-bottom: 15px; }
-        .seo-content ul { padding-left: 20px; margin-bottom: 20px; }
-        .seo-content li { margin-bottom: 10px; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; min-width: auto; } .main-content { width: 100%; } h1.page-title { font-size: 1.8rem; } }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">가입비 500만 원, 이상형을 만날 확률은?</h1>
-            <p class="page-subtitle">조건 보고 만나는 만남 시장. 당신의 가입비가 얼마나 허무하게 쓰이는지 계산해드립니다.</p>
+            <h1 class="page-title">사랑도 쇼핑이 가능한가요? '만남'의 가격표</h1>
+            <p class="page-subtitle">수백만 원 가입비 뒤에 숨겨진 1회당 만남의 냉정한 경제성.</p>
 
             <section class="intro-box">
-                <h2>💍 만남 1회당 50만 원?</h2>
-                <p>결혼정보회사는 당신에게 '횟수'를 팝니다. 가입비를 횟수로 나누면, 커피 한 잔 마시고 헤어지는 1시간 만남에 <strong>수십만 원</strong>을 태우는 꼴입니다. 이 돈을 <strong>'나'</strong>에게 투자했다면 어땠을까요?</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">groups</span> "전문가에게 맡기면 다르겠지"라는 기대로 문을 두드리는 결혼정보회사(결정사). 하지만 자본주의 시장에서 인연은 **'단가'**로 계산됩니다. 가입비와 추가 지출을 합산한 소개팅 한 번의 가격을 마주해 보세요.</p>
             </section>
 
+            <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>💘 소개팅 단가 계산기</h2>
-                <div class="calc-group"><label>① 결정사 가입비 (만원)</label><input type="number" id="signupFee" value="300" placeholder="예: 300"></div>
-                <div class="calc-group"><label>② 보장된 만남 횟수 (회)</label><input type="number" id="count" value="5" placeholder="예: 5"></div>
-                <div class="calc-group"><label>③ 1회 만남 시 데이트 비용 (만원)</label><input type="number" id="dateCost" value="10" placeholder="예: 10"></div>
-                <button id="calcBtn" class="calc-btn">1번 만날 때마다 깨지는 돈 확인</button>
+                <h2>💍 인연 거래 비용 계산기</h2>
+                <div class="calc-group">
+                    <label>결정사 총 가입비 (만원)</label>
+                    <input type="number" id="entranceFee" placeholder="예: 300" value="300">
+                </div>
+                <div class="calc-group">
+                    <label>계약 상 보장되는 총 미팅 횟수 (회)</label>
+                    <input type="number" id="meetCount" placeholder="예: 5" value="5">
+                </div>
+                <div class="calc-group">
+                    <label>미팅 1회당 본인 데이트 지출액 (원)</label>
+                    <input type="number" id="personalSpend" placeholder="예: 100000" value="100000">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">의상 구매, 헤어/메이크업, 카페, 식사비 포함</p>
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">나의 1회 미팅 구매가 확인</button>
+
                 <div id="result-area">
-                    <div style="margin-bottom:20px;"><p class="result-title">이성을 한 번 만나는 데 든 진짜 비용</p><span id="resCostPerMeet" class="highlight waste">0원</span><p style="font-size:0.9rem; color:#888;">(가입비 포함 단가)</p></div>
-                    <div style="border-top:1px dashed #aaa; padding-top:20px;"><p class="result-title" style="margin-bottom:10px;">가입비 총액이면</p><span id="resInvest" class="highlight value" style="font-size:1.8rem;">PT 0회</span><p style="font-size:0.9rem; color:#888;">를 받고 몸짱이 될 수 있습니다.</p></div>
-                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #f8bbd0; font-size:0.95rem;"><strong>조언:</strong><br>조건 만남에 돈을 쓰느니, 그 돈으로<br><strong><span style="color:#d81b60;">나를 가꿔서</span></strong> 자연스럽게 만나는 게 확률이 높습니다.</div>
+                    <p class="result-title">당신의 만남 1회에 소모되는 진짜 비용</p>
+                    <span id="pricePerMeet" class="highlight">약 0원</span>
+                    <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
+            <!-- 팩트 체크 -->
             <section>
-                <h2>🛑 결정사가 알려주지 않는 진실</h2>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">format_list_numbered</span></div><div class="reason-content"><h3>잔인한 등급표</h3><p>당신은 가입과 동시에 연봉, 직업, 외모, 집안 재력으로 등급이 매겨집니다. 당신이 원하는 이상형은 당신보다 높은 등급일 확률이 99%입니다. 만남 자체가 성사되지 않습니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">person_outline</span></div><div class="reason-content"><h3>알바 회원의 존재</h3><p>횟수 차감을 위해 억지로 나오는 '알바 회원'이나, 결혼 생각이 없는 '바람잡이'가 존재한다는 의혹은 끊이지 않습니다. 영혼 없는 대화에 돈과 시간을 버리게 됩니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">money_off</span></div><div class="reason-content"><h3>성혼 사례금 (추가 비용)</h3><p>가입비가 끝이 아닙니다. 만약 결혼에 성공하면 수백만 원의 성혼 사례금을 추가로 요구합니다. 사랑을 비즈니스로 만드는 순간, 순수함은 사라집니다.</p></div></div>
+                <h2>🛑 결정사가 감추고 싶어 하는 3가지 팩트</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>후반부 만남의 질 하락 리스크</h3>
+                        <p>초반에 가장 등급이 높은 상대를 배치해 가입을 유도합니다. 횟수가 거듭될수록 당신의 기대치와 다른 상대가 나올 확률이 커지며 가성비는 급락합니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>결혼 성공보다 '만남 횟수' 소진이 목표</h3>
+                        <p>회사의 영업 목표는 성혼 성사가 아닌, 빠르게 횟수를 소진시켜 재가입을 유도하는 것일 때가 많습니다. 당신은 시장의 상품으로 소비되고 계십니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>감정의 마모와 기회비용</h3>
+                        <p>거절당할 때의 상처와 낯선 이를 만나는 에너지 소모를 시급으로 환산하면, 결정사 비용의 3배가 넘는 소중한 자산을 태우고 계신 것입니다.</p>
+                    </div>
+                </div>
             </section>
 
-            <!-- SEO 텍스트 추가 -->
+            <!-- SEO 텍스트 -->
             <section class="seo-content">
-                <h2>💍 결혼정보회사, 가입만 하면 결혼할 수 있을까?</h2>
-                <p>결혼 적령기에 접어든 미혼 남녀라면 한 번쯤 결혼정보회사 가입을 고민합니다. "전문가가 매칭해주니까 확실하겠지", "신원 인증된 사람만 만나니까 안전하겠지"라는 기대를 안고 수백만 원의 가입비를 결제합니다. 하지만 통계에 따르면 결정사 가입 회원의 성혼율은 20% 내외에 불과합니다. 나머지 80%는 횟수만 차감하다가 끝납니다.</p>
+                <h2>결혼정보회사의 명암: 사랑은 투자입니까, 사치입니까?</h2>
+                <p>30대에 접어들며 조급함이 밀려올 때, "돈으로 효율적인 만남을 사겠다"는 결정은 매력적으로 들립니다. '직업', '집안', '학벌'이 검증된 상대를 매칭해 준다는 약속 때문입니다. 하지만 경제학적 관점에서 <strong>'연애의 상업적 아웃소싱'</strong>은 가장 높은 리스크와 불확실성을 가진 금융 상품과 유사합니다.</p>
 
-                <h3>1. 철저한 자본주의 등급 사회</h3>
-                <p>결정사는 철저하게 조건(Spec)으로 사람을 평가합니다. 전문직, 대기업, 부모님 자산, 학벌 등 모든 것이 점수화되어 등급이 매겨집니다. 내가 원하는 '괜찮은 사람'은 이미 더 높은 등급의 이성을 찾고 있거나, 결정사에 가입할 필요 없이 주변에서 소개가 들어옵니다. 결국 비슷한 조건의 사람끼리 매칭되거나, 내가 원하지 않는 상대만 소개받는 '미스매칭'이 반복됩니다.</p>
+                <h3>1. 보이지 않는 금융 비용: 60만 원짜리 커피 한 잔</h3>
+                <p>가입비 300만 원에 보장 횟수 5회를 제공받는 평균적인 직장인이라면, 한 번 소개팅 장소에 나가는 기본료만 60만 원입니다. 여기에 꾸미고 나가는 비용까지 합산하면 커피 한 잔을 마시며 나누는 2시간의 대가는 70~80만 원에 육박합니다. 만약 이 300만 원을 복리 8%의 주식 시장에 10년만 묻어두었다면 어떨까요? 10년 뒤 약 650만 원이 되어 당신의 신혼여행비 전액을 책임질 수 있는 거금이 됩니다. 찰나의 희박한 성공 확률을 위해 당신은 미래 자산의 기둥 하나를 뽑고 있는 것은 아닌지 스스로 계산해 보십시오.</p>
 
-                <h3>2. 최고의 투자는 '자기 자신'</h3>
-                <p>가입비 300~500만 원은 결코 적은 돈이 아닙니다. 이 돈을 자기계발에 투자한다면 어떨까요? PT를 받아 몸매를 가꾸거나, 피부 관리를 받거나, 패션 스타일링을 받는 것이 매력을 높이는 데 훨씬 효과적입니다. 매력이 높아지면 자연스러운 만남의 기회도 늘어납니다. 누군가에게 나를 소개해달라고 돈을 내는 것보다, 내가 빛나는 사람이 되는 것이 가장 확실한 결혼 준비입니다.</p>
+                <h3>2. '등급'이라는 허상과 인간 소외</h3>
+                <p>결정사는 당신을 ABCD 등급으로 분류합니다. 등급이 높지 않은 회원들에게 "이 가격이면 감지덕지"라며 가입을 유도하는 가스라이팅은 흔한 업계의 술법입니다. 진정한 부와 행복은 남이 매긴 등급표에서 나오지 않습니다. 오히려 그 돈으로 본인의 기술을 연마하거나, 책을 읽어 지적 매력을 높이고, 운동을 통해 생기 있는 몸을 만드는 **'자기 자신에 대한 직접 투자'**가 인연을 만날 확률을 훨씬 더 확실하고 저렴하게 올려줍니다. 사람을 쇼핑하려는 마음이 가장 값비싼 인생의 오류가 될 수 있음을 팩트로 기억하십시오.</p>
 
                 <h3>자주 묻는 질문 (FAQ)</h3>
                 <ul>
-                    <li><strong>Q. 횟수 차감은 어떻게 되나요?</strong><br>A. 보통 가입 시 5회~10회 등 횟수가 정해져 있습니다. 상대방이 만남을 거절해도 프로필을 받아보는 것만으로 횟수가 차감되거나, 만났는데 마음에 안 들어도 1회가 소진됩니다.</li>
-                    <li><strong>Q. 환불은 가능한가요?</strong><br>A. 소비자분쟁해결기준에 따라 환불은 가능하지만, 위약금과 이미 진행된 횟수에 대한 비용(회당 수십만 원)을 공제하면 돌려받을 수 있는 돈은 거의 없습니다. 가입은 신중해야 합니다.</li>
+                    <li><strong>Q. 주변에 만날 사람이 없어서 어쩔 수 없는데요?</strong><br>A. 관심사가 비슷한 유료 커뮤니티나 취미 모임에 나가보세요. 가입비의 1/10 가격으로 훨씬 자연스럽고 긴 안목의 인맥을 쌓을 수 있습니다.</li>
+                    <li><strong>Q. 성혼 사례금이 비싼 건 성과급 아닐까요?</strong><br>A. 성과급이 높다는 것은 회사가 당신의 '절박함'에 가장 높은 프리미엄을 붙였다는 뜻입니다. 자본주의에서 승자는 절박함을 팔지 않고 평정심을 유지하는 사람입니다.</li>
                 </ul>
             </section>
 
-            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div>
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-        <aside class="sidebar"><div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div></aside>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
     </div>
+
+    <!-- [계산 로직] -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                const fee = Number(document.getElementById('signupFee').value) * 10000;
-                const count = Number(document.getElementById('count').value);
-                const dateCost = Number(document.getElementById('dateCost').value) * 10000;
-                if(fee <= 0 || count <= 0) { alert("가입비와 횟수를 올바르게 입력해주세요."); return; }
-                const costPerMatch = fee / count;
-                const totalCostPerMeet = costPerMatch + dateCost;
-                const ptCost = 50000;
-                const ptCount = Math.floor(fee / ptCost);
+                const entrance = (parseFloat(document.getElementById('entranceFee').value) || 0) * 10000;
+                const count = parseFloat(document.getElementById('meetCount').value) || 1;
+                const spend = parseFloat(document.getElementById('personalSpend').value) || 0;
+                
+                const costPerMeetValue = (entrance / count) + spend;
+
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-                document.getElementById('resCostPerMeet').innerText = Math.round(totalCostPerMeet).toLocaleString() + "원";
-                document.getElementById('resInvest').innerText = "PT " + ptCount + "회";
+                document.getElementById('pricePerMeet').textContent = `1회 약 ${Math.round(costPerMeetValue).toLocaleString()}원`;
+                
+                let feedback = "";
+                if(costPerMeetValue > 800000) feedback = "이 정도면 한 번 만날 때마다 아이폰 최신형 한 대를 선물하고 오는 셈입니다. 인생이 도박인가요?";
+                else if(costPerMeetValue > 300000) feedback = "꽤 고가의 만남을 하고 계시군요. 본전 생각에 상대방을 냉정하게 평가하며 정서를 깎아먹지 마세요.";
+                else feedback = "비교적 합리적인 매칭 조건이나, 여전히 시중에 없는 인연을 돈으로 창조할 수는 없음을 잊지 마세요.";
+
+                document.getElementById('resultText').textContent = feedback;
             });
         });
     </script>
