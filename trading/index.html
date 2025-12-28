@@ -3,121 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="주식 단타 수수료 계산기. 잦은 매매로 인해 증권사와 나라에 내는 세금이 얼마인지, 복리 수익률과 비교해드립니다.">
-    <title>주식 단타의 현실 | 팩트 폭격 연구소</title>
+    <meta name="description" content="단타 매매, 당신이 돈을 벌 확률보다 증권사가 수수료를 챙길 확률이 100%입니다. 빈번한 매매가 원금을 얼마나 빠르게 갉아먹는지 계산해드립니다.">
+    <title>주식 단타의 최후 계산기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
+
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
-        .main-content { flex: 3; } .sidebar { flex: 1; position: sticky; top: 20px; }
-        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; border: 1px solid #eee; }
-        h1.page-title { font-size: 2.2rem; margin: 20px 0 10px; color: #111; }
-        h2 { border-left: 5px solid #d50000; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #ffebee; border: 1px solid #ffcdd2; color: #b71c1c; }
-        .intro-box strong { color: #d50000; background: #fff; padding: 0 5px; border-radius: 4px; }
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        /* [가변] 테마 설정: Deep Red */
+        h2 { border-left: 5px solid #d32f2f; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #ffebee; border: 1px solid #ffcdd2; color: #b71c1c; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #d32f2f; background: #fff; padding: 0 5px; border-radius: 4px; }
+        
         .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; color: #d50000; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #d50000; color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 1.2rem; font-weight: bold; }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fafafa; border-radius: 12px; text-align: center; }
-        .highlight { font-size: 2.5rem; font-weight: 900; display: block; margin: 10px 0; color: #d50000; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #d32f2f; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #d32f2f; outline: none; box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #d32f2f; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(211,47,47,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #ffebee; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #b71c1c; }
+
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #d50000; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #d32f2f; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
         
         .seo-content { line-height: 1.8; color: #444; }
-        .seo-content h3 { font-size: 1.3rem; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .seo-content p { margin-bottom: 15px; }
-        .seo-content ul { padding-left: 20px; margin-bottom: 20px; }
-        .seo-content li { margin-bottom: 10px; }
-
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; } }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">당신은 투자를 하는 게 아니라 '세금'을 내고 있습니다</h1>
-            <p class="page-subtitle">단타로 돈을 벌고 있다고 착각하시나요? 증권사가 웃고 있는 진짜 이유를 알려드립니다.</p>
+            <h1 class="page-title">매수와 매도 사이, 증권사만 웃고 있습니다</h1>
+            <p class="page-subtitle">수익이 0%여도 당신의 계좌가 반 토막 나는 이유, 거래세의 함정.</p>
 
             <section class="intro-box">
-                <h2>📉 가만히 있어도 계좌가 녹는 이유</h2>
-                <p>주식을 사고팔 때마다 <strong>증권거래세와 수수료</strong>가 나갑니다. 하루에 1% 수익을 내도, 5번 매매하면 수수료로 다 빠져나갑니다. 당신이 1년 동안 <strong>증권사 직원 월급</strong>으로 얼마를 줬는지 계산해드립니다.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">show_chart</span> 주식 단타는 '투자의 영역'이 아니라 <strong>'확률적 자산 삭제'</strong> 게임에 가깝습니다. 실력이 있어도 세금과 수수료라는 문턱이 당신을 기다립니다. 1년 뒤 계좌 상태를 예측해 보세요.</p>
             </section>
 
+            <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>💸 깡통 계좌 시뮬레이터</h2>
-                <div class="calc-group"><label>① 1회 매매 금액 (시드머니, 만원)</label><input type="number" id="seedMoney" value="1000" placeholder="예: 1000"></div>
-                <div class="calc-group"><label>② 하루 평균 매매 횟수 (회)</label><input type="number" id="dailyTrade" value="5" placeholder="예: 5 (사고팔고 합계)"></div>
-                <div class="calc-group"><label>③ 수수료+세금 합계 (%)</label><input type="number" id="feeRate" value="0.23" placeholder="예: 0.23"></div>
-                <button id="calcBtn" class="calc-btn">1년간 사라지는 돈 확인</button>
+                <h2>📈 단타 세금/수수료 시뮬레이터</h2>
+                <div class="calc-group">
+                    <label>투자 원금 (만원)</label>
+                    <input type="number" id="seed" placeholder="예: 3000" value="3000">
+                </div>
+                <div class="calc-group">
+                    <label>하루 평균 매매 횟수 (회)</label>
+                    <input type="number" id="tradeCount" placeholder="예: 5" value="5">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">사고 파는 것을 1세트로 봅니다.</p>
+                </div>
+                <div class="calc-group">
+                    <label>나의 평균 매매 수익률 (한 번 매매 시 %)</label>
+                    <input type="number" id="winRate" placeholder="예: 0" value="0">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">0%를 입력하면 순수 세금/수수료 손실만 나옵니다.</p>
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">증발하는 원금 계산하기</button>
+
                 <div id="result-area">
-                    <p>1년 동안 증권사와 나라에 낸 돈</p>
-                    <span id="resYearly" class="highlight">0원</span>
-                    <p style="color:#666;">(원금 대비 <span id="resRatio">0</span>%)</p>
-                    <div style="margin-top:20px; padding-top:20px; border-top:1px dashed #999;">
-                        <p>수익률이 0%여도 수수료 때문에</p>
-                        <strong id="compareItem" style="font-size:1.5rem; color:#b71c1c;">원금의 절반</strong>
-                        <p>이 증발했습니다.</p>
+                    <p class="result-title">1년(250일) 뒤 당신의 계좌 잔고는?</p>
+                    <span id="finalAccount" class="highlight">0원</span>
+                    <p id="tradingDesc" style="color:#666;"></p>
+                </div>
+            </section>
+
+            <!-- 팩트 체크 -->
+            <section>
+                <h2>🛑 단타 매매가 필패하는 수학적 진실</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>거래세와 수수료라는 거대한 '역복리'</h3>
+                        <p>한 번 사고팔 때마다 약 0.2%의 비용이 나갑니다. 별거 아닌 것 같지만, 하루 5번 매매를 1년 하면 원금의 약 250%가 수수료로 나가는 셈입니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>슬리피지(Slippage): 보이는 가격에 팔 수 없습니다</h3>
+                        <p>단타는 아주 작은 틱 차이를 다툽니다. 하지만 당신이 매도하려 할 때 호가는 이미 변해 있으며, 이 작은 차이들이 모여 당신의 계좌를 박살 냅니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>뇌동매매와 호르몬의 공격</h3>
+                        <p>매매가 잦을수록 도파민에 지배당합니다. 이성적인 판단이 흐려지고, 결국 '한 방'을 노리는 도박판의 망령으로 전락하게 됩니다.</p>
                     </div>
                 </div>
             </section>
 
+            <!-- SEO 텍스트 -->
             <section class="seo-content">
-                <h2>🛑 주식 단타가 필패하는 수학적 이유</h2>
-                <p>많은 개인 투자자들이 "하루에 1%씩만 벌면 1년 뒤에 부자가 되겠지?"라는 꿈을 꿉니다. 하지만 여기에는 치명적인 함정이 있습니다. 바로 '거래비용'입니다. 매수와 매도를 반복할 때마다 발생하는 세금과 수수료는 복리로 작용하여 당신의 원금을 갉아먹습니다.</p>
-                
-                <h3>1. 마이너스 섬 게임 (Minus Sum Game)</h3>
-                <p>주식 단타는 제로섬 게임이 아닙니다. 거래할 때마다 수수료가 빠져나가기 때문에, 시장 전체 파이는 계속 줄어듭니다. 당신이 돈을 벌기 위해서는 다른 누군가의 돈을 따는 것뿐만 아니라, 증권사와 정부에 낼 수수료까지 벌어야 합니다. 승률 50%로는 무조건 계좌가 녹아내리는 구조입니다.</p>
-                
-                <h3>2. 뇌동매매와 멘탈 붕괴</h3>
-                <p>잦은 매매는 뇌를 피로하게 만들고, 결국 이성적인 판단을 마비시킵니다. 한 번의 손실을 만회하기 위해 더 큰 금액을 배팅하는 '뇌동매매'로 이어지기 쉽습니다. 워렌 버핏이 "주식 시장은 인내심 없는 사람의 돈을 인내심 있는 사람에게 이동시키는 도구"라고 말한 이유를 명심하세요.</p>
-                
+                <h2>단타 매매의 치명적인 함정: 거래세 0.2%가 만드는 재앙</h2>
+                <p>단기 매매, 일명 '단타'는 주식 시장의 꽃처럼 보입니다. 매일 소소한 수익을 내며 복리로 자산을 불릴 수 있을 것만 같습니다. 하지만 현실 세계의 통계는 잔인합니다. 단타로 지속적인 수익을 내는 사람은 전체의 0.1%도 되지 않으며, 대다수는 <strong>수수료와 거래세</strong>라는 거대한 벽에 부딪혀 원금을 삭제당합니다.</p>
+
+                <h3>1. 수학적으로 증명된 파멸의 길</h3>
+                <p>우리가 주식을 한 번 팔 때마다 부과되는 증권거래세는 약 0.2% 내외입니다(시장마다 상이). 하루에 단 5번만 매매를 해도 하루에 1%의 자산이 사라집니다. 주식 시장의 개장일인 250일 동안 이를 반복하면, 당신은 단순히 계좌 수익률이 0%를 유지한다 하더라도 이론적으로는 수수료만으로 <strong>원금의 250%를 증권사와 국가에 바쳐야 합니다.</strong> 즉, 당신의 실력이 출중하여 매달 20%의 경이로운 수익을 내지 못하는 이상, 단타는 시간이 갈수록 반드시 가난해지는 게임입니다.</p>
+
+                <h3>2. 워런 버핏이 단타를 하지 않는 진짜 이유</h3>
+                <p>세계 최고의 투자자인 워런 버핏은 "10년을 보유할 주식이 아니라면 10분도 소유하지 마라"고 말했습니다. 이는 단순히 인내심을 강조하는 것이 아닙니다. 불필요한 비용을 최소화하여 자산을 지키는 것이 '투자'의 핵심이기 때문입니다. 단타 매매는 장기 투자자가 누리는 '기업의 성장 가치'와 '배당'을 모두 포기하고, 찰나의 변동성에 전 재산을 거는 도박입니다. 계좌를 자주 들여다볼수록 당신의 노후는 멀어집니다.</p>
+
                 <h3>자주 묻는 질문 (FAQ)</h3>
                 <ul>
-                    <li><strong>Q. 스캘핑 고수들은 돈을 잘 벌던데요?</strong><br>A. 그들은 0.1%의 극소수입니다. 99%의 일반인은 그들의 수익을 부러워하다가 수업료만 내고 퇴장합니다. 전업 투자자가 될 게 아니라면 본업에 집중하고 투자는 장기적으로 가져가는 게 정석입니다.</li>
-                    <li><strong>Q. 수수료 무료 이벤트를 쓰면 괜찮나요?</strong><br>A. 증권사 수수료가 무료라도 국가에 내는 '증권거래세'는 피할 수 없습니다. 또한 수수료 무료는 보통 한시적인 이벤트일 뿐입니다.</li>
+                    <li><strong>Q. 수수료 무료 이벤트를 하는 증권사라면 괜찮지 않나요?</strong><br>A. 증권사 수수료가 0원이어도 '거래세'는 사라지지 않습니다. 또한 호가창의 불리함(Slippage)은 기술적으로 해결할 수 없는 장벽입니다.</li>
+                    <li><strong>Q. 고수들은 단타로 수억 원을 벌지 않나요?</strong><br>A. 극소수의 슈퍼 트레이더들이 존재하긴 하지만, 그들은 정교한 프로그램과 막대한 정보를 동원하는 상위 0.01%의 프로들입니다. 일반 개인이 그들과 싸워 이길 확률은 없습니다.</li>
                 </ul>
             </section>
-            
-            <div class="ad-box"><span style="font-size:11px; color:#ccc;">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-        <aside class="sidebar"><div style="min-height: 600px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div></aside>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
     </div>
+
     <script>
-        document.getElementById('calcBtn').addEventListener('click', function() {
-            const seed = Number(document.getElementById('seedMoney').value) * 10000;
-            const dailyTrade = Number(document.getElementById('dailyTrade').value);
-            const feeRate = Number(document.getElementById('feeRate').value) / 100;
-            if(seed <= 0) { alert("값을 입력해주세요."); return; }
-            
-            const dailyFee = seed * dailyTrade * feeRate;
-            const yearlyFee = dailyFee * 250;
-            const ratio = (yearlyFee / seed) * 100;
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                let seed = parseFloat(document.getElementById('seed').value) * 10000;
+                const dailyFreq = parseFloat(document.getElementById('tradeCount').value);
+                const avgWinRate = parseFloat(document.getElementById('winRate').value) / 100;
+                const taxAndFee = 0.002; // 평균 세금 + 수수료 (매매 1세트당 0.2%)
 
-            const resultArea = document.getElementById('result-area');
-            resultArea.style.display = 'block';
-            document.getElementById('resYearly').innerText = Math.round(yearlyFee).toLocaleString() + "원";
-            document.getElementById('resRatio').innerText = ratio.toFixed(1);
+                if(!seed || dailyFreq < 0) { alert('값을 입력해주세요.'); return; }
 
-            const feeManwon = yearlyFee / 10000;
-            let item = "최신형 아이폰";
-            if(feeManwon > 5000) item = "제네시스 G80 (신차)";
-            else if(feeManwon > 3000) item = "소나타 (신차)";
-            else if(feeManwon > 2000) item = "아반떼 (신차)";
-            else if(feeManwon > 1000) item = "유럽 여행 2회";
-            else if(feeManwon > 500) item = "명품 가방 하나";
-            
-            if (ratio > 100) {
-                document.getElementById('compareItem').innerText = "원금 전액 + " + item;
-            } else {
-                document.getElementById('compareItem').innerText = item;
-            }
+                let currentSeed = seed;
+                const days = 250; // 주식 영업일
+
+                for(let i=0; i<days; i++) {
+                    for(let f=0; f<dailyFreq; f++) {
+                        // 각 매매마다 수익률 반영 후 세금/수수료 차감
+                        currentSeed = currentSeed * (1 + avgWinRate) * (1 - taxAndFee);
+                    }
+                }
+
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+                document.getElementById('finalAccount').textContent = `${Math.round(currentSeed/10000).toLocaleString()}만 원`;
+                
+                const lost = seed - currentSeed;
+                document.getElementById('tradingDesc').textContent = `당신의 원금 중 약 ${(lost/10000).toFixed(0)}만 원이 수익률과 상관없이 '세금과 수수료' 명목으로 시장에 기부되었습니다.`;
+            });
         });
     </script>
 </body>
