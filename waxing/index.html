@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="매달 반복되는 왁싱, 평생 뜯으실 건가요? 10년 치 왁싱 비용과 영구 제모의 가성비를 팩트로 비교해드립니다. 당신의 통장도 매끈해지고 있는지 확인하세요.">
+    <meta name="description" content="매달 반복되는 왁싱, 평생 뜯으실 건가요? 10년 치 왁싱 지출과 레이저 제모의 가성비를 팩트로 전격 비교해드립니다.">
     <title>왁싱 비용 판독기 | 팩트 폭격 연구소</title>
+
     <script src="../common.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
@@ -15,7 +17,6 @@
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
         section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
-        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
         h2 { border-left: 5px solid #6a1b9a; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
         .intro-box { background-color: #f3e5f5; border: 1px solid #e1bee7; color: #4a148c; padding: 25px; border-radius: 12px; }
         .intro-box strong { color: #6a1b9a; background: #fff; padding: 0 5px; border-radius: 4px; }
@@ -25,6 +26,8 @@
         .calc-btn { width: 100%; padding: 18px; background-color: #6a1b9a; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(106, 27, 154, 0.2); }
         #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #f3e5f5; border-radius: 12px; text-align: center; }
         .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #4a148c; }
+        .reason-card { display: flex; margin-bottom: 25px; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #6a1b9a; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; }
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
@@ -32,54 +35,93 @@
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">모근과 시드머니, 동시에 뽑고 계신가요?</h1>
-            <p class="page-subtitle">매달 고통받으며 바치는 돈, 10년 치면 전동 킥보드가 몇 대인가요?</p>
+            <h1 class="page-title">매끈한 피부만큼 통장도 비어가는 중?</h1>
+            <p class="page-subtitle">평생 고통을 구독하고 있는 당신의 '왁싱 팩트 리포트'.</p>
 
             <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">spa</span> 왁싱은 <strong>'영구적인 솔루션'</strong>이 아닌 매달 발생하는 구독료입니다. 주기적으로 나가는 현금 흐름을 자산으로 환산하면 당신이 털과 바꾼 시드머니의 크기가 보입니다.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">content_cut</span> 왁싱은 <strong>'지속되는 소비'</strong>입니다. 레이저로 뿌리를 뽑으면 평생 안 나갈 돈을, 왜 매달 수만 원씩 들여 반복하고 계신가요? 10년간 당신의 털(?)과 바꾼 시드머니의 총량을 계산해 드립니다.</p>
             </section>
 
             <section id="calculator">
-                <h2>👙 소멸성 미용 지출 계산기</h2>
+                <h2>👙 반복 결제 기회비용 계산기</h2>
                 <div class="calc-group">
                     <label>평균 1회 왁싱 지출액 (원)</label>
-                    <input type="number" id="costPerTime" placeholder="예: 60000" value="60000">
+                    <input type="number" id="costPerVisit" value="60000">
                 </div>
                 <div class="calc-group">
                     <label>한 달에 한 번? 연간 방문 횟수 (회)</label>
-                    <input type="number" id="annualFreq" placeholder="예: 8" value="8">
+                    <input type="number" id="annualFreq" value="8">
                 </div>
-                
-                <button id="calcBtn" class="calc-btn">사라진 내 미래 명품 백 값 계산</button>
+                <button id="calcBtn" class="calc-btn">사라진 내 미래 자산 계산기</button>
 
                 <div id="result-area">
-                    <p class="result-title">이 습관을 10년 유지했을 때 기회비용</p>
+                    <p class="result-title">이 돈을 안 쓰고 모아 주식에 넣었다면?</p>
                     <span id="futureValue" class="highlight">약 0원</span>
                     <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
             <section>
-                <h2>🛑 왁싱에 돈 쓰기 전 알아야 할 팩트</h2>
-                <div class="reason-card"><h3>1. 뜯을수록 피부는 늙습니다</h3><p>피부에 물리적 자극을 주는 방식은 미세한 흉터와 색소 침착을 남깁니다. 장기적으로 미백 관리 비용이 추가로 들 수 있습니다.</p></div>
-                <div class="reason-card"><h3>2. '레이저 제모'라는 확실한 대체재</h3><p>왁싱 1년 치 비용이면 레이저 영구 제모 5회 권을 사고도 남습니다. 왜 매달 고통과 현금을 반복해서 헌납하시나요?</p></div>
-                <div class="reason-card"><h3>3. 복리의 관점에서 본 손가락 끝 사치</h3><p>작은 돈이라고 무시하는 사이, 당신의 자본 체력은 서서히 고갈됩니다.</p></div>
+                <h2>🛑 왁싱에 대한 냉정한 팩트 체크</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>피부의 감가상각과 모낭염 리스크</h3>
+                        <p>강제로 뜯어내는 방식은 모낭염과 피부 늘어짐을 유발합니다. 이는 추후 치료를 위한 추가 지출을 부르는 마이너스 투자입니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>레이저 제모와의 수익률 격차</h3>
+                        <p>왁싱 1년 치 비용이면 레이저 제모 전 과정을 받고도 남습니다. 평생 나갈 수천만 원을 단 50만 원에 헤징(Hedging)할 기회를 버리지 마세요.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>시간은 왁스로 되돌릴 수 없습니다</h3>
+                        <p>매번 방문하고 샤워하고 기다리는 시간 3시간. 10년이면 수백 시간을 길바닥에 버리고 있습니다. 당신의 자유가 무의미하게 소모 중입니다.</p>
+                    </div>
+                </div>
             </section>
+
+            <section class="seo-content">
+                <h2>왁싱 중독의 경제학: 왜 당신의 시드머니는 자라지 않는가?</h2>
+                <p>2030 세대 사이에서 브라질리언 왁싱이나 주기적인 바디 제모는 필수 위생처럼 여겨집니다. 하지만 금융 전문가들은 이를 <strong>'영원히 이자만 갚는 대출'</strong>에 비유합니다. 한 번의 목돈(레이저)으로 끝낼 수 있는 일을, 소액의 분할 지불로 평생 이어가기 때문입니다. 이 사소한 차이가 훗날 자본가로 가느냐 근로자로 남느냐를 결정짓는 작지만 거대한 분수령이 됩니다.</p>
+
+                <h3>1. 보이지 않는 금융 손실: 10년 누적 1,300만 원의 진실</h3>
+                <p>매회 6만 원씩 연 8회 왁싱을 받는 여성을 가정해 봅시다. 10년 동안 단순 합계는 480만 원입니다. 하지만 이 돈을 연 8% 수익률의 주식 시장에 넣었다면? 당신은 약 **1,000만 원에서 1,500만 원 사이**의 거액을 잃게 되는 것입니다. 손톱만큼의 부의 기회를 매번 왁싱샵 카운터에 상납하고 있다는 팩트를 인지하십시오. 1,500만 원이면 신혼집을 구할 때 가장 고가 라인의 가전 세트를 일시불로 살 수 있는 큰 자산입니다.</p>
+
+                <h3>2. '위생'이라는 명분의 마케팅 가스라이팅</h3>
+                <p>왁싱 샵들은 위생을 위해 반드시 필요하다고 광고합니다. 하지만 현대의 레이저 제모 기술은 더 안전하고 반영구적이며 경제적입니다. 왁싱은 사용 즉시 사라지는 **'소멸성 소비'**이고 레이저는 본인의 신체 조건을 개선하는 **'자본적 투자'**입니다. 부자들은 어떤 일이든 소모되는 비용을 최소화하고 영구적인 시스템을 구축하는 데 집중합니다. 몸에서 나는 털을 뜯는 행위에 당신의 소중한 황금기를 저당 잡히지 마십시오. 당신을 진정으로 매끄럽게 만들어 주는 것은 관리된 피부가 아니라, 어떤 경제적 위기에도 흔들리지 않는 당신의 예비비 통장입니다.</p>
+            </section>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-        <aside class="sidebar"><div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"></div></aside>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
     </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                const cost = parseFloat(document.getElementById('costPerTime').value) || 0;
+                const cost = parseFloat(document.getElementById('costPerVisit').value) || 0;
                 const freq = parseFloat(document.getElementById('annualFreq').value) || 1;
                 const rate = 0.08; 
                 let totalFuture = 0;
-                for(let i=0; i<10; i++) { totalFuture = (totalFuture + (cost * freq)) * (1 + rate); }
+                const annualSum = cost * freq;
+                
+                for(let i=0; i < 10; i++) {
+                    totalFuture = (totalFuture + annualSum) * (1 + rate);
+                }
+
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
                 document.getElementById('futureValue').textContent = `약 ${Math.round(totalFuture/10000).toLocaleString()}만 원`;
-                document.getElementById('resultText').textContent = `매달 반복되는 왁싱 대신 레이저로 영구 박멸하고 이 돈을 투자했다면 얻었을 자산입니다. 매끈한 피부보다 매끈한 통장이 먼저 아닐까요?`;
+                document.getElementById('resultText').textContent = `평생 뜯느라 지불할 당신의 10년 치 복리 가치입니다. 레이저로 한 번에 끝냈다면 당신은 훗날 외제차 한 대 값을 덤으로 얻었습니다.`;
             });
         });
     </script>
