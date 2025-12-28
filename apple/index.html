@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="아이폰, 맥북, 워치... 사과 농장 차리는 비용이면 벤츠 1년 유지비? 애플 로고에 지불한 프리미엄과 그 돈의 10년 뒤 가치를 팩트로 계산해드립니다.">
+    <meta name="description" content="아이폰, 맥북, 워치... 사과 농장 차리는 비용이면 벤츠 1년 유지비? 애플 로고에 지불한 감성세와 그 돈의 10년 뒤 가치를 팩트로 계산해드립니다.">
     <title>애플병 판독기 | 팩트 폭격 연구소</title>
+
     <script src="../common.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
@@ -24,17 +26,19 @@
         .calc-btn { width: 100%; padding: 18px; background-color: #263238; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(38, 50, 56, 0.2); }
         #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #f1f3f4; border-radius: 12px; text-align: center; }
         .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #ad1457; }
+        .seo-content { line-height: 1.8; color: #444; }
+        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">애플 농장 주인이세요, 충성 고객이세요?</h1>
-            <p class="page-subtitle">디자인 한 끗을 위해 지불하는 감성세의 실체.</p>
+            <h1 class="page-title">애플의 충성 고객입니까, 지갑의 기부자입니까?</h1>
+            <p class="page-subtitle">"연동성"이라는 말에 속아 한 대기업의 시가총액을 지탱해 주는 당신의 열정.</p>
 
             <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">apple</span> 연동성이라는 핑계로 온 집안을 사과 로고로 채우고 있나요? 기업 가치 1위인 애플의 시가총액은 당신의 <strong>'팬심 결제'</strong>로 지탱됩니다. 당신이 사과에 갖다 바친 미래 아파트 중도금을 확인하세요.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">apple</span> 아이폰 하나로 시작해 맥북, 아이패드, 애플워치, 에어팟까지... 이른바 <strong>'사과 농장'</strong>을 차리는 비용은 이제 웬만한 수입 중고차 한 대 가격입니다. 당신이 한 끗 차이의 디자인에 바친 '감성세'가 10년 뒤 어떤 미래 자산을 잡아먹는지 확인하세요.</p>
             </section>
 
             <section id="calculator">
@@ -46,24 +50,31 @@
                 <div class="calc-group">
                     <label>투자 시 기대 연 수익률 (%)</label>
                     <input type="number" id="investRate" placeholder="예: 12" value="12">
-                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">나스닥 지수나 애플 주식 자체의 성장률을 대입해 보세요.</p>
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">애플(AAPL) 주식의 과거 10년 연평균 수익률은 약 20%가 넘습니다.</p>
                 </div>
-                
-                <button id="calcBtn" class="calc-btn">사라진 내 애플 주식 수 확인하기</button>
+                <button id="calcBtn" class="calc-btn">사라진 내 시드머니 미래 확인</button>
 
                 <div id="result-area">
-                    <p class="result-title">이 돈으로 폰 대신 주식을 샀다면 10년 뒤</p>
+                    <p class="result-title">이 돈을 기기 대신 주식에 넣었을 때 10년 뒤 가치</p>
                     <span id="futureValue" class="highlight">약 0원</span>
                     <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
             <section class="seo-content">
-                <h2>애플병과 자본 이전: 왜 당신은 생산자가 아닌 소비자임을 증명하나</h2>
-                <p>애플 생태계는 한 번 들어가면 빠져나올 수 없는 '벽으로 둘러싸인 정원(Walled Garden)'입니다. 하지만 경제학적으로 이는 <strong>'확실한 매몰 비용의 반복'</strong>을 뜻합니다. 소비자가 화려한 케이스와 맥 세이프를 즐길 때, 애플 주주는 당신의 결제금으로 신고가를 갱신합니다.</p>
+                <h2>애플 생태계의 딜레마: 소비자로 남을 것인가, 동반자가 될 것인가?</h2>
+                <p>애플 제품은 강력한 성능을 자랑하지만, 일반적인 사용자들에게는 그 성능이 과할 때가 많습니다. 우리는 기술이 아닌 **'브랜드가 주는 세련됨'**을 구매하고 있으며, 이는 자본주의 체제에서 기업들이 가장 환영하는 소비자 유형입니다. 사과 마크가 박힌 기기들을 책상 위에 올렸을 때 느끼는 정서적 충만함의 실제 비용을 계산해본 적이 있나요?</p>
+
+                <h3>1. 보이지 않는 금융 손실: 800만 원의 복리 재앙</h3>
+                <p>아이폰 프로(160만), 맥북 프로(350만), 아이패드 프로(180만), 기타 워치와 에어팟(110만). 도합 800만 원입니다. 2년에서 3년마다 이 주기가 반복된다면 당신의 인생에서 '현금'이라는 씨앗은 발아할 틈이 없습니다. 만약 800만 원을 2024년 기준 10년 전 애플 주식에 넣었다면, 당신은 현재 약 **5,000만 원 이상의 자산**을 가졌을 것입니다. 소비자는 기계가 늙어가는 것을 보며 한숨 짓지만, 주주는 당신의 결제금으로 불어나는 주가를 보며 미소 짓습니다. 당신의 팬심은 통장을 두둑하게 만드나요, 아니면 공허한 감성만 채우고 있나요?</p>
+
+                <h3>2. '연동성'이라는 가장 값비싼 가스라이팅</h3>
+                <p>한 번 발을 들이면 다른 기기로 갈아타기 힘든 '폐쇄적 생태계'는 사용자의 편의를 빙자한 기업의 전략입니다. 동급의 윈도우나 안드로이드 기기로도 당신이 하는 업무와 학습의 95%는 완벽하게 수행 가능합니다. 5%의 차이를 위해 2배의 가격을 지불하는 것은 경제적 지능의 부재를 스스로 광고하는 셈입니다. 부자들은 애플 제품을 쓰지만, 그들은 그보다 1,000배 많은 애플 주식을 보유하고 있습니다. 당신의 '사과 농장'이 베란다 화분 수준인지, 아니면 거대한 지분 배당 농장인지 다시 확인하십시오. 진짜 성공은 손목에 감긴 고가의 티타늄 워치가 아니라, 언제든 일을 그만둬도 현금이 쏟아지는 자본의 시스템에서 옵니다.</p>
             </section>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
         </main>
-        <aside class="sidebar"><div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"></div></aside>
+        <aside class="sidebar"><div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins></div></aside>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -74,7 +85,7 @@
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
                 document.getElementById('futureValue').textContent = `약 ${Math.round(futureVal/10000).toLocaleString()}만 원`;
-                document.getElementById('resultText').textContent = `제품 한 번의 교체 주기인 10년이면, 당신은 폰 몇 대 값 대신 중형 세단이나 종잣돈 1억 원을 포기한 셈입니다. 진정한 사과 농장은 주식 계좌에 있습니다.`;
+                document.getElementById('resultText').textContent = `당신의 책상 위 800만 원어치 사과들은 10년 뒤 고철이 되지만, 주식에 넣은 돈은 ${Math.round(futureVal/10000).toLocaleString()}만 원이 되어 당신의 퇴직금을 책임집니다. 기기를 소유할 것인지, 기업을 소유할 것인지 선택하세요.`;
             });
         });
     </script>
