@@ -3,142 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="담배값 지출 및 기회비용 계산기. 당신이 흡연으로 태워버린 돈과 수명을 계산해드립니다.">
-    <title>흡연 비용 계산기 | 팩트 폭격 연구소</title>
+    <meta name="description" content="하루 한 갑, 30년이면 단순 계산으로 5천만 원입니다. 하지만 이를 투자했을 때 당신이 입으로 태워 없앤 '페라리'의 행방을 팩트로 찾아드립니다.">
+    <title>담배값 계산기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
+
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        /* 섹션 공통 스타일 */
         section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
-        h2 { border-left: 5px solid #4e342e; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #efebe9; border: 1px solid #d7ccc8; color: #3e2723; }
-        .intro-box strong { color: #4e342e; background: #fff; padding: 0 5px; border-radius: 4px; }
+
+        /* [가변] 테마 설정: Charcoal */
+        h2 { border-left: 5px solid #37474f; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #f5f5f5; border: 1px solid #e0e0e0; color: #424242; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #212121; background: #fff; padding: 0 5px; border-radius: 4px; }
+        
         .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #4e342e; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; transition: 0.2s; }
-        input:focus { border-color: #4e342e; outline: none; box-shadow: 0 0 0 3px rgba(78, 52, 46, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #4e342e; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.2s; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .calc-btn:hover { background-color: #271c19; transform: translateY(-3px); }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #d7ccc8; border-radius: 12px; text-align: center; animation: fadeIn 0.5s ease; }
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #3e2723; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.ash { color: #3e2723; } 
-        .highlight.gold { color: #d84315; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #37474f; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #37474f; outline: none; box-shadow: 0 0 0 3px rgba(55, 71, 79, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #37474f; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(55,71,79,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #f5f5f5; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #212121; }
+
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #4e342e; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #37474f; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
         
         .seo-content { line-height: 1.8; color: #444; }
-        .seo-content h3 { font-size: 1.3rem; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .seo-content p { margin-bottom: 15px; }
-        .seo-content ul { padding-left: 20px; margin-bottom: 20px; }
-        .seo-content li { margin-bottom: 10px; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; min-width: auto; } .main-content { width: 100%; } h1.page-title { font-size: 1.8rem; } }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">당신의 입술 끝에서 '집 한 채'가 타고 있습니다</h1>
-            <p class="page-subtitle">스트레스를 핑계로 태워버린 돈과 건강, 숫자로 확인하면 끊게 됩니다.</p>
+            <!-- [제목 섹션] -->
+            <h1 class="page-title">매일 태워 없애는 페라리 한 대의 가치</h1>
+            <p class="page-subtitle">하루 한 갑의 습관이 당신의 30년 뒤 자산을 어떻게 태워버리는지 계산해드립니다.</p>
 
+            <!-- [도입 섹션] -->
             <section class="intro-box">
-                <h2>🚬 흡연의 진짜 비용</h2>
-                <p>담배 한 갑 4,500원. 싸다고 생각하시나요? 하루 한 갑을 30년 동안 피우면 단순히 계산해도 5천만 원입니다. 하지만 이 돈을 <strong>복리 투자</strong>했다면 강남 아파트 전세금이 됩니다. 당신이 뱉은 연기의 가격을 계산해드립니다.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">smoking_rooms</span> 흡연은 단순히 건강의 문제가 아닙니다. 자본주의 관점에서 흡연은 <strong>'내 폐를 빌려주고 보험사와 담배 회사에 현금을 상납하는 행위'</strong>입니다. 당신의 굴뚝으로 날아간 돈의 정체를 확인하세요.</p>
             </section>
 
+            <!-- [계산기 섹션] -->
             <section id="calculator">
-                <h2>⚰️ 금연 동기부여 계산기</h2>
-                <div class="calc-group"><label>① 하루 평균 흡연량 (갑)</label><input type="number" id="packs" value="1" placeholder="예: 1 (한 갑)"></div>
-                <div class="calc-group"><label>② 담배 한 갑 가격 (원)</label><input type="number" id="price" value="4500" placeholder="예: 4500"></div>
-                <div class="calc-group"><label>③ 흡연 지속 기간 (년)</label><input type="number" id="years" value="30" placeholder="예: 30"><div class="help-text">"평생 피운다면?"</div></div>
-                <button id="calcBtn" class="calc-btn">태워버린 내 자산 확인하기</button>
+                <h2>🚬 연기 속으로 사라진 시드머니</h2>
+                <div class="calc-group">
+                    <label>하루 평균 흡연량 (갑)</label>
+                    <input type="number" id="packs" placeholder="예: 1" step="0.1" value="1">
+                </div>
+                <div class="calc-group">
+                    <label>담배 한 갑 가격 (원)</label>
+                    <input type="number" id="packPrice" placeholder="예: 4500" value="4500">
+                </div>
+                <div class="calc-group">
+                    <label>흡연/투자 기간 (년)</label>
+                    <input type="number" id="smokeYears" placeholder="예: 30" value="30">
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">사라진 내 슈퍼카 값 계산하기</button>
+
                 <div id="result-area">
-                    <div style="margin-bottom:20px;"><p class="result-title">단순히 담배 가게에 준 돈</p><span id="resTotal" class="highlight ash">0원</span></div>
-                    <div style="border-top:1px dashed #8d6e63; padding-top:20px;"><p class="result-title" style="margin-bottom:10px;">이 돈을 금연하고 투자했다면 (복리 10%)</p><span id="resInvest" class="highlight gold" style="font-size:2rem;">0원</span></div>
-                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #a1887f; font-size:0.95rem;">당신은 건강을 해치는 대가로<br><strong><span id="compareItem" style="background:#d7ccc8; padding:0 4px; color:#3e2723;">벤츠 S-클래스</span></strong>를<br>포기했습니다.</div>
+                    <p class="result-title">이 돈을 8% 복리 주식에 넣었을 때 가치는?</p>
+                    <span id="futureValue" class="highlight">약 0원</span>
+                    <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
+            <!-- [팩트체크 섹션] -->
             <section>
-                <h2>🛑 금연이 가장 확실한 보험인 이유</h2>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">sentiment_very_dissatisfied</span></div><div class="reason-content"><h3>줄어드는 수명 (1개비 = 11분)</h3><p>담배 한 개비를 피울 때마다 수명이 11분씩 단축된다는 연구 결과가 있습니다. 하루 한 갑이면 매일 3시간 40분의 생명을 버리는 셈입니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">medical_services</span></div><div class="reason-content"><h3>보험료 할증과 병원비</h3><p>흡연자는 비흡연자보다 보험료가 비쌉니다. 나중에 폐암, 뇌졸중 등으로 지출할 막대한 병원비까지 고려하면 담배 한 갑의 실제 비용은 10만 원이 넘습니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">smoking_rooms</span></div><div class="reason-content"><h3>시간 낭비와 냄새</h3><p>하루 20번, 흡연실을 오가는 시간만 2시간입니다. 옷과 입에서 나는 찌든 냄새는 당신의 사회적 이미지를 깎아먹는 마이너스 요인입니다.</p></div></div>
+                <h2>🛑 담배가 당신의 가난을 가속화하는 이유</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>보험료가 남들보다 비싼 이유</h3>
+                        <p>흡연자는 건강보험 및 개인 보험료 할증의 주범입니다. 담배값만 아까운 게 아니라, 나중에 지불할 의료비까지 미리 결제하고 계신 셈입니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>청소비와 체취 제거 비용의 낭비</h3>
+                        <p>옷에 밴 냄새, 집안 도배, 차량 세차비... 비흡연자가 쓰지 않아도 될 '관리비'가 당신의 지갑에서 줄줄 새고 있습니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>노동 시간의 비자발적 축소</h3>
+                        <p>하루 10번, 5분씩만 흡연실에 가도 1년이면 약 300시간입니다. 이 시간은 당신의 생산성과 학습 기회를 빼앗는 거대한 손실입니다.</p>
+                    </div>
+                </div>
             </section>
 
-            <!-- SEO 텍스트 추가 -->
+            <!-- [SEO 블로그 콘텐츠] -->
             <section class="seo-content">
-                <h2>💸 담배, 끊으면 부자 됩니다</h2>
-                <p>많은 흡연자들이 "담배 끊어서 부자 된 사람 못 봤다"고 자조합니다. 하지만 이는 푼돈의 힘을 간과한 말입니다. 하루 4,500원은 작아 보이지만, 이를 30년 동안 S&P500 지수 추종 ETF(연평균 수익률 10%)에 투자한다면 그 결과는 놀랍습니다. 약 <strong>3억 원</strong>이라는 거금이 모이게 됩니다. 이는 서울 아파트 전세금이나 노후 자금으로 충분한 액수입니다.</p>
+                <h2>담배값 4,500원이 30년 뒤 2억 원이 되는 마법</h2>
+                <p>많은 흡연자들이 담배 한 갑 4,500원을 '작은 소비'라고 치부합니다. 하지만 재테크의 관점에서 담배값은 <strong>'확실한 마이너스 복리'</strong>의 전형입니다. 단순히 돈을 잃는 것을 넘어, 그 돈이 가질 수 있었던 '시간 가치'와 '복리의 혜택'을 송두리째 연기와 함께 날려버리기 때문입니다.</p>
 
-                <h3>1. 보이지 않는 비용: 건강과 보험료</h3>
-                <p>담배값 계산에는 '병원비'가 빠져있습니다. 흡연은 암, 뇌졸중, 심장병의 직접적인 원인입니다. 비흡연자 대비 의료비 지출이 3~4배 높으며, 실비 보험이나 종신 보험 가입 시에도 '흡연자 할증'이 붙어 매달 더 많은 보험료를 내야 합니다. 금연은 건강을 챙기는 동시에 고정 지출을 줄이는 가장 확실한 재테크입니다.</p>
+                <h3>1. 복리의 마법: 담배 대신 S&P 500</h3>
+                <p>하루 4,500원(한 달 약 13.6만 원)을 단순히 30년 동안 모으면 4,927만 원입니다. 하지만 이 돈을 미국 지수 추종 ETF(연평균 8% 수익률 가정)에 꾸준히 적립했다면 어떻게 될까요? 30년 뒤 당신의 계좌에는 <strong>약 2억 원</strong>에 달하는 자산이 쌓여있게 됩니다. 은퇴 시점에 당신이 거주할 집을 업그레이드하거나, 꿈에 그리던 슈퍼카를 현금 일시불로 살 수 있는 거액입니다.</p>
 
-                <h3>2. 담배 끊는 법: 의지보다 환경</h3>
-                <p>금연에 실패하는 이유는 의지가 약해서가 아닙니다. 니코틴 중독은 뇌 질환입니다. 혼자 참으려 하지 말고 보건소 금연 클리닉을 방문해 니코틴 패치나 약물 처방을 받는 것이 성공 확률을 5배 높입니다. 또한, '금연 통장'을 만들어 매일 담배 살 돈을 입금하는 것도 좋은 동기부여가 됩니다.</p>
+                <h3>2. 건강 격차가 곧 자산 격차입니다</h3>
+                <p>건강은 가장 비싼 자산입니다. 흡연으로 인해 발생하는 각종 호흡기 질환과 암의 위협은 훗날 당신의 노후 자금을 병원비로 고스란히 반납하게 만듭니다. '담배는 국가가 허락한 합법적 도박'이라는 말이 있습니다. 승률은 0%이며, 판돈(건강과 현금)은 매일 걸어야 하는 잔인한 게임입니다. 지금 이 순간 금연을 선택하는 것은 인생에서 가장 높은 수익률을 보장받는 투자처를 발견한 것과 같습니다.</p>
 
                 <h3>자주 묻는 질문 (FAQ)</h3>
                 <ul>
-                    <li><strong>Q. 전자담배는 괜찮지 않나요?</strong><br>A. 냄새가 덜 날 뿐, 니코틴 중독과 유해 물질 흡입은 여전합니다. 오히려 실내 흡연이 가능해져 흡연량이 늘어나는 부작용이 있습니다.</li>
-                    <li><strong>Q. 스트레스는 어떻게 푸나요?</strong><br>A. 흡연이 스트레스를 풀어준다는 건 착각입니다. 니코틴 금단 증상(불안, 초조)을 해소하는 과정에서 일시적인 안도감을 느낄 뿐입니다. 운동이나 심호흡이 훨씬 효과적입니다.</li>
+                    <li><strong>Q. 전자담배는 경제적으로 더 유리하지 않나요?</strong><br>A. 기기값과 팟(Pod) 비용을 계산하면 연초보다 지출이 더 커지는 경우가 많습니다. 본질적인 기회비용은 동일하게 발생합니다.</li>
+                    <li><strong>Q. 나중에 한 번에 아껴서 모으면 되지 않을까요?</strong><br>A. 복리는 '기간'이 깡패입니다. 50대에 시작하는 저축보다 20대에 아끼는 커피값과 담배값 한 잔이 훗날 자산 형성에 미치는 영향이 수십 배 더 큽니다.</li>
                 </ul>
             </section>
 
-            <div class="ad-box">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <!-- [광고 스크립트] -->
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
+
         <aside class="sidebar">
-            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </aside>
     </div>
+
+    <!-- [계산 로직] -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                const packs = Number(document.getElementById('packs').value);
-                const price = Number(document.getElementById('price').value);
-                const years = Number(document.getElementById('years').value);
-                if(packs <= 0 || price <= 0 || years <= 0) { alert("모든 항목을 0보다 크게 입력해주세요."); return; }
-                const dailyCost = packs * price;
-                const yearlyCost = dailyCost * 365;
-                const totalCost = yearlyCost * years;
-                const monthlyInvest = dailyCost * 30; 
-                const rate = 0.10 / 12; 
-                const months = years * 12; 
-                const futureValue = monthlyInvest * ((Math.pow(1 + rate, months) - 1) / rate);
+                const packs = parseFloat(document.getElementById('packs').value) || 0;
+                const price = parseFloat(document.getElementById('packPrice').value) || 0;
+                const yrs = parseFloat(document.getElementById('smokeYears').value) || 1;
+                const rate = 0.08; 
+                
+                const monthly = packs * price * 30.41;
+                let total = 0;
+                for(let i=0; i < yrs * 12; i++) {
+                    total = (total + monthly) * (1 + rate/12);
+                }
+
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-                document.getElementById('resTotal').innerText = Math.round(totalCost).toLocaleString() + "원";
-                document.getElementById('resInvest').innerText = Math.round(futureValue).toLocaleString() + "원";
-                const fvManwon = futureValue / 10000;
-                let item = "최신형 노트북";
-                if(fvManwon > 50000) item = "수도권 아파트 한 채";
-                else if(fvManwon > 30000) item = "지방 아파트 한 채";
-                else if(fvManwon > 15000) item = "포르쉐 911";
-                else if(fvManwon > 8000) item = "벤츠 S-클래스";
-                else if(fvManwon > 5000) item = "제네시스 G80 풀옵션";
-                else if(fvManwon > 3000) item = "그랜저 신차";
-                else if(fvManwon > 1000) item = "명품 시계 (롤렉스)";
-                document.getElementById('compareItem').innerText = item;
+                document.getElementById('futureValue').textContent = `약 ${(total/10000).toFixed(0)}만 원`;
+                document.getElementById('resultText').textContent = `30년 뒤 당신은 단순히 가방이나 소품이 아니라, 연기 대신 서울 근교 오피스텔 한 채 값을 입으로 뱉은 셈입니다.`;
             });
         });
     </script>
