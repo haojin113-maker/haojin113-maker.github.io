@@ -1,1023 +1,128 @@
 [
-  {
-    "title": "전기차, 사지 마세요",
-    "desc": "기름값 아끼려다 차값으로 다 날립니다. 소름 돋는 손익분기점 계산기.",
-    "icon": "⚡",
-    "category": "consumer",
-    "url": "./ev/index.html"
-  },
-  {
-    "title": "스마트폰 호갱 탈출",
-    "desc": "공짜폰의 진실. 자급제와 통신사 할부 이자를 적나라하게 비교해드립니다.",
-    "icon": "📱",
-    "category": "consumer",
-    "url": "./phone/index.html"
-  },
-  {
-    "title": "티끌 모아 페라리",
-    "desc": "담배와 커피값만 아꼈어도... 30년 뒤의 충격적 금액.",
-    "icon": "☕",
-    "category": "money",
-    "url": "./smoke/index.html"
-  },
-  {
-    "title": "사교육비 vs 증여세",
-    "desc": "학원비로 쓴 돈 vs 주식으로 물려줬을 때 자산 차이 시뮬레이션.",
-    "icon": "🎓",
-    "category": "life",
-    "url": "./edu/index.html"
-  },
-  {
-    "title": "리볼빙의 늪",
-    "desc": "이번 달 카드값 10%만 내셨나요? 법정 최고 금리 빚의 공포.",
-    "icon": "💳",
-    "category": "money",
-    "url": "./credit/index.html"
-  },
-  {
-    "title": "결혼 비용 현실 자각",
-    "desc": "1시간 예식을 위해 당신 부부가 몇 달을 일해야 하는지 계산.",
-    "icon": "💍",
-    "category": "life",
-    "url": "./wedding/index.html"
-  },
-  {
-    "title": "로또 확률의 진실",
-    "desc": "매주 로또 사시나요? 1등 당첨될 확률과 벼락 맞을 확률을 비교해드립니다.",
-    "icon": "🎱",
-    "category": "money",
-    "url": "./lotto/index.html"
-  },
-  {
-    "title": "보험 푸어 탈출",
-    "desc": "종신보험 vs 정기보험. 보험사가 숨기는 사업비와 기회비용 계산.",
-    "icon": "🏥",
-    "category": "money",
-    "url": "./insurance/index.html"
-  },
-  {
-    "title": "길바닥 인생 계산기",
-    "desc": "출퇴근 왕복 3시간? 당신이 도로 위에 버리는 돈과 수명을 계산해드립니다.",
-    "icon": "🚌",
-    "category": "life",
-    "url": "./commute/index.html"
-  },
-{
-  "title": "배달앱의 노예",
-  "desc": "배달비 3천원 아끼려다 음식값 3만원 쓰는 당신. 1년 식비가 얼마인지 계산해드립니다.",
-  "icon": "🛵",
-  "category": "consumer",
-  "url": "./delivery/index.html"
-}
-,
-{
-  "title": "구독의 늪 (OTT)",
-  "desc": "넷플릭스, 유튜브, 쿠팡... 숨만 쉬어도 나가는 고정비가 10년 뒤 얼마가 될까요?",
-  "icon": "📺",
-  "category": "consumer",
-  "url": "./subscription/index.html"
-},
-{
-  "title": "카푸어 판독기",
-  "desc": "월 할부금만 낼 수 있으면 내 차일까요? 숨겨진 유지비와 당신의 카푸어 등급을 진단해드립니다.",
-  "icon": "🚘",
-  "category": "money",
-  "url": "./carpoor/index.html"
-}
-,
-{
-  "title": "댕냥이 양육비 계산기",
-  "desc": "귀여워서 데려왔다가 병원비에 웁니다. 반려동물 평생 양육비가 얼마나 들까요?",
-  "icon": "🐶",
-  "category": "life",
-  "url": "./pet/index.html"
-}
-,
-{
-  "title": "술값 계산기",
-  "desc": "일주일에 2번? 안주값에 대리비까지 합치면 얼마일까요? 당신이 마셔 없앤 건물을 찾아드립니다.",
-  "icon": "🍺",
-  "category": "money",
-  "url": "./alcohol/index.html"
-}
-,
-{
-  "title": "헬스장 기부천사",
-  "desc": "1년 등록하고 3일 나가셨나요? 당신의 운동 1회당 비용이 얼마인지 알려드립니다.",
-  "icon": "💪",
-  "category": "life",
-  "url": "./gym/index.html"
-}
-,
-{
-  "title": "택시 VIP 판독기",
-  "desc": "지각비와 귀차니즘 비용으로 1년에 얼마를 쓰는지 아시나요? 대중교통 100번 탈 돈입니다.",
-  "icon": "🚖",
-  "category": "consumer",
-  "url": "./taxi/index.html"
-}
-  ,
-{
-  "title": "예적금의 배신",
-  "desc": "은행 이자 4%? 세금 떼고 물가 오르면 내 돈은 사실상 삭제되고 있습니다.",
-  "icon": "📉",
-  "category": "money",
-  "url": "./inflation/index.html"
-}
-,
-{
-  "title": "게임 현질 계산기",
-  "desc": "확률 0.8% 뽑기에 월급을 태우고 계신가요? 데이터 쪼가리의 실제 가격을 알려드립니다.",
-  "icon": "🎮",
-  "category": "consumer",
-  "url": "./game/index.html"
-}
-,
-{
-  "title": "골프 푸어 판독기",
-  "desc": "필드 한 번 나가면 40만원? 취미 생활이 당신의 등골을 휘게 만들고 있습니다.",
-  "icon": "⛳",
-  "category": "life",
-  "url": "./golf/index.html"
-}
-,
-{
-  "title": "커피값 계산기",
-  "desc": "하루 커피 두 잔? 30년 뒤 당신이 잃게 될 강남 오피스텔 한 채 값을 확인하세요.",
-  "icon": "☕",
-  "category": "money",
-  "url": "./coffee/index.html"
-}
-,
-{
-  "title": "편의점 VIP 판독기",
-  "desc": "1+1 행사와 4캔 만원의 유혹. 당신이 편의점에 바치는 돈이 1년에 얼마일까요?",
-  "icon": "🏪",
-  "category": "consumer",
-  "url": "./cvs/index.html"
-}
-,
-{
-  "title": "쇼핑 중독 판독기",
-  "desc": "\"어머 이건 사야해!\" 매일 밤 택배를 시키는 당신. 그 돈이면 차를 샀습니다.",
-  "icon": "🛍️",
-  "category": "consumer",
-  "url": "./shopping/index.html"
-}
-,
-{
-  "title": "런치플레이션 방어기",
-  "desc": "점심값 1만 원 시대. 도시락 싸면 1년에 얼마 벌까요? 밥값 아껴서 건물주 되는 법.",
-  "icon": "🍱",
-  "category": "money",
-  "url": "./lunch/index.html"
-}
-,
-{
-  "title": "명품병 판독기",
-  "desc": "샤넬 가방 살 돈으로 LVMH 주식을 샀다면? 명품 소비의 엄청난 기회비용.",
-  "icon": "👜",
-  "category": "consumer",
-  "url": "./luxury/index.html"
-}
-,
-{
-  "title": "스마트폰 중독 판독기",
-  "desc": "하루 4시간? 1년이면 두 달을 잠 안 자고 폰만 보는 셈입니다. 당신의 사라진 시간을 계산해드립니다.",
-  "icon": "📱",
-  "category": "life",
-  "url": "./screentime/index.html"
-}
-,
-{
-  "title": "내 진짜 시급 계산기",
-  "desc": "출퇴근 시간과 야근을 포함하면? 편의점 알바보다 못한 당신의 충격적인 진짜 몸값.",
-  "icon": "💼",
-  "category": "life",
-  "url": "./salary/index.html"
-}
-,
-{
-  "title": "렌탈 호갱 판독기",
-  "desc": "정수기 월 3만 원? 5년이면 제품 3대를 사는 가격입니다. 렌탈의 늪에서 탈출하세요.",
-  "icon": "💧",
-  "category": "consumer",
-  "url": "./rental/index.html"
-}
-,
-{
-  "title": "주식 단타의 최후",
-  "desc": "하루에 10번 매매하시나요? 1년 뒤 증권사에 바치는 수수료가 원금보다 많아집니다.",
-  "icon": "📉",
-  "category": "money",
-  "url": "./trading/index.html"
-}
-,
-{
-  "title": "담배값 계산기",
-  "desc": "하루 한 갑, 30년이면 얼마일까요? 당신이 입으로 태워 없앤 페라리 한 대를 찾아드립니다.",
-  "icon": "🚬",
-  "category": "life",
-  "url": "./smoking/index.html"
-}
-,
-{
-  "title": "독립 비용 계산기",
-  "desc": "자유를 찾아 떠난 자취 생활. 숨만 쉬어도 나가는 월세와 관리비가 5년 뒤엔 얼마일까요?",
-  "icon": "🏠",
-  "category": "life",
-  "url": "./independence/index.html"
-}
-,
-{
-  "title": "전세의 배신",
-  "desc": "보증금 3억이면 월 125만 원? 전세가 사실상 '공짜'가 아닌 수학적 이유.",
-  "icon": "🏢",
-  "category": "money",
-  "url": "./jeonse/index.html"
-}
-,
-{
-  "title": "연애 비용 계산기",
-  "desc": "사랑하는 데도 돈이 듭니다. 데이트 비용을 아껴 결혼 자금으로 만들면 얼마가 될까요?",
-  "icon": "💘",
-  "category": "life",
-  "url": "./dating/index.html"
-}
-,
-{
-  "title": "카드 혜택의 함정",
-  "desc": "1만 원 할인받으려고 30만 원 쓰셨나요? 배보다 배꼽이 더 큰 소비 습관 점검.",
-  "icon": "💳",
-  "category": "money",
-  "url": "./card/index.html"
-}
-,
-{
-  "title": "자녀 양육비 계산기",
-  "desc": "아이 하나 키우는 데 3억? 기저귀부터 대학 등록금까지, 등골 브레이커 총비용.",
-  "icon": "👶",
-  "category": "life",
-  "url": "./parenting/index.html"
-}
-,
-{
-  "title": "파이어족 은퇴 계산기",
-  "desc": "회사를 언제 그만둘 수 있을까요? 4%의 법칙으로 계산한 당신의 은퇴 가능 나이.",
-  "icon": "🔥",
-  "category": "money",
-  "url": "./fire/index.html"
-}
-  ,
-{
-  "title": "폰 교체병 판독기",
-  "desc": "약정 끝날 때마다 새 폰 사시나요? 배터리만 갈아도 되는 폰을 버리고 있는지 확인하세요.",
-  "icon": "📱",
-  "category": "consumer",
-  "url": "./newphone/index.html"
-}
-,
-{
-  "title": "여행 푸어 판독기",
-  "desc": "1년 동안 모은 돈, 휴가철에 다 쓰시나요? 당신의 여행 경비를 미래 자산으로 환산해드립니다.",
-  "icon": "✈️",
-  "category": "life",
-  "url": "./travel/index.html"
-}
-,
-{
-  "title": "경조사비 계산기",
-  "desc": "5만 원? 10만 원? 청첩장 받을 때마다 고민이신가요? 인맥 유지비의 총액을 알려드립니다.",
-  "icon": "💌",
-  "category": "life",
-  "url": "./event/index.html"
-}
-,
-{
-  "title": "뷰티 지출 판독기",
-  "desc": "화장품, 미용실, 피부과에 쓰는 돈. 10년이면 얼굴에 벤츠 한 대를 바르는 셈입니다.",
-  "icon": "💄",
-  "category": "consumer",
-  "url": "./beauty/index.html"
-}
-,
-{
-  "title": "카페 창업 현실 계산기",
-  "desc": "\"퇴사하고 카페나 할까?\" 하루 몇 잔 팔아야 월세 낼 수 있을까요? 자영업의 매운맛.",
-  "icon": "☕",
-  "category": "life",
-  "url": "./cafe/index.html"
-}
-,
-{
-  "title": "캠핑 장비병 판독기",
-  "desc": "텐트에서 자는데 왜 5성급 호텔보다 비쌀까요? 감성 캠핑의 숨겨진 비용 계산.",
-  "icon": "⛺",
-  "category": "life",
-  "url": "./camping/index.html"
-}
-,
-{
-  "title": "강의 수집가 판독기",
-  "desc": "결제만 하고 안 보는 강의가 몇 개인가요? 디지털 호더(Hoarder)의 낭비 비용 계산.",
-  "icon": "📚",
-  "category": "life",
-  "url": "./lecture/index.html"
-}
-,
-{
-  "title": "다이어트 비용 판독기",
-  "desc": "살은 안 빠지고 통장만 가벼워졌나요? 평생 다이어트에 쓴 돈이 얼마인지 계산해드립니다.",
-  "icon": "🥗",
-  "category": "life",
-  "url": "./diet/index.html"
-}
-,
-{
-  "title": "하우스 푸어 판독기",
-  "desc": "은행이 진짜 집주인? 4억 빌리면 이자만 4억을 냅니다. 충격적인 대출 이자 계산기.",
-  "icon": "🏠",
-  "category": "money",
-  "url": "./housepoor/index.html"
-}
-,
-{
-  "title": "쓰레기 보관료 계산기",
-  "desc": "집 평당 가격이 얼만지 아시나요? 안 쓰는 짐을 보관하기 위해 1억 원을 쓰고 있습니다.",
-  "icon": "🏚️",
-  "category": "life",
-  "url": "./space/index.html"
-}
-,
-{
-  "title": "냉장고 무덤 판독기",
-  "desc": "장보고 버리는 음식이 얼마나 될까요? 1+1에 속아 쓰레기통에 버리는 돈을 계산해드립니다.",
-  "icon": "🤢",
-  "category": "life",
-  "url": "./foodwaste/index.html"
-}
-,
-{
-  "title": "영어 포기 비용 계산기",
-  "desc": "매년 새해 목표는 영어 공부? 10년째 제자리걸음인 당신이 학원에 갖다 바친 돈은 얼마일까요?",
-  "icon": "🔤",
-  "category": "life",
-  "url": "./english/index.html"
-}
-  ,
-{
-  "title": "영양제 호갱 판독기",
-  "desc": "비타민, 오메가3... 사놓고 유통기한 지나서 버리는 돈이 얼마일까요? 비싼 오줌값 계산.",
-  "icon": "💊",
-  "category": "life",
-  "url": "./vitamin/index.html"
-}
-,
-{
-  "title": "탈모 관리 가성비",
-  "desc": "탈모 샴푸에 쓰는 돈, 모아서 심는 게 낫지 않을까요? 머리카락 수호를 위한 비용 계산.",
-  "icon": "💆‍♂️",
-  "category": "life",
-  "url": "./hair/index.html"
-}
-,
-{
-  "title": "치과 치료비 계산기",
-  "desc": "치과 가기 무서우신가요? 스케일링 미루다가 임플란트 하게 되는 비용을 계산해드립니다.",
-  "icon": "🦷",
-  "category": "health",
-  "url": "./dental/index.html"
-}
-,
-{
-  "title": "패스트 패션 판독기",
-  "desc": "옷장은 꽉 찼는데 입을 옷이 없다면? 당신이 버리는 옷값이 얼마인지 계산해드립니다.",
-  "icon": "👗",
-  "category": "consumer",
-  "url": "./fashion/index.html"
-}
-,
-{
-  "title": "수면 가성비 판독기",
-  "desc": "핸드폰은 2년마다 바꾸면서 침대는 10년 쓰시나요? 꿀잠에 투자해야 돈을 버는 이유.",
-  "icon": "🛌",
-  "category": "health",
-  "url": "./sleep/index.html"
-}
-,
-{
-  "title": "코인 행복회로 판독기",
-  "desc": "-50% 손실, 원금 찾으려면 50% 오르면 될까요? 잔인한 투자 수학의 진실.",
-  "icon": "📉",
-  "category": "money",
-  "url": "./coin/index.html"
-}
-  ,
-{
-  "title": "통신비 호갱 판독기",
-  "desc": "와이파이 쓰면서 9만 원 요금제? 2년 약정 동안 통신사에 기부하는 돈이 얼마일까요?",
-  "icon": "📶",
-  "category": "consumer",
-  "url": "./data/index.html"
-}
-,
-{
-  "title": "신차 감가상각 판독기",
-  "desc": "새 차 비닐 뜯는 순간 수백만 원이 사라집니다. 신차 vs 중고차, 자산 가치 하락 비교.",
-  "icon": "📉",
-  "category": "money",
-  "url": "./depreciation/index.html"
-}
-,
-{
-  "title": "시력 교정 가성비",
-  "desc": "렌즈값이 수술비보다 비싸다? 10년 동안 안경점에 갖다 바친 돈을 계산해드립니다.",
-  "icon": "👁️",
-  "category": "health",
-  "url": "./eye/index.html"
-}
-,
-{
-  "title": "인터넷 호갱 판독기",
-  "desc": "3년마다 47만 원 받으셨나요? 통신사에 의리 지키다 날린 돈을 계산해드립니다.",
-  "icon": "🌐",
-  "category": "consumer",
-  "url": "./internet/index.html"
-}
-,
-{
-  "title": "배당금 건물주 계산기",
-  "desc": "월 100만 원 따박따박 받으려면 얼마가 필요할까요? 주식으로 월세 받는 현실적인 금액.",
-  "icon": "💵",
-  "category": "money",
-  "url": "./dividend/index.html"
-}
-,
-{
-  "title": "연말정산 환급금 판독기",
-  "desc": "국가가 보장하는 수익률 16.5%. 연금저축 안 하면 매년 얼마를 손해 보는 걸까요?",
-  "icon": "💰",
-  "category": "money",
-  "url": "./tax/index.html"
-}
-,
-{
-  "title": "중고 거래 가성비 판독기",
-  "desc": "5천 원 벌겠다고 1시간 쓰셨나요? 당근 거래가 오히려 손해인 이유를 계산해드립니다.",
-  "icon": "🥕",
-  "category": "life",
-  "url": "./market/index.html"
-}
-,
-{
-  "title": "1억 만들기 계산기",
-  "desc": "월급 250만 원으로 1억 모으는 데 얼마나 걸릴까요? 짠테크의 동기부여를 심어드립니다.",
-  "icon": "🌱",
-  "category": "money",
-  "url": "./seedmoney/index.html"
-}
-,
-{
-  "title": "주식 리딩방 판독기",
-  "desc": "가입비 500만원 내고 3배 수익? 리딩방에 가입하면 필패하는 수학적 이유.",
-  "icon": "📢",
-  "category": "money",
-  "url": "./leading/index.html"
-}
-,
-{
-  "title": "세차 환자 판독기",
-  "desc": "자동세차 기스 난다고 셀프 세차하시나요? 장비값과 노동비를 자동세차와 비교해드립니다.",
-  "icon": "🚿",
-  "category": "life",
-  "url": "./carwash/index.html"
-}
-,
-{
-  "title": "자동차 보험 호갱 판독기",
-  "desc": "설계사에게 가입하셨나요? 클릭 몇 번으로 평생 아낄 수 있는 돈이 차 한 대 값입니다.",
-  "icon": "🚗",
-  "category": "money",
-  "url": "./carins/index.html"
-}
-,
-{
-  "title": "주차비 낭비 판독기",
-  "desc": "차가 서 있는 자리에도 월세가 나갑니다. 1년 주차비로 택시를 몇 번 탈 수 있을까요?",
-  "icon": "🅿️",
-  "category": "life",
-  "url": "./parking/index.html"
-}
-,
-{
-  "title": "디저트 비용 계산기",
-  "desc": "밥값보다 비싼 커피와 케이크. 10년 동안 먹은 설탕값이 얼마인지 확인하세요.",
-  "icon": "🍰",
-  "category": "life",
-  "url": "./dessert/index.html"
-}
-,
-{
-  "title": "책장 장식품 판독기",
-  "desc": "사놓고 안 읽는 책, 당신의 지적 허영심 비용을 계산해드립니다. 도서관이 답입니다.",
-  "icon": "📚",
-  "category": "life",
-  "url": "./book/index.html"
-}
-,
-{
-  "title": "미식 허세 판독기",
-  "desc": "한 끼에 20만 원? 당신이 먹어치운 오마카세 비용을 국밥 그릇 수로 환산해드립니다.",
-  "icon": "🍽️",
-  "category": "life",
-  "url": "./dining/index.html"
-}
-,
-{
-  "title": "안마의자 가성비 판독기",
-  "desc": "300만 원짜리 옷걸이를 사셨나요? 1번 앉을 때마다 얼마인지, 마사지샵 가격과 비교해드립니다.",
-  "icon": "💺",
-  "category": "life",
-  "url": "./massage/index.html"
-}
-,
-{
-  "title": "별풍선 호갱 판독기",
-  "desc": "오빠 소리 한 번 듣겠다고 월급을 태우시나요? 당신이 BJ에게 사준 차가 무엇인지 확인하세요.",
-  "icon": "🎈",
-  "category": "life",
-  "url": "./donation/index.html"
-}
-,
-{
-  "title": "덕질 비용 판독기",
-  "desc": "오빠를 위해 쓴 돈, 10년 뒤엔 쓰레기가 됩니다. 굿즈 대신 기획사 주식을 샀다면?",
-  "icon": "🎤",
-  "category": "life",
-  "url": "./fandom/index.html"
-}
-,
-{
-  "title": "중고 외제차 판독기",
-  "desc": "1000만 원짜리 벤츠? 수리비가 차값보다 더 나옵니다. 썩차의 현실 유지비 계산.",
-  "icon": "🏎️",
-  "category": "money",
-  "url": "./usedcar/index.html"
-}
-,
-{
-  "title": "장기렌트/리스 판독기",
-  "desc": "월 40만 원에 외제차? 선납금의 함정을 아시나요? 차는 없고 빚만 남는 구조.",
-  "icon": "🔑",
-  "category": "money",
-  "url": "./lease/index.html"
-}
-,
-{
-  "title": "연봉 실수령액 계산기",
-  "desc": "연봉 1억이면 월 650? 4대 보험과 세금이 뜯어가는 내 월급의 실체를 공개합니다.",
-  "icon": "💸",
-  "category": "money",
-  "url": "./paycheck/index.html"
-}
-,
-{
-  "title": "하이브리드 본전 계산기",
-  "desc": "연비 좋다고 400만 원 더 주고 사셨나요? 기름값으로 본전 뽑으려면 몇 년 타야 할까요?",
-  "icon": "🔋",
-  "category": "money",
-  "url": "./hybrid/index.html"
-}
-,
-{
-  "title": "내 차 vs 택시 판독기",
-  "desc": "차 사면 돈 못 모은다? 매일 택시 타는 것과 차를 유지하는 것 중 무엇이 이득일까요?",
-  "icon": "🚗",
-  "category": "life",
-  "url": "./buycar/index.html"
-}
-,
-{
-  "title": "물값 가성비 판독기",
-  "desc": "생수 사 먹는 게 쌀까요? 정수기가 쌀까요? 플라스틱 쓰레기 처리 비용까지 계산해드립니다.",
-  "icon": "💧",
-  "category": "life",
-  "url": "./water/index.html"
-}
-,
-{
-  "title": "3대 이모님 가성비 판독기",
-  "desc": "식기세척기, 건조기, 로봇청소기. 300만 원 쓰고 3,000만 원어치 시간을 버는 법.",
-  "icon": "🤖",
-  "category": "life",
-  "url": "./helper/index.html"
-}
-,
-{
-  "title": "앱테크 가성비 판독기",
-  "desc": "하루 종일 광고 보고 100원? 당신의 시급을 계산해드립니다. 디지털 폐지 줍기의 현실.",
-  "icon": "📱",
-  "category": "money",
-  "url": "./apptech/index.html"
-}
-,
-{
-  "title": "문신 제거 견적기",
-  "desc": "30만 원 주고 한 타투, 지우려면 300만 원? 후회의 가격을 미리 계산해드립니다.",
-  "icon": "💉",
-  "category": "health",
-  "url": "./tattoo/index.html"
-}
-,
-{
-  "title": "수험생 기회비용 판독기",
-  "desc": "3년 공부해서 9급 합격하면 이득일까요? 합격증 하나에 들어간 억 소리 나는 비용 계산.",
-  "icon": "📝",
-  "category": "life",
-  "url": "./study/index.html"
-}
-,
-{
-  "title": "운세 중독 판독기",
-  "desc": "불안할 때마다 점집을 찾으시나요? 굿값과 복채를 아껴서 만들 수 있는 확실한 미래.",
-  "icon": "🔮",
-  "category": "life",
-  "url": "./fortune/index.html"
-}
-,
-{
-  "title": "자전거 장비병 판독기",
-  "desc": "자전거가 차 한 대 값? 무게 100g 줄이는 데 100만 원 쓰는 당신을 위한 계산기.",
-  "icon": "🚴",
-  "category": "life",
-  "url": "./bike/index.html"
-}
-,
-{
-  "title": "낚시 장비병 판독기",
-  "desc": "물고기 한 마리에 30만 원? 장비값과 선비를 합치면 횟집보다 얼마나 비싼지 계산해드립니다.",
-  "icon": "🎣",
-  "category": "life",
-  "url": "./fishing/index.html"
-}
-,
-{
-  "title": "영어유치원 가성비 판독기",
-  "desc": "한 달에 200만 원? 그 돈을 아이 주식 계좌에 넣어주면 30살에 얼마가 될까요?",
-  "icon": "🎓",
-  "category": "life",
-  "url": "./kindergarten/index.html"
-}
-,
-{
-  "title": "카쉐어링 vs 자차 판독기",
-  "desc": "주말에만 타는데 차 사야 할까요? 쏘카 비용과 자차 유지비를 비교해드립니다.",
-  "icon": "🚙",
-  "category": "life",
-  "url": "./sharing/index.html"
-}
-,
-{
-  "title": "아이패드병 판독기",
-  "desc": "200만 원 주고 산 아이패드로 유튜브만 보시나요? 생산성 0%의 비싼 장난감 비용 계산.",
-  "icon": "📱",
-  "category": "consumer",
-  "url": "./tablet/index.html"
-}
-,
-{
-  "title": "러닝 장비병 판독기",
-  "desc": "달리기는 돈 안 드는 운동? 신발, 워치, 대회비까지 합치면 1km당 얼마일까요?",
-  "icon": "🏃‍♂️",
-  "category": "life",
-  "url": "./running/index.html"
-}
-,
-{
-  "title": "등산 장비병 판독기",
-  "desc": "뒷산 가는데 히말라야 장비? 고어텍스 재킷 1회 착용 비용을 계산해드립니다.",
-  "icon": "⛰️",
-  "category": "life",
-  "url": "./hiking/index.html"
-}
-,
-{
-  "title": "결정사 가성비 판독기",
-  "desc": "가입비 300만 원? 만남 1번에 60만 원짜리 소개팅을 하고 계십니다.",
-  "icon": "💍",
-  "category": "life",
-  "url": "./matchmaker/index.html"
-}
-,
-{
-  "title": "카메라 장비병 판독기",
-  "desc": "사진은 장비빨? 수백만 원짜리 렌즈를 사서 장롱에 넣어두는 비용을 계산해드립니다.",
-  "icon": "📸",
-  "category": "life",
-  "url": "./camera/index.html"
-}
-,
-{
-  "title": "주류 수집 판독기",
-  "desc": "마시지도 않을 위스키와 와인. 장식장에 잠든 돈이 10년 뒤 얼마가 될지 확인하세요.",
-  "icon": "🥃",
-  "category": "life",
-  "url": "./liquor/index.html"
-}
-,
-{
-  "title": "자동차 튜닝비 판독기",
-  "desc": "튜닝의 끝은 순정? 아반떼에 1,000만 원 바르면 벤츠 될까요? 증발하는 튜닝비 계산.",
-  "icon": "🏎️",
-  "category": "life",
-  "url": "./tuning/index.html"
-}
-,
-{
-  "title": "인테리어 호갱 판독기",
-  "desc": "5천만 원 들여 고친 집, 집값도 5천만 원 오를까요? 인테리어의 감가상각 계산.",
-  "icon": "🏚️",
-  "category": "life",
-  "url": "./interior/index.html"
-}
-,
-{
-  "title": "키덜트 수집병 판독기",
-  "desc": "피규어, 레고, 운동화... 이게 재테크가 될까요? 방 한 칸을 차지하는 장난감의 비용 계산.",
-  "icon": "🤖",
-  "category": "life",
-  "url": "./kidult/index.html"
-}
-,
-{
-  "title": "테니스 비용 판독기",
-  "desc": "라켓 하나면 된다면서요? 레슨비와 의류비로 나가는 돈이 1회당 얼마인지 확인하세요.",
-  "icon": "🎾",
-  "category": "life",
-  "url": "./tennis/index.html"
-}
-,
-{
-  "title": "데스크테리어 장비병 판독기",
-  "desc": "키보드와 의자에 수백만 원? 책상 위에 깔아둔 돈이 얼마인지 계산해드립니다.",
-  "icon": "⌨️",
-  "category": "life",
-  "url": "./desk/index.html"
-}
-,
-{
-  "title": "향수 수집병 판독기",
-  "desc": "화장대에 쌓인 향수, 다 쓰려면 몇 년 걸릴까요? 향기와 함께 증발하는 돈 계산.",
-  "icon": "🧴",
-  "category": "life",
-  "url": "./perfume/index.html"
-}
-,
-{
-  "title": "상조 가입 호갱 판독기",
-  "desc": "매달 3만 원씩 10년? 은행에 넣었다면 장례 치르고도 돈이 남습니다.",
-  "icon": "⚱️",
-  "category": "money",
-  "url": "./sangjo/index.html"
-}
-,
-{
-  "title": "평범한 인생 견적서",
-  "desc": "집 사고, 애 키우고, 노후 준비까지... 평범하게 사는 데 드는 총비용은 얼마일까요?",
-  "icon": "🏁",
-  "category": "life",
-  "url": "./life/index.html"
-}
-  ,
-{
-  "title": "펫보험 호갱 판독기",
-  "desc": "보험료 5만 원이면 충분하다? 약관에 숨겨진 보장 제외 항목과 펫 적금의 효율성 비교.",
-  "icon": "🐶",
-  "category": "life",
-  "url": "./petins/index.html"
-}
-,
-{
-  "title": "보험 리모델링 판독기",
-  "desc": "낸 돈 다 돌려준다는 만기환급형의 배신. 물가 상승을 고려한 진짜 가치를 알려드립니다.",
-  "icon": "🏥",
-  "category": "money",
-  "url": "./healthins/index.html"
-}
-,
-{
-  "title": "홈카페 로망 판독기",
-  "desc": "머신값 뽑으려면 커피 3,000잔 마셔야 합니다. 장비병 치유를 위한 본전 계산기.",
-  "icon": "☕",
-  "category": "life",
-  "url": "./homecafe/index.html"
-}
-,
-{
-  "title": "대학원 가성비 판독기",
-  "desc": "취업 안 돼서 대학원 가시나요? 등록금과 못 번 연봉을 합치면 1억이 넘습니다.",
-  "icon": "🎓",
-  "category": "life",
-  "url": "./gradschool/index.html"
-}
-,
-{
-  "title": "홈짐 빨래건조대 판독기",
-  "desc": "집에서 운동한다고 200만 원 쓰셨나요? 1회 운동 비용이 호텔 헬스장보다 비쌉니다.",
-  "icon": "🏋️",
-  "category": "life",
-  "url": "./homegym/index.html"
-}
-,
-{
-  "title": "유튜버 장비병 판독기",
-  "desc": "카메라 300만 원, 조명 100만 원... 본전 뽑으려면 조회수 몇 만이 나와야 할까요?",
-  "icon": "📹",
-  "category": "life",
-  "url": "./youtube/index.html"
-}
-,
-{
-  "title": "바디프로필 비용 판독기",
-  "desc": "인생샷 한 장에 300만 원? 사진 찍고 요요 오는 비극적인 결말을 예방하세요.",
-  "icon": "📸",
-  "category": "health",
-  "url": "./bodyprofile/index.html"
-}
-,
-{
-  "title": "필라테스 기부천사 판독기",
-  "desc": "회당 7만 원? 결석한 횟수까지 합치면 1회에 20만 원짜리 운동을 하고 계십니다.",
-  "icon": "🧘‍♀️",
-  "category": "life",
-  "url": "./yoga/index.html"
-}
-,
-{
-  "title": "천원샵 중독 판독기",
-  "desc": "천 원이니까 괜찮다? 싼 맛에 산 물건이 쓰레기가 되는 비용을 계산해드립니다.",
-  "icon": "🛍️",
-  "category": "consumer",
-  "url": "./daiso/index.html"
-}
-,
-{
-  "title": "재수/N수 가성비 판독기",
-  "desc": "대학 간판 바꾸는 데 1억? 학원비와 잃어버린 연봉을 합치면 얼마일까요?",
-  "icon": "📝",
-  "category": "life",
-  "url": "./nsu/index.html"
-}
-  ,
-{
-  "title": "치킨집 창업 현실 판독기",
-  "desc": "닭 한 마리 팔면 얼마 남을까요? 프랜차이즈 본사와 배달앱이 가져가는 돈의 실체.",
-  "icon": "🍗",
-  "category": "life",
-  "url": "./chicken/index.html"
-}
-,
-{
-  "title": "웹툰 쿠키 계산기",
-  "desc": "다음 화 미리보기 하느라 매일 300원? 1년이면 넷플릭스 5년 치 구독료가 나옵니다.",
-  "icon": "🍪",
-  "category": "life",
-  "url": "./webtoon/index.html"
-}
-,
-{
-  "title": "네일아트 비용 판독기",
-  "desc": "한 달에 10만 원? 1년이면 명품 지갑 하나가 사라집니다. 손톱 유지비 계산.",
-  "icon": "💅",
-  "category": "life",
-  "url": "./nail/index.html"
-}
-,
-{
-  "title": "소개팅 어플 호갱 판독기",
-  "desc": "프로필 보는데 5천 원? 만남도 없이 돈만 쓰는 사이버 연애의 비용 계산.",
-  "icon": "💘",
-  "category": "life",
-  "url": "./datingapp/index.html"
-}
-,
-{
-  "title": "미용실 호갱 판독기",
-  "desc": "머리하러 갈 때마다 20만 원? 1년 미용실 비용이면 다이슨 에어랩을 사고도 남습니다.",
-  "icon": "💇‍♀️",
-  "category": "consumer",
-  "url": "./hairshop/index.html"
-}
-,
-{
-  "title": "명품 패딩 계급도 판독기",
-  "desc": "200만 원짜리 패딩, 1년에 며칠 입으시나요? 1회 착용 비용과 세탁비의 진실.",
-  "icon": "🧥",
-  "category": "consumer",
-  "url": "./padding/index.html"
-}
-,
-{
-  "title": "호캉스 허세 판독기",
-  "desc": "1박 50만 원? 잠만 자고 나오기엔 너무 비쌉니다. 당신이 지불한 '시간당 방세'를 계산해드립니다.",
-  "icon": "🏨",
-  "category": "life",
-  "url": "./hotel/index.html"
-}
-,
-{
-  "title": "식집사 가성비 판독기",
-  "desc": "화분 하나에 5만 원? 공기 정화하려고 샀다가 통장이 정화되는 마법.",
-  "icon": "🌿",
-  "category": "life",
-  "url": "./plant/index.html"
-}
-,
-{
-  "title": "스키장 시즌권 판독기",
-  "desc": "시즌권 끊고 3번 가셨나요? 장비값 포함 1회 라이딩 비용을 계산해드립니다.",
-  "icon": "🏂",
-  "category": "life",
-  "url": "./ski/index.html"
-}
-,
-{
-  "title": "공연 덕질 비용 판독기",
-  "desc": "VIP석 19만 원? 같은 공연 10번 보면 200만 원. 한국 티켓값 거품의 현실.",
-  "icon": "🎭",
-  "category": "life",
-  "url": "./musical/index.html"
-}
-  ,
-{
-  "title": "치아 교정 견적기",
-  "desc": "철길 까는데 500만 원? 월비와 유지장치 비용까지 합친 총액을 계산해드립니다.",
-  "icon": "😬",
-  "category": "health",
-  "url": "./braces/index.html"
-},
-{
-  "title": "피부과 호갱 판독기",
-  "desc": "10회권 끊고 5번만 가셨나요? 당신의 1회 시술비가 얼마인지 계산해드립니다.",
-  "icon": "💆‍♀️",
-  "category": "health",
-  "url": "./skincare/index.html"
-},
-{
-  "title": "왁싱 비용 판독기",
-  "desc": "평생 뜯으실 건가요? 왁싱 10년 비용과 레이저 제모 비용을 비교해드립니다.",
-  "icon": "👙",
-  "category": "health",
-  "url": "./waxing/index.html"
-}
-  ,
-{
-  "title": "이사 비용 판독기",
-  "desc": "2년마다 500만 원씩 길바닥에 버리고 계신가요? 잦은 이사가 자산에 미치는 악영향.",
-  "icon": "📦",
-  "category": "life",
-  "url": "./moving/index.html"
-},
-{
-  "title": "애플병 판독기",
-  "desc": "아이폰, 맥북, 워치... 사과 농장 차리는 비용이면 갤럭시 풀세트 2개를 삽니다.",
-  "icon": "🍎",
-  "category": "consumer",
-  "url": "./apple/index.html"
-},
-{
-  "title": "금 투자 판독기",
-  "desc": "골드바 사자마자 -15% 손해? 실물 금 투자의 함정과 세금 없는 진짜 투자법.",
-  "icon": "🧈",
-  "category": "money",
-  "url": "./gold/index.html"
-},
-  {
-  "title": "카메라 장비병 판독기",
-  "desc": "렌즈 하나 살 돈이면 벤츠 계약금? 셔터 한 번 누를 때마다 지출하는 팩트 가격을 계산해드립니다.",
-  "icon": "📸",
-  "category": "life",
-  "url": "./camera/index.html"
-},
-{
-  "title": "주류 수집 판독기",
-  "desc": "마시지도 않을 위스키가 자산? 장식장 속의 현금이 썩어가며 잃고 있는 기회비용을 팩트로 보여드립니다.",
-  "icon": "🥃",
-  "category": "life",
-  "url": "./liquor/index.html"
-},
-  {
-  "title": "상조 가입 호갱 판독기",
-  "desc": "물가 보장? 원금 보장? 은행 이자와 복리의 무서움을 모르는 당신을 위한 상조 팩트 체크 계산기.",
-  "icon": "⚱️",
-  "category": "money",
-  "url": "./sangjo/index.html"
-},
-{
-  "title": "평범한 인생 견적서",
-  "desc": "집 사고, 애 키우고, 노후 준비까지... 중간이라도 가고 싶은 당신을 위한 충격적인 인생 합계 영수증.",
-  "icon": "🏁",
-  "category": "life",
-  "url": "./life/index.html"
-}
+  { "title": "전기차, 사지 마세요", "desc": "기름값 아끼려다 차값으로 다 날립니다. 소름 돋는 손익분기점 계산기.", "icon": "⚡", "category": "consumer", "url": "./ev/index.html" },
+  { "title": "스마트폰 호갱 탈출", "desc": "공짜폰의 진실. 자급제와 통신사 할부 이자를 적나라하게 비교해드립니다.", "icon": "📱", "category": "consumer", "url": "./phone/index.html" },
+  { "title": "티끌 모아 페라리", "desc": "담배와 커피값만 아꼈어도... 30년 뒤의 충격적 금액.", "icon": "☕", "category": "money", "url": "./smoke/index.html" },
+  { "title": "사교육비 vs 증여세", "desc": "학원비로 쓴 돈 vs 주식으로 물려줬을 때 자산 차이 시뮬레이션.", "icon": "🎓", "category": "life", "url": "./edu/index.html" },
+  { "title": "리볼빙의 늪", "desc": "이번 달 카드값 10%만 내셨나요? 법정 최고 금리 빚의 공포.", "icon": "💳", "category": "money", "url": "./credit/index.html" },
+  { "title": "결혼 비용 현실 자각", "desc": "1시간 예식을 위해 당신 부부가 몇 달을 일해야 하는지 계산.", "icon": "💍", "category": "life", "url": "./wedding/index.html" },
+  { "title": "로또 확률의 진실", "desc": "매주 로또 사시나요? 1등 당첨될 확률과 벼락 맞을 확률을 비교해드립니다.", "icon": "🎱", "category": "money", "url": "./lotto/index.html" },
+  { "title": "보험 푸어 탈출", "desc": "종신보험 vs 정기보험. 보험사가 숨기는 사업비와 기회비용 계산.", "icon": "🏥", "category": "money", "url": "./insurance/index.html" },
+  { "title": "길바닥 인생 계산기", "desc": "출퇴근 왕복 3시간? 당신이 도로 위에 버리는 돈과 수명을 계산해드립니다.", "icon": "🚌", "category": "life", "url": "./commute/index.html" },
+  { "title": "배달앱의 노예", "desc": "배달비 3천원 아끼려다 음식값 3만원 쓰는 당신. 1년 식비가 얼마인지 계산해드립니다.", "icon": "🛵", "category": "consumer", "url": "./delivery/index.html" },
+  { "title": "구독의 늪 (OTT)", "desc": "넷플릭스, 유튜브, 쿠팡... 숨만 쉬어도 나가는 고정비가 10년 뒤 얼마가 될까요?", "icon": "📺", "category": "consumer", "url": "./subscription/index.html" },
+  { "title": "카푸어 판독기", "desc": "월 할부금만 낼 수 있으면 내 차일까요? 숨겨진 유지비와 당신의 카푸어 등급을 진단해드립니다.", "icon": "🚘", "category": "money", "url": "./carpoor/index.html" },
+  { "title": "댕냥이 양육비 계산기", "desc": "귀여워서 데려왔다가 병원비에 웁니다. 반려동물 평생 양육비가 얼마나 들까요?", "icon": "🐶", "category": "life", "url": "./pet/index.html" },
+  { "title": "술값 계산기", "desc": "일주일에 2번? 안주값에 대리비까지 합치면 얼마일까요? 당신이 마셔 없앤 건물을 찾아드립니다.", "icon": "🍺", "category": "money", "url": "./alcohol/index.html" },
+  { "title": "헬스장 기부천사", "desc": "1년 등록하고 3일 나가셨나요? 당신의 운동 1회당 비용이 얼마인지 알려드립니다.", "icon": "💪", "category": "life", "url": "./gym/index.html" },
+  { "title": "택시 VIP 판독기", "desc": "지각비와 귀차니즘 비용으로 1년에 얼마를 쓰는지 아시나요? 대중교통 100번 탈 돈입니다.", "icon": "🚖", "category": "consumer", "url": "./taxi/index.html" },
+  { "title": "예적금의 배신", "desc": "은행 이자 4%? 세금 떼고 물가 오르면 내 돈은 사실상 삭제되고 있습니다.", "icon": "📉", "category": "money", "url": "./inflation/index.html" },
+  { "title": "게임 현질 계산기", "desc": "확률 0.8% 뽑기에 월급을 태우고 계신가요? 데이터 쪼가리의 실제 가격을 알려드립니다.", "icon": "🎮", "category": "consumer", "url": "./game/index.html" },
+  { "title": "골프 푸어 판독기", "desc": "필드 한 번 나가면 40만원? 취미 생활이 당신의 등골을 휘게 만들고 있습니다.", "icon": "⛳", "category": "life", "url": "./golf/index.html" },
+  { "title": "커피값 계산기", "desc": "하루 커피 두 잔? 30년 뒤 당신이 잃게 될 강남 오피스텔 한 채 값을 확인하세요.", "icon": "☕", "category": "money", "url": "./coffee/index.html" },
+  { "title": "편의점 VIP 판독기", "desc": "1+1 행사와 4캔 만원의 유혹. 당신이 편의점에 바치는 돈이 1년에 얼마일까요?", "icon": "🏪", "category": "consumer", "url": "./cvs/index.html" },
+  { "title": "쇼핑 중독 판독기", "desc": "매일 밤 택배를 시키는 당신. 그 돈이면 차를 샀습니다.", "icon": "🛍️", "category": "consumer", "url": "./shopping/index.html" },
+  { "title": "런치플레이션 방어기", "desc": "점심값 1만 원 시대. 도시락 싸면 1년에 얼마 벌까요? 밥값 아껴서 건물주 되는 법.", "icon": "🍱", "category": "money", "url": "./lunch/index.html" },
+  { "title": "명품병 판독기", "desc": "샤넬 가방 살 돈으로 LVMH 주식을 샀다면? 명품 소비의 엄청난 기회비용.", "icon": "👜", "category": "consumer", "url": "./luxury/index.html" },
+  { "title": "스마트폰 중독 판독기", "desc": "하루 4시간? 1년이면 두 달을 폰만 보는 셈입니다. 당신의 사라진 시간을 계산해드립니다.", "icon": "📱", "category": "life", "url": "./screentime/index.html" },
+  { "title": "내 진짜 시급 계산기", "desc": "출퇴근 시간과 야근을 포함하면? 편의점 알바보다 못한 당신의 진짜 몸값.", "icon": "💼", "category": "life", "url": "./salary/index.html" },
+  { "title": "렌탈 호갱 판독기", "desc": "정수기 월 3만 원? 5년이면 제품 3대를 사는 가격입니다. 렌탈의 늪에서 탈출하세요.", "icon": "💧", "category": "consumer", "url": "./rental/index.html" },
+  { "title": "주식 단타의 최후", "desc": "하루에 10번 매매하시나요? 1년 뒤 증권사에 바치는 수수료가 원금보다 많아집니다.", "icon": "📉", "category": "money", "url": "./trading/index.html" },
+  { "title": "담배값 계산기", "desc": "하루 한 갑, 30년이면 얼마일까요? 당신이 입으로 태워 없앤 페라리를 찾아드립니다.", "icon": "🚬", "category": "life", "url": "./smoking/index.html" },
+  { "title": "독립 비용 계산기", "desc": "자유를 찾아 떠난 자취 생활. 월세와 관리비가 5년 뒤엔 얼마일까요?", "icon": "🏠", "category": "life", "url": "./independence/index.html" },
+  { "title": "전세의 배신", "desc": "보증금 3억이면 월 125만 원? 전세가 사실상 '공짜'가 아닌 수학적 이유.", "icon": "🏢", "category": "money", "url": "./jeonse/index.html" },
+  { "title": "연애 비용 계산기", "desc": "사랑하는 데도 돈이 듭니다. 데이트 비용을 아껴 투자하면 얼마가 될까요?", "icon": "💘", "category": "life", "url": "./dating/index.html" },
+  { "title": "카드 혜택의 함정", "desc": "1만 원 할인받으려고 30만 원 쓰셨나요? 배보다 배꼽이 더 큰 소비 습관 점검.", "icon": "💳", "category": "money", "url": "./card/index.html" },
+  { "title": "자녀 양육비 계산기", "desc": "아이 하나 키우는 데 3억? 기저귀부터 대학 등록금까지, 등골 브레이커 총비용.", "icon": "👶", "category": "life", "url": "./parenting/index.html" },
+  { "title": "파이어족 은퇴 계산기", "desc": "회사를 언제 그만둘 수 있을까요? 4%의 법칙으로 계산한 당신의 은퇴 가능 나이.", "icon": "🔥", "category": "money", "url": "./fire/index.html" },
+  { "title": "폰 교체병 판독기", "desc": "약정 끝날 때마다 새 폰 사시나요? 배터리만 갈아도 되는 폰을 버리고 있는지 확인하세요.", "icon": "📱", "category": "consumer", "url": "./newphone/index.html" },
+  { "title": "여행 푸어 판독기", "desc": "1년 동안 모은 돈 휴가에 다 쓰시나요? 당신의 여행 경비를 미래 자산으로 환산해드립니다.", "icon": "✈️", "category": "life", "url": "./travel/index.html" },
+  { "title": "경조사비 계산기", "desc": "5만 원? 10만 원? 청첩장 받을 때마다 고민인 당신. 인맥 유지비의 총액을 알려드립니다.", "icon": "💌", "category": "life", "url": "./event/index.html" },
+  { "title": "뷰티 지출 판독기", "desc": "화장품, 피부과에 쓰는 돈. 10년이면 얼굴에 벤츠 한 대를 바르는 셈입니다.", "icon": "💄", "category": "consumer", "url": "./beauty/index.html" },
+  { "title": "카페 창업 현실 계산기", "desc": "퇴사하고 카페나 할까? 하루 몇 잔 팔아야 월세 낼 수 있을까요? 자영업의 매운맛.", "icon": "☕", "category": "life", "url": "./cafe/index.html" },
+  { "title": "캠핑 장비병 판독기", "desc": "텐트에서 자는데 왜 호텔보다 비쌀까요? 감성 캠핑의 숨겨진 비용 계산.", "icon": "⛺", "category": "life", "url": "./camping/index.html" },
+  { "title": "강의 수집가 판독기", "desc": "결제만 하고 안 보는 강의가 몇 개인가요? 디지털 호더의 낭비 비용 계산.", "icon": "📚", "category": "life", "url": "./lecture/index.html" },
+  { "title": "다이어트 비용 판독기", "desc": "살은 안 빠지고 통장만 가벼워졌나요? 평생 다이어트에 쓴 돈이 얼마인지 계산해드립니다.", "icon": "🥗", "category": "life", "url": "./diet/index.html" },
+  { "title": "하우스 푸어 판독기", "desc": "은행이 진짜 집주인? 4억 빌리면 이자만 4억을 냅니다. 충격적인 대출 이자 계산기.", "icon": "🏠", "category": "money", "url": "./housepoor/index.html" },
+  { "title": "쓰레기 보관료 계산기", "desc": "집 평당 가격이 얼만지 아시나요? 안 쓰는 짐을 보관하기 위해 당신이 낭비하는 공간 가치.", "icon": "🏚️", "category": "life", "url": "./space/index.html" },
+  { "title": "냉장고 무덤 판독기", "desc": "장보고 버리는 음식이 얼마나 될까요? 1+1에 속아 쓰레기통에 버리는 돈 계산.", "icon": "🤢", "category": "life", "url": "./foodwaste/index.html" },
+  { "title": "영어 포기 비용 계산기", "desc": "매년 새해 목표 영어? 10년째 제자리인 당신이 학원에 갖다 바친 돈은 얼마일까요?", "icon": "🔤", "category": "life", "url": "./english/index.html" },
+  { "title": "영양제 호갱 판독기", "desc": "비타민, 오메가3... 사놓고 유통기한 지나서 버리는 돈. 비싼 오줌값 계산.", "icon": "💊", "category": "life", "url": "./vitamin/index.html" },
+  { "title": "탈모 관리 가성비", "desc": "탈모 샴푸에 쓰는 돈 모아서 심는 게 낫지 않을까요? 머리카락 수호를 위한 비용 계산.", "icon": "💆‍♂️", "category": "life", "url": "./hair/index.html" },
+  { "title": "치과 치료비 계산기", "desc": "치과 가기 무서우신가요? 스케일링 미루다가 임플란트 하게 되는 비용을 계산해드립니다.", "icon": "🦷", "category": "life", "url": "./dental/index.html" },
+  { "title": "패스트 패션 판독기", "desc": "옷장은 꽉 찼는데 입을 옷이 없다면? 당신이 버리는 옷값이 얼마인지 계산해드립니다.", "icon": "👗", "category": "consumer", "url": "./fashion/index.html" },
+  { "title": "수면 가성비 판독기", "desc": "핸드폰은 2년마다 바꾸면서 침대는 10년 쓰시나요? 꿀잠에 투자해야 돈 버는 이유.", "icon": "🛌", "category": "life", "url": "./sleep/index.html" },
+  { "title": "코인 행복회로 판독기", "desc": "-50% 손실, 원금 찾으려면 100% 올라야 합니다. 잔인한 투자 수학의 진실.", "icon": "📉", "category": "money", "url": "./coin/index.html" },
+  { "title": "통신비 호갱 판독기", "desc": "와이파이 쓰면서 9만 원 요금제? 2년 동안 통신사에 기부하는 돈이 얼마일까요?", "icon": "📶", "category": "consumer", "url": "./data/index.html" },
+  { "title": "신차 감가상각 판독기", "desc": "비닐 뜯는 순간 수백만 원 사라집니다. 신차 vs 중고차, 자산 가치 하락 비교.", "icon": "📉", "category": "money", "url": "./depreciation/index.html" },
+  { "title": "시력 교정 가성비", "desc": "렌즈값이 수술비보다 비싸다? 10년 동안 안경점에 갖다 바친 돈을 계산해드립니다.", "icon": "👁️", "category": "life", "url": "./eye/index.html" },
+  { "title": "인터넷 호갱 판독기", "desc": "3년마다 47만 원 받으셨나요? 통신사에 의리 지키다 날린 돈을 계산해드립니다.", "icon": "🌐", "category": "consumer", "url": "./internet/index.html" },
+  { "title": "배당금 건물주 계산기", "desc": "월 100만 원 따박따박 받으려면 얼마가 필요할까요? 주식으로 월세 받는 법.", "icon": "💵", "category": "money", "url": "./dividend/index.html" },
+  { "title": "연말정산 환급금 판독기", "desc": "국가 보장 수익률 16.5%. 연금저축 안 하면 매년 손해 보는 금액 계산.", "icon": "💰", "category": "money", "url": "./tax/index.html" },
+  { "title": "중고 거래 가성비 판독기", "desc": "5천 원 벌겠다고 1시간 썼나요? 당근 거래가 손해인 이유를 계산해드립니다.", "icon": "🥕", "category": "life", "url": "./market/index.html" },
+  { "title": "1억 만들기 계산기", "desc": "월급 250만 원으로 1억 모으는 데 얼마나 걸릴까요? 짠테크의 동기부여.", "icon": "🌱", "category": "money", "url": "./seedmoney/index.html" },
+  { "title": "주식 리딩방 판독기", "desc": "가입비 500만원 내고 수익 0? 리딩방에 가입하면 필패하는 수학적 이유.", "icon": "📢", "category": "money", "url": "./leading/index.html" },
+  { "title": "세차 환자 판독기", "desc": "자동세차 기스 난다고 직접 세차하시나요? 장비값과 노동비를 팩트로 비교해드립니다.", "icon": "🚿", "category": "life", "url": "./carwash/index.html" },
+  { "title": "자동차 보험 호갱 판독기", "desc": "설계사에게 가입하셨나요? 클릭 몇 번으로 평생 아낄 수 있는 돈이 차 한 대 값입니다.", "icon": "🚗", "category": "money", "url": "./carins/index.html" },
+  { "title": "주차비 낭비 판독기", "desc": "차가 서 있는 자리에도 월세가 나갑니다. 1년 주차비로 택시를 몇 번 탈까요?", "icon": "🅿️", "category": "life", "url": "./parking/index.html" },
+  { "title": "디저트 비용 계산기", "desc": "밥값보다 비싼 커피와 케이크. 10년 동안 먹은 설탕값의 복리 가치를 확인하세요.", "icon": "🍰", "category": "life", "url": "./dessert/index.html" },
+  { "title": "책장 장식품 판독기", "desc": "사놓고 안 읽는 책, 지적 허영심 비용을 계산해드립니다. 도서관이 답입니다.", "icon": "📚", "category": "life", "url": "./book/index.html" },
+  { "title": "미식 허세 판독기", "desc": "한 끼에 20만 원? 당신이 먹어치운 오마카세 비용을 국밥 수로 환산해드립니다.", "icon": "🍽️", "category": "life", "url": "./dining/index.html" },
+  { "title": "안마의자 가성비 판독기", "desc": "300만 원짜리 옷걸이? 1번 앉을 때마다 얼마인지 팩트로 계산해드립니다.", "icon": "💺", "category": "life", "url": "./massage/index.html" },
+  { "title": "별풍선 호갱 판독기", "desc": "오빠 소리 한 번에 월급을 태우시나요? BJ에게 사준 외제차 기종을 확인하세요.", "icon": "🎈", "category": "life", "url": "./donation/index.html" },
+  { "title": "덕질 비용 판독기", "desc": "오빠 위해 쓴 돈 10년 뒤면 쓰레기? 굿즈 대신 주식을 샀을 때의 자산 비교.", "icon": "🎤", "category": "life", "url": "./fandom/index.html" },
+  { "title": "중고 외제차 판독기", "desc": "1000만 원짜리 벤츠? 수리비가 차값보다 더 나옵니다. 썩차의 현실 유지비 계산.", "icon": "🏎️", "category": "money", "url": "./usedcar/index.html" },
+  { "title": "장기렌트/리스 판독기", "desc": "월 40만 원에 외제차? 선납금의 함정을 아시나요? 차는 없고 빚만 남는 구조.", "icon": "🔑", "category": "money", "url": "./lease/index.html" },
+  { "title": "연봉 실수령액 계산기", "desc": "연봉 1억이면 월 650? 4대 보험과 세금이 뜯어가는 내 월급의 실체 공개.", "icon": "💸", "category": "money", "url": "./paycheck/index.html" },
+  { "title": "하이브리드 본전 계산기", "desc": "연비 좋다고 400만 원 더 냈나요? 기름값으로 본전 뽑으려면 몇 년 타야 할까요?", "icon": "🔋", "category": "money", "url": "./hybrid/index.html" },
+  { "title": "내 차 vs 택시 판독기", "desc": "매일 택시 타는 것과 차를 유지하는 것 중 무엇이 이득일까요? 팩트 비교.", "icon": "🚗", "category": "life", "url": "./buycar/index.html" },
+  { "title": "물값 가성비 판독기", "desc": "생수가 쌀까요? 정수기가 쌀까요? 플라스틱 처리 비용까지 계산해드립니다.", "icon": "💧", "category": "life", "url": "./water/index.html" },
+  { "title": "3대 이모님 가성비 판독기", "desc": "식세기, 건조기, 로봇청소기. 300만 원 쓰고 3,000만 원치 시간을 버는 법.", "icon": "🤖", "category": "life", "url": "./helper/index.html" },
+  { "title": "앱테크 가성비 판독기", "desc": "하루 종일 굴려서 100원? 당신의 시급을 계산해드립니다. 디지털 폐지 줍기의 현실.", "icon": "📱", "category": "money", "url": "./apptech/index.html" },
+  { "title": "문신 제거 견적기", "desc": "30만 원 주고 한 타투, 지우려면 300만 원? 후회의 가격을 미리 계산해드립니다.", "icon": "💉", "category": "life", "url": "./tattoo/index.html" },
+  { "title": "수험생 기회비용 판독기", "desc": "3년 공부해서 합격하면 이득? 합격증 하나에 들어간 억 소리 나는 기회비용 계산.", "icon": "📝", "category": "life", "url": "./study/index.html" },
+  { "title": "운세 중독 판독기", "desc": "불안할 때마다 점집을 찾나요? 복채 아껴서 만들 수 있는 확실한 미래 자산.", "icon": "🔮", "category": "life", "url": "./fortune/index.html" },
+  { "title": "자전거 장비병 판독기", "desc": "무게 100g 줄이는 데 100만 원? 엔진(몸)보다 비싼 자전거의 리얼 가성비.", "icon": "🚴", "category": "life", "url": "./bike/index.html" },
+  { "title": "낚시 장비병 판독기", "desc": "물고기 한 마리에 30만 원? 장비값과 선비를 합치면 횟집보다 비싼 이유.", "icon": "🎣", "category": "life", "url": "./fishing/index.html" },
+  { "title": "영어유치원 가성비 판독기", "desc": "월 200만 원 영유? 그 돈을 아이 주식 계좌에 넣었을 때의 20년 뒤 미래 가치.", "icon": "🎓", "category": "life", "url": "./kindergarten/index.html" },
+  { "title": "카쉐어링 vs 자차 판독기", "desc": "주말에만 타는데 차 사야 할까? 쏘카 비용과 자차 유지비를 전수 비교해드립니다.", "icon": "🚙", "category": "life", "url": "./sharing/index.html" },
+  { "title": "아이패드병 판독기", "desc": "200만 원 주고 산 패드로 유튜브만? 생산성 0% 장난감의 시간당 단가 계산.", "icon": "📱", "category": "consumer", "url": "./tablet/index.html" },
+  { "title": "러닝 장비병 판독기", "desc": "슈퍼카본화가 기록을 만들어줄까요? 당신이 달린 1km당 진짜 가격을 계산해드립니다.", "icon": "🏃‍♂️", "category": "life", "url": "./running/index.html" },
+  { "title": "등산 장비병 판독기", "desc": "뒷산 가는데 히말라야 장비? 고어텍스 재킷 1회 착용 비용을 팩트로 알려드립니다.", "icon": "⛰️", "category": "life", "url": "./hiking/index.html" },
+  { "title": "결정사 가성비 판독기", "desc": "가입비 300만 원? 만남 1번에 60만 원짜리 소개팅을 하고 있는 당신을 위한 팩트.", "icon": "💍", "category": "life", "url": "./matchmaker/index.html" },
+  { "title": "카메라 장비병 판독기", "desc": "사진은 장비빨? 장롱에 모셔둔 렌즈값이 미래의 벤츠 계약금일 수 있습니다.", "icon": "📸", "category": "life", "url": "./camera/index.html" },
+  { "title": "주류 수집 판독기", "desc": "마시지도 않을 위스키가 자산? 장식장 속 현금이 썩어가며 잃는 기회비용 계산.", "icon": "🥃", "category": "life", "url": "./liquor/index.html" },
+  { "title": "자동차 튜닝비 판독기", "desc": "아반떼에 1,000만 원 바르면 벤츠 되나요? 증발하는 튜닝비 팩트 체크.", "icon": "🏎️", "category": "life", "url": "./tuning/index.html" },
+  { "title": "인테리어 호갱 판독기", "desc": "5천만 원 들여 고친 집값도 5천만 원 오를까요? 인테리어 감가상각의 진실.", "icon": "🏚️", "category": "life", "url": "./interior/index.html" },
+  { "title": "키덜트 수집병 판독기", "desc": "레고, 피규어... 이게 재테크가 될까요? 방 한 칸 차지하는 장난감 보관료 계산.", "icon": "🤖", "category": "life", "url": "./kidult/index.html" },
+  { "title": "테니스 비용 판독기", "desc": "라켓 하나면 된다면서요? 레슨비와 의류비가 1회당 얼마인지 확인하세요.", "icon": "🎾", "category": "life", "url": "./tennis/index.html" },
+  { "title": "데스크테리어 장비병 판독기", "desc": "키보드와 의자에 수백만 원? 책상 위에서 보내는 시간의 시급을 계산해드립니다.", "icon": "⌨️", "category": "life", "url": "./desk/index.html" },
+  { "title": "향수 수집병 판독기", "desc": "화장대에 쌓인 향수 다 쓰려면 100년? 향기와 함께 증발하는 내 현금 계산기.", "icon": "🧴", "category": "life", "url": "./perfume/index.html" },
+  { "title": "상조 가입 호갱 판독기", "desc": "매달 3만 원 10년? 은행에 넣었다면 장례 치르고도 돈이 남는 팩트 시뮬레이션.", "icon": "⚱️", "category": "money", "url": "./sangjo/index.html" },
+  { "title": "평범한 인생 견적서", "desc": "집 사고, 애 키우고, 노후 준비까지... 중간은 가고 싶은 당신을 위한 리얼 총비용.", "icon": "🏁", "category": "life", "url": "./life/index.html" },
+  { "title": "펫보험 호갱 판독기", "desc": "보험료 월 5만 원 충분하다? 약관의 보장 제외 항목과 펫 적금 효율 전격 비교.", "icon": "🐶", "category": "life", "url": "./petins/index.html" },
+  { "title": "보험 리모델링 판독기", "desc": "만기환급형의 배신. 물가 상승을 고려한 당신의 미래 환급금 진짜 가치 계산기.", "icon": "🏥", "category": "money", "url": "./healthins/index.html" },
+  { "title": "홈카페 로망 판독기", "desc": "머신값 뽑으려면 3,000잔 마셔야 합니다. 장비병 치유를 위한 본전 계산기.", "icon": "☕", "category": "life", "url": "./homecafe/index.html" },
+  { "title": "대학원 가성비 판독기", "desc": "취업 안 돼서 도망친 대학원? 등록금과 기회비용 합치면 1억이 넘는 현실.", "icon": "🎓", "category": "life", "url": "./gradschool/index.html" },
+  { "title": "홈짐 빨래건조대 판독기", "desc": "집에서 운동한다고 200만 원? 1회 운동 비용이 호텔 헬스장보다 비싼 이유.", "icon": "🏋️", "category": "life", "url": "./homegym/index.html" },
+  { "title": "유튜버 장비병 판독기", "desc": "조명, 마이크에 월급 올인? 본전 뽑으려면 조회수 몇 만이 필요한지 계산해드립니다.", "icon": "📹", "category": "life", "url": "./youtube/index.html" },
+  { "title": "바디프로필 비용 판독기", "desc": "인생샷 한 장에 연봉의 10%? 사진 찍고 요요 오는 경제적 손실액 계산.", "icon": "📸", "category": "life", "url": "./bodyprofile/index.html" },
+  { "title": "필라테스 기부천사 판독기", "desc": "회당 7만 원? 안 간 횟수까지 합치면 1회 20만 원짜리 호흡을 하고 계십니다.", "icon": "🧘‍♀️", "category": "life", "url": "./yoga/index.html" },
+  { "title": "천원샵 중독 판독기", "desc": "천 원이니까 괜찮다? 10년치 소액 지출과 물건이 차지한 평당 집값 계산.", "icon": "🛍️", "category": "consumer", "url": "./daiso/index.html" },
+  { "title": "재수/N수 가성비 판독기", "desc": "학벌 세탁비 1억? 준비 기간 동안 잃어버린 당신의 생애 소득을 공개합니다.", "icon": "📝", "category": "life", "url": "./nsu/index.html" },
+  { "title": "치킨집 창업 현실 판독기", "desc": "닭 한 마리 팔면 진짜 얼마 남나? 본사와 배달앱이 가져가는 순익 팩트 폭격.", "icon": "🍗", "category": "life", "url": "./chicken/index.html" },
+  { "title": "웹툰 쿠키 계산기", "desc": "매일 굽는 쿠키 300원? 30년 뒤엔 아파트 한 채 지분이라는 놀라운 복리의 진실.", "icon": "🍪", "category": "consumer", "url": "./webtoon/index.html" },
+  { "title": "네일아트 비용 판독기", "desc": "손톱 위 3주짜리 예술. 10년 누적 결제액이면 샤넬 백 산다는 사실 아시나요?", "icon": "💅", "category": "life", "url": "./nail/index.html" },
+  { "title": "소개팅 어플 호갱 판독기", "desc": "프로필 보는데 5천 원? 만남도 없이 기부만 하는 사이버 연애의 가격표.", "icon": "💘", "category": "life", "url": "./datingapp/index.html" },
+  { "title": "미용실 호갱 판독기", "desc": "펌 한 번에 20만 원? 30년 누적 결제액이면 은퇴 후 연봉이 바뀝니다.", "icon": "💇‍♀️", "category": "consumer", "url": "./hairshop/index.html" },
+  { "title": "명품 패딩 계급도 판독기", "desc": "200만 원짜리 패딩 1회 착용 단가는? 감가상각과 잃어버린 시드머니 계산.", "icon": "🧥", "category": "consumer", "url": "./padding/index.html" },
+  { "title": "호캉스 허세 판독기", "desc": "1박 50만 원? 잠만 자는 시간 빼고 누리는 '시간당 진짜 방세' 계산기.", "icon": "🏨", "category": "life", "url": "./hotel/index.html" },
+  { "title": "식집사 가성비 판독기", "desc": "희귀 식물 한 잎에 10만 원? 초록색 자산이 갉아먹는 당신의 계좌 잔고.", "icon": "🌿", "category": "life", "url": "./plant/index.html" },
+  { "title": "스키장 시즌권 판독기", "desc": "시즌권 끊고 3번 가면 호갱? 기름값 포함 1회 라이딩 진짜 가격을 계산해드립니다.", "icon": "🏂", "category": "life", "url": "./ski/index.html" },
+  { "title": "공연 덕질 비용 판독기", "desc": "VIP석 19만 원? n차 관람과 굿즈 지출이 당신의 은퇴를 10년 늦추는 팩트.", "icon": "🎭", "category": "life", "url": "./musical/index.html" },
+  { "title": "치아 교정 견적기", "desc": "철길 까는데 500만 원? 치과비 예방 효과와 평생 미소 가치를 팩트로 계산해드립니다.", "icon": "😬", "category": "life", "url": "./braces/index.html" },
+  { "title": "피부과 호갱 판독기", "desc": "패키지 끊고 방치 중? 1회 시술에 지불하는 리얼 단가와 매몰 비용 확인.", "icon": "💆‍♀️", "category": "life", "url": "./skincare/index.html" },
+  { "title": "왁싱 비용 판독기", "desc": "평생 뜯으실 건가요? 10년 왁싱 비용과 레이저 제모의 수익률 전격 비교.", "icon": "👙", "category": "life", "url": "./waxing/index.html" },
+  { "title": "이사 비용 판독기", "desc": "2년마다 수백만 원 길바닥에? 복비와 이사비가 실질 월세를 얼마나 올리는지 계산.", "icon": "📦", "category": "money", "url": "./moving/index.html" },
+  { "title": "애플병 판독기", "desc": "아이폰, 맥북, 워치... 애플 농장 차릴 돈을 주식에 넣었을 때의 자산 가치.", "icon": "🍎", "category": "consumer", "url": "./apple/index.html" },
+  { "title": "금 투자 판독기", "desc": "골드바 사자마자 -15% 손해? 실물 금 투자의 세금 함정과 진짜 수익 분석.", "icon": "🧈", "category": "money", "url": "./gold/index.html" }
 ]
