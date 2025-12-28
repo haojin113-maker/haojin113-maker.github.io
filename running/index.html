@@ -3,131 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="러닝 장비 비용 계산기. 러닝화, 워치, 대회비 등 달리기에 들어가는 돈을 km당 비용으로 환산해드립니다.">
+    <meta name="description" content="달리기는 돈 안 드는 운동이라면서요? 슈퍼카본화와 고가의 워치로 채워진 당신의 러닝 지출을 1km당 단가로 팩트 폭격해드립니다.">
     <title>러닝 장비병 판독기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
+
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
+        /* 기본 레이아웃 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
         section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
-        h2 { border-left: 5px solid #64dd17; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #f1f8e9; border: 1px solid #c5e1a5; color: #33691e; }
-        .intro-box strong { color: #558b2f; background: #fff; padding: 0 5px; border-radius: 4px; }
+
+        /* [가변] 테마 설정: Coral Red */
+        h2 { border-left: 5px solid #ff5252; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #fff1f1; border: 1px solid #ffcdd2; color: #b71c1c; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #ff5252; background: #fff; padding: 0 5px; border-radius: 4px; }
+        
         .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #33691e; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; transition: 0.2s; }
-        input:focus { border-color: #76ff03; outline: none; box-shadow: 0 0 0 3px rgba(118, 255, 3, 0.2); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #64dd17; color: #fff; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.2s; box-shadow: 0 10px 20px rgba(0,0,0,0.1); text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
-        .calc-btn:hover { background-color: #33691e; transform: translateY(-3px); }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #f9fbe7; border-radius: 12px; text-align: center; animation: fadeIn 0.5s ease; }
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.run { color: #558b2f; } .highlight.taxi { color: #fbc02d; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #ff5252; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #ff5252; outline: none; box-shadow: 0 0 0 3px rgba(255, 82, 82, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #ff5252; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(255,82,82,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fff1f1; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #b71c1c; }
+
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #64dd17; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #ff5252; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
         
         .seo-content { line-height: 1.8; color: #444; }
-        .seo-content h3 { font-size: 1.3rem; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .seo-content p { margin-bottom: 15px; }
-        .seo-content ul { padding-left: 20px; margin-bottom: 20px; }
-        .seo-content li { margin-bottom: 10px; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; min-width: auto; } .main-content { width: 100%; } h1.page-title { font-size: 1.8rem; } }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">달리기는 공짜 운동? 신발값이 30만 원입니다</h1>
-            <p class="page-subtitle">"건강 챙기려다 통장 건강 잃는다"는 러닝 장비병의 세계를 파헤칩니다.</p>
+            <h1 class="page-title">신발이 뛴다고 살이 빠지는 게 아닙니다</h1>
+            <p class="page-subtitle">가장 민주적인 운동 러닝, 가장 자본주의적으로 즐기고 계시네요.</p>
 
             <section class="intro-box">
-                <h2>🏃‍♂️ 풀옵션 러너의 역설</h2>
-                <p>러닝화 30만 원, 가민 워치 50만 원, 싱글렛 10만 원, 고글 20만 원... 몸에 걸친 것만 100만 원이 넘습니다. 당신이 1km를 달릴 때마다 바닥에 뿌리는 비용이 <strong>택시비보다 비쌀 수 있습니다.</strong></p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">directions_run</span> "달리기는 신발만 있으면 된다"는 말은 옛말입니다. 어느덧 카본화 한 켤레에 30만 원, 가민 워치 하나에 100만 원인 시대입니다. 당신이 달린 <strong>1km의 진짜 단가</strong>를 숫자로 증명해 드립니다.</p>
             </section>
 
+            <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>👟 1km 주행 비용 계산기</h2>
-                <div class="calc-group"><label>① 러닝화 구매 총액 (만원)</label><input type="number" id="shoesCost" value="50" placeholder="예: 50"></div>
-                <div class="calc-group"><label>② 워치 및 의류/용품 비용 (만원)</label><input type="number" id="gearCost" value="60" placeholder="예: 60"></div>
-                <div class="calc-group"><label>③ 연간 대회 참가비 (만원)</label><input type="number" id="raceCost" value="20" placeholder="예: 20"></div>
-                <div class="calc-group"><label>④ 주당 평균 주행 거리 (km)</label><input type="number" id="weeklyKm" value="20" placeholder="예: 20"></div>
-                <div class="calc-group"><label>⑤ 장비 사용 예상 기간 (년)</label><input type="number" id="years" value="2" placeholder="예: 2"></div>
-                <button id="calcBtn" class="calc-btn">내가 달리는 비용 확인하기</button>
+                <h2>🏃 러닝 마일리 가성비 계산기</h2>
+                <div class="calc-group">
+                    <label>최근 1년 장비 및 대회 총 지출 (만원)</label>
+                    <input type="number" id="runningSpend" placeholder="예: 150" value="150">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">신발(회전수 고려), 스마트워치, 의류, 에너지젤, 대회 참가비</p>
+                </div>
+                <div class="calc-group">
+                    <label>최근 1년 총 주행 거리 (km)</label>
+                    <input type="number" id="totalKm" placeholder="예: 500" value="500">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">나이키 런 클럽이나 스트라바 기록을 참고하세요.</p>
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">나의 1km당 단가 확인하기</button>
+
                 <div id="result-area">
-                    <div style="margin-bottom:20px;"><p class="result-title">1년 동안 러닝에 투자하는 돈</p><span id="resTotal" class="highlight waste" style="color:#558b2f;">0원</span></div>
-                    <div style="border-top:1px dashed #aaa; padding-top:20px;"><p class="result-title" style="margin-bottom:10px;">당신의 1km 주행 비용은</p><span id="resPerKm" class="highlight run">0원</span><p style="font-size:0.9rem; color:#888;">(택시 기본요금 대비 <span id="resRatio">0</span>%)</p></div>
-                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #c5e1a5; font-size:0.95rem;"><strong>팩트 폭격:</strong><br>택시(약 1,000원/km)보다 비싸게 뛰고 계시네요.<br>이 정도면 <strong><span style="color:#33691e;">돈 내고 하는 고행</span></strong>입니다.</div>
+                    <p class="result-title">당신의 달리기는 1km당 얼마?</p>
+                    <span id="pricePerKm" class="highlight">0원</span>
+                    <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
+            <!-- 팩트 체크 -->
             <section>
-                <h2>🛑 서브3(Sub-3) 주자가 아니라면 진정하세요</h2>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">speed</span></div><div class="reason-content"><h3>카본화의 수명과 실효성</h3><p>30만 원짜리 최상급 카본화의 수명은 약 400~600km입니다. 엘리트 선수가 아니라면 기록 단축 효과는 미미하고, 오히려 근력이 부족한 일반인에겐 부상을 유발할 수 있습니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">local_hospital</span></div><div class="reason-content"><h3>무릎은 소모품입니다</h3><p>잘못된 자세로 장비만 믿고 달리다가는 무릎 연골이 나갑니다. MRI 촬영 비용(40~60만 원)은 러닝화 몇 켤레 값입니다. 장비보다 PT나 자세 교정에 돈을 쓰세요.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">photo_camera</span></div><div class="reason-content"><h3>SNS 인증용 러닝</h3><p>뛰는 시간보다 사진 찍고 보정해서 인스타에 올리는 시간이 더 길지 않나요? 보여주기식 러닝을 위해 산 형광색 쫄쫄이는 내년이면 장롱행입니다.</p></div></div>
+                <h2>🛑 장비빨 러너가 외면하는 3가지 팩트</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>카본화는 마일리지가 짧습니다</h3>
+                        <p>30만 원짜리 레이싱화의 수명은 500~800km입니다. 일반화보다 3배 빨리 수명이 다하며, 당신의 시드머니를 활주로에 뿌리게 합니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>장비가 실력을 만들어주지 않습니다</h3>
+                        <p>10초 단축을 위해 50만 원을 더 쓰는 것보다, 체지방 1kg을 더 줄이는 것이 관절 건강과 기록 단축에 100배 이득입니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>'기록'은 자기만족, '자산'은 현실입니다</h3>
+                        <p>매주 열리는 유료 마라톤 대회 참가는 훌륭한 경험이지만, 완주 메달이 당신의 은퇴 후 생활비를 보장해주지는 않습니다.</p>
+                    </div>
+                </div>
             </section>
 
-            <!-- SEO 텍스트 추가 -->
+            <!-- SEO 텍스트 -->
             <section class="seo-content">
-                <h2>🏃‍♂️ 러닝 열풍, 장비가 먼저일까?</h2>
-                <p>대한민국에 러닝 붐이 일면서 한강공원과 트랙에는 형형색색의 러닝복을 입은 사람들로 가득합니다. 좋은 현상이지만, 초보 러너들이 '장비병'에 빠져 과도한 지출을 하는 경우도 많습니다. 나이키 알파플라이, 가민 포러너, 오클리 고글... 풀세트를 장착하면 마치 킵초게가 된 것 같지만, 현실은 10분 뛰고 헐떡이는 자신을 발견하게 됩니다.</p>
+                <h2>러닝 크루와 장비 인플레이션: 왜 건강해지려다 파산하는가?</h2>
+                <p>최근 2030 사이에서 러닝 열풍이 대단합니다. 집 앞 공원을 뛰던 시절을 지나, 이제는 인스타그램 인증샷을 위해 화려한 컬러의 기능성 티셔츠와 최고급 러닝화를 착용하는 것이 기본 매너가 되었습니다. 문제는 **'0원으로 시작할 수 있는 운동'**이 한 달에 수십만 원의 고정비를 요구하는 프리미엄 취미로 변질되고 있다는 점입니다.</p>
 
-                <h3>1. 1km당 비용의 충격</h3>
-                <p>러닝은 '돈 안 드는 운동'의 대명사였습니다. 하지만 장비병에 걸리면 얘기가 달라집니다. 수명이 짧은 카본화(약 500km)와 고가의 의류를 합치면, 1km를 달릴 때마다 약 500~1,000원의 감가상각 비용이 발생합니다. 이는 택시비와 맞먹는 수준입니다. 건강을 위해 뛰는 것인지, 돈을 쓰기 위해 뛰는 것인지 생각해 볼 필요가 있습니다.</p>
+                <h3>1. 보이지 않는 손실: 신발 수명과 1km의 가격</h3>
+                <p>보통 러너들이 한 번 뛸 때 5~10km를 뜁니다. 만약 당신이 30만 원짜리 프리미엄 러닝화를 신고 1년에 500km만 뛴다면, 신발값으로만 1km당 600원을 지불하는 셈입니다. 여기에 매달 보충하는 아미노산, 에너지젤, 정기적인 대회 참가비를 합산하면 1km 주행 비용은 택시 요금보다 비싼 수준으로 치솟습니다. 건강을 위해 뛴다고 하지만, 당신은 지금 세계적인 스포츠 용품 기업들의 훌륭한 마케팅 대상이 되어 지갑의 건강을 해치고 있는 것은 아닌지 따져봐야 합니다.</p>
 
-                <h3>2. 부상 방지는 장비가 아닌 근력</h3>
-                <p>비싼 신발이 부상을 막아줄까요? 쿠션이 좋은 신발은 충격을 흡수해 주지만, 근본적인 부상 원인은 잘못된 자세와 부족한 근력입니다. 장비에 50만 원을 쓰는 것보다, 그 돈으로 러닝 전문 코치에게 자세 교정을 받거나 헬스장에서 하체 근력을 키우는 것이 부상 방지에 훨씬 효과적입니다.</p>
+                <h3>2. 본질로 돌아가야 부자가 됩니다</h3>
+                <p>진짜 잘 뛰는 사람은 낡은 티셔츠 한 장에 적당한 쿠션화 하나로도 하프 마라톤을 완주합니다. 도구가 화려해질수록 본질적인 노력(연습량)보다 외부 장치에 의존하게 되는 것이 인간의 심리입니다. 부자가 되는 길도 러닝과 같습니다. 매일의 꾸준함과 자기 절제가 핵심이지, 고가의 유료 리딩방이나 명품 지갑이 부를 만들어주지 않습니다. 오늘 저녁 지를 예정인 40만 원짜리 가민 워치 대신, 그 돈으로 우량주 주식을 사고 낡은 운동화의 밑창이 다 닳을 때까지 뛰어보십시오. 근육이 자라는 만큼 당신의 자본 체력도 단단해질 것입니다.</p>
 
                 <h3>자주 묻는 질문 (FAQ)</h3>
                 <ul>
-                    <li><strong>Q. 초보자에게 추천하는 러닝화 가격대는?</strong><br>A. 10~15만 원대의 '데일리 트레이너'급 러닝화면 충분합니다. 아울렛에서 지난 시즌 모델을 구매하면 5~8만 원대에도 훌륭한 신발을 구할 수 있습니다.</li>
-                    <li><strong>Q. 스마트워치가 꼭 필요한가요?</strong><br>A. 기록 측정과 페이스 조절에 도움이 되지만, 초보자에게는 스마트폰 무료 앱(나이키 런 클럽 등)으로도 충분합니다. 달리기가 평생 취미가 되었다고 확신할 때 구매해도 늦지 않습니다.</li>
+                    <li><strong>Q. 장비가 좋아야 무릎 부상이 안 오지 않나요?</strong><br>A. 무릎을 지키는 것은 비싼 신발보다 정확한 주법과 하체 근력입니다. 과도한 장비 의존은 오히려 근력 발달을 방해할 수 있습니다.</li>
+                    <li><strong>Q. 러닝 크루 회비도 투자인가요?</strong><br>A. 인맥과 활력을 얻는 가치는 있습니다. 하지만 과도한 뒤풀이와 의류 통일 비용이 매달 반복된다면 그것은 명백한 사교적 지출입니다.</li>
                 </ul>
             </section>
 
-            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div>
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-        <aside class="sidebar"><div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div></aside>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
     </div>
+
+    <!-- [계산 로직] -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                const shoes = Number(document.getElementById('shoesCost').value) * 10000;
-                const gear = Number(document.getElementById('gearCost').value) * 10000;
-                const race = Number(document.getElementById('raceCost').value) * 10000;
-                const km = Number(document.getElementById('weeklyKm').value);
-                const years = Number(document.getElementById('years').value);
-                if(km <= 0 || years <= 0) { alert("값을 올바르게 입력해주세요."); return; }
-                const totalGear = shoes + gear;
-                const totalRace = race * years;
-                const totalCost = totalGear + totalRace;
-                const yearlyCost = totalCost / years;
-                const totalKm = km * 52 * years;
-                const costPerKm = totalCost / totalKm;
+                const spend = (parseFloat(document.getElementById('runningSpend').value) || 0) * 10000;
+                const distance = parseFloat(document.getElementById('totalKm').value) || 1;
+                
+                const costPerKmValue = spend / distance;
+
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-                document.getElementById('resTotal').innerText = Math.round(yearlyCost).toLocaleString() + "원";
-                document.getElementById('resPerKm').innerText = Math.round(costPerKm).toLocaleString() + "원/km";
-                const taxiRate = 1200;
-                const ratio = (costPerKm / taxiRate) * 100;
-                document.getElementById('resRatio').innerText = ratio.toFixed(1);
-                const verdictText = document.querySelector('#result-area .highlight + p + div'); 
-                if (costPerKm > 1500) { verdictText.innerHTML = `<strong>팩트 폭격:</strong><br>모범택시보다 비싸게 뛰고 계십니다.<br>이 돈이면 <strong><span style="color:#d32f2f;">개인 PT</span></strong>를 받는 게 낫습니다.`; }
-                else if (costPerKm > 500) { verdictText.innerHTML = `<strong>양호함:</strong><br>취미 생활 비용으로 적당합니다.<br>하지만 장비 추가는 자제하세요.`; }
-                else { verdictText.innerHTML = `<strong>인정합니다:</strong><br>진정한 러너시군요.<br>뽕을 뽑고 계십니다.`; }
+                document.getElementById('pricePerKm').textContent = `1km당 약 ${Math.round(costPerKmValue).toLocaleString()}원`;
+                
+                let feedback = "";
+                if(costPerKmValue > 10000) feedback = "이 정도면 매번 고급 택시를 타고 달리는 셈입니다. 장비빨 그만 세우고 운동장으로 나가세요!";
+                else if(costPerKmValue > 2000) feedback = "운동 가성비가 낮습니다. 뛰는 거리에 비해 장비값이 과하게 책정되어 있습니다.";
+                else feedback = "건강하고 합리적인 러너입니다! 장비를 닳고 닳을 때까지 잘 활용하고 계시네요.";
+
+                document.getElementById('resultText').textContent = feedback;
             });
         });
     </script>
