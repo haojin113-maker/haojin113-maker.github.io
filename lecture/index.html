@@ -3,89 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="온라인 강의 완강률 및 비용 효율 계산기. 사놓고 안 보는 강의로 낭비한 돈과 기회비용을 분석해드립니다.">
+    <meta name="description" content="결제만 하고 안 본 온라인 강의가 몇 개인가요? 완강률 5% 미만의 진실, 당신이 공부라는 명목 아래 버린 돈과 시간을 팩트로 계산해드립니다.">
     <title>강의 수집가 판독기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
+
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
-        .main-content { flex: 3; } .sidebar { flex: 1; position: sticky; top: 20px; }
-        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; border: 1px solid #eee; }
-        h1.page-title { font-size: 2.2rem; margin: 20px 0 10px; color: #111; }
-        h2 { border-left: 5px solid #283593; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #e8eaf6; border: 1px solid #c5cae9; color: #1a237e; }
-        .intro-box strong { color: #283593; background: #fff; padding: 0 5px; border-radius: 4px; }
-        .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; color: #283593; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #283593; color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 1.2rem; font-weight: bold; }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #e8eaf6; border-radius: 12px; text-align: center; }
-        .highlight { font-size: 2.5rem; font-weight: 900; display: block; margin: 10px 0; color: #283593; }
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        /* 섹션 공통 스타일 */
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        /* [가변] 테마 설정: Deep Teal */
+        h2 { border-left: 5px solid #00695c; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #e0f2f1; border: 1px solid #b2dfdb; color: #004d40; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #00695c; background: #fff; padding: 0 5px; border-radius: 4px; }
         
-        .seo-content h3 { margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; } }
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #00695c; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #00695c; outline: none; box-shadow: 0 0 0 3px rgba(0, 105, 92, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #00695c; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(0,105,92,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #e0f2f1; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #004d40; }
+
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #00695c; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">결제만 하면 내 실력이 될 줄 알았나요?</h1>
-            <p class="page-subtitle">강의와 전자책을 '수집'만 하고 있는 당신, 그 돈이 다 어디로 갔을까요?</p>
+            <!-- [제목 섹션] -->
+            <h1 class="page-title">배우지 않고 결제만 하는 '디지털 호더'인가요?</h1>
+            <p class="page-subtitle">평생 소장권이라는 이름의 휴지조각, 당신이 모은 강의의 실체.</p>
 
+            <!-- [도입 섹션] -->
             <section class="intro-box">
-                <h2>📚 디지털 호더(Hoarder)의 착각</h2>
-                <p>"평생 소장", "얼리버드 특가"에 혹해 20만 원, 30만 원씩 긁으셨나요? 온라인 강의의 평균 완강률은 <strong>5% 미만</strong>입니다. 당신은 지식을 산 게 아니라, <strong>'공부했다는 안도감'</strong>을 산 것입니다.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">library_books</span> 강의를 사는 순간 당신은 마치 똑똑해진 것 같은 착각에 빠집니다. 하지만 실행하지 않은 지식은 부채일 뿐입니다. <strong>완강률 5% 미만의 시대</strong>, 당신이 강의 플랫폼 사옥 건설에 기여한 총액을 확인하세요.</p>
             </section>
 
+            <!-- [계산기 섹션] -->
             <section id="calculator">
-                <h2>📉 자기계발 비용 효율 측정기</h2>
-                <div class="calc-group"><label>① 1년간 총결제 금액 (만원)</label><input type="number" id="totalCost" value="50" placeholder="예: 50"></div>
-                <div class="calc-group"><label>② 실제로 끝까지 본 비율 (%)</label><input type="number" id="rate" value="20" placeholder="예: 20"></div>
-                <div class="calc-group"><label>③ 이 습관의 지속 기간 (년)</label><input type="number" id="years" value="5" placeholder="예: 5"></div>
-                <button id="calcBtn" class="calc-btn">공중분해된 내 돈 확인하기</button>
+                <h2>📚 강의 수집 기회비용 계산기</h2>
+                <div class="calc-group">
+                    <label>지금까지 결제한 강의 총액 (만원)</label>
+                    <input type="number" id="lectureSpend" placeholder="예: 200" value="200">
+                </div>
+                <div class="calc-group">
+                    <label>구매한 강의 중 완강(100% 수강)한 비율 (%)</label>
+                    <input type="number" id="finishRate" placeholder="예: 10" value="10">
+                </div>
+                <div class="calc-group">
+                    <label>강의 정보를 검색하고 고민하느라 쓴 누적 시간 (시간)</label>
+                    <input type="number" id="browsingTime" placeholder="예: 50" value="50">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">유튜브에서 강의 후기 찾아보며 버린 시간도 포함하세요.</p>
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">삭제된 나의 시드머니 확인</button>
 
                 <div id="result-area">
-                    <p>제대로 보지도 않고 버린 돈</p>
-                    <span id="resWasted" class="highlight" style="color:#c62828;">0원</span>
-                    <div style="margin-top:20px; padding-top:20px; border-top:1px dashed #999;">
-                        <p>이 돈이면 차라리</p>
-                        <strong id="compareItem" style="font-size:1.5rem; color:#283593;">전문가 1:1 과외</strong>
-                        <p>를 받는 게 훨씬 효과적입니다.</p>
+                    <p class="result-title">공부하는 척하며 날려버린 총 기회비용</p>
+                    <span id="lostOpportunity" class="highlight">0원</span>
+                    <p id="resultText" style="color:#666;"></p>
+                </div>
+            </section>
+
+            <!-- [팩트체크 섹션] -->
+            <section>
+                <h2>🛑 지식 수집이 성장을 방해하는 3가지 이유</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>'대리 만족'이라는 지독한 도파민</h3>
+                        <p>결제 버튼을 누르는 순간 당신의 뇌는 공부를 다 한 것과 같은 보상을 받습니다. 이 가짜 성취감이 진짜 노력을 가로막습니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>지식 유효기간: 실습하지 않으면 증발</h3>
+                        <p>IT, 재테크, 마케팅 강의의 내용은 1년만 지나도 구식이 됩니다. "나중에 봐야지"라며 묵혀둔 강의는 유통기한 지난 우유와 같습니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>성공 서사의 마케팅 피해자</h3>
+                        <p>플랫폼의 "이 강의만 들으면 연봉 1억"이라는 멘트는 당신이 아니라 강의를 만든 강사와 플랫폼을 부자로 만드는 공식입니다.</p>
                     </div>
                 </div>
             </section>
 
+            <!-- [SEO 블로그 콘텐츠] -->
             <section class="seo-content">
-                <h2>🛑 강의 쇼핑을 멈추고 실행하세요</h2>
-                <h3>1. 무료 정보로도 충분합니다</h3>
-                <p>유튜브, 블로그, 도서관에 이미 양질의 정보가 넘쳐납니다. 무료 정보조차 소화하지 못하고 실행하지 않는 사람이 유료 강의를 산다고 달라질까요? 문제는 정보의 부족이 아니라 '실행력의 부족'입니다. 강의 하나를 결제하기 전에 관련 책 5권부터 읽어보세요.</p>
-                <h3>2. 도파민 중독 소비</h3>
-                <p>강의를 결제하는 순간 뇌는 이미 공부를 다 한 것 같은 가짜 성취감을 느낍니다. 이 도파민 때문에 계속해서 새로운 강의만 찾아다니는 '강의 쇼핑' 중독에 빠지게 됩니다. 진짜 성취감은 결제가 아니라 완강과 적용에서 나옵니다.</p>
+                <h2>강의 쇼핑은 자기계발이 아닙니다: 1%의 실행이 99%의 강의보다 낫다</h2>
+                <p>우리는 불안할 때 무언가를 배움으로써 안도를 얻으려 합니다. 클래스101, 패스트캠퍼스, 유데미와 같은 사이트를 기웃거리며 할인가로 나온 패키지를 결제하는 행위, 이것은 재테크 전문가들이 말하는 <strong>'최악의 소모성 지출'</strong> 중 하나입니다. 지식은 축적하는 것이 아니라 '사용'할 때 비로소 가치를 지니기 때문입니다.</p>
+
+                <h3>1. 보이지 않는 가치: 시간 비용의 공포</h3>
+                <p>만약 당신의 시급이 1.5만 원이고, 좋은 강의를 고르느라 매주 2시간씩 정보를 검색하고 결제만 한 채 보지 않았다면? 당신은 연간 150만 원 이상의 시간 가치를 바닥에 버리고 있는 셈입니다. 결제 금액 200만 원은 빙산의 일각입니다. 정작 실행해서 수익을 낼 수 있었던 <strong>'무한한 기회'</strong>를 검색창 앞에서 날리고 있다는 사실이 가장 무서운 팩트입니다.</p>
+
+                <h3>2. 강의 중독에서 벗어나는 1:9 법칙</h3>
+                <p>진정으로 성장하고 싶다면 하나를 배울 때 아홉 번을 써먹어야 합니다. 강의 수강 시간을 10%로 제한하고, 나머지 90%의 시간을 실제 프로젝트나 투자, 혹은 실습에 투입하십시오. "다 배우고 시작해야지"라는 완벽주의는 사실 시작하기 두려운 마음이 만든 핑계일 뿐입니다. 성공한 사람들은 강의를 보기 전에 일단 부딪혀보고, 막히는 부분만 족집게처럼 찾아 배웁니다. 지금 당장 로그아웃하고 백지 위에 당신만의 실행 계획을 적으십시오.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 돈을 내야 의지치가 생기지 않나요?</strong><br>A. 온라인 강의 플랫폼의 평균 완강률은 4~6% 수준입니다. 돈을 낸다고 의지가 생겼다면 이미 플랫폼들은 파산했을 것입니다. 당신의 의지는 돈으로 살 수 없습니다.</li>
+                    <li><strong>Q. 독학보다 강의가 효율적이지 않나요?</strong><br>A. 기초를 잡는 데는 효율적이지만, 대부분의 '수집가'들은 기초 강의만 반복해서 듣습니다. 다음 단계로 넘어가 실질적인 결과물을 만드는 고통을 피하고 있는 것은 아닌지 점검하세요.</li>
+                </ul>
             </section>
-            
-            <div class="ad-box"><span style="font-size:11px; color:#ccc;">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-        <aside class="sidebar"><div style="min-height: 600px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div></aside>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
     </div>
+
+    <!-- [계산 로직] -->
     <script>
-        document.getElementById('calcBtn').addEventListener('click', function() {
-            const yearlyCost = Number(document.getElementById('totalCost').value) * 10000;
-            const rate = Number(document.getElementById('rate').value);
-            const years = Number(document.getElementById('years').value);
-            if(yearlyCost <= 0 || rate < 0 || years <= 0) { alert("값을 입력해주세요."); return; }
-            
-            const wasteRate = (100 - rate) / 100;
-            const totalWaste = yearlyCost * wasteRate * years;
-            const resultArea = document.getElementById('result-area');
-            resultArea.style.display = 'block';
-            document.getElementById('resWasted').innerText = Math.round(totalWaste).toLocaleString() + "원";
-            const wasteManwon = totalWaste / 10000;
-            let item = "최신형 태블릿";
-            if(wasteManwon > 500) item = "유명 강사 오프라인 1:1 코칭";
-            else if(wasteManwon > 300) item = "전문 서적 150권";
-            document.getElementById('compareItem').innerText = item;
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                const money = (parseFloat(document.getElementById('lectureSpend').value) || 0) * 10000;
+                const finish = (parseFloat(document.getElementById('finishRate').value) || 0) / 100;
+                const time = parseFloat(document.getElementById('browsingTime').value) || 0;
+                const hourlyWage = 15000; // 보수적인 시간 가치 기준
+                
+                // 실제 손실액: 안 본 강의 가격 + 날린 시간 가치
+                const lostMoneyValue = (money * (1 - finish)) + (time * hourlyWage);
+
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+                document.getElementById('lostOpportunity').textContent = `${Math.round(lostMoneyValue).toLocaleString()}원`;
+                
+                let grade = "";
+                if(finish < 0.05) grade = "당신은 지식 기부 천사입니다. 플랫폼 사옥의 창문 하나는 당신이 냈습니다.";
+                else if(finish < 0.2) grade = "경계 대상! 수집 욕구를 배움의 열정으로 착각하고 계시네요.";
+                else grade = "준수한 학습자이십니다. 하지만 결제 전 다시 한 번 '필요성'을 의심해보세요.";
+
+                document.getElementById('resultText').textContent = `[진단] ${grade}`;
+            });
         });
     </script>
 </body>
