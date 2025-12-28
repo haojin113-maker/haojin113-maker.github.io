@@ -3,88 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="주식 코인 손실 복구 수익률 계산기. 원금 회복을 위해 필요한 수익률과 물타기의 위험성을 계산해드립니다.">
-    <title>코인/주식 행복회로 판독기 | 팩트 폭격 연구소</title>
+    <meta name="description" content="-50% 손실이 났다면 50%만 오르면 본전일까요? 아닙니다. 100%가 올라야 합니다. 잔인한 투자 수학의 진실과 본전 회복 기간을 팩트로 계산해드립니다.">
+    <title>코인 행복회로 판독기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
+
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
-        .main-content { flex: 3; } .sidebar { flex: 1; position: sticky; top: 20px; }
-        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; border: 1px solid #eee; }
-        h1.page-title { font-size: 2.2rem; margin: 20px 0 10px; color: #111; }
-        h2 { border-left: 5px solid #f7931a; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #fff3e0; border: 1px solid #ffe0b2; color: #e65100; }
-        .intro-box strong { color: #f7931a; background: #fff; padding: 0 5px; border-radius: 4px; }
-        .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; color: #f7931a; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #f7931a; color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 1.2rem; font-weight: bold; }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fff8e1; border-radius: 12px; text-align: center; }
-        .highlight { font-size: 2.5rem; font-weight: 900; display: block; margin: 10px 0; color: #f7931a; }
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        /* 섹션 공통 스타일 */
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        /* [가변] 테마 설정: Vivid Orange */
+        h2 { border-left: 5px solid #ff9800; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #fff3e0; border: 1px solid #ffe0b2; color: #e65100; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #ff9800; background: #fff; padding: 0 5px; border-radius: 4px; }
         
-        .seo-content h3 { margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; } }
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #ff9800; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #ff9800; outline: none; box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #ff9800; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(255,152,0,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fff3e0; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #e65100; }
+
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #ff9800; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">"존버하면 오르겠지"라는 위험한 착각</h1>
-            <p class="page-subtitle">마이너스 50%가 찍힌 계좌, 원금으로 돌아가려면 얼마나 올라야 할까요?</p>
+            <h1 class="page-title">내려갈 땐 자유지만 본전은 아닙니다</h1>
+            <p class="page-subtitle">마이너스 50% 계좌가 원금을 회복하기 위한 잔인한 조건.</p>
 
             <section class="intro-box">
-                <h2>📉 손실 복구의 수학적 함정</h2>
-                <p>많은 투자자들이 착각합니다. "50% 떨어졌으니까 50%만 오르면 본전이지!" 천만에요. <strong>100%</strong>가 올라야 본전입니다. 손실이 커질수록 복구 난이도는 기하급수적으로 높아집니다.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">show_chart</span> 코인 투자는 변동성의 파도를 타는 일입니다. 하지만 숫자는 거짓말을 하지 않습니다. 당신이 잃은 <strong>-%의 무게</strong>가 본전 회복 시 얼마나 무거운 족쇄가 되는지 팩트로 계산해 보세요.</p>
             </section>
 
+            <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>📊 행복회로 vs 현실</h2>
-                <label>① 투자 원금 (만원)</label>
-                <input type="number" id="principal" value="1000" placeholder="예: 1000">
-                <label>② 현재 손실률 (-%)</label>
-                <input type="number" id="lossRate" value="50" placeholder="예: 50">
-                <button id="calcBtn" class="calc-btn">원금 회복 난이도 확인</button>
+                <h2>📈 계좌 심폐소생 계산기</h2>
+                <div class="calc-group">
+                    <label>현재 내 계좌의 총 수익률 (%)</label>
+                    <input type="number" id="lossRate" placeholder="예: -50" value="-50">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">마이너스 기호(-)를 포함하여 입력하세요.</p>
+                </div>
+                <div class="calc-group">
+                    <label>본전 회복 후 목표 기대 연 수익률 (%)</label>
+                    <input type="number" id="targetReturn" placeholder="예: 10" value="10">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">현실적으로 우량 자산에서 얻을 수 있는 수익률입니다.</p>
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">본전까지 가야 할 길 확인하기</button>
 
                 <div id="result-area">
-                    <p>현재 남은 잔고</p>
-                    <span id="resBalance" class="highlight" style="color:#2962ff;">0원</span>
-                    <div style="margin-top:20px; padding-top:20px; border-top:1px dashed #999;">
-                        <p>본전을 찾기 위해 필요한 수익률</p>
-                        <strong id="resRequired" style="font-size:2.5rem; color:#d32f2f;">0%</strong>
-                        <p>떨어진 만큼만 올라서는 택도 없습니다.</p>
+                    <p class="result-title">본전을 찾기 위해 필요한 수익률</p>
+                    <span id="requiredGain" class="highlight">약 0%</span>
+                    <p id="resultText" style="color:#666;"></p>
+                </div>
+            </section>
+
+            <!-- 팩트 체크 -->
+            <section>
+                <h2>🛑 투자 수학이 가르쳐주는 '존버'의 위험성</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>대칭의 파괴: 내려올 때보다 2배 힘듭니다</h3>
+                        <p>1,000만 원이 500만 원(-50%)이 되는 것은 순식간이지만, 다시 1,000만 원(+100%)이 되려면 전 재산을 거는 승부를 두 번 이겨야 합니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>기회비용: 썩은 사과를 쥐고 있는 대가</h3>
+                        <p>본전을 찾기 위해 기다리는 3년. 그동안 다른 우량 자산들이 연 10%씩 성장했다면, 당신은 사실상 본전이 아니라 -30%를 더 잃은 것입니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>감정의 마비: 행복회로의 종말</h3>
+                        <p>물린 코인이 "전망이 좋다"고 스스로를 위로하지 마세요. 가격은 가치보다 정직합니다. 당신이 회로를 돌리는 동안 세력은 엑싯(Exit) 중입니다.</p>
                     </div>
                 </div>
             </section>
 
+            <!-- SEO 텍스트 -->
             <section class="seo-content">
-                <h2>🛑 물타기(Averaging Down)의 위험성</h2>
-                <h3>1. -50%는 100% 상승이 필요하다</h3>
-                <p>1,000만 원이 반토막 나서 500만 원이 되었습니다. 다시 1,000만 원이 되려면 500만 원을 벌어야 합니다. 즉, 남은 돈 기준으로 100% 수익을 내야 본전입니다. 워렌 버핏의 연평균 수익률이 20%라는 점을 감안하면, 이는 기적에 가까운 수치입니다.</p>
-                <h3>2. 손절매(Cut Loss)는 생존 기술</h3>
-                <p>"팔지 않으면 손실이 아니다"라는 말은 정신 승리일 뿐입니다. 이미 가치가 하락한 자산을 붙들고 있는 동안, 다른 유망한 자산에 투자할 기회비용을 날리고 있는 것입니다. -10%, -20%에서 과감하게 끊어내는 것이 계좌를 지키는 유일한 방법입니다.</p>
-                <h3>3. 물타기는 실패한 투자의 연장</h3>
-                <p>손실을 줄이겠다고 계속 돈을 넣는 행위는 가라앉는 배에 짐을 더 싣는 것과 같습니다. 물타기는 철저한 분석 하에 '저점 매수'라고 확신할 때만 해야 합니다. 단순히 평단가를 낮추기 위한 물타기는 깡통 계좌로 가는 지름길입니다.</p>
-            </section>
-            
-            <div class="ad-box"><span style="font-size:11px; color:#ccc;">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
-        </main>
-        <aside class="sidebar"><div style="min-height: 600px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div></aside>
-    </div>
-    <script>
-        document.getElementById('calcBtn').addEventListener('click', function() {
-            const principal = Number(document.getElementById('principal').value) * 10000;
-            const lossRate = Number(document.getElementById('lossRate').value);
-            if(principal <= 0 || lossRate <= 0) { alert("값을 입력해주세요."); return; }
-            
-            const balance = principal * (1 - (lossRate / 100));
-            const requiredRate = ((principal / balance) - 1) * 100;
+                <h2>투자 수학의 함정: 왜 하이 리스크는 필패하는가?</h2>
+                <p>가상자산 시장에서 가장 많이 들리는 말은 '존버(버티기)'입니다. 하지만 '존버'가 전략이 되려면 기반 자산의 펀더멘털이 확실해야 합니다. 불행하게도 수학은 당신의 인내심에 우호적이지 않습니다. 손실이 커질수록 <strong>회복에 필요한 수익률은 기하급수적</strong>으로 치솟기 때문입니다. 이것이 바로 전설적인 투자자들이 '원금을 지키는 것'을 제1원칙으로 삼는 진짜 이유입니다.</p>
 
-            const resultArea = document.getElementById('result-area');
-            resultArea.style.display = 'block';
-            document.getElementById('resBalance').innerText = Math.round(balance).toLocaleString() + "원";
-            document.getElementById('resRequired').innerText = "+" + requiredRate.toFixed(1) + "%";
+                <h3>1. 산술 평균과 기하 평균의 가혹한 진실</h3>
+                <p>많은 투자자가 첫날 -10% 손해를 보고 둘째 날 +10% 수익을 내면 본전이라고 생각합니다. 그러나 실제 당신의 계좌는 (1 - 0.1) * (1 + 0.1) = 0.99, 즉 -1%의 손실 상태입니다. 만약 변동성이 커서 -50%와 +50%를 오간다면 당신의 자산은 반 토막 난 채 고정됩니다. 변동성 자체가 당신의 원금을 녹여 없애는 산(Acid)과 같은 역할을 하는 셈입니다. 잦은 단타와 급등주 매매가 당신을 결국 빈털터리로 만드는 과학적 원리입니다.</p>
+
+                <h3>2. 본전 회복에 걸리는 시간의 상대성</h3>
+                <p>만약 -80%의 손실을 입었다면 본전을 위해 +400%의 수익률이 필요합니다. 역사적으로 전 세계 1위 투자자인 워런 버핏의 연평균 수익률은 약 20% 내외입니다. 이 '전설적인 속도'로 본전을 찾으려 해도 수년이 걸립니다. 그 사이 인플레이션은 당신의 구매력을 깎아 먹고, 지친 당신은 최악의 지점에서 손절을 선택하게 됩니다. 고점에 물려 '비자발적 장기 투자'를 하는 대신, 손절 원칙을 지켜 시드머니를 살리고 다음 기회를 도모하는 것이 훨씬 지능적인 전략입니다.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 물타기를 하면 평단가가 낮아져서 금방 탈출할 수 있지 않나요?</strong><br>A. 물타기는 손실 규모(Risk Exposure)를 키우는 행위입니다. 하락 추세가 끝나지 않았다면 더 큰 재앙을 초래할 뿐입니다. 신중한 계좌 분할이 우선입니다.</li>
+                    <li><strong>Q. 존버하면 언젠가 고점은 다시 오겠죠?</strong><br>A. 2017년 광풍 당시의 코인 중 90% 이상은 상장 폐지되었거나 고점의 10분의 1 토막 상태입니다. 역사는 모든 코인이 살아남지 않는다는 것을 증명했습니다.</li>
+                </ul>
+            </section>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </main>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
+    </div>
+
+    <!-- [계산 로직] -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                const loss = Math.abs(parseFloat(document.getElementById('lossRate').value)) / 100;
+                const target = parseFloat(document.getElementById('targetReturn').value) / 100;
+                
+                if(loss >= 1) { alert('상장 폐지된 수준입니다. 계산이 불가능합니다.'); return; }
+                if(!loss) return;
+
+                // 필요 수익률: 1 / (1 - 손실률) - 1
+                const reqGain = (1 / (1 - loss)) - 1;
+                const reqGainPercent = reqGain * 100;
+
+                // 목표 수익률로 걸리는 년수: log(1+reqGain) / log(1+target)
+                const yearsNeeded = Math.log(1 + reqGain) / Math.log(1 + target);
+
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+                document.getElementById('requiredGain').textContent = `약 ${reqGainPercent.toFixed(1)}% 상승 필요`;
+                
+                document.getElementById('resultText').textContent = `지금부터 당신이 매년 ${target*100}%라는 경이로운 수익률을 꾸준히 내야 ${yearsNeeded.toFixed(1)}년 뒤에나 본전을 구경할 수 있습니다. 행복회로를 꺼야 할 때입니다.`;
+            });
         });
     </script>
 </body>
