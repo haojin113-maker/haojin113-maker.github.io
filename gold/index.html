@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="골드바 사자마자 -15% 손해? 부가세와 세공비를 포함한 실물 금 투자의 냉혹한 손익분기점을 팩트로 계산해드립니다.">
+    <meta name="description" content="실물 골드바 사자마자 -15% 손해 보셨나요? 부가세와 세공비를 포함한 금 투자의 진짜 수익률을 팩트로 계산해드립니다. KRX 금시장과의 가격 차이를 확인하세요.">
     <title>금 투자 판독기 | 팩트 폭격 연구소</title>
+
     <script src="../common.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
@@ -25,41 +27,49 @@
         #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fff8e1; border-radius: 12px; text-align: center; }
         .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #e65100; }
         .seo-content { line-height: 1.8; color: #444; }
+        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">금값은 오르는데 당신 계좌는 왜 마이너스일까요?</h1>
-            <p class="page-subtitle">실물 골드바 소지의 '낭만'에 숨겨진 15%의 세금 함정.</p>
+            <h1 class="page-title">금값이 올랐는데 왜 당신은 손해일까요?</h1>
+            <p class="page-subtitle">실물 골드바의 화려함 뒤에 숨겨진 '마이너스 수익률'의 진실.</p>
 
             <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">monetization_on</span> 금은 인플레이션의 방패입니다. 하지만 '골드바'는 세무서와 금은방 사장님의 방패입니다. 부가세 10%와 세공비를 지불하는 순간 시작되는 <strong>수익률 -15%의 마법</strong>을 팩트로 마주해 보세요.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">monetization_on</span> 금은 인플레이션의 최고 방패로 불립니다. 하지만 '실물 골드바'를 손에 쥐는 순간, 당신은 국가에 <strong>부가세 10%</strong>를 상납하고 금은방 사장님께 거래 마진 5%를 지불한 것입니다. 문 밖을 나서는 순간 발생하는 수익률 -15%의 참극을 확인하세요.</p>
             </section>
 
             <section id="calculator">
-                <h2>🧈 실물 금 투자 본전 계산기</h2>
+                <h2>🧈 실물 금 투자 손익분기점 계산기</h2>
                 <div class="calc-group">
                     <label>실물 금 구매 금액 (만원)</label>
                     <input type="number" id="goldAmount" placeholder="예: 1000" value="1000">
                 </div>
-                
-                <button id="calcBtn" class="calc-btn">본전 찾기 위한 목표 가격 확인</button>
+                <button id="calcBtn" class="calc-btn">원금 찾기 위한 금값 확인</button>
 
                 <div id="result-area">
-                    <p class="result-title">원금을 찾기 위해 금값이 올라야 할 비율</p>
+                    <p class="result-title">본전을 찾기 위해 금값이 올라야 할 비율</p>
                     <span id="targetRise" class="highlight">최소 +18% 이상</span>
                     <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
             <section class="seo-content">
-                <h2>금 투자의 함정: KRX 금시장 vs 종로 골드바</h2>
-                <p>많은 분들이 경제 위기에 대비해 실물 금을 사둡니다. 하지만 골드바를 손에 쥐는 순간 당신은 국가에 10%의 부가세를 상납하고, 5% 이상의 스프레드 비용을 지불했습니다. 금값이 15% 이상 오르지 않는다면 당신은 여전히 **'돈을 잃고 있는 중'**입니다. 진짜 금 투자는 보관함 속이 아니라 <strong>세금 없는 디지털 계좌</strong>에서 이루어져야 합니다.</p>
+                <h2>금 투자의 함정: 낭만은 비싸고 데이터는 정직하다</h2>
+                <p>전쟁이 터지거나 화폐 가치가 폭락할 때를 대비해 장롱 속에 금괴를 숨겨두는 로망. 하지만 금융 지식이 부족한 이들이 범하는 가장 큰 실수가 바로 **'실물 금 보유'**입니다. 실물 금은 장식적 가치는 있을지 몰라도, 투자 수단으로서는 극도로 낮은 효율성을 보입니다.</p>
+
+                <h3>1. 보이지 않는 금융 비용: 15%의 진입 장벽</h3>
+                <p>실물 금(골드바, 순금 반지 등)을 살 때는 10%의 부가세가 붙습니다. 또한 살 때와 팔 때의 가격 차이인 '스프레드(Spread)'가 평균 5% 내외로 형성됩니다. 즉, 당신은 금을 사는 즉시 자산 가치가 15% 하락하는 **'폭락장'**을 스스로 경험하는 것입니다. 금값이 연 5%씩 착실히 오른다 해도, 당신이 원금 수준에 도달하는 데만 무려 3~4년이 걸립니다. 그동안 주식의 배당금이나 예금 이자를 한 푼도 받지 못한 기회비용까지 합치면 손해는 막대합니다.</p>
+                
+                <h3>2. 현명한 금 투자: 보관함 대신 계좌를 뚫으세요</h3>
+                <p>금의 가치 상승분을 온전히 누리고 싶다면 KRX 금시장이나 금 ETF(Exchange Traded Fund)를 활용하십시오. 이들은 부가세가 없으며, 거래 수수료 또한 0.3% 미만입니다. 실물 금을 장롱에 두었을 때 겪는 분실 및 도난 리스크, 보관료 또한 고려해야 할 잠재적 비용입니다. 진짜 부자들은 소지하고 다니기에 무거운 금을 좋아하지 않습니다. 그들은 언제든 버튼 하나로 전 세계 어디서나 현금화할 수 있는 **'디지털 자산 시스템'**에 금을 묻어둡니다. 지금 골드바를 결제하기 전, 금값 상승분이 당신이 지불한 수수료를 과연 넘어설 수 있을지 팩트로 판단하십시오.</p>
             </section>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
         </main>
-        <aside class="sidebar"><div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"></div></aside>
+        <aside class="sidebar"><div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins></div></aside>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -67,7 +77,8 @@
                 const amount = parseFloat(document.getElementById('goldAmount').value) || 0;
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-                document.getElementById('resultText').textContent = `당신이 금방에서 문을 나서자마자 자산 가치는 ${Math.round(amount * 0.85)}만 원으로 하락했습니다. 부가세 10%와 거래 마진을 극복하는 건 역사적으로 최소 3~4년의 시간이 필요합니다.`;
+                const buybackValue = Math.round(amount * 0.85); // 15% 제외
+                document.getElementById('resultText').textContent = `당신이 문 밖을 나서자마자 자산 가치는 ${buybackValue.toLocaleString()}만 원으로 하락했습니다. 부가세 10%와 거래 수수료를 메꾸는 데만 역사적으로 최소 4년 이상의 '금값 폭등'이 뒷받침되어야 합니다.`;
             });
         });
     </script>
