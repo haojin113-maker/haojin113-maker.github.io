@@ -3,285 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="필라테스 요가 비용 효율 계산기. 결제 후 빠진 횟수를 반영한 1회당 실제 운동 비용을 계산해드립니다.">
-    <title>필라테스 호갱 판독기 | 팩트 폭격 연구소</title>
+    <meta name="description" content="한 달에 몇 번 가셨나요? 비싼 기구 필라테스 수강료와 실제 참여 횟수를 바탕으로 '1회당 운동 단가'를 팩트로 계산해드립니다. 당신의 기부 금액을 확인하세요.">
+    <title>필라테스 기부천사 판독기 | 팩트 폭격 연구소</title>
 
     <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
 
-    <!-- 구글 아이콘 -->
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
     <style>
-        /* --- [표준 스타일 가이드] --- */
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.7;
-        }
-
-        .wrapper {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-        }
-        
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
+        .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
 
-        section {
-            background: white;
-            border-radius: 16px;
-            padding: 35px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            border: 1px solid #eee;
-        }
-
+        /* 섹션 공통 스타일 */
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
 
-        /* [테마 변경] 요가/라벤더(Purple) -> #9575cd */
+        /* [가변] 테마 설정: Lavender */
         h2 { border-left: 5px solid #9575cd; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-
-        .intro-box { background-color: #ede7f6; border: 1px solid #d1c4e9; color: #512da8; }
+        .intro-box { background-color: #f3e5f5; border: 1px solid #e1bee7; color: #4527a0; padding: 25px; border-radius: 12px; }
         .intro-box strong { color: #9575cd; background: #fff; padding: 0 5px; border-radius: 4px; }
-
-        /* 계산기 스타일 */
+        
         .calc-group { margin-bottom: 20px; }
         label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #9575cd; }
-        input {
-            width: 100%; padding: 14px; border: 1px solid #ddd;
-            border-radius: 8px; font-size: 1rem; transition: 0.2s;
-        }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
         input:focus { border-color: #9575cd; outline: none; box-shadow: 0 0 0 3px rgba(149, 117, 205, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
 
-        .calc-btn {
-            width: 100%; padding: 18px;
-            background-color: #9575cd; color: white;
-            border: none; border-radius: 12px;
-            font-size: 1.2rem; font-weight: bold; cursor: pointer;
-            margin-top: 10px; transition: 0.2s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .calc-btn:hover { background-color: #673ab7; transform: translateY(-3px); }
+        .calc-btn { width: 100%; padding: 18px; background-color: #9575cd; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(149,117,205,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
 
-        #result-area {
-            display: none; margin-top: 30px; padding: 30px;
-            background-color: #f3e5f5; border-radius: 12px; text-align: center;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.waste { color: #d32f2f; } 
-        .highlight.yoga { color: #9575cd; }
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #f3e5f5; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #4527a0; }
 
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box {
-            flex-shrink: 0; width: 40px; height: 40px;
-            background: #9575cd; color: white;
-            border-radius: 10px; font-weight: bold;
-            display: flex; align-items: center; justify-content: center;
-            margin-right: 20px; margin-top: 5px;
-        }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        @media (max-width: 850px) {
-            .wrapper { flex-direction: column; }
-            .sidebar { width: 100%; position: static; min-width: auto; }
-            .main-content { width: 100%; }
-            h1.page-title { font-size: 1.8rem; }
-        }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #9575cd; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
-
     <div class="wrapper">
-        
-        <!-- [좌측] 메인 콘텐츠 -->
         <main class="main-content">
-            
-            <h1 class="page-title">회당 15만 원짜리 숨쉬기 운동 중?</h1>
-            <p class="page-subtitle">"바빠서 못 갔어요"라는 핑계. 강사님은 당신의 결석을 사랑합니다.</p>
+            <h1 class="page-title">내 연봉이 필라테스 기구 구매비로?</h1>
+            <p class="page-subtitle">운동은 안 가면서 인테리어 예쁜 샵만 찾고 계신 당신께.</p>
 
-            <!-- 인트로: 팩트 제시 -->
             <section class="intro-box">
-                <h2>🧘‍♀️ 필라테스 기부천사</h2>
-                <p>
-                    1:1 레슨 50회 끊으면 회당 5만 원이라서 싸다고요?<br>
-                    하지만 유효기간 내에 다 못 쓰고 날리는 횟수를 포함하면 <strong>회당 단가는 2~3배</strong>로 뜁니다. 당신의 실제 운동 비용을 계산해드립니다.
-                </p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">self_improvement</span> 필라테스는 1회당 단가가 가장 높은 그룹 운동 중 하나입니다. "미리 결제하면 싸요"라는 영업 사원의 멘트에 덜컥 1년치를 긁었지만, <strong>실제 출석률은 20%</strong>도 안 된다면? 당신은 원장님의 새 기구 마련을 위해 자선 기부 중입니다. 진짜 1회당 가격을 확인하세요.</p>
             </section>
 
             <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>📉 운동 효율 견적서</h2>
+                <h2>🧘 필라테스 매몰 비용 분석기</h2>
+                <div class="calc-group">
+                    <label>최근 결제한 회원권 금액 (만원)</label>
+                    <input type="number" id="totalFee" placeholder="예: 150" value="150">
+                </div>
+                <div class="calc-group">
+                    <label>기간 중 실제 방문한 총 횟수 (회)</label>
+                    <input type="number" id="attendCount" placeholder="예: 10" value="10">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">어플 예약 취소 건이나 노쇼는 제외하고 실제 간 횟수만 쓰세요.</p>
+                </div>
                 
-                <div class="calc-group">
-                    <label>① 회당 레슨비 (만원)</label>
-                    <input type="number" id="costPerSession" value="7" placeholder="예: 7 (1:1 기준)">
-                    <div class="help-text">* 그룹은 2~3만원, 개인은 6~8만원</div>
-                </div>
+                <button id="calcBtn" class="calc-btn">나의 1시간 시급 확인하기</button>
 
-                <div class="calc-group">
-                    <label>② 총 등록 횟수 (회)</label>
-                    <input type="number" id="totalSessions" value="30" placeholder="예: 30">
-                </div>
-
-                <div class="calc-group">
-                    <label>③ 실제 출석 횟수 (회)</label>
-                    <input type="number" id="attendedSessions" value="15" placeholder="예: 15 (기간 만료/노쇼 포함)">
-                    <div class="help-text">* 못 가고 날린 횟수는 빼고 입력하세요</div>
-                </div>
-
-                <button id="calcBtn" class="calc-btn">1번 운동할 때마다 든 돈 확인</button>
-
-                <!-- 결과창 -->
                 <div id="result-area">
-                    
-                    <div style="margin-bottom:20px;">
-                        <p class="result-title">당신이 실제로 지불한 1회 비용</p>
-                        <span id="resRealCost" class="highlight waste">0원</span>
-                        <p style="font-size:0.9rem; color:#888;">(정가의 <span id="resMultiple">0</span>배 지출)</p>
-                    </div>
-
-                    <div style="border-top:1px dashed #aaa; padding-top:20px;">
-                        <p class="result-title" style="margin-bottom:10px;">허공에 날린 돈 (기부금)</p>
-                        <span id="resDonation" class="highlight yoga" style="font-size:1.8rem;">0원</span>
-                    </div>
-
-                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #d1c4e9; font-size:0.95rem;">
-                        이 돈이면 <strong><span id="compareItem" style="background:#ede7f6; padding:0 4px; color:#512da8;">고급 호텔 스파</span></strong>를<br>
-                        받는 게 몸도 마음도 편합니다.
-                    </div>
+                    <p class="result-title">당신의 1회 운동(50분) 가격은?</p>
+                    <span id="costPerClass" class="highlight">약 0원</span>
+                    <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
-            <!-- 팩트 체크 리스트 -->
+            <!-- 팩트 체크 -->
             <section>
-                <h2>🛑 센터가 당신을 호갱으로 보는 이유</h2>
-                
+                <h2>🛑 필라테스 기부천사가 되는 과정의 팩트</h2>
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">event_busy</span></div>
+                    <div class="icon-box">1</div>
                     <div class="reason-content">
-                        <h3>유효기간의 함정</h3>
-                        <p>"50회 끊으면 1년 드려요" 하지만 1년은 금방 갑니다. 기간 만료로 소멸되는 횟수가 센터의 순수익입니다. 처음부터 적은 횟수(10회)로 끊는 게 이득입니다.</p>
+                        <h3>'할인율'의 고도의 심리 마케팅</h3>
+                        <p>1회에 3만 원인데 100회 끊으면 1만 원? 이 격차는 당신이 70회를 안 나올 것임을 센터가 통계적으로 이미 알고 설계한 트랩입니다.</p>
                     </div>
                 </div>
-                
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">person_off</span></div>
+                    <div class="icon-box">2</div>
                     <div class="reason-content">
-                        <h3>노쇼(No-Show)는 꿀</h3>
-                        <p>당일 취소하면 횟수가 차감됩니다. 강사 입장에서는 수업 안 하고 돈은 버니까 최고의 상황입니다. 당신의 게으름이 강사의 보너스가 됩니다.</p>
+                        <h3>예약 전쟁과 당일 취소 페널티</h3>
+                        <p>퇴근 후 소중한 황금 시간대의 치열한 예약 경쟁. 원하는 시간에 못 가서 안 가고, 당일 컨디션 때문에 못 가면 회차는 차감됩니다. 생돈 날리기입니다.</p>
                     </div>
                 </div>
-
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">ondemand_video</span></div>
+                    <div class="icon-box">3</div>
                     <div class="reason-content">
-                        <h3>홈트의 가성비</h3>
-                        <p>유튜브에는 전 세계 최고의 강사들이 무료로 영상을 올립니다. 매트 하나만 깔면 됩니다. 의지가 없다면 비싼 돈을 내도 운동 효과는 0입니다.</p>
+                        <h3>폼나는 토삭스와 브랜드 레깅스</h3>
+                        <p>운동복 지출 또한 숨겨진 비용입니다. 실력보다 장비를 먼저 갖추는 태도는 가계부 입장에선 가장 비효율적인 투자입니다.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- 하단 광고 -->
-            <div class="ad-box">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <!-- SEO 텍스트 -->
+            <section class="seo-content">
+                <h2>필라테스 회원권의 경제학: 왜 당신은 돈만 내고 가지 않는가?</h2>
+                <p>여성 직장인들 사이에서 필라테스는 로망과 실용성을 동시에 갖춘 최고의 운동으로 꼽힙니다. 체형 교정과 근력 강화에 효과가 탁월하지만, 아이러니하게도 필라테스 센터의 주 수익원은 **'열심히 나오는 회원'**이 아니라 **'안 나오는 회원'**입니다. 고가의 기구 설치비와 임대료를 감당하기 위해 센터는 대량 회차 할인을 제안하며 당신의 시드머니를 선취매합니다.</p>
 
-            <!-- common.js가 푸터 자동 추가 -->
+                <h3>1. 보이지 않는 손실: 국밥 7그릇의 가치</h3>
+                <p>만약 당신이 150만 원에 50회 이용권을 샀는데 10회만 가고 기간을 만료시켰다면, 당신의 1회 운동 비용은 15만 원입니다. 50분 동안 호흡하고 근육을 쓰는 대가로 당신은 명품 가방 하나 값이나, 뜨끈한 국밥을 20그릇 먹을 수 있는 돈을 1시간 만에 증발시키고 있는 것입니다. "이번엔 다를 거야"라고 다짐하며 재결제를 하기 전, 당신이 잃어버린 **'미방문 회차'의 복리 기회비용**을 반드시 계산해 보아야 합니다. 150만 원을 8% 주식에 넣었다면 은퇴 후에 당신은 전신 마사지를 매주 받을 수 있는 여유를 가졌을 것입니다.</p>
 
+                <h3>2. 환경을 탓하지 않는 경제적 운동 지성</h3>
+                <p>진정으로 건강한 자산가는 도구의 화려함에 현혹되지 않습니다. 거실에 매트 한 장 깔고 유튜브 '홈트' 영상 하나면 필라테스 효과의 70%는 가져갈 수 있습니다. 굳이 비싼 기구 필라테스를 고집하며 지출을 늘리기보다, 본인의 '지속 가능성'부터 검토하십시오. 집 앞 헬스장의 1년 이용권보다 비싼 10회의 필라테스. 당신은 진짜 건강해지고 싶은 것입니까, 아니면 예쁜 센터 탈의실에서 사진을 찍고 싶은 것입니까? 당신의 지출 중 상당액은 사진 속 배경으로 쓰이는 '인테리어 값'임을 팩트로 직시하세요.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 장기 할인을 안 받으면 손해 아닌가요?</strong><br>A. 아니오. 10회씩 끊어서 다니는 것이 결과적으로 미방문 손실을 0으로 만드는 가장 저렴한 방법입니다. '박리다매'는 센터가 돈을 버는 방식이지 당신이 돈을 아끼는 방식이 아닙니다.</li>
+                    <li><strong>Q. 양도가 가능한데 나중에 팔면 되죠?</strong><br>A. 중고 플랫폼의 필라테스 양도 글을 보십시오. 제값은커녕 수수료와 기간 단축 때문에 똥값에 내놔도 안 팔리는 것이 현실입니다. 양도는 최후의 수단일 뿐 자산 보존책이 아닙니다.</li>
+                </ul>
+            </section>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
 
-        <!-- [우측] 사이드바 광고 -->
         <aside class="sidebar">
-            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890" 
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </aside>
-
     </div>
 
-    <!-- 계산 로직 -->
+    <!-- [계산 로직] -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                // 1. 값 가져오기
-                const price = Number(document.getElementById('costPerSession').value) * 10000;
-                const total = Number(document.getElementById('totalSessions').value);
-                const attended = Number(document.getElementById('attendedSessions').value);
-
-                if(price <= 0 || total <= 0 || attended < 0) {
-                    alert("모든 값을 올바르게 입력해주세요.");
-                    return;
-                }
-
-                if(attended > total) {
-                    alert("출석 횟수가 총 횟수보다 많을 수 없습니다.");
-                    return;
-                }
-
-                // 2. 계산 로직
-                // 총 결제 금액
-                const totalPayment = price * total;
+                const total = (parseFloat(document.getElementById('totalFee').value) || 0) * 10000;
+                const count = parseFloat(document.getElementById('attendCount').value) || 1;
                 
-                // 실제 1회당 비용 (총결제액 / 실제출석)
-                const realCostPerSession = attended > 0 ? totalPayment / attended : totalPayment; // 0회 출석이면 전체 날린 셈
+                const costPerTime = total / count;
 
-                // 날린 돈 (기부금)
-                const wastedMoney = totalPayment - (price * attended);
-
-                // 배수
-                const multiple = (realCostPerSession / price).toFixed(1);
-
-                // 3. 결과 출력
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-
-                document.getElementById('resRealCost').innerText = Math.round(realCostPerSession).toLocaleString() + "원";
-                document.getElementById('resMultiple').innerText = multiple;
-                document.getElementById('resDonation').innerText = Math.round(wastedMoney).toLocaleString() + "원";
-
-                // 4. 비교 물건 변경
-                const wasteManwon = wastedMoney / 10000;
-                let item = "치킨 10마리";
+                document.getElementById('costPerClass').textContent = `1회 약 ${Math.round(costPerTime).toLocaleString()}원`;
                 
-                if(wasteManwon > 200) item = "최신형 노트북";
-                else if(wasteManwon > 100) item = "특급 호텔 숙박권";
-                else if(wasteManwon > 50) item = "고급 스파 마사지 3회";
-                else if(wasteManwon > 30) item = "백화점 화장품 세트";
-                else if(wasteManwon > 10) item = "요가복 상하의 세트";
-                
-                document.getElementById('compareItem').innerText = item;
+                let feedback = "";
+                if(costPerTime > 100000) feedback = "이 정도면 한 번 호흡할 때마다 5성급 호텔 애프터눈 티 한 세트를 들이키는 셈입니다.";
+                else if(costPerTime > 50000) feedback = "1:1 개인 레슨보다 비싼 가격에 그룹 수업을 듣고 계시네요. 본전을 생각해서 내일은 꼭 가세요.";
+                else feedback = "꽤 성실하게 참여하셨군요! 1회 단가를 계속 낮춰서 건강 자산을 키우십시오.";
+
+                document.getElementById('resultText').textContent = feedback;
             });
         });
     </script>
