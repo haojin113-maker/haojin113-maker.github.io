@@ -3,98 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="치아 교정 비용 계산기. 장치비, 월비, 유지장치 비용을 합친 총 교정 비용을 계산해드립니다.">
-    <title>치아 교정 견적 계산기 | 팩트 폭격 연구소</title>
+    <meta name="description" content="철길 까는데 500만 원? 치아 교정의 총비용과 방치 시 발생할 치과 치료비 예방 효과를 팩트로 계산해드립니다.">
+    <title>치아 교정 견적기 | 팩트 폭격 연구소</title>
     <script src="../common.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
-        .main-content { flex: 3; } .sidebar { flex: 1; position: sticky; top: 20px; }
-        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; border: 1px solid #eee; }
-        h1.page-title { font-size: 2.2rem; margin: 20px 0 10px; color: #111; }
-        h2 { border-left: 5px solid #00acc1; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #e0f7fa; border: 1px solid #b2ebf2; color: #006064; }
-        .intro-box strong { color: #00acc1; background: #fff; padding: 0 5px; border-radius: 4px; }
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+        h2 { border-left: 5px solid #0d47a1; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #e3f2fd; border: 1px solid #bbdefb; color: #0d47a1; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #0d47a1; background: #fff; padding: 0 5px; border-radius: 4px; }
         .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; color: #00acc1; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #00acc1; color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 1.2rem; font-weight: bold; }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #f1f8e9; border-radius: 12px; text-align: center; }
-        .highlight { font-size: 2.5rem; font-weight: 900; display: block; margin: 10px 0; color: #00acc1; }
-        
-        .seo-content h3 { margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; } }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #0d47a1; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #0d47a1; outline: none; box-shadow: 0 0 0 3px rgba(13, 71, 161, 0.1); }
+        .calc-btn { width: 100%; padding: 18px; background-color: #0d47a1; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(13, 71, 161, 0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #e3f2fd; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #0d47a1; }
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #0d47a1; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">입 안에 '경차 한 대'를 넣으시겠습니까?</h1>
-            <p class="page-subtitle">"월 15만 원이면 돼요"라는 광고에 속지 마세요. 총비용은 상상을 초월합니다.</p>
+            <h1 class="page-title">철길 까는 비용, '본전'은 미소에서 나옵니다</h1>
+            <p class="page-subtitle">단순히 예뻐지는 비용이 아닙니다. 평생 건강을 위한 가장 확실한 베팅입니다.</p>
 
             <section class="intro-box">
-                <h2>😬 교정의 배신</h2>
-                <p>장치비만 내면 끝인 줄 알았죠? 월비, 발치비, 스크류비, 유지장치비...<br>숨만 쉬어도 추가되는 옵션 비용들. 당신의 치아에 들어가는 <strong>총 견적</strong>을 뽑아드립니다.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">health_and_safety</span> 치아 교정비 500만 원. 2년이라는 인고의 시간. 하지만 부정교합을 방치했을 때 훗날 지불해야 할 <strong>임플란트와 풍치 치료비</strong>를 생각하면, 교정은 현존하는 가장 가성비 높은 '안티 에이징' 투자입니다.</p>
             </section>
 
             <section id="calculator">
-                <h2>📉 교정 총비용 시뮬레이터</h2>
-                <label>① 초기 장치비 (만원)</label>
-                <input type="number" id="initCost" value="300" placeholder="예: 300 (클리피씨/인비절라인)">
-                <label>② 월 진료비 (만원)</label>
-                <input type="number" id="monthlyCost" value="5" placeholder="예: 5">
-                <label>③ 예상 교정 기간 (개월)</label>
-                <input type="number" id="months" value="24" placeholder="예: 24 (2년)">
-                <label>④ 기타 비용 (발치/스크류/유지장치, 만원)</label>
-                <input type="number" id="etcCost" value="50" placeholder="예: 50">
-                <button id="calcBtn" class="calc-btn">철길 까는 총비용 확인</button>
+                <h2>😬 교체 기회비용 시뮬레이터</h2>
+                <div class="calc-group">
+                    <label>장치비 + 월 치료비 총 예상액 (만원)</label>
+                    <input type="number" id="bracesTotal" placeholder="예: 600" value="600">
+                </div>
+                <div class="calc-group">
+                    <label>나의 현재 나이 (세)</label>
+                    <input type="number" id="currentAge" placeholder="예: 25" value="25">
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">하루에 얼마씩 투자하는 건가요?</button>
 
                 <div id="result-area">
-                    <p>교정이 끝날 때까지 드는 돈</p>
-                    <span id="resTotal" class="highlight">0원</span>
-                    <div style="margin-top:20px; padding-top:20px; border-top:1px dashed #999;">
-                        <p>이 돈이면</p>
-                        <strong id="compareItem" style="font-size:1.5rem; color:#d32f2f;">유럽 여행 + 명품백</strong>
-                        <p>을(를) 할 수 있습니다.</p>
-                    </div>
+                    <p class="result-title">교정된 미소로 보낼 평생 하루 평균 비용</p>
+                    <span id="dailyCost" class="highlight">약 0원</span>
+                    <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
-            <section class="seo-content">
-                <h2>🛑 교정 시작 전, 이것만은 알고 하자</h2>
-                <h3>1. 월비 포함 총액을 봐야 한다</h3>
-                <p>병원은 초기 장치비만 강조하며 싸다고 홍보합니다. 하지만 2년 동안 매달 내는 월비(진료비) 5~10만 원을 합치면 100~200만 원이 추가됩니다. 할부의 늪에 빠지지 마세요.</p>
-                <h3>2. 평생 껴야 하는 유지장치</h3>
-                <p>교정기가 빠지면 끝이 아닙니다. 치아는 원래대로 돌아가려는 성질이 있어, 평생 '가철식 유지장치'를 껴야 합니다. 잃어버리면 20~30만 원을 주고 또 맞춰야 합니다.</p>
+            <section>
+                <h2>🛑 교정을 고민할 때 알아야 할 3가지 팩트</h2>
+                <div class="reason-card"><div class="icon-box">1</div><div class="reason-content"><h3>치주 질환 예방의 경제적 가치</h3><p>치열이 고르면 양치가 훨씬 쉬워집니다. 평생 지출할 치과비를 약 40% 이상 절감하는 '보험'과 같은 효과가 있습니다.</p></div></div>
+                <div class="reason-card"><div class="icon-box">2</div><div class="reason-content"><h3>인상(Impression) 자산의 가치</h3><p>밝은 미소는 당신의 사회적 신뢰도를 높입니다. 이는 연봉 협상이나 계약 체결 등 무형의 자산 가치로 환산 시 수천만 원에 달합니다.</p></div></div>
+                <div class="reason-card"><div class="icon-box">3</div><div class="reason-content"><h3>고통과 기간의 기회비용</h3><p>2년 동안 마음껏 먹지 못하는 스트레스를 고려해야 합니다. 교정은 현금뿐만 아니라 '시간과 정서적 자원'을 함께 투입하는 장기 투자입니다.</p></div></div>
             </section>
-            
-            <div class="ad-box"><span style="font-size:11px; color:#ccc;">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+
+            <section class="seo-content">
+                <h2>치아 교정 600만 원, 사치인가 투자인가?</h2>
+                <p>치아 교정을 미용 목적으로만 생각하는 분들이 많습니다. 하지만 교정의 본질은 **'기능의 정상화'**에 있습니다. 부정교합은 단순히 보기 싫은 것이 아니라, 특정 치아에 무리한 힘이 가해져 잇몸 뼈를 약하게 만들고 치아 파손의 원인이 됩니다. 20대에 하는 600만 원의 교정 투자는, 50대 이후에 마주할 수천만 원의 전악 임플란트 비용을 방어하는 최상의 경제적 방패입니다.</p>
+                <h3>자주 묻는 질문</h3>
+                <ul>
+                    <li><strong>Q. 성인 교정도 효과가 있나요?</strong><br>A. 잇몸 건강만 허락된다면 50대에도 가능합니다. 오히려 노년기의 건강한 저작 작용을 위해 성인 교정 인구는 계속 늘고 있습니다.</li>
+                    <li><strong>Q. 유지 장치를 꼭 해야 하나요?</strong><br>A. 유지 장치를 소홀히 하면 치아는 원래대로 돌아가려 합니다. 그렇게 되면 지난 수백만 원은 100% 매몰 비용이 됩니다.</li>
+                </ul>
+            </section>
         </main>
-        <aside class="sidebar"><div style="min-height: 600px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div></aside>
+        <aside class="sidebar"><div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"></div></aside>
     </div>
     <script>
-        document.getElementById('calcBtn').addEventListener('click', function() {
-            const init = Number(document.getElementById('initCost').value) * 10000;
-            const monthly = Number(document.getElementById('monthlyCost').value) * 10000;
-            const months = Number(document.getElementById('months').value);
-            const etc = Number(document.getElementById('etcCost').value) * 10000;
-            if(init <= 0) { alert("비용을 입력해주세요."); return; }
-            
-            const total = init + (monthly * months) + etc;
-
-            const resultArea = document.getElementById('result-area');
-            resultArea.style.display = 'block';
-            document.getElementById('resTotal').innerText = Math.round(total).toLocaleString() + "원";
-
-            const totalManwon = total / 10000;
-            let item = "최신형 노트북";
-            if(totalManwon > 500) item = "경차 중고차 한 대";
-            else if(totalManwon > 300) item = "유럽 왕복 항공권 2인";
-            else if(totalManwon > 200) item = "샤넬 지갑 + 아이패드";
-            else if(totalManwon > 100) item = "최신형 아이폰 프로";
-            document.getElementById('compareItem').innerText = item;
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                const total = parseFloat(document.getElementById('bracesTotal').value) * 10000;
+                const age = parseFloat(document.getElementById('currentAge').value);
+                const lifeExpectancy = 85; 
+                const daysLeft = (lifeExpectancy - age) * 365;
+                const costPerDay = total / daysLeft;
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+                document.getElementById('dailyCost').textContent = `약 ${Math.round(costPerDay).toLocaleString()}원`;
+                document.getElementById('resultText').textContent = `앞으로 살면서 껌 한 통 값도 안 되는 돈으로 완벽한 미소와 건강을 소유하는 셈입니다. 이보다 수익률 높은 투자가 있을까요?`;
+            });
         });
     </script>
 </body>
