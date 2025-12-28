@@ -3,110 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="카푸어 자가진단 계산기. 내 월급으로 감당 가능한 차인지, 할부금과 유지비 총액을 분석해드립니다.">
+    <meta name="description" content="차는 일시불이 아니라 '유지비'로 사는 것입니다. 보험료, 기름값, 감가상각을 포함한 당신의 진짜 카푸어 지수를 팩트로 진단해드립니다.">
     <title>카푸어 판독기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 및 라이브러리 -->
     <script src="../common.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
-        .main-content { flex: 3; } .sidebar { flex: 1; position: sticky; top: 20px; }
-        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; border: 1px solid #eee; }
-        h1.page-title { font-size: 2.2rem; margin: 20px 0 10px; color: #111; }
-        h2 { border-left: 5px solid #455a64; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #eceff1; border: 1px solid #cfd8dc; color: #37474f; }
-        .intro-box strong { color: #455a64; background: #fff; padding: 0 5px; border-radius: 4px; }
-        .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; color: #455a64; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #455a64; color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 1.2rem; font-weight: bold; }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #f5f5f5; border-radius: 12px; text-align: center; }
-        .highlight { font-size: 2.5rem; font-weight: 900; display: block; margin: 10px 0; color: #37474f; }
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        /* 섹션 스타일 */
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        /* [가변] 테마 설정: Dark Gray */
+        h2 { border-left: 5px solid #263238; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #eceff1; border: 1px solid #cfd8dc; color: #263238; padding: 25px; border-radius: 12px; }
         
-        .seo-content h3 { margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; } }
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #263238; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #263238; outline: none; box-shadow: 0 0 0 3px rgba(38, 50, 56, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #263238; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(38, 50, 56, 0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #eceff1; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #263238; }
+
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #263238; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">벤츠 타고 컵라면 먹는 삶, 행복할까요?</h1>
-            <p class="page-subtitle">할부금만 내면 끝인 줄 알았나요? 숨겨진 유지비가 당신의 월급을 삼킵니다.</p>
+            <h1 class="page-title">월 할부금 낼 수 있으면 내 차일까요?</h1>
+            <p class="page-subtitle">보이지 않는 유지비와 감가상각이 당신의 계급을 정합니다.</p>
 
             <section class="intro-box">
-                <h2>🚙 카푸어(Car Poor) 예방 주사</h2>
-                <p>"월 할부금 50만 원? 그 정도는 내지"라고 생각하며 계약서에 서명합니다. 하지만 보험료, 세금, 기름값, 톨비, 소모품비를 합치면 <strong>실제 비용은 할부금의 2배</strong>가 넘습니다. 당신의 소득으로 감당 가능한지 냉정하게 진단해드립니다.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">directions_car</span> 하차감에 속아 상차감(입금)을 포기하지 마십시오. 차는 사는 순간부터 <strong>'자산'이 아니라 '부채'</strong>입니다. 당신의 진짜 카푸어 등급을 매겨 드립니다.</p>
             </section>
 
+            <!-- 계산기 -->
             <section id="calculator">
-                <h2>🧾 내 차 유지비 견적내기</h2>
-                <label>① 차량 총 가격 (만원)</label>
-                <input type="number" id="carPrice" value="3500" placeholder="예: 3500">
-                <label>② 선수금 (만원)</label>
-                <input type="number" id="downPayment" value="1000" placeholder="모은 돈">
-                <label>③ 할부 금리 (%)</label>
-                <input type="number" id="interestRate" value="5.5" placeholder="예: 5.5">
-                <label>④ 할부 기간 (개월)</label>
-                <input type="number" id="months" value="60" placeholder="예: 60">
-                <label>⑤ 연간 유지비 (보험/세금/기름/정비, 만원)</label>
-                <input type="number" id="yearlyMaint" value="400" placeholder="예: 400 (월 33만원 꼴)">
-                <label>⑥ 월 실수령액 (만원)</label>
-                <input type="number" id="income" value="250" placeholder="통장에 찍히는 돈">
-                <button id="calcBtn" class="calc-btn">카푸어 여부 확인하기</button>
+                <h2>🚘 리얼 차량 유지비 진단기</h2>
+                <div class="calc-group">
+                    <label>월 평균 할부금 (원)</label>
+                    <input type="number" id="loan" placeholder="예: 600000" value="600000">
+                </div>
+                <div class="calc-group">
+                    <label>월 평균 기름값/충전비 (원)</label>
+                    <input type="number" id="fuel" placeholder="예: 200000" value="200000">
+                </div>
+                <div class="calc-group">
+                    <label>보험료 + 자동차세 ÷ 12 (월 환산 원)</label>
+                    <input type="number" id="taxIns" placeholder="예: 150000" value="150000">
+                </div>
+                <div class="calc-group">
+                    <label>월 세후 소득 (원)</label>
+                    <input type="number" id="income" placeholder="예: 3000000" value="3000000">
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">카푸어 지수 확인하기</button>
 
                 <div id="result-area">
-                    <p>이 차를 유지하려면 매달</p>
-                    <span id="resTotal" class="highlight">0원</span>
-                    <div style="margin-top:20px; padding-top:20px; border-top:1px dashed #ccc;">
-                        <p>월 소득 대비 차량 지출 비율: <strong id="resRatio">0%</strong></p>
-                        <strong id="resVerdict" style="font-size:1.5rem;">진단 중...</strong>
+                    <p class="result-title">당신의 월간 차량 소모 비용은?</p>
+                    <span id="monthlyTotal" class="highlight">0원</span>
+                    <p id="gradeText" style="color:#666; font-weight:bold; font-size:1.2rem;"></p>
+                </div>
+            </section>
+
+            <!-- 팩트 체크 -->
+            <section>
+                <h2>🛑 자동차가 부자가 되는 길을 막는 3가지 이유</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>비닐 뜯는 순간 시작되는 '감가상각'</h3>
+                        <p>차값의 연 10~15%는 매년 증발합니다. 당신이 타지 않아도 당신의 자산은 매일 주차장에서 녹아내리고 있습니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>할부 이자는 당신의 미래 노동력을 착취합니다</h3>
+                        <p>자동차 할부 금리는 일반 대출보다 비싼 경우가 많습니다. 원금이 아닌 '이자'를 내기 위해 당신은 한 달에 며칠씩 야근을 하는 셈입니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>'기회비용'으로 집 한 채를 날립니다</h3>
+                        <p>20대 때 차를 사는 대신 그 돈을 주식에 넣었을 때, 40대에 가질 수 있는 자산은 아파트 한 채 값과 맞먹습니다.</p>
                     </div>
                 </div>
             </section>
 
+            <!-- SEO 텍스트 -->
             <section class="seo-content">
-                <h2>🛑 차를 사면 가난해지는 이유</h2>
-                <h3>1. 숨만 쉬어도 깎이는 감가상각</h3>
-                <p>새 차는 번호판을 다는 순간 가격이 떨어집니다. 3천만 원짜리 차를 사면 매년 2~300만 원씩 자산이 공중분해되는 셈입니다. 할부금은 갚는데 내 자산 가치는 줄어듭니다.</p>
-                <h3>2. 시드머니(Seed Money) 실종 사건</h3>
-                <p>월 50~80만 원을 차에 쓰면 저축할 돈이 없습니다. 5년 뒤 친구는 5천만 원을 모아 투자를 시작할 때, 당신에게 남은 건 똥값이 된 중고차 한 대뿐입니다. 사회초년생일수록 차는 최대한 늦게 사는 게 정답입니다.</p>
+                <h2>카푸어 기준과 자동차 유지비의 가혹한 진실</h2>
+                <p>자동차는 현대 사회에서 필수재처럼 느껴지지만, 경제적으로는 가장 큰 <strong>'자본 잠식형 소비재'</strong>입니다. "월급 300만 원인데 아반떼는 괜찮겠지?", "할부 60만 원이면 수입차도 가능한데?"라는 생각은 자동차 유지비에 포함된 숨겨진 비용들을 간과한 결과입니다.</p>
+
+                <h3>1. 보이지 않는 비용: 보험료와 감가상각의 공포</h3>
+                <p>우리는 보통 기름값과 할부금만 생각합니다. 하지만 1년에 한 번 내는 자동차 보험료와 자동차세, 그리고 무엇보다 무서운 '감가상각비'를 합산해야 진짜 유지비가 나옵니다. 예를 들어 5,000만 원짜리 수입차를 샀다면, 감가상각으로만 매달 50만 원 이상의 가치가 사라지는 것입니다. 즉, 당신은 차를 타지도 않고 가만히 세워만 둬도 매달 100만 원 가까운 돈을 길바닥에 버리고 있는 셈입니다.</p>
+
+                <h3>2. 당신의 소득 대비 적정 차량 가격은?</h3>
+                <p>금융 전문가들이 추천하는 가장 합리적인 차량 가격은 <strong>연봉의 40~50% 미만</strong>입니다. 또한 월 차량 유지비(할부금 포함)가 본인 월 소득의 20%를 초과하는 순간, 당신은 경제적 성장이 멈추는 '카푸어'의 단계에 진입하게 됩니다. 차에서 내릴 때의 찰나의 기분인 '하차감'을 위해 당신의 10년 뒤 미래 주거 환경과 노후를 포기하고 있지는 않은지 자문해 봐야 합니다.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 중고차를 사면 카푸어를 면할 수 있나요?</strong><br>A. 감가상각 면에서는 유리하지만, 노후 차량은 수리비 폭탄의 위험이 있습니다. 특히 워런티가 끝난 수입 중고차는 할부금보다 수리비가 더 많이 나올 수 있는 '진짜 카푸어의 지옥'입니다.</li>
+                    <li><strong>Q. 업무상 꼭 필요하다면요?</strong><br>A. 이동 수단으로서의 가치와 허세로서의 가치를 명확히 구분하십시오. 굴러가는 차가 필요한 것인지, 보여주는 차가 필요한 것인지 본인의 가계부를 걸고 냉정하게 판단해야 합니다.</li>
+                </ul>
             </section>
-            
-            <div class="ad-box"><span style="font-size:11px; color:#ccc;">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-        <aside class="sidebar"><div style="min-height: 600px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div></aside>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
     </div>
+
+    <!-- 로직 스크립트 -->
     <script>
-        document.getElementById('calcBtn').addEventListener('click', function() {
-            const price = Number(document.getElementById('carPrice').value) * 10000;
-            const downPay = Number(document.getElementById('downPayment').value) * 10000;
-            const rate = Number(document.getElementById('interestRate').value) / 100 / 12;
-            const months = Number(document.getElementById('months').value);
-            const maint = Number(document.getElementById('yearlyMaint').value) * 10000 / 12;
-            const income = Number(document.getElementById('income').value) * 10000;
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                const loan = parseFloat(document.getElementById('loan').value) || 0;
+                const fuel = parseFloat(document.getElementById('fuel').value) || 0;
+                const taxIns = parseFloat(document.getElementById('taxIns').value) || 0;
+                const income = parseFloat(document.getElementById('income').value) || 1;
+                
+                const monthlyTotal = loan + fuel + taxIns;
+                const ratio = (monthlyTotal / income) * 100;
 
-            if(months <= 0 || income <= 0) { alert("값을 입력해주세요."); return; }
-            
-            const principal = price - downPay;
-            let monthlyLoan = 0;
-            if(principal > 0) {
-                monthlyLoan = principal * rate * Math.pow(1+rate, months) / (Math.pow(1+rate, months) - 1);
-            }
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+                document.getElementById('monthlyTotal').textContent = `${monthlyTotal.toLocaleString()}원`;
+                
+                let grade = "";
+                if(ratio < 10) grade = "자산가 또는 합리적인 드라이버";
+                else if(ratio < 25) grade = "경계 대상 (주의 요망)";
+                else if(ratio < 40) grade = "빼박 카푸어 (계좌 산소호흡기 필요)";
+                else grade = "도로 위 기부 천사 (인생이 차에 저당 잡힘)";
 
-            const totalMonthly = monthlyLoan + maint;
-            const ratio = (totalMonthly / income) * 100;
-
-            const resultArea = document.getElementById('result-area');
-            resultArea.style.display = 'block';
-            document.getElementById('resTotal').innerText = Math.round(totalMonthly).toLocaleString() + "원";
-            document.getElementById('resRatio').innerText = ratio.toFixed(1) + "%";
-
-            const verdict = document.getElementById('resVerdict');
-            if (ratio <= 10) { verdict.innerText = "🟢 아주 여유로움"; verdict.style.color = "#2e7d32"; }
-            else if (ratio <= 15) { verdict.innerText = "🟡 적정 수준"; verdict.style.color = "#fbc02d"; }
-            else if (ratio <= 25) { verdict.innerText = "🟠 위험 (카푸어 초기)"; verdict.style.color = "#ef6c00"; }
-            else { verdict.innerText = "🚨 카푸어 확정 (파산 위험)"; verdict.style.color = "#d32f2f"; }
+                document.getElementById('gradeText').textContent = `[등급] ${grade} (${ratio.toFixed(1)}%)`;
+            });
         });
     </script>
 </body>
