@@ -1,129 +1,158 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="라떼 효과 계산기. 매일 마시는 커피값을 아껴 S&P500에 투자했을 때 30년 뒤 자산 가치를 계산해드립니다.">
-    <title>커피값 계산기 (라떼 효과) | 팩트 폭격 연구소</title>
+    <meta name="description" content="하루 커피 두 잔, 습관이 인생을 가난하게 만듭니다. 커피값을 30년 동안 모아 투자했을 때의 자산 가치를 팩트로 계산해드립니다.">
+    <title>커피값 계산기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 및 라이브러리 -->
     <script src="../common.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        /* 섹션 공통 스타일 */
         section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
-        h2 { border-left: 5px solid #5d4037; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #efebe9; border: 1px solid #d7ccc8; color: #3e2723; }
-        .intro-box strong { color: #5d4037; background: #fff; padding: 0 5px; border-radius: 4px; }
+
+        /* [가변] 테마 설정: Coffee Brown */
+        h2 { border-left: 5px solid #4e342e; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #efebe9; border: 1px solid #d7ccc8; color: #3e2723; padding: 25px; border-radius: 12px; }
+        
         .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #5d4037; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; transition: 0.2s; }
-        input:focus { border-color: #5d4037; outline: none; box-shadow: 0 0 0 3px rgba(93, 64, 55, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #5d4037; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.2s; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .calc-btn:hover { background-color: #3e2723; transform: translateY(-3px); }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #efebe9; border-radius: 12px; text-align: center; animation: fadeIn 0.5s ease; }
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.5rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.waste { color: #8d6e63; } .highlight.asset { color: #2e7d32; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #4e342e; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #4e342e; outline: none; box-shadow: 0 0 0 3px rgba(78, 52, 46, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #4e342e; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(78, 52, 46, 0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과창 스타일 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #efebe9; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #3e2723; }
+
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #5d4037; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #4e342e; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
         
         .seo-content { line-height: 1.8; color: #444; }
-        .seo-content h3 { font-size: 1.3rem; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .seo-content p { margin-bottom: 15px; }
-        .seo-content ul { padding-left: 20px; margin-bottom: 20px; }
-        .seo-content li { margin-bottom: 10px; }
-        
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; min-width: auto; } .main-content { width: 100%; } h1.page-title { font-size: 1.8rem; } }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">매일 마시는 커피, 30년 뒤엔 얼마일까요?</h1>
-            <p class="page-subtitle">"나를 위한 작은 사치"가 당신의 노후를 갉아먹는 "거대한 낭비"일 수 있습니다.</p>
+            <h1 class="page-title">오늘 마신 라떼, 30년 뒤엔 노후 자금입니다</h1>
+            <p class="page-subtitle">스타벅스 한 잔의 진짜 가격표를 확인하세요.</p>
 
             <section class="intro-box">
-                <h2>☕ 라떼 효과 (The Latte Effect)</h2>
-                <p>재테크의 기본은 '수입 늘리기'가 아니라 <strong>'새는 돈 막기'</strong>입니다. 하루 5천 원, 별거 아닌 것 같나요? 이 작은 습관을 30년 동안 유지했을 때, 당신이 놓치게 될 <strong>기회비용(복리 수익)</strong>을 계산해드립니다.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">local_cafe</span> 매일 마시는 커피 한두 잔. 습관적인 이 지출을 투자로 전환한다면 당신의 은퇴 자산은 상상 그 이상이 됩니다. <strong>'복리의 마법'</strong>으로 계산한 커피값의 실체를 공개합니다.</p>
             </section>
 
+            <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>🥤 카페인 비용 계산기</h2>
-                <div class="calc-group"><label>① 하루 평균 커피 소비량 (잔)</label><input type="number" id="cups" value="2"></div>
-                <div class="calc-group"><label>② 1잔당 평균 가격 (원)</label><input type="number" id="price" value="4500"></div>
-                <button id="calcBtn" class="calc-btn">30년 뒤 자산 가치 확인하기</button>
+                <h2>☕ 라떼 효과 시뮬레이터</h2>
+                <div class="calc-group">
+                    <label>하루에 마시는 커피 평균 잔 수</label>
+                    <input type="number" id="cups" placeholder="예: 2" value="2">
+                </div>
+                <div class="calc-group">
+                    <label>한 잔당 평균 가격 (원)</label>
+                    <input type="number" id="price" placeholder="예: 5000" value="5000">
+                </div>
+                <div class="calc-group">
+                    <label>투자 기간 (년)</label>
+                    <input type="number" id="yrs" placeholder="예: 30" value="30">
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">30년 뒤 자산가치 확인하기</button>
+
                 <div id="result-area">
-                    <div style="margin-bottom:20px;"><p class="result-title">1년 동안 마셔 없앤 돈</p><span id="resYearly" class="highlight waste">0원</span></div>
-                    <div style="border-top:1px dashed #aaa; padding-top:20px;"><p class="result-title" style="margin-bottom:10px;">이 돈을 아껴서 30년 투자했다면</p><span id="resInvest" class="highlight asset">0원</span><p style="font-size:0.9rem; color:#888;">(S&P500 연평균 10% 복리 기준)</p></div>
-                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #d7ccc8; font-size:0.95rem;">커피 대신 텀블러를 썼다면 <strong><span id="compareItem" style="background:#fff3e0; padding:0 4px; color:#e65100;">수도권 오피스텔 한 채</span></strong>가 생겼을 것입니다.</div>
+                    <p class="result-title">커피값 대신 주식을 샀다면?</p>
+                    <span id="futureValue" class="highlight">약 0원</span>
+                    <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
+            <!-- 팩트체크 섹션 -->
             <section>
-                <h2>🛑 커피값 줄이기 프로젝트가 필요한 이유</h2>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">savings</span></div><div class="reason-content"><h3>티끌 모아 '건물'이 된다</h3><p>복리의 마법은 무섭습니다. 하루 5,000원은 작지만, 30년 복리로는 3억 원이 넘습니다. 부자들은 이 '작은 돈의 힘'을 알기에 푼돈을 아낍니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">local_cafe</span></div><div class="reason-content"><h3>습관성 카페인의 함정</h3><p>피곤해서 마시는 게 아니라, 습관적으로 마시는 경우가 많습니다. 탕비실 커피나 캡슐 커피로 대체하면 맛은 비슷하지만 가격은 1/10로 줄어듭니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">eco</span></div><div class="reason-content"><h3>환경을 위한 선택</h3><p>매일 버려지는 플라스틱 컵과 빨대. 내 지갑을 지키는 것이 곧 지구를 지키는 일입니다. 텀블러 사용은 불편하지만 가장 가치 있는 불편함입니다.</p></div></div>
+                <h2>🛑 커피 중독이 지갑에 미치는 치명적 영향</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>브랜드는 '허영'을 팝니다</h3>
+                        <p>5,000원짜리 커피 한 잔의 원두값은 채 300원도 되지 않습니다. 당신은 커피가 아니라 화려한 로고가 박힌 일회용 컵을 사고 있습니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>'작은 돈'의 방심이 부의 축적을 막습니다</h3>
+                        <p>한 달에 20만 원. 누군가는 이를 무시하지만, 누군가는 이 돈으로 월배당 주식을 모아 평생 노후 월급을 준비합니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>커피는 설탕과 카페인의 일시적 대출입니다</h3>
+                        <p>몸의 피로를 커피로 가리는 것은 내일의 활력을 미리 당겨쓰는 것입니다. 수면과 건강을 담보로 한 지출임을 잊지 마세요.</p>
+                    </div>
+                </div>
             </section>
 
-            <!-- SEO 텍스트 추가 -->
+            <!-- SEO 블로그 콘텐츠 -->
             <section class="seo-content">
-                <h2>💸 짠테크의 시작, 고정지출 다이어트</h2>
-                <p>재테크 상담을 하다 보면 "월급이 적어서 저축을 못 해요"라는 말을 자주 듣습니다. 하지만 가계부를 뜯어보면, 무의식적으로 나가는 '새는 돈'이 월 30~50만 원에 달하는 경우가 많습니다. 그중 가장 대표적인 범인이 바로 식후 커피입니다.</p>
+                <h2>라떼 효과(Latte Effect)와 자산 형성의 연결고리</h2>
+                <p>경제학자 데이비드 바크(David Bach)가 창안한 '라떼 효과'는 아주 소액의 지출일지라도 이를 꾸준히 모으고 투자했을 때 발생하는 부의 축적 효과를 설명합니다. 하루 5,000원의 커피 한 잔이 별것 아닌 것 같지만, 이 돈이 모여 수십 년간 <strong>복리의 엔진</strong>을 타면 한 채의 오피스텔이나 든든한 노후 연금이 될 수 있습니다.</p>
 
-                <h3>1. 라떼 효과란 무엇인가?</h3>
-                <p>'라떼 효과'는 미국의 재무설계사 데이비드 바크가 만든 용어로, 매일 4달러짜리 커피 한 잔을 마시는 대신 그 돈을 아껴 투자하면 40년 뒤 엄청난 자산이 된다는 이론입니다. 하루 5천 원은 작아 보이지만, 한 달이면 15만 원, 1년이면 180만 원입니다. 이 돈을 연 10% 수익률의 미국 S&P500 ETF에 적립식으로 투자한다면? 30년 뒤에는 약 3억 원이라는 거금이 됩니다.</p>
+                <h3>1. 스타벅스 주식을 살 것인가, 스타벅스 커피를 마실 것인가?</h3>
+                <p>투자 전문가들은 종종 이렇게 말합니다. "그 회사 제품을 소비하지 말고 주주가 되어라." 10년 전 스타벅스 커피 대신 스타벅스 주식을 샀던 사람과 매일 아메리카노를 마신 사람의 현재 자산 격차는 수천만 원에 달합니다. 소비는 사라지지만 주식은 자라납니다. 지금 내 손에 들린 커피 한 잔이 미래의 당신이 쉴 수 있는 집 한 칸의 벽돌 한 장과 같다는 인식이 부자가 되는 시작입니다.</p>
 
-                <h3>2. 카페인 중독에서 벗어나는 법</h3>
-                <p>무조건 끊으라는 것이 아닙니다. 프랜차이즈 커피 대신 회사 탕비실 커피를 이용하거나, 캡슐 커피 머신을 구매해 단가를 낮추는 노력이 필요합니다. 텀블러를 사용하면 프랜차이즈 카페에서도 300~500원 할인을 받을 수 있습니다. 작은 실천이 모여 큰 자산을 만듭니다.</p>
+                <h3>2. 합리적인 소비 습관으로의 전환</h3>
+                <p>커피를 아예 끊으라는 말이 아닙니다. 습관적인 '브랜드 커피' 소비를 홈카페나 회사 비품, 혹은 저가 브랜드로만 대체해도 매달 수십만 원의 시드머니가 생깁니다. 이 돈을 모아 지수 추종 인덱스 펀드(S&P 500 등)에 꾸준히 투자하십시오. 시간이라는 양분을 먹고 자란 여러분의 자산은 은퇴 후 당신을 배신하지 않을 유일한 수단이 될 것입니다.</p>
 
                 <h3>자주 묻는 질문 (FAQ)</h3>
                 <ul>
-                    <li><strong>Q. 하루 한 잔 커피가 삶의 낙인데 너무한 거 아닌가요?</strong><br>A. 소비를 통해 얻는 행복도 중요합니다. 하지만 그 소비가 습관적인지, 정말 나에게 행복을 주는지 점검해 볼 필요가 있습니다. 일주일 중 3일은 텀블러 커피를 마시는 식으로 타협점을 찾아보세요.</li>
-                    <li><strong>Q. 복리 효과가 실제로 가능한가요?</strong><br>A. S&P500 지수의 지난 100년간 연평균 수익률은 약 10%입니다. 물론 등락은 있지만, 장기적으로 우상향한다는 믿음을 가지고 꾸준히 적립한다면 충분히 달성 가능한 수치입니다.</li>
+                    <li><strong>Q. 소확행을 포기하면서까지 아껴야 하나요?</strong><br>A. 아니오. 다만 당신이 진정으로 행복을 느껴서 마시는지, 아니면 습관적으로 긁는 카드 전표에 의존하고 있는지 점검해보라는 것입니다. 무의식적인 소비가 위험합니다.</li>
+                    <li><strong>Q. 편의점 커피나 홈카페는 대안이 될까요?</strong><br>A. 훌륭한 대안입니다. 지출액을 절반으로만 줄여도 그 차액으로 아이 교육비나 노후 연금을 충분히 마련할 수 있습니다.</li>
                 </ul>
             </section>
 
-            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div>
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-        <aside class="sidebar"><div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div></aside>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
     </div>
+
+    <!-- 로직 스크립트 -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                const cups = Number(document.getElementById('cups').value);
-                const price = Number(document.getElementById('price').value);
-                if(cups <= 0 || price <= 0) { alert("잔 수와 가격을 올바르게 입력해주세요."); return; }
-                const dailyCost = cups * price;
-                const yearlyCost = dailyCost * 365;
-                const monthlyInvest = dailyCost * 30; 
-                const rate = 0.10 / 12; 
-                const months = 30 * 12; 
-                const futureValue = monthlyInvest * ((Math.pow(1 + rate, months) - 1) / rate);
+                const cups = parseFloat(document.getElementById('cups').value) || 0;
+                const price = parseFloat(document.getElementById('price').value) || 0;
+                const yrs = parseFloat(document.getElementById('yrs').value) || 30;
+                const rate = 0.08; // 연 복리 8% 가정
+                
+                const monthly = cups * price * 30.41;
+                let total = 0;
+                for(let i=0; i < yrs * 12; i++) {
+                    total = (total + monthly) * (1 + rate/12);
+                }
+
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-                document.getElementById('resYearly').innerText = Math.round(yearlyCost).toLocaleString() + "원";
-                document.getElementById('resInvest').innerText = Math.round(futureValue).toLocaleString() + "원";
-                const fvManwon = futureValue / 10000;
-                let item = "최신형 노트북";
-                if(fvManwon > 50000) item = "강남 오피스텔 한 채";
-                else if(fvManwon > 30000) item = "수도권 아파트 전세";
-                else if(fvManwon > 20000) item = "포르쉐 911";
-                else if(fvManwon > 10000) item = "벤츠 E-클래스";
-                else if(fvManwon > 5000) item = "BMW 5시리즈";
-                else if(fvManwon > 3000) item = "그랜저 풀옵션";
-                document.getElementById('compareItem').innerText = item;
+                document.getElementById('futureValue').textContent = `약 ${(total/10000).toFixed(0)}만 원`;
+                document.getElementById('resultText').textContent = `매일 무심코 지불한 커피값이 30년 뒤엔 ${(total/100000000).toFixed(1)}억 원의 거액이 되어 당신을 기다릴 수도 있었습니다.`;
             });
         });
     </script>
