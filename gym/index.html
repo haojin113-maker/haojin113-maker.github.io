@@ -1,278 +1,167 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="헬스장 비용 효율 계산기. 1년 등록하고 안 나가는 당신, 1회당 얼마에 이용하는 꼴일까요?">
+    <meta name="description" content="1년 등록하고 몇 번이나 가셨나요? 당신이 헬스장에 기부한 금액과 실제 1회당 운동 비용을 팩트로 계산해드립니다.">
     <title>헬스장 기부천사 판독기 | 팩트 폭격 연구소</title>
 
-    <!-- [1] 공통 모듈 연결 -->
+    <!-- [1] 공통 모듈 및 라이브러리 -->
     <script src="../common.js"></script>
-
-    <!-- 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
     <style>
-        /* --- [표준 스타일 가이드] --- */
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.7;
-        }
-
-        .wrapper {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-        }
-        
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
+        .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
 
-        section {
-            background: white;
-            border-radius: 16px;
-            padding: 35px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            border: 1px solid #eee;
-        }
-
+        /* 섹션 공통 스타일 */
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
 
-        /* [테마 변경] 운동/스포츠(Blue) -> #2962ff */
-        h2 { border-left: 5px solid #2962ff; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-
-        .intro-box { background-color: #e3f2fd; border: 1px solid #bbdefb; color: #0d47a1; }
-        .intro-box strong { color: #2962ff; background: #fff; padding: 0 5px; border-radius: 4px; }
-
-        /* 계산기 스타일 */
-        .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #2962ff; }
-        input {
-            width: 100%; padding: 14px; border: 1px solid #ddd;
-            border-radius: 8px; font-size: 1rem; transition: 0.2s;
-        }
-        input:focus { border-color: #2962ff; outline: none; box-shadow: 0 0 0 3px rgba(41, 98, 255, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-
-        .calc-btn {
-            width: 100%; padding: 18px;
-            background-color: #2962ff; color: white;
-            border: none; border-radius: 12px;
-            font-size: 1.2rem; font-weight: bold; cursor: pointer;
-            margin-top: 10px; transition: 0.2s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .calc-btn:hover { background-color: #0039cb; transform: translateY(-3px); }
-
-        #result-area {
-            display: none; margin-top: 30px; padding: 30px;
-            background-color: #e3f2fd; border-radius: 12px; text-align: center;
-            animation: fadeIn 0.5s ease;
-        }
+        /* [가변] 테마 설정: Royal Blue */
+        h2 { border-left: 5px solid #1565c0; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #e3f2fd; border: 1px solid #bbdefb; color: #0d47a1; padding: 25px; border-radius: 12px; }
         
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.waste { color: #d50000; } 
-        .highlight.fair { color: #2962ff; }
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #1565c0; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #1565c0; outline: none; box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.1); }
 
+        .calc-btn { width: 100%; padding: 18px; background-color: #1565c0; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(21,101,192,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과창 스타일 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #e3f2fd; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #0d47a1; }
+
+        /* 요인 카드 스타일 */
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box {
-            flex-shrink: 0; width: 40px; height: 40px;
-            background: #2962ff; color: white;
-            border-radius: 10px; font-weight: bold;
-            display: flex; align-items: center; justify-content: center;
-            margin-right: 20px; margin-top: 5px;
-        }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #1565c0; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        /* SEO 콘텐츠 스타일 */
+        .seo-content { line-height: 1.8; color: #444; }
+        .seo-content h3 { font-size: 1.3rem; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; color: #111; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        @media (max-width: 850px) {
-            .wrapper { flex-direction: column; }
-            .sidebar { width: 100%; position: static; min-width: auto; }
-            .main-content { width: 100%; }
-            h1.page-title { font-size: 1.8rem; }
-        }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } .main-content { width: 100%; } }
     </style>
 </head>
 <body>
-
     <div class="wrapper">
-        
-        <!-- [좌측] 메인 콘텐츠 -->
         <main class="main-content">
-            
-            <h1 class="page-title">관장님이 당신을 좋아하는 이유</h1>
-            <p class="page-subtitle">"1년 등록하면 월 3만원!"이라는 말에 속아 카드를 긁으셨나요?</p>
+            <h1 class="page-title">헬스장 사장님이 당신을 사랑하는 이유</h1>
+            <p class="page-subtitle">작심삼일로 끝난 1년 회원권, 당신의 '운동 1회' 가격을 알려드립니다.</p>
 
-            <!-- 인트로: 팩트 제시 -->
             <section class="intro-box">
-                <h2>💪 헬스장의 '기부천사' VIP 고객님</h2>
-                <p>
-                    헬스장 수익의 70%는 <strong>'등록하고 안 나오는 회원'</strong>에게서 나옵니다.<br>
-                    샤워만 하고 가더라도 이득일까요? 당신이 실제로 헬스장에 방문할 때마다 얼마를 내고 있는지 계산해드립니다.
-                </p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">fitness_center</span> 헬스장의 비즈니스 모델은 당신이 <strong>'안 나오는 것'</strong>에 기반합니다. 당신이 기부한 돈으로 헬스장은 새로운 기구를 들여옵니다. 당신의 1회당 이용료를 직시하세요.</p>
             </section>
 
             <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>📉 운동 가성비 계산기</h2>
-                <p style="margin-bottom: 25px; color: #666; font-size: 0.95rem;">
-                    결제한 금액과 실제로 나가는 횟수를 입력하세요.
-                </p>
-
+                <h2>💪 헬스 기부금 계산기</h2>
                 <div class="calc-group">
-                    <label>① 총 결제 금액 (만원)</label>
-                    <input type="number" id="totalCost" value="40" placeholder="예: 40">
-                    <div class="help-text">* 회원권 + 운동복 + 락커 + 가입비 포함</div>
+                    <label>최근 결제한 회원권 금액 (원)</label>
+                    <input type="number" id="membershipFee" placeholder="예: 360000" value="360000">
                 </div>
-
                 <div class="calc-group">
-                    <label>② 등록 기간 (개월)</label>
-                    <input type="number" id="months" value="12" placeholder="예: 12">
+                    <label>회원권 기간 (개월)</label>
+                    <input type="number" id="months" placeholder="예: 12" value="12">
                 </div>
-
                 <div class="calc-group">
-                    <label>③ 실제 주당 방문 횟수 (회)</label>
-                    <input type="number" id="weeklyVisits" value="1" placeholder="솔직하게 입력하세요 (예: 1)">
+                    <label>한 달 평균 실제 방문 횟수 (회)</label>
+                    <input type="number" id="visitPerMonth" placeholder="예: 3" value="3">
                 </div>
+                
+                <button id="calcBtn" class="calc-btn">나의 1회 이용료 계산하기</button>
 
-                <button id="calcBtn" class="calc-btn">1회 방문 당 비용 확인</button>
-
-                <!-- 결과창 -->
                 <div id="result-area">
-                    
-                    <div style="margin-bottom:20px;">
-                        <p class="result-title">당신은 헬스장에 한 번 갈 때마다</p>
-                        <span id="resCostPerVisit" class="highlight waste">0원</span>
-                        <p class="result-title">을 내고 있습니다.</p>
-                    </div>
-
-                    <div style="border-top:1px dashed #aaa; padding-top:20px;">
-                        <p class="result-title" style="margin-bottom:10px;">총 예상 방문 횟수</p>
-                        <span id="resTotalVisits" style="font-size:1.5rem; font-weight:bold; color:#555;">0회</span>
-                    </div>
-
-                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #ddd; font-size:0.95rem;">
-                        이 가격이면 동네 헬스장이 아니라<br>
-                        <strong><span id="compareItem" style="background:#bbdefb; padding:0 4px; color:#0d47a1;">5성급 호텔 피트니스</span></strong>를<br>
-                        일일권으로 끊는 게 낫습니다.
-                    </div>
+                    <p class="result-title">당신의 운동 1회당 비용은?</p>
+                    <span id="pricePerVisit" class="highlight">0원</span>
+                    <p id="resultText" style="color:#666; margin-top:10px; font-weight:bold;"></p>
                 </div>
             </section>
 
-            <!-- 팩트 체크 리스트 -->
+            <!-- 팩트체크 섹션 -->
             <section>
-                <h2>🛑 장기 등록의 함정</h2>
-                
+                <h2>🛑 헬스장 마케팅에 속지 않는 3가지 팩트</h2>
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">sentiment_dissatisfied</span></div>
+                    <div class="icon-box">1</div>
                     <div class="reason-content">
-                        <h3>작심삼일의 과학</h3>
-                        <p>인간의 의지력은 생각보다 약합니다. '1년 등록하면 싸다'는 생각은 착각입니다. 3개월만 등록하고, 다 다니면 연장하는 것이 결과적으로 훨씬 저렴합니다.</p>
+                        <h3>'12개월 할인'은 독약입니다</h3>
+                        <p>한 달에 3만 원이라는 말에 현혹되지 마세요. 당신이 3개월만 안 가도 한 달 이용료는 10만 원이 넘어가며, 헬스장만 이득을 봅니다.</p>
                     </div>
                 </div>
-                
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">gavel</span></div>
+                    <div class="icon-box">2</div>
                     <div class="reason-content">
-                        <h3>환불 위약금 폭탄</h3>
-                        <p>중도 해지를 요구하면 '정상가(월 10~15만원)' 기준으로 공제합니다. 6개월 다니고 환불받으려다 오히려 돈을 더 내야 하는 경우도 생깁니다.</p>
+                        <h3>장비빨보다 중요한 건 '출석'입니다</h3>
+                        <p>20만 원짜리 리프팅 벨트와 운동화를 사는 것보다, 만 원짜리 반바지를 입고 일단 나가는 것이 당신의 통장과 건강을 지키는 길입니다.</p>
                     </div>
                 </div>
-
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">storefront</span></div>
+                    <div class="icon-box">3</div>
                     <div class="reason-content">
-                        <h3>'먹튀' 리스크</h3>
-                        <p>장기 회원을 파격적인 가격에 모집하는 헬스장은 경영난을 겪고 있을 확률이 높습니다. 어느 날 갑자기 문을 닫고 사장님이 잠적하는 뉴스의 주인공이 될 수 있습니다.</p>
+                        <h3>PT 노쇼(No-show)의 치명적인 비용</h3>
+                        <p>당신이 오늘 귀찮아서 취소한 PT 1회 수업료 7만 원. 편의점에서 도시락을 15번 사 먹을 수 있는 소중한 돈이 증발했습니다.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- 하단 광고 -->
-            <div class="ad-box">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <!-- SEO 콘텐츠 -->
+            <section class="seo-content">
+                <h2>헬스장 1년 회원권의 경제학: 왜 우리는 기부자가 되는가?</h2>
+                <p>매년 1월이나 여름 직전, 많은 사람들이 "이번엔 진짜 운동한다"는 다짐과 함께 헬스장 회원권을 결제합니다. 헬스장은 이 시기에 맞춰 <strong>'12개월 파격 할인'</strong> 마케팅을 펼칩니다. 하지만 통계에 따르면 1년 회원권을 끊은 사람 중 80% 이상이 3개월 내에 방문을 중단합니다. 헬스장 입장에서는 이 '유령 회원'들이야말로 최고의 고객입니다. 공간은 차지하지 않으면서 선불로 큰돈을 지불했기 때문입니다.</p>
 
-            <!-- common.js가 푸터 자동 추가 -->
+                <h3>1. 보이지 않는 손실: 1회 이용료의 진실</h3>
+                <p>단순히 36만 원을 12개월로 나누면 월 3만 원 같지만, 실제로 당신이 한 달에 3번만 나간다면 1회 운동 비용은 1만 원입니다. 여기에 운동복 대여비, 락커비까지 합치면 일일권보다 비싸질 때가 많습니다. 가장 큰 손실은 '운동을 하고 있다'는 근거 없는 안도감 때문에 다른 건강한 습관을 형성할 기회를 놓치는 것입니다. 돈은 나가고 살은 빠지지 않는 최악의 투자를 하고 있는 셈입니다.</p>
 
+                <h3>2. 합리적인 운동 지출 전략</h3>
+                <p>운동 초보자라면 1년권보다는 비싸더라도 1개월 혹은 3개월권을 끊어 본인의 의지를 먼저 테스트하십시오. 혹은 '일일권'을 끊어 여러 헬스장을 체험해 보는 것이 장기적으로는 훨씬 경제적일 수 있습니다. 운동은 시설이 아니라 습관으로 하는 것입니다. 거창한 연간 계획보다 '오늘 퇴근하고 무조건 신발 신기'와 같은 작은 실행력이 당신의 계좌를 구원합니다.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 할부로 결제하면 좀 낫지 않을까요?</strong><br>A. 아니오. 눈앞에서 나가는 돈이 작아 보일 뿐, 총지출액은 동일하며 오히려 할부 이자까지 내야 합니다. 소비를 더 가볍게 여기게 만드는 함정입니다.</li>
+                    <li><strong>Q. 환불받고 싶은데 위약금이 너무 커요.</strong><br>A. 헬스장은 계약 시 환불 위약금을 법정 최고 수준으로 책정합니다. 애초에 '환불받지 않을 정도'의 기간만 계약하는 지혜가 필요합니다.</li>
+                </ul>
+            </section>
+
+            <!-- 광고 슬롯 -->
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
 
-        <!-- [우측] 사이드바 광고 -->
         <aside class="sidebar">
-            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890" 
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </aside>
-
     </div>
 
     <!-- 계산 로직 -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                // 1. 값 가져오기
-                const totalCost = Number(document.getElementById('totalCost').value) * 10000;
-                const months = Number(document.getElementById('months').value);
-                const weeklyVisits = Number(document.getElementById('weeklyVisits').value);
-
-                if(totalCost <= 0 || months <= 0 || weeklyVisits <= 0) {
-                    alert("모든 항목을 0보다 크게 입력해주세요.");
-                    return;
-                }
-
-                // 2. 계산 로직
-                // 총 방문 횟수 = 주당 횟수 * 4.345주 * 개월 수
-                const totalVisits = Math.round(weeklyVisits * 4.345 * months);
+                const fee = parseFloat(document.getElementById('membershipFee').value);
+                const months = parseFloat(document.getElementById('months').value);
+                const visits = parseFloat(document.getElementById('visitPerMonth').value);
                 
-                // 1회당 비용
-                const costPerVisit = totalCost / totalVisits;
+                if(!fee || !months || !visits) { alert('정확한 값을 입력해주세요.'); return; }
 
-                // 3. 결과 출력
+                const totalVisits = months * visits;
+                const costPerVisit = fee / totalVisits;
+
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-
-                document.getElementById('resTotalVisits').innerText = totalVisits + "회";
-                document.getElementById('resCostPerVisit').innerText = Math.round(costPerVisit).toLocaleString() + "원";
-
-                // 4. 비교 물건 변경
-                let item = "동네 목욕탕";
-                const cost = Math.round(costPerVisit);
+                document.getElementById('pricePerVisit').textContent = `${Math.round(costPerVisit).toLocaleString()}원`;
                 
-                if(cost > 100000) item = "최고급 호텔 스파";
-                else if(cost > 50000) item = "놀이공원 자유이용권";
-                else if(cost > 30000) item = "호텔 뷔페 평일 런치";
-                else if(cost > 20000) item = "치킨 한 마리";
-                else if(cost > 10000) item = "영화관 티켓";
-                
-                document.getElementById('compareItem').innerText = item;
+                let feedback = "";
+                if(costPerVisit > 50000) feedback = "이 정도면 호텔 헬스장 1인권보다 비쌉니다. 당신은 최고의 기부 천사입니다.";
+                else if(costPerVisit > 20000) feedback = "웬만한 일일권보다 비싸게 운동 중입니다. 차라리 그 돈으로 고기를 사 드세요.";
+                else feedback = "합리적인 운동 생활을 하고 계시네요. 헬스장 사장님이 눈물을 흘릴 겁니다.";
+
+                document.getElementById('resultText').textContent = feedback;
             });
         });
     </script>
