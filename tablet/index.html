@@ -3,123 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="아이패드 태블릿 생산성 효율 계산기. 비싼 기기로 유튜브만 보는 당신, 생산성 도구인지 장난감인지 진단해드립니다.">
+    <meta name="description" content="아이패드만 사면 갓생 살 줄 알았나요? 200만 원짜리 유튜브 머신이 되어버린 당신의 아이패드 활용도를 팩트로 계산해드립니다.">
     <title>아이패드병 판독기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
+
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        /* 섹션 공통 스타일 */
         section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
-        h2 { border-left: 5px solid #546e7a; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #eceff1; border: 1px solid #cfd8dc; color: #37474f; }
-        .intro-box strong { color: #546e7a; background: #fff; padding: 0 5px; border-radius: 4px; }
+
+        /* [가변] 테마 설정: Silver Grey */
+        h2 { border-left: 5px solid #607d8b; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #f1f3f4; border: 1px solid #cfd8dc; color: #263238; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #607d8b; background: #fff; padding: 0 5px; border-radius: 4px; }
+        
         .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #546e7a; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; transition: 0.2s; }
-        input:focus { border-color: #546e7a; outline: none; box-shadow: 0 0 0 3px rgba(84, 110, 122, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #546e7a; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.2s; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .calc-btn:hover { background-color: #29434e; transform: translateY(-3px); }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #eceff1; border-radius: 12px; text-align: center; animation: fadeIn 0.5s ease; }
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.waste { color: #d32f2f; } .highlight.prod { color: #2e7d32; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #607d8b; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #607d8b; outline: none; box-shadow: 0 0 0 3px rgba(96, 125, 139, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #607d8b; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(96,125,139,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #f1f3f4; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #1a237e; }
+
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #546e7a; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #607d8b; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
         
         .seo-content { line-height: 1.8; color: #444; }
-        .seo-content h3 { font-size: 1.3rem; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .seo-content p { margin-bottom: 15px; }
-        .seo-content ul { padding-left: 20px; margin-bottom: 20px; }
-        .seo-content li { margin-bottom: 10px; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; min-width: auto; } .main-content { width: 100%; } h1.page-title { font-size: 1.8rem; } }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">200만 원짜리 유튜브 머신을 사셨나요?</h1>
-            <p class="page-subtitle">"생산성 도구"라고 포장했지만, 현실은 넷플릭스 전용기입니다.</p>
+            <h1 class="page-title">장비가 당신을 작가로 만들어주진 않습니다</h1>
+            <p class="page-subtitle">"패드는 사면 낫는다"는 병, 가계부에는 불치병입니다.</p>
 
             <section class="intro-box">
-                <h2>📱 아이패드병(iPad Disease)의 증상</h2>
-                <p>본체, 펜슬, 키보드, 케이스, 애케플까지... 풀세트 가격이 노트북보다 비쌉니다. 당신의 태블릿이 <strong>'생산성 도구'</strong>인지 <strong>'비싼 장난감'</strong>인지 판독해드립니다.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">tablet_mac</span> 필기 앱과 드로잉 툴을 켜는 시간보다 유튜브 앱을 켜는 시간이 더 많으신가요? <strong>200만 원짜리 거치대</strong>를 장만한 것은 아닌지, 생산성 가치를 숫자로 확인해보세요.</p>
             </section>
 
+            <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>📊 태블릿 활용도 견적서</h2>
-                <div class="calc-group"><label>① 기기 구매 총액 (만원)</label><input type="number" id="price" value="200" placeholder="예: 200"></div>
-                <div class="calc-group"><label>② 하루 평균 사용 시간 (시간)</label><input type="number" id="hours" value="3" placeholder="예: 3"></div>
-                <div class="calc-group"><label>③ 생산적 활동(공부/일/그림) 비중 (%)</label><input type="number" id="prodRate" value="10" placeholder="예: 10"><div class="help-text">* 솔직하게! 유튜브/넷플릭스/게임은 제외</div></div>
-                <button id="calcBtn" class="calc-btn">내 태블릿의 정체 확인하기</button>
+                <h2>📱 디바이스 본전 뽑기 계산기</h2>
+                <div class="calc-group">
+                    <label>패드 + 펜슬 + 키보드 총 구매가 (만원)</label>
+                    <input type="number" id="totalPrice" placeholder="예: 180" value="180">
+                </div>
+                <div class="calc-group">
+                    <label>주당 '생산적 활동(공부/업무)' 이용 시간 (시간)</label>
+                    <input type="number" id="weeklyProd" placeholder="예: 5" value="5">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">영상 시청이나 쇼핑 시간은 제외하세요.</p>
+                </div>
+                <div class="calc-group">
+                    <label>예상 사용 기간 (년)</label>
+                    <input type="number" id="usageYears" placeholder="예: 3" value="3">
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">나의 1시간당 장비료 확인</button>
+
                 <div id="result-area">
-                    <div style="margin-bottom:20px;"><p class="result-title">단순 콘텐츠 소비(딴짓)에 쓴 기계값</p><span id="resWaste" class="highlight waste">0원</span><p style="font-size:0.9rem; color:#888;">(전체 가격의 <span id="resPercent">0</span>% 낭비)</p></div>
-                    <div style="border-top:1px dashed #aaa; padding-top:20px;"><p class="result-title" style="margin-bottom:10px;">영상만 볼 거였다면</p><span id="resItem" class="highlight prod" style="font-size:1.6rem;">가성비 태블릿</span><p style="font-size:0.9rem; color:#888;">을(를) 사는 게 맞았습니다.</p></div>
-                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #cfd8dc; font-size:0.95rem;"><strong>팩트 폭격:</strong><br>당신은 <strong><span style="color:#546e7a;">최고급 화가용 붓</span></strong>을 사서<br>라면 젓가락으로 쓰고 계십니다.</div>
+                    <p class="result-title">생산성 향상을 위해 당신이 지불하는 시급</p>
+                    <span id="costPerHour" class="highlight">약 0원</span>
+                    <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
+            <!-- 팩트 체크 -->
             <section>
-                <h2>🛑 결제하기 전 스스로에게 물어볼 것</h2>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">laptop_mac</span></div><div class="reason-content"><h3>노트북을 대체할 수 없다</h3><p>엑셀, PPT, 문서 작업... 생산성 작업은 여전히 노트북이 10배 편합니다. 태블릿은 '보조 도구'일 뿐, 메인 컴퓨터가 될 수 없습니다. 결국 노트북을 또 들고 다니게 됩니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">edit</span></div><div class="reason-content"><h3>필기, 진짜 하시나요?</h3><p>"굿노트에 필기해서 공부해야지"라며 펜슬을 사지만, 종이책의 직관성을 따라오지 못해 결국 방치됩니다. 20만 원짜리 애플펜슬은 비싼 터치펜이 됩니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">play_circle</span></div><div class="reason-content"><h3>유튜브 머신의 최후</h3><p>사용 시간의 90%가 영상 시청이라면, 30만 원짜리 보급형 태블릿으로도 차고 넘칩니다. M2, M4 칩셋의 고성능은 넷플릭스 보는 데 필요 없습니다.</p></div></div>
+                <h2>🛑 아이패드를 사기 전 들어야 할 3가지 팩트</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>도구는 의지를 대체하지 못합니다</h3>
+                        <p>노트에 안 적던 사람이 아이패드를 산다고 메모 광이 되지 않습니다. 당신은 지적 열망을 결제로 해소했을 뿐입니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>감가상각의 속도는 빛보다 빠릅니다</h3>
+                        <p>새 모델이 발표되는 순간, 당신의 비싼 장비는 '구형'이라는 낙인과 함께 중고가가 수십만 원 하락합니다. 기술에 투자하지 마세요.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>'프로'를 위한 도구, 당신은 프로인가요?</h3>
+                        <p>영상 편집과 3D 렌더링을 하지 않는 유저에게 '프로'급 성능은 전력 낭비이자 자본의 낭비일 뿐입니다.</p>
+                    </div>
+                </div>
             </section>
 
-            <!-- SEO 텍스트 추가 -->
+            <!-- SEO 텍스트 -->
             <section class="seo-content">
-                <h2>📱 '아이패드병'은 사야 낫는다?</h2>
-                <p>"아이패드 사고 싶다"는 생각이 머릿속을 떠나지 않는 현상을 '아이패드병'이라고 부릅니다. 그리고 이 병의 유일한 치료법은 '구매'라고들 하죠. 하지만 완치 후 찾아오는 것은 '텅 빈 통장'과 '방치된 기기'뿐입니다. 태블릿은 분명 혁신적인 기기이지만, 대다수의 사용자에게는 오버스펙(Over-spec)입니다.</p>
+                <h2>아이패드 프로병의 심리학: 생산성이라는 이름의 면죄부</h2>
+                <p>커뮤니티에서는 우스갯소리로 "아이패드병은 사야 낫는다"고 말합니다. 하지만 재테크적 관점에서 이 병은 <strong>'가장 비싼 엔터테인먼트 장비 가입비'</strong>를 지불하게 만드는 마케팅 질병입니다. 고성능 칩셋과 화려한 디스플레이를 보고 있으면, 마치 이것을 손에 넣는 순간 내 커리어가 획기적으로 변할 것 같은 착각에 빠지게 됩니다.</p>
 
-                <h3>1. 생산성 도구 vs 콘텐츠 소비 도구</h3>
-                <p>애플은 아이패드를 '컴퓨터의 대체재'라고 광고하지만, 실제로는 콘텐츠 소비에 최적화된 기기입니다. 영상 편집이나 전문적인 일러스트 작업을 하지 않는 이상, 200만 원짜리 아이패드 프로와 50만 원짜리 아이패드 에어, 심지어 30만 원짜리 보급형 태블릿의 차이를 느끼기 어렵습니다. 유튜브와 넷플릭스 머신으로 쓰기엔 너무 비싼 장난감입니다.</p>
+                <h3>1. 보이지 않는 손실: 200만 원의 기회비용</h3>
+                <p>기기값 150만 원, 전용 펜슬 15만 원, 매직 키보드 45만 원. 도합 210만 원을 들이는 것이 흔한 일이 되었습니다. 만약 이 210만 원을 나스닥 주식(연 10% 복리)에 넣어두고 5년만 기다렸다면 약 340만 원의 자산이 되었을 것입니다. 만약 당신이 이 장비를 활용해 추가 수입을 연간 130만 원 이상 창출하지 못한다면, 당신은 순수하게 130만 원의 기회비용을 <strong>'예쁜 넷플릭스 머신'</strong>을 갖기 위해 태워버린 것입니다. 부자들은 도구가 돈을 벌어다 줄 때만 지갑을 엽니다. 당신의 아이패드는 지금 돈을 벌고 있습니까, 쓰고 있습니까?</p>
 
-                <h3>2. 노트북과의 애매한 포지션</h3>
-                <p>키보드 케이스(매직 키보드)를 사면 노트북처럼 쓸 수 있을 것 같지만, 무게는 노트북보다 무거워지고 가격도 맥북 에어를 넘어섭니다. 그런데도 파일 관리나 멀티태스킹은 여전히 불편합니다. 결국 "이럴 거면 맥북을 살걸"이라는 후회와 함께 당근마켓에 매물로 내놓게 됩니다.</p>
+                <h3>2. 아날로그로도 충분한 갓생</h3>
+                <p>성공의 본질은 기록의 수단이 아니라 기록된 것을 실천하는 힘에 있습니다. 다이소 1,000원짜리 수첩과 볼펜 한 자루로도 세상을 바꾼 사람들은 많습니다. 디지털 기기의 화려함에 속아 가장 중요한 '실천력'을 잊지 마십시오. 당신의 침대 머리맡에서 충전되고 있는 것은 당신의 꿈이 아니라 전자 폐기물이 될 준비를 하는 가전제품일 뿐입니다. 지출을 줄여 현금을 뭉치세요. 0과 1로 된 가상의 종이보다, 은행 앱에 찍힌 실재하는 숫자가 당신을 진정으로 더 스마트하게 만듭니다.</p>
 
                 <h3>자주 묻는 질문 (FAQ)</h3>
                 <ul>
-                    <li><strong>Q. 대학생인데 필기용으로 필요하지 않을까요?</strong><br>A. 필기용이라면 아이패드 에어나 기본형 모델, 혹은 갤럭시탭 S시리즈로도 충분합니다. 굳이 '프로' 라인업을 고집할 필요는 없습니다.</li>
-                    <li><strong>Q. 그림을 배워보고 싶은데...</strong><br>A. 장비가 좋다고 그림 실력이 늘지는 않습니다. 입문자라면 저렴한 기기로 시작해서, 실력이 늘었을 때 상위 기종으로 넘어가는 것이 현명한 소비입니다.</li>
+                    <li><strong>Q. 학생이라 PDF 공부에 꼭 필요한데요?</strong><br>A. 보급형 아이패드(에어/기본)만으로도 공부용 성능은 차고 넘칩니다. '프로'급을 고집하는 순간 그것은 학구열이 아닌 장비 욕심임을 인정해야 합니다.</li>
+                    <li><strong>Q. 그림을 배워보려고 합니다.</strong><br>A. 당근마켓에서 구형 기기로 3개월만 연습해 보세요. 그때도 열정이 남아있다면 새 기기를 사도 늦지 않습니다. 대부분은 한 달 만에 포기합니다.</li>
                 </ul>
             </section>
 
-            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div>
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-        <aside class="sidebar"><div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div></aside>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
     </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                const price = Number(document.getElementById('price').value) * 10000;
-                const prodRate = Number(document.getElementById('prodRate').value);
-                if(price <= 0) { alert("가격을 입력해주세요."); return; }
-                const wasteRate = 100 - prodRate;
-                const wasteCost = price * (wasteRate / 100);
+                const total = (parseFloat(document.getElementById('totalPrice').value) || 0) * 10000;
+                const hours = parseFloat(document.getElementById('weeklyProd').value) || 0;
+                const yrs = parseFloat(document.getElementById('usageYears').value) || 1;
+                
+                if(hours === 0) {
+                    alert('생산적 시간을 0 이상 입력하세요. 아니면 100% 낭비입니다!'); return;
+                }
+
+                const totalHours = hours * 52 * yrs;
+                const costPerHourValue = total / totalHours;
+
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-                document.getElementById('resWaste').innerText = Math.round(wasteCost).toLocaleString() + "원";
-                document.getElementById('resPercent').innerText = wasteRate;
-                const wasteManwon = wasteCost / 10000;
-                let item = "가성비 태블릿";
-                if(wasteManwon > 150) item = "가성비 태블릿 10대";
-                else if(wasteManwon > 100) item = "보급형 노트북 2대";
-                else if(wasteManwon > 50) item = "4K 모니터 + 고급 의자";
-                else if(wasteManwon > 30) item = "갤럭시 탭 A시리즈";
-                else if(wasteManwon > 10) item = "킨들(Kindle)";
-                document.getElementById('resItem').innerText = item;
+                document.getElementById('costPerHour').textContent = `1시간당 약 ${Math.round(costPerHourValue).toLocaleString()}원`;
+                
+                let feedback = "";
+                if(costPerHourValue > 10000) feedback = "이 정도면 시간당 스터디룸을 대여하는 게 훨씬 쌉니다. 당신에겐 너무 과한 기기네요.";
+                else if(costPerHourValue > 2000) feedback = "전문가 도구를 단순 취미용으로 소모 중입니다. 활용도를 더 높여야 본전을 뽑습니다.";
+                else feedback = "완벽한 가성비! 당신은 장비를 장비답게 쓰는 훌륭한 크리에이터입니다.";
+
+                document.getElementById('resultText').textContent = feedback;
             });
         });
     </script>
