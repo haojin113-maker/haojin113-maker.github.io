@@ -3,93 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="술값 지출 계산기. 음주, 안주, 택시비로 나가는 돈이 10년 뒤 얼마가 되는지 계산해드립니다.">
+    <meta name="description" content="기분 좋게 긁은 술값, 30년 뒤엔 아파트 한 채 값일지도 모릅니다. 당신의 주당 술값과 대리비가 만드는 기회비용을 팩트로 계산해드립니다.">
     <title>술값 계산기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 및 라이브러리 -->
     <script src="../common.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
-        .main-content { flex: 3; } .sidebar { flex: 1; position: sticky; top: 20px; }
-        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; border: 1px solid #eee; }
-        h1.page-title { font-size: 2.2rem; margin: 20px 0 10px; color: #111; }
-        h2 { border-left: 5px solid #f57f17; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #fff8e1; border: 1px solid #ffe082; color: #ef6c00; }
-        .intro-box strong { color: #f57f17; background: #fff; padding: 0 5px; border-radius: 4px; }
-        .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; color: #f57f17; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #f57f17; color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 1.2rem; font-weight: bold; }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fff3e0; border-radius: 12px; text-align: center; }
-        .highlight { font-size: 2.5rem; font-weight: 900; display: block; margin: 10px 0; color: #f57f17; }
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        h2 { border-left: 5px solid #ef6c00; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #fff3e0; border: 1px solid #ffe0b2; color: #e65100; padding: 25px; border-radius: 12px; }
         
-        .seo-content h3 { margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; } }
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #ef6c00; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #ef6c00; outline: none; box-shadow: 0 0 0 3px rgba(239, 108, 0, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #ef6c00; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(239, 108, 0, 0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fff3e0; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #bf360c; }
+
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #ef6c00; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">술값으로 건물 한 채 마셔 없앴습니다</h1>
-            <p class="page-subtitle">"딱 한 잔만" 하다가 잃어버린 당신의 건강과 자산, 계산해드립니다.</p>
+            <h1 class="page-title">당신이 마셔 없앤 건물을 찾으시나요?</h1>
+            <p class="page-subtitle">일주일 두 번의 술자리가 노후를 갉아먹는 방식.</p>
 
             <section class="intro-box">
-                <h2>🍺 알코올에 저당 잡힌 인생</h2>
-                <p>술값만 문제가 아닙니다. 안주값, 택시비, 대리비, 다음날 해장국 값까지... 일주일에 2~3번 즐기는 음주가 당신의 <strong>은퇴 시기</strong>를 얼마나 늦추고 있는지 확인해보세요.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">local_bar</span> "오늘 고생했으니 한 잔"이라는 보상은 너무나 비쌉니다. 술값에 안주값, 대리비, 그리고 다음 날 숙취 해소 비용까지... <strong>'진짜 비용'</strong>을 마주해 보세요.</p>
             </section>
 
+            <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>🥃 음주 비용 견적서</h2>
-                <label>① 일주일에 술 마시는 횟수 (회)</label>
-                <input type="number" id="weeklyCount" value="2" placeholder="예: 2">
-                <label>② 1회당 총지출 (원)</label>
-                <input type="number" id="sessionCost" value="50000" placeholder="예: 50000 (안주+택시비)">
-                <label>③ 음주 지속 기간 (년)</label>
-                <input type="number" id="years" value="20" placeholder="예: 20">
-                <button id="calcBtn" class="calc-btn">사라진 내 돈 확인하기</button>
+                <h2>🍺 음주 기회비용 계산기</h2>
+                <div class="calc-group">
+                    <label>일주일 평균 음주 횟수 (번)</label>
+                    <input type="number" id="freq" placeholder="예: 2" value="2">
+                </div>
+                <div class="calc-group">
+                    <label>술자리 1회 평균 총 지출액 (원)</label>
+                    <input type="number" id="costPerSession" placeholder="예: 50000" value="50000">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">2~3차 비용 및 대리비/택시비를 포함하세요.</p>
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">30년 뒤 내 술값 계산하기</button>
 
                 <div id="result-area">
-                    <p>당신이 술독에 쏟아부을 총액</p>
-                    <span id="resTotal" class="highlight">0원</span>
-                    <div style="margin-top:20px; padding-top:20px; border-top:1px dashed #999;">
-                        <p>이 돈을 투자했다면 (S&P500 복리)</p>
-                        <strong id="resInvest" style="font-size:1.8rem; color:#2e7d32;">0원</strong>
-                        <p>이 되었습니다.</p>
+                    <p class="result-title">술 안 마시고 주식에 투자했다면?</p>
+                    <span id="futureValue" class="highlight">약 0원</span>
+                    <p id="resultDesc" style="color:#666;"></p>
+                </div>
+            </section>
+
+            <!-- 팩트 체크 -->
+            <section>
+                <h2>🛑 '딱 한 잔'이 무서운 이유 3가지</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>술값은 빙산의 일각입니다</h3>
+                        <p>술기운에 긁는 2차비용, 택시비, 편의점 숙취 해소 음료, 그리고 다음 날 '해장 메뉴' 지출까지... 1차 비용의 최소 1.5배가 나갑니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>다음 날 오전 시간의 완전한 증발</h3>
+                        <p>숙취 때문에 멍하니 보낸 업무 시간, 날아가버린 주말 아침의 운동 시간... 술은 당신의 '현금'과 '시간'을 동시에 약탈합니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>몸으로 지출하는 이자 (건강 자산)</h3>
+                        <p>간 건강, 혈당 상승, 뇌 세포 파괴는 보험금으로도 돌려받지 못할 기회비용입니다. 젊음이라는 자산을 술통에 담그고 계십니다.</p>
                     </div>
                 </div>
             </section>
 
+            <!-- SEO 텍스트 -->
             <section class="seo-content">
-                <h2>🛑 금주가 최고의 재테크인 이유</h2>
-                <h3>1. 마시는 뱃살, '엠티 칼로리'</h3>
-                <p>소주 1병은 밥 한 공기 반(400kcal)과 같습니다. 알코올은 영양소 없이 열량만 높아, 안주를 지방으로 축적시키는 촉매 역할을 합니다. 술만 끊어도 살이 빠지고 헬스장 등록비를 아낄 수 있습니다.</p>
-                <h3>2. 간(Liver)은 침묵의 장기입니다</h3>
-                <p>알코올성 지방간, 간경변은 증상 없이 찾아옵니다. 나중에 병원비로 나갈 돈까지 생각하면, 지금 마시는 술 한 잔의 가격은 수십만 원이나 다름없습니다. 건강을 잃으면 돈도 소용없습니다.</p>
-            </section>
-            
-            <div class="ad-box"><span style="font-size:11px; color:#ccc;">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
-        </main>
-        <aside class="sidebar"><div style="min-height: 600px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div></aside>
-    </div>
-    <script>
-        document.getElementById('calcBtn').addEventListener('click', function() {
-            const count = Number(document.getElementById('weeklyCount').value);
-            const cost = Number(document.getElementById('sessionCost').value);
-            const years = Number(document.getElementById('years').value);
-            if(count <= 0 || cost <= 0 || years <= 0) { alert("값을 입력해주세요."); return; }
-            
-            const weeklyCost = count * cost;
-            const totalCost = weeklyCost * 52 * years;
-            const rate = 0.10 / 12;
-            const months = years * 12;
-            const monthlyCost = weeklyCost * 4.345;
-            const investValue = monthlyCost * ((Math.pow(1 + rate, months) - 1) / rate);
+                <h2>술자리 비용과 노후 자산의 반비례 공식</h2>
+                <p>퇴근 후 시원한 맥주 한 잔은 하루의 피로를 풀어주는 것 같습니다. 하지만 통계청 조사에 따르면 대한민국 1인당 주당 주류 소비 비용은 꾸준히 상승하고 있습니다. 문제는 단순히 지갑에서 나가는 현금이 아닙니다. 술에 들어가는 비용을 <strong>'미래를 위한 투자 자금'</strong>으로 치환했을 때 나오는 결과는 가히 공포스러운 수준입니다.</p>
 
-            const resultArea = document.getElementById('result-area');
-            resultArea.style.display = 'block';
-            document.getElementById('resTotal').innerText = Math.round(totalCost).toLocaleString() + "원";
-            document.getElementById('resInvest').innerText = Math.round(investValue).toLocaleString() + "원";
+                <h3>1. 보이지 않는 지출의 연쇄 반응</h3>
+                <p>많은 분들이 "맥주 한 캔 3천 원인데 어떠냐"고 합니다. 하지만 혼술이 아닌 외부 술자리는 이야기가 다릅니다. 최근 외식 물가 상승으로 소주 한 병 6천 원 시대입니다. 여기에 어울리는 안주, 분위기에 휩싸여 가는 2차 지출, 밤늦은 귀가로 인한 택시비까지 합치면 한 번 술자리에 5만 원에서 10만 원이 우습게 사라집니다. 한 달에 단 4번만 술을 마셔도 당신은 최신형 아이폰 한 대 분의 할부금을 술기운과 함께 날려 보내는 것입니다.</p>
+
+                <h3>2. 주류 비용을 복리로 계산한다면?</h3>
+                <p>미국 주식 시장의 연평균 수익률 8%를 가정해 봅시다. 매주 두 번의 술자리를 위해 쓰는 10만 원을 저축하여 복리로 굴린다면, 30년 뒤 당신은 단순히 돈을 아끼는 것을 넘어 **서울 근교의 소형 아파트를 구매할 수도 있는 자산**을 갖게 됩니다. 술을 마시는 행위는 미래의 아파트 벽돌 수백 장을 안주 삼아 씹고 있는 것과 같습니다. 지인과의 친목도 중요하지만, 그 친목의 비용이 내 은퇴 이후의 삶을 위태롭게 하고 있지는 않은지 확인해야 합니다.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 아예 안 마시고 살 수는 없지 않나요?</strong><br>A. 맞습니다. 포인트는 '무의식적인 과지출'을 막는 것입니다. 술자리의 빈도를 절반으로 줄이고, 2차 대신 차 한 잔을 하는 습관만으로도 미래 자산의 앞자리가 바뀝니다.</li>
+                    <li><strong>Q. 소주는 싸니까 괜찮지 않나요?</strong><br>A. 술값 자체가 저렴한 만큼 '더 많이 마시게 되고' 더 자극적인 안주를 시키게 됩니다. 결국 지갑 사정과 건강 사정에 끼치는 해악은 고가의 위스키 한 잔을 음미하는 것보다 클 수 있습니다.</li>
+                </ul>
+            </section>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </main>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                const freq = parseFloat(document.getElementById('freq').value) || 0;
+                const cost = parseFloat(document.getElementById('costPerSession').value) || 0;
+                const yrs = 30; // 기준
+                const rate = 0.08;
+                
+                const monthly = freq * cost * 4.345;
+                let total = 0;
+                for(let i=0; i < yrs * 12; i++) {
+                    total = (total + monthly) * (1 + rate/12);
+                }
+
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+                document.getElementById('futureValue').textContent = `약 ${(total/10000).toFixed(0)}만 원`;
+                document.getElementById('resultDesc').textContent = `30년 동안 술을 마시지 않고 그 돈을 주식 지수에 넣었다면, 은퇴할 때 당신은 ${(total/100000000).toFixed(1)}억 원을 가진 부자가 되어 있었을 겁니다.`;
+            });
         });
     </script>
 </body>
