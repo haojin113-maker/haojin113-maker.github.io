@@ -3,126 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="전세 기회비용 계산기. 전세 보증금을 투자했을 때의 수익과 비교하여 보이지 않는 월세를 계산해드립니다.">
-    <title>전세의 배신 | 팩트 폭격 연구소</title>
+    <meta name="description" content="전세가 공짜라는 환상을 버리세요. 거액의 보증금이 묶여서 발생하는 '기회비용'을 계산하면 전세는 결코 저렴하지 않습니다. 진짜 월세를 팩트로 확인하세요.">
+    <title>전세의 배신 판독기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
+
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        /* 섹션 공통 스타일 */
         section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
-        h2 { border-left: 5px solid #607d8b; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #eceff1; border: 1px solid #cfd8dc; color: #37474f; }
-        .intro-box strong { color: #607d8b; background: #fff; padding: 0 5px; border-radius: 4px; }
+
+        /* [가변] 테마 설정: Slate Blue */
+        h2 { border-left: 5px solid #455a64; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #eceff1; border: 1px solid #cfd8dc; color: #263238; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #455a64; background: #fff; padding: 0 5px; border-radius: 4px; }
+        
         .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #607d8b; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; transition: 0.2s; }
-        input:focus { border-color: #607d8b; outline: none; box-shadow: 0 0 0 3px rgba(96, 125, 139, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #607d8b; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.2s; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .calc-btn:hover { background-color: #455a64; transform: translateY(-3px); }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #eceff1; border-radius: 12px; text-align: center; animation: fadeIn 0.5s ease; }
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.cost { color: #d32f2f; } .highlight.asset { color: #2e7d32; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #455a64; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #455a64; outline: none; box-shadow: 0 0 0 3px rgba(69, 90, 100, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #455a64; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(69,90,100,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #eceff1; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #b71c1c; }
+
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #607d8b; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #455a64; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
         
         .seo-content { line-height: 1.8; color: #444; }
-        .seo-content h3 { font-size: 1.3rem; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .seo-content p { margin-bottom: 15px; }
-        .seo-content ul { padding-left: 20px; margin-bottom: 20px; }
-        .seo-content li { margin-bottom: 10px; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; min-width: auto; } .main-content { width: 100%; } h1.page-title { font-size: 1.8rem; } }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">전세는 공짜가 아닙니다, '숨겨진 월세'입니다</h1>
-            <p class="page-subtitle">수억 원의 보증금을 깔고 앉아있는 동안, 당신이 잃어버리고 있는 기회비용을 알려드립니다.</p>
+            <h1 class="page-title">전세, 당신이 집주인에게 이자를 빌려주는 셈</h1>
+            <p class="page-subtitle">보증금 3억이면 당신은 매달 얼마를 기부하고 있을까요?</p>
 
             <section class="intro-box">
-                <h2>🏢 자산이 묶이는 공포</h2>
-                <p>보증금 3억 원을 연 5% 투자처에만 넣어도 <strong>월 125만 원</strong>의 소득이 생깁니다. 당신은 사실상 매달 125만 원의 월세를 집주인에게 '이자' 형태로 상납하고 있는 셈입니다.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">domain_disabled</span> 전세는 세입자에게 유리한 제도가 아닙니다. 당신의 목돈을 집주인이 가져가 대출 상환에 쓰거나 투자를 하게 두는 <strong>'무이차 사금융'</strong>일 뿐입니다. 기회비용을 팩트로 확인하세요.</p>
             </section>
 
+            <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>📉 전세 기회비용 계산기</h2>
-                <div class="calc-group"><label>① 전세 보증금 (만원)</label><input type="number" id="deposit" value="30000" placeholder="예: 30000 (3억)"></div>
-                <div class="calc-group"><label>② 기대 투자 수익률 (연 %)</label><input type="number" id="roi" value="5.0" placeholder="예: 5.0 (예금 or 배당주)"></div>
-                <div class="calc-group"><label>③ 거주 예정 기간 (년)</label><input type="number" id="years" value="2" placeholder="예: 2 (기본 계약)"></div>
-                <button id="calcBtn" class="calc-btn">숨겨진 '진짜 월세' 확인하기</button>
+                <h2>🏢 실질 전세 비용 계산기</h2>
+                <div class="calc-group">
+                    <label>나의 전세 보증금액 (만원)</label>
+                    <input type="number" id="jeonseDeposit" placeholder="예: 30000" value="30000">
+                </div>
+                <div class="calc-group">
+                    <label>기대 투자 수익률 (연 %)</label>
+                    <input type="number" id="returnRate" placeholder="예: 5" value="5">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">배당주나 국채에 넣었을 때 받을 수 있는 보수적인 수치입니다.</p>
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">월세 환산액 확인하기</button>
+
                 <div id="result-area">
-                    <div style="margin-bottom:20px;"><p class="result-title">당신이 매달 내고 있는 보이지 않는 월세</p><span id="resMonthly" class="highlight cost">0원</span></div>
-                    <div style="border-top:1px dashed #90a4ae; padding-top:20px;"><p class="result-title" style="margin-bottom:10px;">계약 기간 동안 날린 투자 수익</p><span id="resTotal" class="highlight asset">0원</span><p style="font-size:0.9rem; color:#546e7a;">(복리 효과 미고려, 단순 이자 수익)</p></div>
-                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #cfd8dc; font-size:0.95rem;">이 보증금으로 월세를 살고 차액을 투자했다면<br><strong><span id="compareItem" style="background:#eceff1; padding:0 4px; color:#37474f;">중형차 한 대</span></strong>가 공짜로 생겼을 것입니다.</div>
+                    <p class="result-title">당신이 매달 집주인에게 내는 보이지 않는 월세는?</p>
+                    <span id="monthlyImplicit" class="highlight">0원</span>
+                    <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
+            <!-- 팩트 체크 -->
             <section>
-                <h2>🛑 전세 제도를 다시 생각해야 하는 이유</h2>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">warning</span></div><div class="reason-content"><h3>깡통 전세와 사기 리스크</h3><p>집값이 떨어지면 보증금을 돌려받지 못할 위험이 큽니다. 내 전 재산을 집주인의 '신용' 하나에 맡기는 위험천만한 거래입니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">lock_clock</span></div><div class="reason-content"><h3>자산 유동성 제로 (Money Lock)</h3><p>수억 원의 현금이 2년 동안 묶여버립니다. 주식 시장이 폭락해서 기회가 와도, 급하게 돈이 필요해도 손을 댈 수 없습니다. 돈이 일을 하지 않고 잠자게 됩니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">trending_down</span></div><div class="reason-content"><h3>인플레이션 방어 불가</h3><p>물가는 매년 오르는데, 전세 보증금의 가치는 그대로입니다. 2년 뒤 돌려받은 3억 원은, 2년 전의 3억 원보다 구매력이 떨어져 있습니다.</p></div></div>
+                <h2>🛑 전세가 당신의 부를 갉아먹는 3가지 이유</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>화폐 가치 하락의 직격탄</h3>
+                        <p>2년 전의 1억 원과 지금의 1억 원은 가치가 다릅니다. 보증금을 돌려받을 때 당신은 물가 상승률만큼 손실을 보고 있는 것입니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>전세 사기(역전세) 리스크의 전가</h3>
+                        <p>집값이 하락할 때의 리스크를 온전히 세입자가 집주인 대신 짊어지는 구조입니다. 원금이 보장된다는 생각은 위험한 착각일 수 있습니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>투자의 시드머니 유동성 차단</h3>
+                        <p>거액의 돈이 '집'에 묶여 있으면 하락장에 우량 자산을 살 기회조차 얻지 못합니다. 당신의 2년은 전세 계약서에 갇혀 있습니다.</p>
+                    </div>
+                </div>
             </section>
 
-            <!-- SEO 텍스트 추가 -->
+            <!-- SEO 텍스트 -->
             <section class="seo-content">
-                <h2>🏢 전세는 한국에만 있는 '기이한' 제도</h2>
-                <p>전세 제도는 고금리 성장 시대의 유산입니다. 집주인은 무이자로 목돈을 빌려 투자하고, 세입자는 월세보다 싼 이자로 주거를 해결하는 윈윈(Win-Win) 구조였습니다. 하지만 저금리, 저성장 시대로 접어들면서 전세는 세입자에게 불리한 제도가 되었습니다.</p>
+                <h2>전세의 배신: 목돈을 집주인에게 0% 이자로 빌려주고 계신가요?</h2>
+                <p>대한민국에만 존재하는 독특한 제도 '전세'. 우리는 흔히 월세가 아까워서 전세로 간다고 말합니다. 하지만 이는 금융맹(Financial Illiteracy)적인 접근입니다. 경제학적으로 **'기회비용'**을 따진다면 전세는 세상에서 가장 비싼 거주 방식 중 하나가 될 수 있습니다.</p>
 
-                <h3>1. 보이지 않는 비용: 기회비용</h3>
-                <p>전세 보증금 3억 원을 은행 예금(연 4%)에만 넣어둬도 연 1,200만 원, 월 100만 원의 수익이 발생합니다. 즉, 전세를 산다는 것은 매달 100만 원을 집주인에게 주고 있는 것과 같습니다. 만약 이 돈을 연 8~10% 수익을 내는 미국 주식에 투자했다면? 월 200만 원 이상의 기회비용을 날리는 셈입니다.</p>
+                <h3>1. 보이지 않는 지출: 당신의 돈이 일하지 못하는 대가</h3>
+                <p>예를 들어 3억 원의 전세 보증금을 내고 산다고 가정해 봅시다. 당신이 이 돈을 직접 굴려 연 5%의 안전한 수익만 낸다 하더라도, 1년에 1,500만 원, 즉 매달 125만 원의 수익이 발생합니다. 당신은 지금 전세라는 이름으로 집주인에게 매달 125만 원씩 무상으로 송금하고 있는 셈입니다. 2년 계약 기간이면 무려 3,000만 원이라는 거액의 기회비용을 거주와 맞바꾼 것입니다.</p>
 
-                <h3>2. 월세 살고 투자하는 게 낫다?</h3>
-                <p>최근 '전세의 월세화'가 가속화되고 있습니다. 보증금을 최소화하고(보증금 1,000~2,000만 원), 나머지 돈으로 투자를 하는 것이 자산 증식에 훨씬 유리하기 때문입니다. 특히 사회초년생일수록 목돈을 집에 깔고 앉아있는 것(Dead Money)을 경계해야 합니다. 돈이 일하게 만들어야 부자가 될 수 있습니다.</p>
+                <h3>2. '안전 자산'이라는 환상의 붕괴</h3>
+                <p>최근의 빌라왕 사건이나 전세 사기 대란은 전세 제도의 민낯을 보여줍니다. 내 소중한 자산을 상대방의 신용이나 주택 가치 하나에만 의존해 100% 묻어두는 행위는 분산 투자의 관점에서 최악의 선택입니다. 집값은 하락하고 전세가는 고정되어 있는 '역전세' 상황이 오면, 당신은 보증금을 제때 돌려받지 못해 이사는 물론이고 향후 청약 계획까지 망칠 수 있습니다. 겉으론 공짜인 척하지만, 실은 당신의 인생 전체를 담보로 건 고위험 거래입니다.</p>
 
                 <h3>자주 묻는 질문 (FAQ)</h3>
                 <ul>
-                    <li><strong>Q. 전세 자금 대출 이자가 월세보다 싸지 않나요?</strong><br>A. 금리가 낮을 때는 그랬습니다. 하지만 금리가 오르면 대출 이자가 월세와 비슷해지거나 더 비싸집니다. 게다가 전세 사기 위험(깡통 전세)이라는 거대한 리스크까지 떠안아야 합니다.</li>
-                    <li><strong>Q. 그럼 무조건 월세가 답인가요?</strong><br>A. 투자를 전혀 할 줄 모르고 돈 관리가 안 되는 사람이라면 전세가 강제 저축의 효과가 있을 수 있습니다. 하지만 재테크에 관심이 있다면, 자산의 유동성을 확보할 수 있는 월세가 훨씬 유리한 포지션입니다.</li>
+                    <li><strong>Q. 전세 자금 대출 이자가 월세보다 싸지 않나요?</strong><br>A. 이자만 보면 그럴 수 있지만, 본인 자본(시드머니)의 기회비용과 중도 퇴거의 어려움, 사기 리스크를 합산한 총비용을 따지면 반전세나 월세가 훨씬 유리한 경우가 많습니다.</li>
+                    <li><strong>Q. 그럼 월세로 사는 게 정답인가요?</strong><br>A. 정답은 본인의 자산을 집주인에게 맡기지 않고 '본인이 직접 굴리는 것'입니다. 시드머니를 지키고 유동성을 확보한 채 월세를 내는 것이 10년 뒤의 자산 성장에 훨씬 가속도를 붙여줍니다.</li>
                 </ul>
             </section>
 
-            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div>
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-        <aside class="sidebar"><div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div></aside>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
     </div>
+
+    <!-- 로직 스크립트 -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                const deposit = Number(document.getElementById('deposit').value) * 10000;
-                const rate = Number(document.getElementById('roi').value) / 100;
-                const years = Number(document.getElementById('years').value);
-                if(deposit <= 0 || rate <= 0 || years <= 0) { alert("모든 값을 올바르게 입력해주세요."); return; }
-                const annualOpportunityCost = deposit * rate;
-                const monthlyOpportunityCost = annualOpportunityCost / 12;
-                const totalOpportunityCost = annualOpportunityCost * years;
+                const deposit = parseFloat(document.getElementById('jeonseDeposit').value) * 10000;
+                const rate = parseFloat(document.getElementById('returnRate').value) / 100;
+                
+                if(!deposit || !rate) { alert('값을 입력해주세요.'); return; }
+
+                // 기회비용 (월 환산)
+                const yearlyOpportunityCost = deposit * rate;
+                const monthlyImplicitRent = yearlyOpportunityCost / 12;
+
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-                document.getElementById('resMonthly').innerText = Math.round(monthlyOpportunityCost).toLocaleString() + "원";
-                document.getElementById('resTotal').innerText = Math.round(totalOpportunityCost).toLocaleString() + "원";
-                const totalManwon = totalOpportunityCost / 10000;
-                let item = "최신형 가전제품 풀세트";
-                if(totalManwon > 10000) item = "테슬라 모델 Y";
-                else if(totalManwon > 5000) item = "그랜저 신차";
-                else if(totalManwon > 3000) item = "소형 SUV (코나, 셀토스)";
-                else if(totalManwon > 2000) item = "아반떼 신차";
-                else if(totalManwon > 1000) item = "유럽 여행 2회 (2인)";
-                else if(totalManwon > 500) item = "명품 가방 하나";
-                document.getElementById('compareItem').innerText = item;
+                document.getElementById('monthlyImplicit').textContent = `월 약 ${Math.round(monthlyImplicitRent).toLocaleString()}원`;
+                
+                document.getElementById('resultText').textContent = `전세는 공짜가 아닙니다. 당신의 소중한 돈 묶여있어 얻지 못하는 이자 수익을 생각하면, 사실 매달 ${(monthlyImplicitRent/10000).toFixed(1)}만 원씩 월세를 내는 것과 똑같습니다.`;
             });
         });
     </script>
