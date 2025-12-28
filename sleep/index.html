@@ -3,91 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="수면 가성비 계산기. 매트리스 투자 비용과 수면 부족으로 인한 피로 회복 비용을 비교해드립니다.">
+    <meta name="description" content="매일 8시간을 보내는 침대, 투자가 아깝나요? 스마트폰은 2년마다 바꾸면서 매트리스는 10년째 쓰시는 당신의 수면 가성비를 팩트로 계산해드립니다.">
     <title>수면 가성비 판독기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
+
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
-        .main-content { flex: 3; } .sidebar { flex: 1; position: sticky; top: 20px; }
-        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; border: 1px solid #eee; }
-        h1.page-title { font-size: 2.2rem; margin: 20px 0 10px; color: #111; }
-        h2 { border-left: 5px solid #303f9f; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #e8eaf6; border: 1px solid #c5cae9; color: #1a237e; }
-        .intro-box strong { color: #303f9f; background: #fff; padding: 0 5px; border-radius: 4px; }
-        .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; color: #303f9f; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #303f9f; color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 1.2rem; font-weight: bold; }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #e8eaf6; border-radius: 12px; text-align: center; }
-        .highlight { font-size: 2.5rem; font-weight: 900; display: block; margin: 10px 0; color: #303f9f; }
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        /* 섹션 공통 스타일 */
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        /* [가변] 테마 설정: Deep Indigo */
+        h2 { border-left: 5px solid #1a237e; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #e8eaf6; border: 1px solid #c5cae9; color: #1a237e; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #1a237e; background: #fff; padding: 0 5px; border-radius: 4px; }
         
-        .seo-content h3 { margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; } }
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #1a237e; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #1a237e; outline: none; box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #1a237e; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(26,35,126,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #e8eaf6; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #1a237e; }
+
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #1a237e; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">핸드폰은 150만 원, 베개는 1만 원?</h1>
-            <p class="page-subtitle">2년 쓰는 폰에는 돈을 아끼지 않으면서, 10년 쓰는 허리 건강에는 왜 인색할까요?</p>
+            <h1 class="page-title">매일 8시간의 무보수 휴식, 얼마짜리인가요?</h1>
+            <p class="page-subtitle">차에는 돈 아끼지 않으면서 인생의 1/3을 보내는 침대에는 왜 인색한가요?</p>
 
             <section class="intro-box">
-                <h2>🛌 수면의 경제학</h2>
-                <p>잠을 잘 자야 깨어있는 시간에 돈을 법니다. <strong>잘못된 수면 습관</strong> 때문에 깨지고 있는 커피값과 병원비, 그리고 <strong>최고급 호텔 침대</strong>의 1일 사용료를 비교해드립니다.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">bed</span> 성공한 자본가들의 공통점은 '최상의 컨디션 유지'에 집착한다는 것입니다. 질 낮은 잠은 당신의 업무 능력을 20% 이상 떨어뜨립니다. <strong>수면의 1시간당 비용</strong>을 계산해보면 세상에서 가장 가성비 높은 투자가 무엇인지 알게 됩니다.</p>
             </section>
 
+            <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>💤 꿀잠 투자 효율 분석</h2>
-                <label>① 월평균 피로 회복 비용 (만원)</label>
-                <input type="number" id="monthlyFatigue" value="15" placeholder="예: 15 (커피, 영양제)">
-                <label>② 사고 싶은 매트리스 가격 (만원)</label>
-                <input type="number" id="bedPrice" value="200" placeholder="예: 200">
-                <label>③ 예상 사용 기간 (년)</label>
-                <input type="number" id="years" value="10" placeholder="예: 10">
-                <button id="calcBtn" class="calc-btn">수면 가성비 확인하기</button>
+                <h2>🛌 수면 자산 가치 계산기</h2>
+                <div class="calc-group">
+                    <label>장만하려는 매트리스/침대 세트 가격 (만원)</label>
+                    <input type="number" id="bedPrice" placeholder="예: 300" value="300">
+                </div>
+                <div class="calc-group">
+                    <label>하루 평균 수면 시간 (시간)</label>
+                    <input type="number" id="sleepHours" placeholder="예: 7" value="7">
+                </div>
+                <div class="calc-group">
+                    <label>예상 사용 기간 (년)</label>
+                    <input type="number" id="useYears" placeholder="예: 10" value="10">
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">수면 1시간의 가격 확인하기</button>
 
                 <div id="result-area">
-                    <p>1년 동안 피곤해서 쓰는 돈</p>
-                    <span id="resYearlyWaste" class="highlight" style="color:#d32f2f;">0원</span>
-                    <div style="margin-top:20px; padding-top:20px; border-top:1px dashed #999;">
-                        <p>최고급 침대의 하루 사용료</p>
-                        <strong id="resDailyBed" style="font-size:1.8rem;">0원</strong>
-                        <p style="font-size:0.9rem;">(커피 한 잔보다 쌉니다)</p>
+                    <p class="result-title">꿀잠 1시간을 얻기 위해 지불하는 비용은?</p>
+                    <span id="pricePerHour" class="highlight">0원</span>
+                    <p id="resultText" style="color:#666;"></p>
+                </div>
+            </section>
+
+            <!-- 팩트 체크 -->
+            <section>
+                <h2>🛑 침대에 과감히 투자해야 하는 3가지 이유</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>생산성 저하의 기회비용은 엄청납니다</h3>
+                        <p>숙면을 못해 낮에 멍한 상태로 보내는 1시간. 당신의 시급으로 계산하면 침대 값보다 연간 생산성 손실이 훨씬 큽니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>의료비 방어율이 가장 높습니다</h3>
+                        <p>면역력 저하, 고혈압, 당뇨 리스크. 잠만 잘 자도 훗날 지불해야 할 고액의 병원비라는 재앙을 선제적으로 막을 수 있습니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>감가상각이 가장 낮은 가구입니다</h3>
+                        <p>10년 동안 매일 쓰고 고장도 없는 물건. 폰이나 자동차와 비교하면 침대는 시간당 단가가 가장 낮은 최고의 효자 아이템입니다.</p>
                     </div>
                 </div>
             </section>
 
+            <!-- SEO 텍스트 -->
             <section class="seo-content">
-                <h2>🛑 잠은 죽어서 자는 게 아닙니다</h2>
-                <h3>1. 수면 부채 (Sleep Debt)</h3>
-                <p>하루 4시간 자면 깬 시간에 멍해집니다. 부족한 잠은 '빚'처럼 쌓여 주말에 몰아 자도 회복되지 않으며, 인지 능력 저하로 업무 실수를 유발해 연봉을 깎아먹습니다. 수면 부족은 뇌가 빚을 지는 행위입니다.</p>
-                <h3>2. 사용 시간 1위 가구</h3>
-                <p>소파, 식탁, 책상보다 오래 머무는 곳이 침대입니다. 하루 8시간, 인생의 1/3을 보내는 곳에 돈을 아끼는 것은 가장 미련한 절약입니다. 좋은 매트리스는 10년을 씁니다. 하루 비용으로 환산하면 몇백 원 수준입니다.</p>
-                <h3>3. 뇌 청소 시간</h3>
-                <p>수면 중 뇌척수액이 뇌 속의 노폐물(베타 아밀로이드 등 치매 유발 물질)을 씻어냅니다. 잠을 잘 자는 것은 미래의 병원비를 아끼고 치매를 예방하는 가장 확실한 보험입니다.</p>
-            </section>
-            
-            <div class="ad-box"><span style="font-size:11px; color:#ccc;">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
-        </main>
-        <aside class="sidebar"><div style="min-height: 600px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div></aside>
-    </div>
-    <script>
-        document.getElementById('calcBtn').addEventListener('click', function() {
-            const monthly = Number(document.getElementById('monthlyFatigue').value) * 10000;
-            const price = Number(document.getElementById('bedPrice').value) * 10000;
-            const years = Number(document.getElementById('years').value);
-            if(monthly <= 0 || price <= 0) { alert("값을 입력해주세요."); return; }
-            
-            const yearlyWaste = monthly * 12;
-            const dailyBed = price / (years * 365);
+                <h2>부자들의 잠자리: 매트리스에 1,000만 원을 쓰는 사람들의 지능</h2>
+                <p>우리는 보통 "눈 감고 자는 건데 대충 싸구려 사지 뭐"라고 생각합니다. 하지만 고소득자나 운동선수들은 가장 비싼 매트리스와 침구를 사용하는 데 주저함이 없습니다. 그들은 **'수면이 다음 날의 현금 흐름을 결정한다'**는 사실을 데이터로 이해하고 있기 때문입니다. 수면 부채(Sleep Debt)는 연 20% 이상의 사채 이자보다 더 가혹하게 당신의 에너지를 갉아먹습니다.</p>
 
-            const resultArea = document.getElementById('result-area');
-            resultArea.style.display = 'block';
-            document.getElementById('resYearlyWaste').innerText = Math.round(yearlyWaste).toLocaleString() + "원";
-            document.getElementById('resDailyBed').innerText = Math.round(dailyBed).toLocaleString() + "원";
+                <h3>1. 보이지 않는 가치: 카페인 중독과 숙면의 상관관계</h3>
+                <p>잠을 설친 당신은 다음 날 오전 내내 커피 세 잔을 들이키며 집중력을 유지하려 애씁니다. 매일 1.5만 원의 커피 지출은 연간 500만 원이 넘습니다. 반면 500만 원짜리 최고급 매트리스를 사면 어떨까요? 10년 동안 사용 시 하루 유지비는 고작 1,300원 수준입니다. 편의점 커피 한 캔보다 싼 가격으로 당신은 최상의 뇌 상태를 유지할 수 있습니다. 이것이 바로 현명한 사람들이 실천하는 <strong>'역전략 투자'</strong>입니다.</p>
+
+                <h3>2. 침대 선택의 경제학적 우선순위</h3>
+                <p>2년마다 바꾸는 최신형 스마트폰에 150만 원을 쓰면서, 10년을 쓸 매트리스에 200만 원을 아까워하는 것은 경제적 문맹에 가깝습니다. 당신은 당신의 몸을 지탱하는 기반을 소홀히 한 채 겉보기에 화려한 기기만 쫓고 있습니다. 허리 통증으로 한의원을 다니는 시간 비용과 도수치료비만 합쳐도 이미 매트리스 가격을 상회합니다. 자산 관리를 원하신다면, 먼저 당신의 가장 본질적인 휴식 공간인 '잠자리'의 가계부를 점검하십시오.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 비싼 매트리스는 다 상술 아닌가요?</strong><br>A. 스프링의 지지력과 내구성은 분명 가격에 비례합니다. 브랜드 값이 낀 것을 감안하더라도, 100만 원 미만의 저가형 매트리스를 3년마다 교체하는 것보다 프리미엄급을 10년 쓰는 것이 허리 건강과 비용 면에서 모두 유리합니다.</li>
+                    <li><strong>Q. 베개 하나 바꾼다고 잠이 잘 올까요?</strong><br>A. 머리와 목의 정렬은 수면 품질의 30%를 결정합니다. 300만 원 침대를 살 돈이 없다면 10만 원짜리 기능성 베개부터 시작하십시오. 가성비 최고의 시작입니다.</li>
+                </ul>
+            </section>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </main>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
+    </div>
+
+    <!-- [계산 로직] -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                const price = (parseFloat(document.getElementById('bedPrice').value) || 0) * 10000;
+                const hours = parseFloat(document.getElementById('sleepHours').value) || 1;
+                const yrs = parseFloat(document.getElementById('useYears').value) || 1;
+                
+                const totalHours = hours * 365 * yrs;
+                const costPerHourValue = price / totalHours;
+
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+                document.getElementById('pricePerHour').textContent = `약 ${Math.round(costPerHourValue).toLocaleString()}원`;
+                
+                document.getElementById('resultText').textContent = `당신의 숙면 1시간 가격은 생수 한 병 값보다 저렴합니다. 스마트폰에는 아낌없이 쓰면서 인생을 바꾸는 휴식에는 너무 야박했던 건 아닐까요?`;
+            });
         });
     </script>
 </body>
