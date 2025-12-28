@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="10회 권 끊고 5번만 가셨나요? 당신의 피부과 시술 1회당 진짜 가격과 유통기한 전 소진 가능성을 팩트로 계산해드립니다.">
+    <meta name="description" content="10회 권 끊고 3번만 가셨나요? 피부과 실장의 화술에 속아 결제한 '패키지'의 진짜 1회당 가격을 팩트로 계산해드립니다.">
     <title>피부과 호갱 판독기 | 팩트 폭격 연구소</title>
+
     <script src="../common.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
@@ -15,65 +17,103 @@
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
         section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
-        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
-        h2 { border-left: 5px solid #f06292; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #fdf2f2; border: 1px solid #ffcdd2; color: #b71c1c; padding: 25px; border-radius: 12px; }
+        h2 { border-left: 5px solid #d81b60; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #fce4ec; border: 1px solid #f8bbd0; color: #880e4f; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #d81b60; background: #fff; padding: 0 5px; border-radius: 4px; }
         .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #f06292; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #d81b60; }
         input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #f06292; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(240, 98, 146, 0.2); }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fdf2f2; border-radius: 12px; text-align: center; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #ad1457; }
+        .calc-btn { width: 100%; padding: 18px; background-color: #d81b60; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(216, 27, 96, 0.2); }
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fce4ec; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #880e4f; }
         .reason-card { display: flex; margin-bottom: 25px; }
-        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #f06292; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #d81b60; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; }
         .seo-content { line-height: 1.8; color: #444; }
+        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
+        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">실속 없는 '패키지 결제', 지갑만 다이어트 중?</h1>
-            <p class="page-subtitle">피부과 상담 실장의 화술에 낚여 결제한 선불권의 실체.</p>
+            <h1 class="page-title">패키지 끊을 땐 여신, 예약할 땐 미운 오리?</h1>
+            <p class="page-subtitle">피부과 실장의 매출 타겟이 된 당신을 위한 차가운 정산표.</p>
 
             <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">face</span> 피부과는 공장식 지출의 전형입니다. "이벤트가로 저렴하게 해드려요"라는 말에 속아 쓰지도 못할 회차를 쌓아두고 있지는 않나요? <strong>진짜 1회당 관리 단가</strong>를 확인해 보세요.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">face</span> "고객님 오늘 이거 결제하시면 반값이에요"라는 말에 속아 200만 원 선결제를 하셨나요? <strong>정작 내가 갈 땐 자리가 없고</strong> 유통기한 임박한 포인트가 아까워 필요 없는 시술만 더하고 있지는 않은지, 진짜 1회당 단가를 확인해 보세요.</p>
             </section>
 
             <section id="calculator">
-                <h2>💆‍♀️ 피부과 매몰 비용 계산기</h2>
+                <h2>💆‍♀️ 선불권 잔여 가치 계산기</h2>
                 <div class="calc-group">
                     <label>최근 결제한 시술 패키지 총액 (만원)</label>
-                    <input type="number" id="totalPaid" placeholder="예: 200" value="200">
+                    <input type="number" id="totalPaid" value="200">
                 </div>
                 <div class="calc-group">
-                    <label>지금까지 실제 방문한 총 횟수 (회)</label>
-                    <input type="number" id="visitCount" placeholder="예: 4" value="4">
+                    <label>기간 중 실제 방문한 총 횟수 (회)</label>
+                    <input type="number" id="visitCount" value="4">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">상담만 하거나 예약 취소한 날은 빼세요.</p>
                 </div>
-                
-                <button id="calcBtn" class="calc-btn">나의 1회 레이저 단가 확인</button>
+                <button id="calcBtn" class="calc-btn">나의 리얼 1회 시술비 확인</button>
 
                 <div id="result-area">
-                    <p class="result-title">당신의 피부 시술 1회당 진짜 비용</p>
+                    <p class="result-title">당신이 받고 있는 1회 관리 비용</p>
                     <span id="costPerSession" class="highlight">약 0원</span>
                     <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
             <section>
-                <h2>🛑 피부과에서 '호구'를 탈출하는 3가지 방법</h2>
-                <div class="reason-card"><div class="icon-box">1</div><div class="reason-content"><h3>'추천 패키지'는 병원 수익 극대화 전략입니다</h3><p>본인이 필요한 시술만 단품으로 받으세요. 묶음 상품은 당신이 안 쓸 것 같은 항목들을 교묘하게 끼워 넣은 것입니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box">2</div><div class="reason-content"><h3>소멸 예정 포인트와 기회비용</h3><p>1년의 유통기한. 포인트가 아까워 필요 없는 시술을 추가로 받는 것은 자산 형성의 가장 큰 적입니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box">3</div><div class="reason-content"><h3>진짜 관리는 습관에서 옵니다</h3><p>분기당 100만 원 레이저보다 하루 500원짜리 자외선 차단제가 훨씬 높은 수익률을 자랑합니다.</p></div></div>
+                <h2>🛑 피부과에서 '지갑 탈탈' 안 당하는 법</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>'할인율'은 낚시입니다</h3>
+                        <p>1회에 30만 원인 레이저를 10회에 100만 원으로 파는 건, 당신이 나머지 7회를 안 올 것임을 병원은 이미 데이터로 알고 있기 때문입니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>보장받지 못하는 소중한 '시간'</h3>
+                        <p>대기 시간 1시간, 시술 5분. 당신의 시급으로 환산하면 이미 20만 원 이상의 기회비용을 병원 대기실 소파에 버리고 오셨습니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>재결제 유도용 포인트 마케팅</h3>
+                        <p>남은 포인트가 아까워서 또 다른 100만 원을 결제하는 건 자산 누수의 가장 큰 원인입니다. 과감히 버리는 게 오히려 돈을 버는 길입니다.</p>
+                    </div>
+                </div>
             </section>
 
             <section class="seo-content">
-                <h2>공장식 피부과의 배신: 안 가고 남은 포인트는 다 누구 것인가?</h2>
-                <p>피부과 비즈니스의 핵심은 '선수금' 확보입니다. 300만 원을 한 번에 결제하면 할인을 많이 해주는 것 같지만, 병원 측은 고객이 회차를 다 채우지 못하고 이탈할 확률을 이미 계산해 두었습니다. 당신의 통장 잔고가 피부과 법인의 현금 흐름을 지탱해 주는 자선 사업가가 되지 마십시오.</p>
+                <h2>피부과 패키지 결제와 심리학: 왜 우리는 돈을 미리 버리는가?</h2>
+                <p>한국의 피부과 시장은 전형적인 **'선취매 구조'**입니다. 병원 입장에서 고객의 선결제 자금은 이자 없이 운영 자금을 확보하는 가장 좋은 수단입니다. 고객 입장에서는 미래의 나를 강제로 관리하게 만드는 일종의 '구속'으로 작용하지만, 정작 실생활의 바쁨 앞에서 선불권은 휴짓조각이 되어버리는 경우가 60%를 넘습니다. 지갑 속의 시드머니가 피부과 원장님의 수입으로 실시간 환산되는 과정을 팩트로 직시해야 합니다.</p>
+
+                <h3>1. 보이지 않는 금융 손실: 200만 원의 복리 가치</h3>
+                <p>패키지로 결제한 200만 원을 미국 인덱스 펀드에 넣었다면 어떨까요? 매년 8~10%의 수익률을 가정할 때, 10년 뒤 이 돈은 500만 원 이상으로 불어납니다. 당신은 지금 10년 뒤의 안락한 노후를 팔아 지금 당장 얼굴에 쏴야 할 불확실한 광선을 구매한 것입니다. 정작 본전도 못 뽑을 횟수를 사들이는 행위는 경제적 지성이 부재함을 스스로 증명하는 꼴입니다.</p>
+
+                <h3>2. 상업적 피부 과학의 환상에서 벗어나기</h3>
+                <p>의학적으로 증명된 최고의 피부 관리는 <strong>'세안, 보습, 자외선 차단'</strong> 이 세 가지입니다. 1회 100만 원이 넘는 고가 시술은 일시적인 변화일 뿐, 생활 습관이 무너지면 자본은 매달 증발합니다. 연간 피부과 지출을 200만 원 줄여 20년만 모으십시오. 피부과 관리만 열심히 받은 50대보다, 지갑이 든든해져서 걱정 없이 웃고 지내는 당신의 피부가 훨씬 맑아 보일 것임은 역사적으로 증명된 팩트입니다.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 지금 당장 여드름 흉터가 급한데요?</strong><br>A. 꼭 필요한 시술이라면 단품으로 결제하고, 3회 이상 꾸준히 갈 수 있는지 스스로의 의지를 먼저 팩트로 점검한 뒤 결제해도 늦지 않습니다.</li>
+                    <li><strong>Q. 상담 실장님이 오늘만 할인가라던데.</strong><br>A. 그 할가는 내일도, 다음 달에도 '이벤트'라는 이름으로 다시 옵니다. 지금의 조급함을 이용하려는 판매술에 현혹되지 마세요.</li>
+                </ul>
             </section>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-        <aside class="sidebar"><div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"></div></aside>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
     </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
@@ -82,8 +122,8 @@
                 const costPerTime = total / count;
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-                document.getElementById('costPerSession').textContent = `약 ${Math.round(costPerTime).toLocaleString()}원`;
-                document.getElementById('resultText').textContent = `1회 20만 원이라고 생각하고 결제했지만, 실제로는 ${Math.round(costPerTime/10000)}만 원짜리 시술을 받고 계시네요. 억울하면 내일 바로 예약하세요.`;
+                document.getElementById('costPerSession').textContent = `1회당 ${Math.round(costPerTime).toLocaleString()}원`;
+                document.getElementById('resultText').textContent = `축하합니다! 병원 사장님이 당신을 VVIP로 지정하셨습니다. 정해진 패키지 10회를 못 채울수록 당신의 관리 단가는 에베레스트 정상급으로 치솟습니다.`;
             });
         });
     </script>
