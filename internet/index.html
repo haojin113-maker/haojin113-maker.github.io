@@ -3,296 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="인터넷 TV 재약정 현금 사은품 계산기. 3년마다 통신사를 바꾸지 않아서 못 받은 돈이 얼마인지 확인하세요.">
+    <meta name="description" content="3년마다 47만 원씩 현금 사은품 챙기고 계신가요? 통신사에 의리 지키다 날린 당신의 누적 현금을 팩트로 계산해드립니다.">
     <title>인터넷 호갱 판독기 | 팩트 폭격 연구소</title>
 
     <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
 
-    <!-- 구글 아이콘 -->
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
     <style>
-        /* --- [표준 스타일 가이드] --- */
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.7;
-        }
-
-        .wrapper {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-        }
-        
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
+        .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
 
-        section {
-            background: white;
-            border-radius: 16px;
-            padding: 35px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            border: 1px solid #eee;
-        }
-
+        /* 섹션 공통 스타일 */
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
 
-        /* [테마 변경] 인터넷/속도(Green) -> #00c853 */
-        h2 { border-left: 5px solid #00c853; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-
-        .intro-box { background-color: #e8f5e9; border: 1px solid #c8e6c9; color: #1b5e20; }
-        .intro-box strong { color: #00c853; background: #fff; padding: 0 5px; border-radius: 4px; }
-
-        /* 계산기 스타일 */
-        .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #00c853; }
-        input {
-            width: 100%; padding: 14px; border: 1px solid #ddd;
-            border-radius: 8px; font-size: 1rem; transition: 0.2s;
-        }
-        input:focus { border-color: #00c853; outline: none; box-shadow: 0 0 0 3px rgba(0, 200, 83, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-
-        .calc-btn {
-            width: 100%; padding: 18px;
-            background-color: #00c853; color: white;
-            border: none; border-radius: 12px;
-            font-size: 1.2rem; font-weight: bold; cursor: pointer;
-            margin-top: 10px; transition: 0.2s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .calc-btn:hover { background-color: #009624; transform: translateY(-3px); }
-
-        #result-area {
-            display: none; margin-top: 30px; padding: 30px;
-            background-color: #e8f5e9; border-radius: 12px; text-align: center;
-            animation: fadeIn 0.5s ease;
-        }
+        /* [가변] 테마 설정: Royal Purple */
+        h2 { border-left: 5px solid #3f51b5; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #e8eaf6; border: 1px solid #c5cae9; color: #1a237e; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #3f51b5; background: #fff; padding: 0 5px; border-radius: 4px; }
         
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.waste { color: #d32f2f; } 
-        .highlight.cash { color: #00c853; }
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #3f51b5; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #3f51b5; outline: none; box-shadow: 0 0 0 3px rgba(63, 81, 181, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #3f51b5; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(63,81,181,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #e8eaf6; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #1a237e; }
 
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box {
-            flex-shrink: 0; width: 40px; height: 40px;
-            background: #00c853; color: white;
-            border-radius: 10px; font-weight: bold;
-            display: flex; align-items: center; justify-content: center;
-            margin-right: 20px; margin-top: 5px;
-        }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        @media (max-width: 850px) {
-            .wrapper { flex-direction: column; }
-            .sidebar { width: 100%; position: static; min-width: auto; }
-            .main-content { width: 100%; }
-            h1.page-title { font-size: 1.8rem; }
-        }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #3f51b5; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
-
     <div class="wrapper">
-        
-        <!-- [좌측] 메인 콘텐츠 -->
         <main class="main-content">
-            
-            <h1 class="page-title">통신사에 의리 지키다 '현금 47만원' 날리셨습니다</h1>
-            <p class="page-subtitle">"오래 쓰면 좋은 거 아니야?" 아니요, 통신사 입장에서 당신은 잡은 물고기입니다.</p>
+            <h1 class="page-title">통신사가 당신의 '의리'에 보답하나요?</h1>
+            <p class="page-subtitle">3년마다 돌아오는 47만 원의 권리, 포기하는 순간 당신은 VIP 호갱입니다.</p>
 
-            <!-- 인트로: 팩트 제시 -->
             <section class="intro-box">
-                <h2>🌐 인터넷 약정의 비밀</h2>
-                <p>
-                    인터넷 가입의 국룰은 <strong>"3년마다 갈아타기"</strong>입니다.<br>
-                    신규 가입자에게는 현금+상품권 47만 원을 주지만, 가만히 있는 장기 고객에게는 아무것도 주지 않습니다. 당신이 놓친 지원금이 얼마인지 계산해드립니다.
-                </p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">router</span> 대한민국 인터넷 통신 시장은 '잡은 고기'에게 먹이를 주지 않습니다. 약정이 끝났음에도 5년, 10년 그대로 쓰는 당신. <strong>재약정 현금 혜택</strong>을 모았다면 지금쯤 가졌을 자산을 계산해드립니다.</p>
             </section>
 
             <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>💸 놓친 지원금 계산기</h2>
-                <p style="margin-bottom: 25px; color: #666; font-size: 0.95rem;">
-                    현재 이용 중인 인터넷/TV 현황을 입력하세요.
-                </p>
-
+                <h2>🌐 인터넷 의리 비용 계산기</h2>
                 <div class="calc-group">
-                    <label>① 현재 월 요금 (만원)</label>
-                    <input type="number" id="monthlyFee" value="4" placeholder="예: 4 (인터넷+TV)">
+                    <label>인터넷 사용 총 기간 (년)</label>
+                    <input type="number" id="useYears" placeholder="예: 9" value="9">
                 </div>
-
                 <div class="calc-group">
-                    <label>② 한 통신사 이용 기간 (년)</label>
-                    <input type="number" id="years" value="6" placeholder="예: 6 (재약정 포함)">
-                    <div class="help-text">* 3년이 넘었다면 무조건 손해 중</div>
+                    <label>기간 중 가입 선물/현금 받은 총액 (만원)</label>
+                    <input type="number" id="benefitGot" placeholder="예: 0" value="0">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">기억이 안 난다면 0원을 입력하세요.</p>
                 </div>
+                
+                <button id="calcBtn" class="calc-btn">내가 버린 현금 총액 확인</button>
 
-                <div class="calc-group">
-                    <label>③ 재약정 시 받은 혜택 (현금/상품권 합계, 만원)</label>
-                    <input type="number" id="received" value="0" placeholder="예: 0 (안 받았으면 0)">
-                    <div class="help-text">* 대부분 상품권 5~10만원 받고 퉁칩니다.</div>
-                </div>
-
-                <button id="calcBtn" class="calc-btn">내가 못 받은 현금 확인하기</button>
-
-                <!-- 결과창 -->
                 <div id="result-area">
-                    
-                    <div style="margin-bottom:20px;">
-                        <p class="result-title">갈아탔으면 받았을 현금 지원금</p>
-                        <span id="resPotential" class="highlight cash">0원</span>
-                        <p style="font-size:0.9rem; color:#888;">(3년마다 47만원 기준)</p>
-                    </div>
-
-                    <div style="border-top:1px dashed #aaa; padding-top:20px;">
-                        <p class="result-title" style="margin-bottom:10px;">당신의 충성심 때문에 <strong>날린 돈</strong></p>
-                        <span id="resLost" class="highlight waste" style="font-size:2.2rem;">0원</span>
-                    </div>
-
-                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #c5e1a5; font-size:0.95rem;">
-                        통신사를 바꾸는 전화 한 통화면<br>
-                        <strong><span id="compareItem" style="background:#e8f5e9; padding:0 4px; color:#1b5e20;">최신형 태블릿 PC</span></strong>가<br>
-                        생겼을 것입니다.
-                    </div>
+                    <p class="result-title">당신이 챙기지 못해 통신사에 기부한 현금</p>
+                    <span id="lostCash" class="highlight">약 0원</span>
+                    <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
-            <!-- 팩트 체크 리스트 -->
+            <!-- 팩트 체크 -->
             <section>
-                <h2>🛑 '장기 고객'이 호갱인 이유</h2>
-                
+                <h2>🛑 장기 가입 고객이 더 손해 보는 3가지 이유</h2>
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">card_giftcard</span></div>
+                    <div class="icon-box">1</div>
                     <div class="reason-content">
-                        <h3>경품고시제 (최대 47만 원)</h3>
-                        <p>법적으로 인터넷 신규 가입 시 최대 47만 원까지 현금/상품권을 줄 수 있습니다. 대리점들은 실적을 위해 이 돈을 고객에게 페이백 해줍니다. 재약정 고객에게는 이런 예산이 없습니다.</p>
+                        <h3>신규 가입자 유치에만 보조금을 씁니다</h3>
+                        <p>통신사는 기존 고객 유지를 위한 혜택보다 타사 고객을 뺏어올 때 최대 47만 원(방통위 가이드라인)을 기꺼이 지불합니다.</p>
                     </div>
                 </div>
-                
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">support_agent</span></div>
+                    <div class="icon-box">2</div>
                     <div class="reason-content">
-                        <h3>해지 방어 (Retention)의 진실</h3>
-                        <p>"해지하겠다"고 전화해야 그제서야 상품권 몇 장을 쥐여줍니다. 가만히 있으면 아무것도 안 줍니다. 우는 아이 떡 하나 더 주는 곳이 통신사입니다.</p>
+                        <h3>먼저 요구하지 않으면 절대 안 줍니다</h3>
+                        <p>"해지 방어팀"의 존재를 아시나요? 약정 만료 시 해지 의사를 밝혀야만 비로소 상품권이나 요금 할인을 제시하는 것이 업계의 룰입니다.</p>
                     </div>
                 </div>
-
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">router</span></div>
+                    <div class="icon-box">3</div>
                     <div class="reason-content">
-                        <h3>구형 장비의 늪</h3>
-                        <p>오래 쓰면 셋톱박스와 공유기도 구형 그대로 씁니다. 통신사를 옮기면 최신형 UHD 셋톱박스와 기가 와이파이 공유기로 무상 교체됩니다. 돈도 받고 기계도 업그레이드하세요.</p>
+                        <h3>기술은 발전하는데 가격은 그대로입니다</h3>
+                        <p>10년 전 요금제로 느린 인터넷을 쓰고 있지는 않나요? 재약정을 하면 같은 가격 혹은 더 저렴한 가격에 최신 장비와 고속 기가 인터넷으로 교체됩니다.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- 하단 광고 -->
-            <div class="ad-box">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <!-- SEO 텍스트 -->
+            <section class="seo-content">
+                <h2>인터넷 재약정 현금 47만 원의 진실: 왜 챙기지 않는가?</h2>
+                <p>우리는 보통 폰 요금제에는 민감하지만, 한 번 설치하면 눈에 보이지 않는 인터넷과 TV 요금에는 둔감합니다. 하지만 자본주의 관점에서 **'3년마다 돌아오는 가입 혜택'**을 챙기지 않는 것은 길거리에 뿌려진 50만 원권을 그냥 지나치는 것과 같습니다. 인터넷 약정이 끝난 장기 고객에게 통신사는 "우량 고객님"이라 부르지만, 속으로는 "가장 수익성 좋은 호갱"이라 웃고 있을지도 모릅니다.</p>
 
-            <!-- common.js가 푸터 자동 추가 -->
+                <h3>1. 의리의 대가: 30년 누적 손실 1,000만 원</h3>
+                <p>3년마다 통신사를 바꾸거나 재약정을 통해 평균 40만 원의 현금 혜택을 받는다고 가정합시다. 이를 30년 동안 반복하면 원금만 400만 원입니다. 하지만 이 돈을 복리 8%의 주식 시장에 넣어두었다면? 30년 뒤 당신의 계좌에는 약 1,500만 원의 추가 자산이 쌓여 있을 것입니다. 단순히 클릭 몇 번과 전화 한 통의 귀찮음을 이기지 못한 대가가 노후 자금의 큰 조각을 앗아가고 있는 셈입니다.</p>
 
+                <h3>2. 해지 방어 전술: 아는 만큼 받습니다</h3>
+                <p>약정이 끝났다면 고객센터에 전화해 "약정이 끝나서 타사로 옮기려 한다"고 당당히 말하십시오. 그러면 마법처럼 상담원이 요금 할인과 현금 사은품을 제시할 것입니다. 이것은 비굴한 흥정이 아니라 소비자의 당연한 권리입니다. 통신사는 당신이 이 사실을 모른 채 매달 고가의 요금을 꼬박꼬박 내기를 간절히 바라고 있습니다. 현명한 자본가는 앉아서 당하지 않습니다. 당신의 '고정 지출 관리' 능력이 곧 당신의 순자산 속도를 결정합니다.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 현금 많이 준다는 광고는 다 사기 아닌가요?</strong><br>A. 법정 한도인 47만 원을 지키는 업체 중 사업자 등록증이 확실한 대형 온라인 대리점을 활용하면 사기 위험 없이 안전하게 수령 가능합니다.</li>
+                    <li><strong>Q. 결합 할인이 묶여 있어서 못 바꾼다면요?</strong><br>A. 결합 할인 총액(모바일+인터넷)과 신규 가입 시 얻는 사은품 + 요금 하락분을 36개월치로 합산해 비교해 보세요. 십중팔구 신규 가입이나 공격적 재약정이 이득입니다.</li>
+                </ul>
+            </section>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
 
-        <!-- [우측] 사이드바 광고 -->
         <aside class="sidebar">
-            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890" 
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </aside>
-
     </div>
 
-    <!-- 계산 로직 -->
+    <!-- [계산 로직] -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                // 1. 값 가져오기
-                const monthly = Number(document.getElementById('monthlyFee').value) * 10000;
-                const years = Number(document.getElementById('years').value);
-                const received = Number(document.getElementById('received').value) * 10000;
-
-                if(years < 0) {
-                    alert("기간을 올바르게 입력해주세요.");
-                    return;
-                }
-
-                // 2. 계산 로직
-                // 시장 평균 사은품 (3년 약정 기준) 약 47만원 (현금+상품권)
-                const marketGift = 470000;
+                const yrs = parseFloat(document.getElementById('useYears').value) || 0;
+                const benefitGot = parseFloat(document.getElementById('benefitGot').value) || 0;
                 
-                // 갈아탈 수 있었던 횟수 (3년 주기)
-                // 예: 6년 썼으면 2번 갈아탈 기회 (최초 가입 제외하고, 3년차 1번, 6년차 1번?)
-                // 보통 '현재 기간' 동안 몇 번의 신규 가입 혜택을 놓쳤는지 계산.
-                // 3년 이상 썼다면 -> 1번 놓침 (재약정 대신 이동했어야 함)
-                // 6년 이상 썼다면 -> 2번 놓침
-                const missCount = Math.floor(years / 3);
+                const avgBenefit = 400000; // 보수적인 3년 주기 사은품액
+                const cycleCount = Math.floor(yrs / 3);
+                const expectedTotal = cycleCount * avgBenefit;
+                const lostAmount = expectedTotal - (benefitGot * 10000);
 
-                if(missCount === 0) {
-                    alert("아직 약정 기간(3년)이 안 지났습니다. 위약금을 확인하세요!");
-                    return;
-                }
-
-                const potentialGift = missCount * marketGift;
-                const lostMoney = potentialGift - received;
-
-                // 3. 결과 출력
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-
-                document.getElementById('resPotential').innerText = Math.round(potentialGift).toLocaleString() + "원";
+                document.getElementById('lostCash').textContent = `약 ${Math.max(0, Math.round(lostAmount/10000)).toLocaleString()}만 원`;
                 
-                if (lostMoney > 0) {
-                    document.getElementById('resLost').innerText = Math.round(lostMoney).toLocaleString() + "원";
-                } else {
-                    document.getElementById('resLost').innerText = "0원 (잘 챙겨 받으셨네요!)";
-                    document.getElementById('resLost').style.color = "#2e7d32";
-                }
-
-                // 4. 비교 물건 변경
-                const lostManwon = lostMoney / 10000;
-                let item = "에어팟 프로";
-                
-                if(lostManwon > 200) item = "최신형 노트북";
-                else if(lostManwon > 150) item = "65인치 4K TV";
-                else if(lostManwon > 100) item = "아이패드 에어";
-                else if(lostManwon > 80) item = "다이슨 청소기";
-                else if(lostManwon > 50) item = "닌텐도 스위치";
-                else if(lostManwon > 30) item = "애플워치 SE";
-                
-                document.getElementById('compareItem').innerText = item;
+                document.getElementById('resultText').textContent = `3년마다 약정만 제대로 갱신했어도 당신의 주머니에 더 들어왔을 현금입니다. 통신사의 건물을 당신의 피땀으로 지어줄 필요는 없습니다.`;
             });
         });
     </script>
