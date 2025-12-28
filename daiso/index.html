@@ -3,276 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="다이소 천원샵 지출 계산기. 싼 맛에 샀다가 버리는 돈과 가성비의 역설을 계산해드립니다.">
+    <meta name="description" content="천 원이니까 괜찮다는 생각이 당신의 자산을 갉아먹고 있습니다. 불필요한 물건으로 채워진 공간 가치와 누적 결제액을 팩트로 계산해드립니다.">
     <title>천원샵 중독 판독기 | 팩트 폭격 연구소</title>
 
     <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
 
-    <!-- 구글 아이콘 -->
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
     <style>
-        /* --- [표준 스타일 가이드] --- */
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.7;
-        }
-
-        .wrapper {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-        }
-        
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
+        .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
 
-        section {
-            background: white;
-            border-radius: 16px;
-            padding: 35px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            border: 1px solid #eee;
-        }
-
+        /* 섹션 공통 스타일 */
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
 
-        /* [테마 변경] 쇼핑/저가(Red) -> #e53935 */
-        h2 { border-left: 5px solid #e53935; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-
-        .intro-box { background-color: #ffebee; border: 1px solid #ffcdd2; color: #b71c1c; }
-        .intro-box strong { color: #e53935; background: #fff; padding: 0 5px; border-radius: 4px; }
-
-        /* 계산기 스타일 */
-        .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #e53935; }
-        input {
-            width: 100%; padding: 14px; border: 1px solid #ddd;
-            border-radius: 8px; font-size: 1rem; transition: 0.2s;
-        }
-        input:focus { border-color: #e53935; outline: none; box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-
-        .calc-btn {
-            width: 100%; padding: 18px;
-            background-color: #e53935; color: white;
-            border: none; border-radius: 12px;
-            font-size: 1.2rem; font-weight: bold; cursor: pointer;
-            margin-top: 10px; transition: 0.2s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .calc-btn:hover { background-color: #c62828; transform: translateY(-3px); }
-
-        #result-area {
-            display: none; margin-top: 30px; padding: 30px;
-            background-color: #fafafa; border-radius: 12px; text-align: center;
-            animation: fadeIn 0.5s ease;
-        }
+        /* [가변] 테마 설정: Orange */
+        h2 { border-left: 5px solid #ff5722; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #fff3e0; border: 1px solid #ffccbc; color: #e64a19; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #ff5722; background: #fff; padding: 0 5px; border-radius: 4px; }
         
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.waste { color: #d32f2f; } 
-        .highlight.item { color: #2e7d32; }
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #ff5722; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #ff5722; outline: none; box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #ff5722; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(255,87,34,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fff3e0; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #e64a19; }
 
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box {
-            flex-shrink: 0; width: 40px; height: 40px;
-            background: #e53935; color: white;
-            border-radius: 10px; font-weight: bold;
-            display: flex; align-items: center; justify-content: center;
-            margin-right: 20px; margin-top: 5px;
-        }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        @media (max-width: 850px) {
-            .wrapper { flex-direction: column; }
-            .sidebar { width: 100%; position: static; min-width: auto; }
-            .main-content { width: 100%; }
-            h1.page-title { font-size: 1.8rem; }
-        }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #ff5722; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } .main-content { width: 100%; } }
     </style>
 </head>
 <body>
-
     <div class="wrapper">
-        
-        <!-- [좌측] 메인 콘텐츠 -->
         <main class="main-content">
-            
-            <h1 class="page-title">천 원짜리 쓰레기를 돈 주고 사셨나요?</h1>
-            <p class="page-subtitle">"싸니까 일단 담자"며 채운 장바구니. 집에 오면 절반은 안 쓰는 현실.</p>
+            <!-- [제목 섹션] -->
+            <h1 class="page-title">천 원의 배신, 쌓이면 '내 집'이 좁아집니다</h1>
+            <p class="page-subtitle">"어차피 싼 거니까"라는 마인드가 당신을 가난하게 만드는 방식.</p>
 
-            <!-- 인트로: 팩트 제시 -->
+            <!-- [도입 섹션] -->
             <section class="intro-box">
-                <h2>🛍️ 가성비의 역설</h2>
-                <p>
-                    2,000원짜리 충전 케이블을 샀는데 한 달 만에 고장 나서 또 샀나요?<br>
-                    <strong>'싼 게 비지떡'</strong>이라는 말은 과학입니다. 당신이 저렴한 물건을 자주 사면서 낭비하는 <strong>중복 투자 비용</strong>을 계산해드립니다.
-                </p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">shopping_bag</span> 저렴한 가격은 뇌의 이성적 판단을 마비시킵니다. 천 원짜리 물건들이 모여 당신의 서랍을 채울 때, 사실은 <strong>가장 값비싼 평당 거주 비용</strong>을 낭비하고 있는 것입니다. 10년간의 천 원샵 누적 지출액을 확인해 보세요.</p>
             </section>
 
-            <!-- 계산기 섹션 -->
+            <!-- [계산기 섹션] -->
             <section id="calculator">
-                <h2>📉 소확행(소소한 탕진) 견적서</h2>
+                <h2>🛍️ 소액 지출 누적 계산기</h2>
+                <div class="calc-group">
+                    <label>한 달 평균 천원샵 지출 총액 (원)</label>
+                    <input type="number" id="monthlySpend" placeholder="예: 50000" value="50000">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">생활 잡화, 인테리어 소품 등 비정기 구매 포함</p>
+                </div>
+                <div class="calc-group">
+                    <label>산 물건 중 1년 뒤 쓰레기가 되는 비율 (%)</label>
+                    <input type="number" id="trashRatio" placeholder="예: 60" value="60">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">충동구매 후 방치되다 버려지는 비중</p>
+                </div>
                 
-                <div class="calc-group">
-                    <label>① 월평균 천원샵 결제 금액 (만원)</label>
-                    <input type="number" id="monthlyCost" value="5" placeholder="예: 5">
-                </div>
+                <button id="calcBtn" class="calc-btn">사라진 내 미래 자본 확인하기</button>
 
-                <div class="calc-group">
-                    <label>② 사놓고 안 쓰거나 금방 고장 난 비율 (%)</label>
-                    <input type="number" id="wasteRate" value="30" placeholder="예: 30 (10개 중 3개는 버림)">
-                    <div class="help-text">* 솔직하게! 충동구매한 잡동사니 포함</div>
-                </div>
-
-                <div class="calc-group">
-                    <label>③ 습관 지속 기간 (년)</label>
-                    <input type="number" id="years" value="5" placeholder="예: 5">
-                </div>
-
-                <button id="calcBtn" class="calc-btn">쓰레기통에 버린 돈 확인</button>
-
-                <!-- 결과창 -->
                 <div id="result-area">
-                    
-                    <div style="margin-bottom:20px;">
-                        <p class="result-title">제대로 쓰지도 못하고 버린 돈</p>
-                        <span id="resTotalWaste" class="highlight waste">0원</span>
-                    </div>
-
-                    <div style="border-top:1px dashed #aaa; padding-top:20px;">
-                        <p class="result-title" style="margin-bottom:10px;">이 돈이면 평생 쓰는</p>
-                        <span id="compareItem" class="highlight item" style="font-size:1.8rem;">0</span>
-                        <p style="font-size:0.9rem; color:#888;">을(를) 장만할 수 있었습니다.</p>
-                    </div>
-
-                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #ffcdd2; font-size:0.95rem;">
-                        <strong>조언:</strong><br>
-                        싼 물건 10개보다,<br>
-                        <strong><span style="color:#d32f2f;">제대로 된 물건 1개</span></strong>가 통장을 지킵니다.
-                    </div>
+                    <p class="result-title">10년 동안 당신이 소액으로 탕진할 금액</p>
+                    <span id="lostFortune" class="highlight">약 0원</span>
+                    <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
-            <!-- 팩트 체크 리스트 -->
+            <!-- [팩트체크 섹션] -->
             <section>
-                <h2>🛑 '다이소 증후군' 치료법</h2>
-                
+                <h2>🛑 저가 쇼핑이 재테크에 독인 3가지 이유</h2>
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">shopping_basket</span></div>
+                    <div class="icon-box">1</div>
                     <div class="reason-content">
-                        <h3>충동구매의 성지</h3>
-                        <p>매장 입구부터 계산대까지, 당신을 유혹하는 1,000원짜리 물건들이 배치되어 있습니다. 필요해서 산 게 아니라, 싸서 산 물건은 결국 짐이 됩니다.</p>
+                        <h3>결제 저항선이 무너집니다</h3>
+                        <p>천 원은 결제 문자가 와도 타격이 없습니다. 하지만 이 무감각함이 모여 수백만 원의 '고정 지출' 같은 누수 구멍을 만듭니다.</p>
                     </div>
                 </div>
-                
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">build_circle</span></div>
+                    <div class="icon-box">2</div>
                     <div class="reason-content">
-                        <h3>내구성 제로</h3>
-                        <p>1,000원짜리 주방 가위는 1년도 안 돼 녹슬고 무뎌집니다. 3만 원짜리 명품 가위는 10년을 씁니다. 길게 보면 좋은 걸 사는 게 이득입니다.</p>
+                        <h3>'대안재'를 사지 못하게 합니다</h3>
+                        <p>저렴하고 품질 낮은 물건 10개를 사느라, 평생 쓸 수 있는 명품 도구 1개를 살 수 있는 기회비용을 매달 스스로 박탈 중입니다.</p>
                     </div>
                 </div>
-
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">delete_forever</span></div>
+                    <div class="icon-box">3</div>
                     <div class="reason-content">
-                        <h3>환경 오염의 주범</h3>
-                        <p>저렴한 플라스틱 잡동사니는 쉽게 버려집니다. 썩지 않는 쓰레기를 내 돈 주고 사서 지구에 뿌리는 행위, 이제 멈춰야 합니다.</p>
+                        <h3>관리와 폐기라는 노동 비용</h3>
+                        <p>물건을 찾느라 뒤적이는 시간, 버릴 때 필요한 쓰레기 봉투값. 당신은 물건을 산 게 아니라 '치워야 할 업무'를 돈 주고 샀습니다.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- 하단 광고 -->
-            <div class="ad-box">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <!-- [SEO 블로그 콘텐츠] -->
+            <section class="seo-content">
+                <h2>다이소와 짠테크의 모순: 절약하고 있다고 착각하는 당신께</h2>
+                <p>퇴근길 무심코 들러 이것저것 집어 드는 즐거움. 다이소나 천원샵은 현대인에게 가장 저렴한 '도파민 충전소'입니다. 하지만 경제학적으로 **'단가가 낮은 물건의 무분별한 구매'**는 가계부를 망가뜨리는 치명적인 습관입니다. 한 바구니 가득 채워도 3만 원이 넘지 않는다는 안도감이, 정작 당신의 큰 자산 형성을 막고 있는 것은 아닌지 따져봐야 합니다.</p>
 
-            <!-- common.js가 푸터 자동 추가 -->
+                <h3>1. 보이지 않는 가치: 물건이 내 땅값을 뺏어갑니다</h3>
+                <p>매달 5만 원씩 저렴한 물건을 사는 사람이 10년 동안 유지한 습관의 결과는 단순한 현금 지출 이상의 손실입니다. 우선 원금만 600만 원이고, 이를 투자했을 때의 복리 가치는 1,000만 원에 육박합니다. 하지만 진짜 팩트는 당신의 **'주거 공간 가치'**에 있습니다. 안 쓰는 천 원짜리 물건들이 거실과 수납장의 10%를 차지하고 있다면, 당신은 물건 보관료로만 매달 수십만 원의 기회비용을 집주인이나 은행(대출 이자)에 내고 있는 것입니다. 1,000원짜리 물건이 당신의 평당 4,000만 원짜리 서울 아파트 공간을 무단 점거하게 두지 마십시오.</p>
 
+                <h3>2. 소유의 질이 부의 질을 결정합니다</h3>
+                <p>진짜 부자들은 적게 소유하되 가장 좋은 것을 소유합니다. 저렴한 프라이팬을 매년 바꾸기보다 무쇠 팬 하나를 20년 동안 씁니다. 저렴한 플라스틱 소품 여러 개로 방을 꾸미기보다 빈 공간 자체의 여유를 즐깁니다. 물건을 비우면 내가 가진 것이 무엇인지 명확해지고, 추가적인 중복 지출이 차단됩니다. 소액 결제가 주는 일시적인 위로에 취하지 마십시오. 당신의 부는 지갑에서 천 원권이 빠져나가는 횟수를 줄이는 것에서부터 시작됩니다. 지금 당장 집안의 '천 원짜리 짐'들을 정리하고 그 빈 공간을 당신의 명확한 생각과 여유 자금으로 채우십시오.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 소모품(세제 등)은 싸게 사는 게 이득 아닌가요?</strong><br>A. 꼭 필요한 소모품 구매는 합리적입니다. 문제는 매장에 간 김에 집어 오는 '기분 전환용 소품'들입니다. 목적 있는 구매만 실천하십시오.</li>
+                    <li><strong>Q. 스트레스 해소에 2~3만 원이면 저렴한 거 아닌가요?</strong><br>A. 스트레스 해소를 '물질 소유'로 해결하려는 태도가 고착화되면, 수입이 늘었을 때 훨씬 큰 규모의 명품 사치로 이어질 가능성이 높습니다. 건강한 해소법을 찾으세요.</li>
+                </ul>
+            </section>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
 
-        <!-- [우측] 사이드바 광고 -->
         <aside class="sidebar">
-            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890" 
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </aside>
-
     </div>
 
-    <!-- 계산 로직 -->
+    <!-- [계산 로직] -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                // 1. 값 가져오기
-                const monthly = Number(document.getElementById('monthlyCost').value) * 10000;
-                const rate = Number(document.getElementById('wasteRate').value) / 100;
-                const years = Number(document.getElementById('years').value);
-
-                if(monthly <= 0 || years <= 0) {
-                    alert("값을 올바르게 입력해주세요.");
-                    return;
+                const monthly = parseFloat(document.getElementById('monthlySpend').value) || 0;
+                const ratio = (parseFloat(document.getElementById('trashRatio').value) || 0) / 100;
+                const yrs = 10;
+                const rate = 0.08; 
+                
+                // 10년 복리 투자 가치 계산 (매달 납입)
+                let totalFuture = 0;
+                for(let i=0; i < yrs * 12; i++) {
+                    totalFuture = (totalFuture + monthly) * (1 + rate/12);
                 }
 
-                // 2. 계산 로직
-                // 연간 지출
-                const yearlyCost = monthly * 12;
-                
-                // 연간 낭비액
-                const yearlyWaste = yearlyCost * rate;
-                
-                // 총 낭비액 (단순 합계)
-                const totalWaste = yearlyWaste * years;
+                const wastedFuture = totalFuture * ratio;
 
-                // 3. 결과 출력
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-
-                document.getElementById('resTotalWaste').innerText = Math.round(totalWaste).toLocaleString() + "원";
-
-                // 4. 비교 물건 변경
-                const wasteManwon = totalWaste / 10000;
-                let item = "독일제 쌍둥이 칼";
+                document.getElementById('lostFortune').textContent = `약 ${Math.round(totalFuture/10000).toLocaleString()}만 원`;
                 
-                if(wasteManwon > 1000) item = "다이슨 청소기";
-                else if(wasteManwon > 500) item = "애플워치";
-                else if(wasteManwon > 300) item = "에어팟 프로";
-                else if(wasteManwon > 200) item = "고급 프라이팬 세트";
-                else if(wasteManwon > 100) item = "브랜드 주방 가위";
-                else if(wasteManwon > 50) item = "스타벅스 텀블러";
-                
-                document.getElementById('compareItem').innerText = item;
+                document.getElementById('resultText').textContent = `당신이 천 원 단위로 탕진한 돈이 10년 뒤 복리로는 약 ${Math.round(totalFuture/10000).toLocaleString()}만 원의 자산이 되었을 것입니다. 그 중 ${Math.round(wastedFuture/10000).toLocaleString()}만 원은 이미 쓰레기장으로 직행했네요.`;
             });
         });
     </script>
