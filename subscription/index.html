@@ -3,88 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="OTT 구독료 지출 계산기. 넷플릭스, 유튜브 등 숨만 쉬어도 나가는 고정비를 S&P500 투자 수익과 비교해드립니다.">
-    <title>구독의 늪 | 팩트 폭격 연구소</title>
+    <meta name="description" content="넷플릭스, 유튜브, 쿠팡 등 매달 나가는 구독료, 우습게 보지 마세요. 20년 뒤 당신이 놓친 자산의 가치를 팩트로 계산해드립니다.">
+    <title>구독의 늪 판독기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 및 라이브러리 -->
     <script src="../common.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
-        .main-content { flex: 3; } .sidebar { flex: 1; position: sticky; top: 20px; }
-        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; border: 1px solid #eee; }
-        h1.page-title { font-size: 2.2rem; margin: 20px 0 10px; color: #111; }
-        h2 { border-left: 5px solid #e91e63; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #fce4ec; border: 1px solid #f8bbd0; color: #880e4f; }
-        .intro-box strong { color: #e91e63; background: #fff; padding: 0 5px; border-radius: 4px; }
-        .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; color: #e91e63; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #e91e63; color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 1.2rem; font-weight: bold; }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fce4ec; border-radius: 12px; text-align: center; }
-        .highlight { font-size: 2.5rem; font-weight: 900; display: block; margin: 10px 0; color: #e91e63; }
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        /* 섹션 공통 스타일 */
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        /* [가변] 테마 설정: Deep Indigo */
+        h2 { border-left: 5px solid #311b92; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #ede7f6; border: 1px solid #d1c4e9; color: #311b92; padding: 25px; border-radius: 12px; }
         
-        .seo-content h3 { margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; } }
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #311b92; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; transition: 0.2s; }
+        input:focus { border-color: #311b92; outline: none; box-shadow: 0 0 0 3px rgba(49, 27, 146, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #311b92; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(49, 27, 146, 0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과창 스타일 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #ede7f6; border-radius: 12px; text-align: center; animation: fadeIn 0.5s ease; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #311b92; }
+
+        /* 팩트 체크 카드 */
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #311b92; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        /* SEO 콘텐츠 스타일 */
+        .seo-content { line-height: 1.8; color: #444; }
+        .seo-content h3 { font-size: 1.3rem; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; color: #111; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } .main-content { width: 100%; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">숨만 쉬어도 통장에서 돈이 사라집니다</h1>
-            <p class="page-subtitle">나도 모르게 결제되는 구독 서비스, 10년이면 차 한 대 값입니다.</p>
+            <h1 class="page-title">숨만 쉬어도 나가는 '고정비의 덫'</h1>
+            <p class="page-subtitle">구독 서비스 몇 개나 쓰시나요? 10년 뒤 통장 잔고가 달라집니다.</p>
 
             <section class="intro-box">
-                <h2>📺 '스트림플레이션'의 습격</h2>
-                <p>넷플릭스, 유튜브, 쿠팡, 멜론, 클라우드... 개별적으로 보면 커피 한 잔 값이지만, 합치면 무시무시한 고정 지출이 됩니다. <strong>"안 보면 해지해야지"</strong>라고 생각하지만, 귀찮아서 방치하고 계시진 않나요?</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">subscriptions</span> 매달 9,900원, 14,900원... 소액이라 괜찮다고요? 구독 서비스는 당신의 통장에서 매달 자동으로 빠져나가는 <strong>'부의 빨대'</strong>입니다.</p>
             </section>
 
+            <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>✂️ 고정 지출 팩트 체크</h2>
-                <label>① 월 총 구독료 (원)</label>
-                <input type="number" id="monthlyCost" value="35000" placeholder="예: 35000">
-                <label>② 유지 기간 (년)</label>
-                <input type="number" id="years" value="10" placeholder="예: 10">
-                <button id="calcBtn" class="calc-btn">사라지는 내 돈 확인하기</button>
+                <h2>📺 구독 경제 시뮬레이터</h2>
+                <div class="calc-group">
+                    <label>월 평균 총 구독료 (원)</label>
+                    <input type="number" id="monthlySub" placeholder="예: 50000" value="50000">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">OTT, 멤버십, 음원 서비스, 유료 앱 등을 모두 합치세요.</p>
+                </div>
+                <div class="calc-group">
+                    <label>유지 예상 기간 (년)</label>
+                    <input type="number" id="subYears" placeholder="예: 20" value="20">
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">사라진 미래 자산 계산하기</button>
 
                 <div id="result-area">
-                    <p>단순히 구독만 했을 뿐인데</p>
-                    <span id="resTotal" class="highlight">0원</span>
-                    <div style="margin-top:20px; padding-top:20px; border-top:1px dashed #999;">
-                        <p>이 돈을 S&P500(연 10%)에 투자했다면</p>
-                        <strong id="resInvest" style="font-size:1.8rem; color:#2e7d32;">0원</strong>
-                        <p>이 되었습니다.</p>
+                    <p class="result-title">이 구독료를 8% 지수 주식에 넣었다면?</p>
+                    <span id="lostWealth" class="highlight">약 0원</span>
+                    <p id="wealthText" style="color:#666; margin-top:10px; font-weight:bold;"></p>
+                </div>
+            </section>
+
+            <!-- 팩트체크 섹션 -->
+            <section>
+                <h2>🛑 구독 서비스의 심리적 함정 3가지</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>'본전 심리'를 자극해 시간을 뺏습니다</h3>
+                        <p>구독료가 아까워서 안 봐도 되는 콘텐츠를 찾고 있지는 않나요? 돈뿐만 아니라 당신의 소중한 시간까지 갉아먹는 구조입니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>결제 사실 자체를 잊게 만듭니다</h3>
+                        <p>카드 고지서에 찍힌 1만 원 내외의 금액은 뇌에서 무시되기 쉽습니다. 기업들이 단품 구매 대신 구독 모델을 선호하는 이유입니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>공유 금지 정책으로 지출은 계속 늡니다</h3>
+                        <p>계정 공유 유료화와 요금 인상은 시작일 뿐입니다. 한 번 발을 들이면 끊기 힘든 '고정 지출'의 노예가 되는 과정입니다.</p>
                     </div>
                 </div>
             </section>
 
+            <!-- SEO 블로그 콘텐츠 -->
             <section class="seo-content">
-                <h2>🛑 구독 다이어트가 시급한 이유</h2>
-                <h3>1. '락인(Lock-in) 효과'의 노예</h3>
-                <p>기업들은 처음에 무료 체험이나 할인가로 당신을 유혹한 뒤, 자동 결제로 전환하여 빠져나가지 못하게 가둡니다. 해지 버튼을 찾기 어렵게 숨겨놓거나, 포인트를 잃는다는 경고 문구로 당신을 붙잡습니다. 당신이 귀찮아하는 그 심리가 바로 그들의 수익 모델입니다.</p>
-                <h3>2. 소리 없는 가격 인상 (스트림플레이션)</h3>
-                <p>스트리밍(Streaming)과 인플레이션(Inflation)의 합성어인 '스트림플레이션'이 현실화되었습니다. 유튜브 프리미엄은 43% 인상되었고, 넷플릭스는 계정 공유를 금지했습니다. 월급은 안 오르는데 고정비만 계속 늘어나는 구조입니다. 보지 않는 서비스는 지금 당장 끊어야 합니다.</p>
-            </section>
-            
-            <div class="ad-box"><span style="font-size:11px; color:#ccc;">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
-        </main>
-        <aside class="sidebar"><div style="min-height: 600px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div></aside>
-    </div>
-    <script>
-        document.getElementById('calcBtn').addEventListener('click', function() {
-            const monthly = Number(document.getElementById('monthlyCost').value);
-            const years = Number(document.getElementById('years').value);
-            if(monthly <= 0 || years <= 0) { alert("값을 입력해주세요."); return; }
-            
-            const totalCost = monthly * 12 * years;
-            const rate = 0.10 / 12;
-            const months = years * 12;
-            const investValue = monthly * ((Math.pow(1 + rate, months) - 1) / rate);
+                <h2>OTT 전성시대, 구독료 지출이 만드는 부의 격차</h2>
+                <p>넷플릭스, 디즈니플러스, 유튜브 프리미엄, 그리고 쿠팡 와우 멤버십까지... 현대인은 '구독 경제'의 홍수 속에서 살고 있습니다. 각 서비스의 금액은 치킨 한 마리보다 저렴해 보이지만, 이들이 모여 만드는 <strong>'자동 지출 시스템'</strong>은 당신이 저축할 수 있는 종잣돈의 크기를 결정적으로 줄여버립니다.</p>
 
-            const resultArea = document.getElementById('result-area');
-            resultArea.style.display = 'block';
-            document.getElementById('resTotal').innerText = Math.round(totalCost).toLocaleString() + "원";
-            document.getElementById('resInvest').innerText = Math.round(investValue).toLocaleString() + "원";
+                <h3>1. 구독료는 단순 소비가 아닌 '기회비용'의 손실입니다</h3>
+                <p>만약 당신이 매달 5만 원의 구독료를 지불하고 있다면, 단순히 1년에 60만 원을 쓰는 것이 아닙니다. 이 돈을 매달 연평균 수익률 8%인 S&P500 인덱스 펀드에 20년 동안 넣었다고 가정해 보십시오. 20년 뒤 당신의 계좌에는 약 2,900만 원이라는 거액이 쌓여있을 것입니다. 지금 보는 영상 한 편의 대가가 미래의 중형차 한 대 값일 수 있다는 사실을 인지해야 합니다.</p>
+
+                <h3>2. 다이어트가 필요한 당신의 정기 결제 내역</h3>
+                <p>가장 큰 문제는 '중복'과 '방치'입니다. 사용하지도 않는 혜택을 위해 가입된 멤버십, 지난달 한 번도 들어가지 않은 OTT 서비스가 여러분의 카드 한구석에서 매달 숨 쉬며 돈을 빼가고 있습니다. 매달 결제일이 돌아오기 전에 '정기 구독 리스트'를 작성해 보십시오. 단 한 달만 끊어봐도 생각보다 내 삶에 큰 지장이 없다는 것을 깨닫게 될 것입니다.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 하나만 남겨야 한다면 어떤 기준이 좋을까요?</strong><br>A. '하루 평균 이용 시간'이 아니라 '필수성'을 기준으로 하십시오. 단순히 심심함을 달래기 위한 서비스라면 과감히 삭제하고, 자기계발이나 생필품 절약에 도움을 주는 것 하나만 유지하는 것이 좋습니다.</li>
+                    <li><strong>Q. 무료 체험 기간만 쓰고 해지하는 건 어떤가요?</strong><br>A. 전형적인 마케팅 기법입니다. 해지 예약을 깜빡하는 순간 첫 결제가 이루어지고, 그때부터 당신은 '이미 낸 돈이 아까워서' 구독을 유지하게 될 확률이 매우 높습니다.</li>
+                </ul>
+            </section>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </main>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
+    </div>
+
+    <!-- 로직 스크립트 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                const monthly = parseFloat(document.getElementById('monthlySub').value);
+                const yrs = parseFloat(document.getElementById('subYears').value);
+                const rate = 0.08; 
+                
+                if(!monthly || !yrs) return;
+
+                let total = 0;
+                for(let i=0; i < yrs * 12; i++) {
+                    total = (total + monthly) * (1 + rate/12);
+                }
+                
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+                document.getElementById('lostWealth').textContent = `약 ${Math.round(total / 10000).toLocaleString()}만 원`;
+                document.getElementById('wealthText').textContent = `단순 합계인 ${(monthly*12*yrs/10000).toFixed(0)}만 원보다 약 ${Math.round((total - (monthly*12*yrs))/10000).toLocaleString()}만 원 더 많은 기회비용을 날리셨습니다.`;
+            });
         });
     </script>
 </body>
