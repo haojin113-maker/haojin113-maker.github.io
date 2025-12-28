@@ -3,299 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="키덜트 수집 비용 계산기. 피규어, 레고, 운동화 수집에 쓴 돈과 공간 비용을 계산해드립니다.">
+    <meta name="description" content="레고와 피규어가 재테크가 될까요? 수집품이 차지하는 집값 가치와 관리 비용을 합산한 진짜 '취미 유지비'를 팩트로 계산해드립니다.">
     <title>키덜트 수집병 판독기 | 팩트 폭격 연구소</title>
 
     <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
 
-    <!-- 구글 아이콘 -->
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
     <style>
-        /* --- [표준 스타일 가이드] --- */
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.7;
-        }
-
-        .wrapper {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-        }
-        
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
+        .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
 
-        section {
-            background: white;
-            border-radius: 16px;
-            padding: 35px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            border: 1px solid #eee;
-        }
-
+        /* 섹션 공통 스타일 */
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
 
-        /* [테마 변경] 장난감/열정(Red) -> #f44336 */
-        h2 { border-left: 5px solid #f44336; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-
-        .intro-box { background-color: #ffebee; border: 1px solid #ffcdd2; color: #b71c1c; }
-        .intro-box strong { color: #f44336; background: #fff; padding: 0 5px; border-radius: 4px; }
-
-        /* 계산기 스타일 */
-        .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #f44336; }
-        input {
-            width: 100%; padding: 14px; border: 1px solid #ddd;
-            border-radius: 8px; font-size: 1rem; transition: 0.2s;
-        }
-        input:focus { border-color: #f44336; outline: none; box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-
-        .calc-btn {
-            width: 100%; padding: 18px;
-            background-color: #f44336; color: white;
-            border: none; border-radius: 12px;
-            font-size: 1.2rem; font-weight: bold; cursor: pointer;
-            margin-top: 10px; transition: 0.2s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .calc-btn:hover { background-color: #c62828; transform: translateY(-3px); }
-
-        #result-area {
-            display: none; margin-top: 30px; padding: 30px;
-            background-color: #fce4ec; border-radius: 12px; text-align: center;
-            animation: fadeIn 0.5s ease;
-        }
+        /* [가변] 테마 설정: Purple */
+        h2 { border-left: 5px solid #9c27b0; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #f3e5f5; border: 1px solid #e1bee7; color: #4a148c; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #9c27b0; background: #fff; padding: 0 5px; border-radius: 4px; }
         
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.waste { color: #f44336; } 
-        .highlight.asset { color: #2e7d32; }
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #9c27b0; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #9c27b0; outline: none; box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #9c27b0; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(156,39,176,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #f3e5f5; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #4a148c; }
 
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box {
-            flex-shrink: 0; width: 40px; height: 40px;
-            background: #f44336; color: white;
-            border-radius: 10px; font-weight: bold;
-            display: flex; align-items: center; justify-content: center;
-            margin-right: 20px; margin-top: 5px;
-        }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        @media (max-width: 850px) {
-            .wrapper { flex-direction: column; }
-            .sidebar { width: 100%; position: static; min-width: auto; }
-            .main-content { width: 100%; }
-            h1.page-title { font-size: 1.8rem; }
-        }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #9c27b0; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
-
     <div class="wrapper">
-        
-        <!-- [좌측] 메인 콘텐츠 -->
         <main class="main-content">
-            
-            <h1 class="page-title">재테크라고 우기지만 사실은 장난감입니다</h1>
-            <p class="page-subtitle">"나중에 오르면 팔 거야"라며 박스째 모셔둔 피규어와 운동화. 그 공간이 더 비쌉니다.</p>
+            <!-- [제목 섹션] -->
+            <h1 class="page-title">내 거실을 점령한 플라스틱 군대, 얼마입니까?</h1>
+            <p class="page-subtitle">피규어 한 박스에 담긴 당신의 '아파트 잔금'을 찾아드립니다.</p>
 
-            <!-- 인트로: 팩트 제시 -->
+            <!-- [도입 섹션] -->
             <section class="intro-box">
-                <h2>🤖 키덜트(Kidult)의 텅장</h2>
-                <p>
-                    한정판 스니커즈, 레고, 피규어...<br>
-                    가격이 오르는 건 극히 일부입니다. 대부분은 시간이 지나면 <strong>'짐'</strong>이 되고, 이사할 때마다 애물단지가 됩니다. 당신의 수집품이 차지하는 <strong>부동산 비용</strong>까지 계산해드립니다.
-                </p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">smart_toy</span> 어린 시절의 추억을 완성한다는 핑계로 수백만 원어치 레고와 피규어를 쌓아두고 계신가요? 수집품은 <strong>'자산'이 아니라 '부피 큰 소모품'</strong>입니다. 당신의 장식장이 잡아먹는 공간 가치와 매몰 비용을 숫자로 직면하세요.</p>
             </section>
 
-            <!-- 계산기 섹션 -->
+            <!-- [계산기 섹션] -->
             <section id="calculator">
-                <h2>📦 수집 비용 견적서</h2>
+                <h2>🤖 수집품 매몰 자산 계산기</h2>
+                <div class="calc-group">
+                    <label>수집품 총 구매 비용 (만원)</label>
+                    <input type="number" id="purchaseTotal" placeholder="예: 500" value="500">
+                </div>
+                <div class="calc-group">
+                    <label>수집을 위해 지출한 기타비용 (만원)</label>
+                    <input type="number" id="miscTotal" placeholder="예: 100" value="100">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">전용 진열장, 조명, 관리 도구, 직구 배송비 등</p>
+                </div>
+                <div class="calc-group">
+                    <label>현재 거주 중인 집의 시세 (억원)</label>
+                    <input type="number" id="houseValue" placeholder="예: 8" value="8">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">장식장이 차지하는 평당 임대료 가치 계산용</p>
+                </div>
                 
-                <div class="calc-group">
-                    <label>① 현재 보유 수집품 총액 (만원)</label>
-                    <input type="number" id="currentValue" value="500" placeholder="예: 500 (구매가 기준)">
-                </div>
+                <button id="calcBtn" class="calc-btn">나의 수집 비용 실체 확인</button>
 
-                <div class="calc-group">
-                    <label>② 월평균 추가 구매비 (만원)</label>
-                    <input type="number" id="monthlyCost" value="20" placeholder="예: 20">
-                </div>
-
-                <div class="calc-group">
-                    <label>③ 수집품이 차지하는 공간 (평)</label>
-                    <input type="number" id="space" value="1" placeholder="예: 1 (방 한 켠 or 진열장)">
-                    <div class="help-text">* 서울 아파트 평당 3~4천만원 가치</div>
-                </div>
-
-                <div class="calc-group">
-                    <label>④ 취미 지속 기간 (년)</label>
-                    <input type="number" id="years" value="10" placeholder="예: 10">
-                </div>
-
-                <button id="calcBtn" class="calc-btn">이 취미의 진짜 비용 확인</button>
-
-                <!-- 결과창 -->
                 <div id="result-area">
-                    
-                    <div style="margin-bottom:20px;">
-                        <p class="result-title">10년 뒤 사라질 돈 (감가상각+지출)</p>
-                        <span id="resTotal" class="highlight waste">0원</span>
-                        <p style="font-size:0.9rem; color:#888;">(공간 점유 비용 포함)</p>
-                    </div>
-
-                    <div style="border-top:1px dashed #aaa; padding-top:20px;">
-                        <p class="result-title" style="margin-bottom:10px;">이 돈을 미국 기술주(나스닥)에 투자했다면</p>
-                        <span id="resInvest" class="highlight asset" style="font-size:1.8rem;">0원</span>
-                        <p style="font-size:0.9rem; color:#888;">(연평균 12% 복리 가정)</p>
-                    </div>
-
-                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #ffcdd2; font-size:0.95rem;">
-                        플라스틱 쪼가리를 모으는 대신<br>
-                        <strong><span id="compareItem" style="background:#ffebee; padding:0 4px; color:#b71c1c;">제네시스 G80</span></strong>을<br>
-                        살 수 있었습니다.
-                    </div>
+                    <p class="result-title">당신의 취미가 무단 점거 중인 자산 가치</p>
+                    <span id="lostWealth" class="highlight">약 0원</span>
+                    <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
-            <!-- 팩트 체크 리스트 -->
+            <!-- [팩트체크 섹션] -->
             <section>
-                <h2>🛑 수집가들이 모르는 진실</h2>
-                
+                <h2>🛑 키덜트 수집이 재테크가 아닌 3가지 팩트</h2>
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">trending_down</span></div>
+                    <div class="icon-box">1</div>
                     <div class="reason-content">
-                        <h3>환금성의 함정</h3>
-                        <p>"팔면 돈 된다"고 하지만, 막상 팔려고 하면 제값을 받기 힘듭니다. 거래 플랫폼 수수료, 택배비, 네고 요청에 시달리다 보면 '그냥 갖고 있자'며 포기하게 됩니다.</p>
+                        <h3>중고 시장은 공급 과잉 상태입니다</h3>
+                        <p>당신의 '희귀템'도 결국 누군가는 팔고 싶어 하는 매물입니다. 급전이 필요할 때 당신의 피규어는 원금의 30%조차 건지기 힘든 짐이 됩니다.</p>
                     </div>
                 </div>
-                
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">cleaning_services</span></div>
+                    <div class="icon-box">2</div>
                     <div class="reason-content">
-                        <h3>먼지와의 전쟁</h3>
-                        <p>진열해둔 피규어와 레고는 먼지떨이의 주적입니다. 관리하지 않으면 끈적해지고 변색되어 가치가 0원이 됩니다. 관리에 들어가는 시간도 비용입니다.</p>
+                        <h3>공간 가치는 감가되지 않습니다</h3>
+                        <p>물건은 낡지만 공간의 가치는 오릅니다. 쓰지 않는 취미 용품에 집의 5%를 내어주는 것은 매달 20만 원 이상의 기회비용을 바닥에 버리는 셈입니다.</p>
                     </div>
                 </div>
-
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">real_estate_agent</span></div>
+                    <div class="icon-box">3</div>
                     <div class="reason-content">
-                        <h3>공간 비용 (Rent)</h3>
-                        <p>30평 아파트에 산다면 1평의 가치는 약 3~4천만 원입니다. 장식장이 차지한 그 1평, 사실은 3천만 원짜리 창고로 쓰고 있는 것입니다.</p>
+                        <h3>플라스틱은 복리를 낳지 않습니다</h3>
+                        <p>수집품을 모으는 동안 당신의 시드머니는 멈춰있습니다. 자산은 증식할 때 의미가 있지, 선반 위에 가만히 있을 때 의미를 갖지 않습니다.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- 하단 광고 -->
-            <div class="ad-box">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <!-- [SEO 블로그 콘텐츠] -->
+            <section class="seo-content">
+                <h2>키덜트 수집과 '가짜 재테크': 왜 우리는 플라스틱에 열광하는가?</h2>
+                <p>성인이 된 후 자금력이 생기며 어릴 적 갖지 못했던 물건을 모으는 행위는 심리학적으로 결핍의 충족입니다. 하지만 '레테크(레고+재테크)', '슈테크(슈즈+재테크)'라는 단어들이 범람하면서 소비가 마치 투자인 것처럼 오도되고 있습니다. 냉정하게 짚어봅시다. 당신이 <strong>'진정한 수집가'가 아니라 '단순 구매자'</strong>라면, 당신의 장식장은 부의 증식로가 아니라 자본의 무덤입니다.</p>
 
-            <!-- common.js가 푸터 자동 추가 -->
+                <h3>1. 보이지 않는 금융 비용: 공간 보관료의 실체</h3>
+                <p>서울 아파트 평당 4,000만 원 시대에 가로 1.2m짜리 대형 장식장 한 세트가 차지하는 면적은 약 0.5평입니다. 이는 주거 비용 측면에서 당신이 장식장 한 대를 두기 위해 2,000만 원이라는 무형의 전세금을 깔고 앉아있는 것과 같습니다. 여기에 500만 원의 장비 구입비를 더하면 당신의 취미 가격은 도합 2,500만 원입니다. 2,500만 원을 미국 기술주 지수(S&P 500)에 20년만 묻어두었다면 약 1억 원이 넘는 자산이 되었을 것입니다. 당신은 지금 먼지 쌓인 플라스틱 조각을 보며 은퇴 후 살 집의 거실 한 평을 깎아 먹고 있는 것입니다.</p>
 
+                <h3>2. 유행의 끝자락에서 맞이할 씁쓸한 미래</h3>
+                <p>수집 시장의 시세는 유동적이며 유행에 민감합니다. 현재 수백만 원을 호가하는 베어브릭이나 한정판 운동화도 다음 세대의 관심사가 바뀌는 순간 그저 '자리 차지하는 쓰레기'로 전락합니다. 부자들은 자산이 스스로 가치를 생산하는 구조(기업 지분, 임대 소득 등)를 수집하지만, 빈자들은 자신의 만족감을 증명할 타인의 창작물을 사 모으는 데 혈안이 됩니다. 수집품은 처분할 때 비로소 가치가 결정됩니다. 지금 당장 중고 마켓에 내놓아도 사줄 사람이 없다면 그것은 자산이 아닙니다. 장식장을 비우고 공간을 확보하십시오. 물건이 줄어들 때 비로소 당신의 진짜 자산 성장이 시작됩니다.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 한정판 미개봉 제품은 가격이 오르지 않나요?</strong><br>A. 아주 극소수의 골동품급 제품만 해당됩니다. 대량 생산되는 현대의 완구류는 신제품이 쏟아지는 순간 가치가 하락하는 것이 경제의 기본 원리입니다.</li>
+                    <li><strong>Q. 취미로 삶의 활력을 얻는데 돈이 아까운가요?</strong><br>A. 활력을 얻는 것은 좋지만, 그 비용이 본인의 총 자산 형성 속도를 10년 이상 늦추고 있다면 그것은 건전한 취미가 아니라 자기 파괴적 과소비입니다.</li>
+                </ul>
+            </section>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
 
-        <!-- [우측] 사이드바 광고 -->
         <aside class="sidebar">
-            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890" 
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </aside>
-
     </div>
 
-    <!-- 계산 로직 -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                // 1. 값 가져오기
-                const current = Number(document.getElementById('currentValue').value) * 10000;
-                const monthly = Number(document.getElementById('monthlyCost').value) * 10000;
-                const space = Number(document.getElementById('space').value);
-                const years = Number(document.getElementById('years').value);
-
-                if(current < 0 || years <= 0) {
-                    alert("값을 올바르게 입력해주세요.");
-                    return;
-                }
-
-                // 2. 계산 로직
-                // 총 지출 (현재 가치 + 향후 지출)
-                const futureSpending = monthly * 12 * years;
+                const buy = (parseFloat(document.getElementById('purchaseTotal').value) || 0) * 10000;
+                const misc = (parseFloat(document.getElementById('miscTotal').value) || 0) * 10000;
+                const house = (parseFloat(document.getElementById('houseValue').value) || 0) * 100000000;
                 
-                // 공간 비용 (평당 3000만원 가정, 기회비용 성격)
-                const spaceCost = space * 30000000; 
-                
-                // 총 낭비 금액 (보유품 감가 50% 가정 + 지출 + 공간비용 이자)
-                // 보수적으로: 현재 물건값 반토막 + 향후 지출 전액 + 공간비용의 연 4% 이자 기회비용
-                const depreciation = current * 0.5;
-                const spaceOpportunity = spaceCost * 0.04 * years;
-                const totalWaste = depreciation + futureSpending + spaceOpportunity;
+                // 공간 기회비용: 평균 30평 아파트 중 장식장 1개(약 0.3평) 점유 가정
+                const spaceValue = house * (0.3 / 30);
+                const totalOpportunity = buy + misc + spaceValue;
 
-                // 투자 기회비용 (나스닥 연 12% 복리)
-                // (1) 현재 보유액 투자: P * (1+r)^n
-                const rate = 0.12;
-                const investCurrent = current * Math.pow(1 + rate, years);
-                // (2) 월 적립액 투자
-                const months = years * 12;
-                const monthlyRate = rate / 12;
-                const investMonthly = monthly * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
-                
-                const totalInvest = investCurrent + investMonthly;
-
-                // 3. 결과 출력
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-
-                document.getElementById('resTotal').innerText = Math.round(totalWaste).toLocaleString() + "원";
-                document.getElementById('resInvest').innerText = Math.round(totalInvest).toLocaleString() + "원";
-
-                // 4. 비교 물건 변경
-                const totalManwon = totalInvest / 10000;
-                let item = "최신형 아이패드 프로";
+                document.getElementById('lostWealth').textContent = `약 ${(totalOpportunity/10000).toLocaleString()}만 원`;
                 
-                if(totalManwon > 100000) item = "서울 소형 아파트 전세";
-                else if(totalManwon > 50000) item = "테슬라 모델 S";
-                else if(totalManwon > 30000) item = "지방 아파트 한 채";
-                else if(totalManwon > 15000) item = "포르쉐 박스터 (중고)";
-                else if(totalManwon > 8000) item = "제네시스 G80 풀옵션";
-                else if(totalManwon > 5000) item = "그랜저 신차";
-                else if(totalManwon > 3000) item = "소형차 한 대";
-                
-                document.getElementById('compareItem').innerText = item;
+                document.getElementById('resultText').textContent = `단순 구매가 ${( (buy+misc)/10000 ).toLocaleString()}만 원보다 더 뼈아픈 것은, 수집품을 위해 점거된 공간의 집값 가치 ${(spaceValue/10000).toLocaleString()}만 원입니다. 물건들이 당신 대신 상석에 앉아 있네요.`;
             });
         });
     </script>
