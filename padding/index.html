@@ -3,283 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="명품 패딩 가성비 계산기. 몽클레어, 캐나다구스 등 프리미엄 아우터의 1회 착용 비용과 세탁비를 계산해드립니다.">
-    <title>명품 패딩 호갱 판독기 | 팩트 폭격 연구소</title>
+    <meta name="description" content="200만 원짜리 명품 패딩, 가성비는 안녕하신가요? 착용 횟수와 세탁비를 포함한 '겨울 하루 거주 비용'을 팩트로 계산해드립니다. 몽클레르가 당신의 자산을 지켜주는지 확인하세요.">
+    <title>명품 패딩 계급도 판독기 | 팩트 폭격 연구소</title>
 
     <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
 
-    <!-- 구글 아이콘 -->
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
     <style>
-        /* --- [표준 스타일 가이드] --- */
+        /* 기본 레이아웃 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.7;
-        }
-
-        .wrapper {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-        }
-        
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
+        .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
 
-        section {
-            background: white;
-            border-radius: 16px;
-            padding: 35px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            border: 1px solid #eee;
-        }
-
+        /* 섹션 공통 스타일 */
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
 
-        /* [테마 변경] 겨울/패딩(Blue) -> #039be5 */
-        h2 { border-left: 5px solid #039be5; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-
-        .intro-box { background-color: #e1f5fe; border: 1px solid #b3e5fc; color: #01579b; }
-        .intro-box strong { color: #039be5; background: #fff; padding: 0 5px; border-radius: 4px; }
-
-        /* 계산기 스타일 */
-        .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #039be5; }
-        input {
-            width: 100%; padding: 14px; border: 1px solid #ddd;
-            border-radius: 8px; font-size: 1rem; transition: 0.2s;
-        }
-        input:focus { border-color: #039be5; outline: none; box-shadow: 0 0 0 3px rgba(3, 155, 229, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-
-        .calc-btn {
-            width: 100%; padding: 18px;
-            background-color: #039be5; color: white;
-            border: none; border-radius: 12px;
-            font-size: 1.2rem; font-weight: bold; cursor: pointer;
-            margin-top: 10px; transition: 0.2s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .calc-btn:hover { background-color: #006db3; transform: translateY(-3px); }
-
-        #result-area {
-            display: none; margin-top: 30px; padding: 30px;
-            background-color: #e1f5fe; border-radius: 12px; text-align: center;
-            animation: fadeIn 0.5s ease;
-        }
+        /* [가변] 테마 설정: Ice Blue Grey */
+        h2 { border-left: 5px solid #607d8b; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #eceff1; border: 1px solid #cfd8dc; color: #263238; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #607d8b; background: #fff; padding: 0 5px; border-radius: 4px; }
         
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.waste { color: #d32f2f; } 
-        .highlight.save { color: #0288d1; }
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #607d8b; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #607d8b; outline: none; box-shadow: 0 0 0 3px rgba(96, 125, 139, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #607d8b; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(96,125,139,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #eceff1; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #263238; }
 
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box {
-            flex-shrink: 0; width: 40px; height: 40px;
-            background: #039be5; color: white;
-            border-radius: 10px; font-weight: bold;
-            display: flex; align-items: center; justify-content: center;
-            margin-right: 20px; margin-top: 5px;
-        }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        @media (max-width: 850px) {
-            .wrapper { flex-direction: column; }
-            .sidebar { width: 100%; position: static; min-width: auto; }
-            .main-content { width: 100%; }
-            h1.page-title { font-size: 1.8rem; }
-        }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #607d8b; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
-
     <div class="wrapper">
-        
-        <!-- [좌측] 메인 콘텐츠 -->
         <main class="main-content">
-            
-            <h1 class="page-title">겨울 3개월 입으려고 300만 원 태우시나요?</h1>
-            <p class="page-subtitle">"10년 입으면 뽕 뽑는다"는 자기합리화. 세탁비와 유행 변화를 고려한 진짜 비용을 알려드립니다.</p>
+            <h1 class="page-title">로고가 커질수록 당신의 자산은 작아집니다</h1>
+            <p class="page-subtitle">200만 원짜리 패딩의 리얼 할부 가격표.</p>
 
-            <!-- 인트로: 팩트 제시 -->
+            <!-- 도입 섹션 -->
             <section class="intro-box">
-                <h2>🧥 패딩 계급도의 그림자</h2>
-                <p>
-                    몽클레어, 캐나다구스, 무스너클...<br>
-                    로고 하나 박힌 값이 200만 원입니다. 한국의 혹한기는 기껏해야 한 달. 
-                    당신이 <strong>패딩을 한 번 걸칠 때마다</strong> 얼마를 내고 있는지 계산해드립니다.
-                </p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">ac_unit</span> 대한민국은 한여름에도 패딩 오픈런이 일어나는 기이한 시장입니다. "평생 입을 거니까"라는 합리화는 통장에선 통하지 않습니다. <strong>패딩 한 번 입을 때마다 나가는 일세(日稅)</strong>를 계산하고 명품 패딩 계급도 너머의 진실을 확인하세요.</p>
             </section>
 
             <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>📉 아우터 가성비 견적서</h2>
+                <h2>🧥 패딩 감가상각 계산기</h2>
+                <div class="calc-group">
+                    <label>패딩 구매 가격 (만원)</label>
+                    <input type="number" id="purchasePrice" placeholder="예: 250" value="250">
+                </div>
+                <div class="calc-group">
+                    <label>겨울 한 시즌 당 평균 착용 일수 (일)</label>
+                    <input type="number" id="wearingDays" placeholder="예: 60" value="60">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">한국의 혹한기는 생각보다 짧습니다.</p>
+                </div>
+                <div class="calc-group">
+                    <label>전문 세탁비 및 유지 보수비 (연/만원)</label>
+                    <input type="number" id="cleanCost" placeholder="예: 5" value="5">
+                </div>
                 
-                <div class="calc-group">
-                    <label>① 패딩 구매 가격 (만원)</label>
-                    <input type="number" id="price" value="250" placeholder="예: 250 (프리미엄 브랜드)">
-                </div>
+                <button id="calcBtn" class="calc-btn">하루 입을 때마다 얼마인가요?</button>
 
-                <div class="calc-group">
-                    <label>② 연간 실제 착용 일수 (일)</label>
-                    <input type="number" id="days" value="30" placeholder="예: 30 (정말 추운 날만)">
-                    <div class="help-text">* 한국 겨울은 삼한사온, 롱패딩 입을 날 적음</div>
-                </div>
-
-                <div class="calc-group">
-                    <label>③ 연간 특수 세탁비 (만원)</label>
-                    <input type="number" id="laundry" value="5" placeholder="예: 5 (명품 전문 세탁)">
-                </div>
-
-                <div class="calc-group">
-                    <label>④ 예상 착용 기간 (년)</label>
-                    <input type="number" id="years" value="5" placeholder="예: 5 (유행 지나기 전)">
-                </div>
-
-                <button id="calcBtn" class="calc-btn">1회 착용 비용 확인하기</button>
-
-                <!-- 결과창 -->
                 <div id="result-area">
-                    
-                    <div style="margin-bottom:20px;">
-                        <p class="result-title">옷장에서 잠자는 동안 나간 총비용</p>
-                        <span id="resTotal" class="highlight waste">0원</span>
-                        <p style="font-size:0.9rem; color:#888;">(세탁비 포함)</p>
-                    </div>
-
-                    <div style="border-top:1px dashed #aaa; padding-top:20px;">
-                        <p class="result-title" style="margin-bottom:10px;">당신은 이 옷을 한 번 입을 때마다</p>
-                        <span id="resPerWear" class="highlight save" style="font-size:2rem;">0원</span>
-                        <p style="font-size:0.9rem; color:#888;">을 지불하고 있습니다.</p>
-                    </div>
-
-                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #b3e5fc; font-size:0.95rem;">
-                        이 돈이면 <strong>SPA 브랜드(유니클로 등)</strong> 패딩을 입고<br>
-                        남은 돈으로 <strong><span style="color:#01579b;">따뜻한 동남아 여행</span></strong>을<br>
-                        다녀오는 게 낫습니다.
-                    </div>
+                    <p class="result-title">명품 패딩 1일 거주(착용) 비용</p>
+                    <span id="costPerDay" class="highlight">약 0원</span>
+                    <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
-            <!-- 팩트 체크 리스트 -->
+            <!-- 팩트 체크 -->
             <section>
-                <h2>🛑 명품 패딩을 사지 말아야 할 이유</h2>
-                
+                <h2>🛑 고가 패딩에 집착하면 안 되는 3가지 팩트</h2>
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">local_laundry_service</span></div>
+                    <div class="icon-box">1</div>
                     <div class="reason-content">
-                        <h3>배보다 큰 배꼽 (세탁비)</h3>
-                        <p>명품 패딩은 동네 세탁소에 맡길 수 없습니다. 명품 전용 세탁비는 회당 5~10만 원입니다. 10년 입으면 세탁비로만 패딩 한 벌 값이 나갑니다.</p>
+                        <h3>기술력보다 로고 값이 90%입니다</h3>
+                        <p>동급 우모량과 필파워를 가진 국내 등산 브랜드 패딩은 명품 패딩의 1/5 가격입니다. 보온성은 동일한데 왜 5배를 더 내시나요?</p>
                     </div>
                 </div>
-                
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">history</span></div>
+                    <div class="icon-box">2</div>
                     <div class="reason-content">
-                        <h3>유행은 돌아오지 않는다</h3>
-                        <p>5년 전 유행했던 등골 브레이커 브랜드들을 기억하시나요? 지금 입으면 촌스럽습니다. 10년 입는다는 건 자기 위안일 뿐, 실제로는 3~4년이면 장롱 신세입니다.</p>
+                        <h3>'교복화' 현상의 기회비용 상실</h3>
+                        <p>너도나도 입는 패딩 로고는 개성이 아닌 복종입니다. 타인의 부러움을 사기 위해 지출한 거액은 부자가 될 기회와 등가교환 되었습니다.</p>
                     </div>
                 </div>
-
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">thermostat</span></div>
+                    <div class="icon-box">3</div>
                     <div class="reason-content">
-                        <h3>한국 날씨와 오버스펙</h3>
-                        <p>영하 40도를 견디는 기능성은 남극에서나 필요합니다. 한국의 겨울은 대중교통과 난방이 잘 되어 있어, 가벼운 경량 패딩으로도 충분합니다.</p>
+                        <h3>시간이 갈수록 떨어지는 '충전재 가치'</h3>
+                        <p>거위 털과 깃털의 탄성은 시간이 지날수록 죽습니다. 명품이라도 10년 입으면 방한 능력은 바닥을 칩니다. 평생 입을 수 있는 소모품이란 없습니다.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- 하단 광고 -->
-            <div class="ad-box">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <!-- SEO 텍스트 -->
+            <section class="seo-content">
+                <h2>명품 패딩 계급도와 사회적 체면의 가격: 몽클레르가 부의 증표인가?</h2>
+                <p>겨울만 되면 커뮤니티에 '명품 패딩 계급도'가 올라옵니다. 노스페이스에서 시작해 몽클레르, 무스너클, 노비스로 이어지는 이 서열표는 현대인의 소유욕과 비교 심리를 적나라하게 파고듭니다. 하지만 자본주의 경제적 관점에서 <strong>'부채로 산 고가 패딩'</strong>은 당신을 하우스 푸어, 카 푸어와 다를 바 없는 **'클로젯 푸어(Closet Poor)'**로 만듭니다. 따뜻함의 대가는 이미 당신의 겨울철 지갑 온도를 영하로 떨어뜨리고 있습니다.</p>
 
-            <!-- common.js가 푸터 자동 추가 -->
+                <h3>1. 보이지 않는 가치: 패딩 하나에 아파트 한 평?</h3>
+                <p>250만 원짜리 패딩을 사고 5년(약 300일)을 입는다고 가정해 봅시다. 당신은 그 옷을 한 번 걸칠 때마다 세탁비를 포함해 하루에 약 1만 원 이상의 '패딩 세'를 내고 있는 것입니다. 만약 이 250만 원을 복리 8%의 주식 시장에 넣었다면 어떨까요? 20년 뒤 그 패딩 한 장의 가격은 <strong>약 1,160만 원</strong>이라는 거액이 되어 있었을 것입니다. 당신이 백화점에서 "일시불이요"라고 외쳤던 그 돈은 사실 20년 뒤 당신이 쉴 수 있는 따뜻한 집 한 칸의 자본금이었습니다. 진짜 승자는 로고로 체온을 유지하는 사람이 아니라, 계좌의 숫자로 자존감의 온도를 유지하는 사람입니다.</p>
 
+                <h3>2. 상향 비교의 함정과 자본의 역습</h3>
+                <p>사람들은 왜 유독 '겉으로 드러나는 외투'에 과하게 투자할까요? 그것은 가난한 자들이 부자처럼 보이기 가장 쉬운 방법이기 때문입니다. 진짜 자산가들은 의류에 목돈을 묶지 않습니다. 대신 자산이 스스로 돈을 벌어오는 시스템을 완성하고, 거기서 나오는 우수리 수익으로 필요한 기능성 제품을 삽니다. 당신이 패딩을 사기 위해 아르바이트를 하고 야근을 한다면, 당신은 그 브랜드 사옥의 벽돌 한 장을 대신 깔아주고 있는 셈입니다. 200만 원짜리 명품 패딩을 들고 만원 지하철에 오르는 모습은 품격이 아닌 결핍을 광고하는 것입니다. 명품 패딩을 내려놓고 그 현금을 생산적인 곳에 투자하십시오. 시베리아보다 차가운 자본주의 시장에서 당신을 지켜주는 건 프리미엄 패딩이 아니라 현금의 방패입니다.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 비싼 건 평생 입는다는데 진짜인가요?</strong><br>A. 아니오. 패션의 주기는 보통 3~5년입니다. 고가의 디자인이라 하더라도 5년만 지나면 실루엣과 소재감이 '구닥다리'가 되어 결국 다시 사게 되는 함정에 빠집니다.</li>
+                    <li><strong>Q. 한정판은 리셀이 가능하지 않나요?</strong><br>A. 시계나 가방과 달리 패딩은 피부에 직접 닿고 체취가 배는 품목입니다. 중고 가치는 보관 상태와 유행에 따라 바닥을 칩니다. 리셀 재테크로는 부적합한 소모품일 뿐입니다.</li>
+                </ul>
+            </section>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
 
-        <!-- [우측] 사이드바 광고 -->
         <aside class="sidebar">
-            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890" 
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </aside>
-
     </div>
 
-    <!-- 계산 로직 -->
+    <!-- [계산 로직] -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                // 1. 값 가져오기
-                const price = Number(document.getElementById('price').value) * 10000;
-                const days = Number(document.getElementById('days').value);
-                const laundry = Number(document.getElementById('laundry').value) * 10000;
-                const years = Number(document.getElementById('years').value);
-
-                if(price <= 0 || days <= 0 || years <= 0) {
-                    alert("값을 올바르게 입력해주세요.");
-                    return;
-                }
-
-                // 2. 계산 로직
-                // 총 세탁비
-                const totalLaundry = laundry * years;
+                const price = (parseFloat(document.getElementById('purchasePrice').value) || 0) * 10000;
+                const days = parseFloat(document.getElementById('wearingDays').value) || 1;
+                const cleaning = (parseFloat(document.getElementById('cleanCost').value) || 0) * 10000;
                 
-                // 총 비용
-                const totalCost = price + totalLaundry;
+                // 5년 사용 기준 총 비용 (원가 + 5년 세탁비)
+                const totalExpense = price + (cleaning * 5);
+                const totalDays = days * 5;
+                const costPerDayValue = totalExpense / totalDays;
 
-                // 총 착용 횟수
-                const totalWears = days * years;
-
-                // 1회 착용 비용
-                const costPerWear = totalCost / totalWears;
-
-                // SPA 브랜드 비교 (패딩 10만원 가정)
-                const spaPrice = 100000;
-                const spaRatio = (price / spaPrice).toFixed(0);
-
-                // 3. 결과 출력
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
+                document.getElementById('costPerDay').textContent = `1일 약 ${Math.round(costPerDayValue).toLocaleString()}원`;
+                
+                let feedback = "";
+                if(costPerDayValue > 30000) feedback = "이 정도면 한 번 입고 나갈 때마다 택시로 출퇴근하는 게 훨씬 경제적입니다. 허세를 입고 계시네요.";
+                else if(costPerDayValue > 10000) feedback = "고급 영화관 VIP석 하나를 매일 몸에 두르고 다니시는 꼴입니다. 관리는 잘 하고 계시겠죠?";
+                else feedback = "뽕을 제대로 뽑고 계시네요! 지금 그대로 아껴가며 10년만 버텨보세요.";
 
-                document.getElementById('resTotal').innerText = Math.round(totalCost).toLocaleString() + "원";
-                document.getElementById('resPerWear').innerText = Math.round(costPerWear).toLocaleString() + "원";
-
-                // 4. 비교 물건 변경
-                // const totalManwon = totalCost / 10000;
-                // document.getElementById('compareItem').innerText = "SPA 브랜드 패딩 " + spaRatio + "벌";
+                document.getElementById('resultText').textContent = feedback;
             });
         });
     </script>
