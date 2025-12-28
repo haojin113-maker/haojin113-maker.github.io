@@ -3,276 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="자전거 라이딩 비용 계산기. 로드바이크 장비와 업그레이드에 쓴 돈이 얼마인지 계산해드립니다.">
+    <meta name="description" content="100g 줄이려고 100만 원 쓰시나요? 엔진(몸)보다 비싼 자전거 장비가 당신의 통장을 어떻게 비우고 있는지 팩트로 계산해드립니다.">
     <title>자전거 장비병 판독기 | 팩트 폭격 연구소</title>
 
     <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
 
-    <!-- 구글 아이콘 -->
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
     <style>
-        /* --- [표준 스타일 가이드] --- */
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.7;
-        }
-
-        .wrapper {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-        }
-        
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
+        .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
 
-        section {
-            background: white;
-            border-radius: 16px;
-            padding: 35px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            border: 1px solid #eee;
-        }
-
+        /* 섹션 공통 스타일 */
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
 
-        /* [테마 변경] 자전거/카본(Black) -> #212121 */
-        h2 { border-left: 5px solid #212121; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-
-        .intro-box { background-color: #eceff1; border: 1px solid #cfd8dc; color: #263238; }
-        .intro-box strong { color: #212121; background: #fff; padding: 0 5px; border-radius: 4px; }
-
-        /* 계산기 스타일 */
-        .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #212121; }
-        input {
-            width: 100%; padding: 14px; border: 1px solid #ddd;
-            border-radius: 8px; font-size: 1rem; transition: 0.2s;
-        }
-        input:focus { border-color: #212121; outline: none; box-shadow: 0 0 0 3px rgba(33, 33, 33, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-
-        .calc-btn {
-            width: 100%; padding: 18px;
-            background-color: #212121; color: white;
-            border: none; border-radius: 12px;
-            font-size: 1.2rem; font-weight: bold; cursor: pointer;
-            margin-top: 10px; transition: 0.2s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .calc-btn:hover { background-color: #000; transform: translateY(-3px); }
-
-        #result-area {
-            display: none; margin-top: 30px; padding: 30px;
-            background-color: #f5f5f5; border-radius: 12px; text-align: center;
-            animation: fadeIn 0.5s ease;
-        }
+        /* [가변] 테마 설정: Racing Orange */
+        h2 { border-left: 5px solid #ff5722; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #fff3e0; border: 1px solid #ffccbc; color: #e64a19; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #ff5722; background: #fff; padding: 0 5px; border-radius: 4px; }
         
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.bike { color: #212121; } 
-        .highlight.motor { color: #d32f2f; }
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #ff5722; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #ff5722; outline: none; box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #ff5722; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(255,87,34,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fff3e0; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #e64a19; }
 
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box {
-            flex-shrink: 0; width: 40px; height: 40px;
-            background: #212121; color: white;
-            border-radius: 10px; font-weight: bold;
-            display: flex; align-items: center; justify-content: center;
-            margin-right: 20px; margin-top: 5px;
-        }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        @media (max-width: 850px) {
-            .wrapper { flex-direction: column; }
-            .sidebar { width: 100%; position: static; min-width: auto; }
-            .main-content { width: 100%; }
-            h1.page-title { font-size: 1.8rem; }
-        }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #ff5722; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
-
     <div class="wrapper">
-        
-        <!-- [좌측] 메인 콘텐츠 -->
         <main class="main-content">
-            
-            <h1 class="page-title">엔진은 당신 다리인데, 차값은 왜 1,000만 원이죠?</h1>
-            <p class="page-subtitle">"건강을 위한 투자"라고 포장된 장비병. 자전거에 들어간 진짜 돈을 계산해드립니다.</p>
+            <h1 class="page-title">기함급 자전거, 엔진은 안녕하신가요?</h1>
+            <p class="page-subtitle">100g을 줄이기 위해 당신이 지불한 '금 가루' 가격을 계산해드립니다.</p>
 
-            <!-- 인트로: 팩트 제시 -->
             <section class="intro-box">
-                <h2>🚴 개미지옥(Ant Hell) 입성</h2>
-                <p>
-                    자전거는 한 번 사면 끝이 아닙니다.<br>
-                    휠셋 바꾸고, 구동계 업글하고, 헬멧에 쪽모자, 져지, 빕숏, 클릿슈즈...<br>
-                    <strong>"가벼워지는 건 자전거 무게뿐, 당신의 지갑도 가벼워집니다."</strong>
-                </p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">pedal_bike</span> 자전거 취미의 끝은 '경량화'라고 합니다. 하지만 카본 휠셋 하나에 당신의 월급이 증발하고 있다면 그것은 운동이 아니라 <strong>자산 파괴</strong>입니다. 자전거 한 번 탈 때마다 지불하는 리얼 감가상각비를 확인하세요.</p>
             </section>
 
             <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>🚲 자전거 견적서</h2>
+                <h2>🚴 자전거 가성비 진단기</h2>
+                <div class="calc-group">
+                    <label>자전거 및 업그레이드 부품 총 지출액 (만원)</label>
+                    <input type="number" id="bikeTotal" placeholder="예: 800" value="800">
+                </div>
+                <div class="calc-group">
+                    <label>연간 실제 라이딩 횟수 (회)</label>
+                    <input type="number" id="annualRide" placeholder="예: 40" value="40">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">주 1회면 약 50회입니다.</p>
+                </div>
+                <div class="calc-group">
+                    <label>사용 예상 기간 (년)</label>
+                    <input type="number" id="useYears" placeholder="예: 5" value="5">
+                </div>
                 
-                <div class="calc-group">
-                    <label>① 자전거 기체 가격 (만원)</label>
-                    <input type="number" id="bikePrice" value="300" placeholder="예: 300 (입문용 카본)">
-                </div>
+                <button id="calcBtn" class="calc-btn">나의 1회 라이딩 단가 확인</button>
 
-                <div class="calc-group">
-                    <label>② 업그레이드 비용 (휠/구동계/안장 등) (만원)</label>
-                    <input type="number" id="upgradeCost" value="150" placeholder="예: 150">
-                </div>
-
-                <div class="calc-group">
-                    <label>③ 의류 및 장비 (헬멧/고글/의류/속도계) (만원)</label>
-                    <input type="number" id="gearCost" value="100" placeholder="예: 100 (머리부터 발끝까지)">
-                </div>
-
-                <div class="calc-group">
-                    <label>④ 연간 정비 및 소모품비 (만원)</label>
-                    <input type="number" id="maintCost" value="30" placeholder="예: 30 (타이어/체인/오버홀)">
-                </div>
-
-                <button id="calcBtn" class="calc-btn">총 투자 금액 확인하기</button>
-
-                <!-- 결과창 -->
                 <div id="result-area">
-                    
-                    <div style="margin-bottom:20px;">
-                        <p class="result-title">두 바퀴에 태운 돈</p>
-                        <span id="resTotal" class="highlight bike">0원</span>
-                    </div>
-
-                    <div style="border-top:1px dashed #aaa; padding-top:20px;">
-                        <p class="result-title" style="margin-bottom:10px;">이 돈이면</p>
-                        <span id="resMotor" class="highlight motor" style="font-size:1.8rem;">0</span>
-                        <p class="result-title" style="margin-top:10px;">을(를) 살 수 있습니다.</p>
-                    </div>
-
-                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #cfd8dc; font-size:0.95rem;">
-                        <strong>팩트 폭격:</strong><br>
-                        자전거 무게 1kg 줄이는 데 <strong>100만 원</strong> 들지만,<br>
-                        당신 뱃살 1kg 빼는 건 <strong>공짜</strong>입니다.
-                    </div>
+                    <p class="result-title">당신의 자전거 1회 사용 단가는?</p>
+                    <span id="rideCost" class="highlight">0원</span>
+                    <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
-            <!-- 팩트 체크 리스트 -->
+            <!-- 팩트 체크 -->
             <section>
-                <h2>🛑 라이더들이 빠지는 착각</h2>
-                
+                <h2>🛑 자전거 장비빨의 허망한 팩트</h2>
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">speed</span></div>
+                    <div class="icon-box">1</div>
                     <div class="reason-content">
-                        <h3>장비빨 vs 엔진빨</h3>
-                        <p>1,000만 원짜리 최상급 기함(Flagship)을 타도, 허벅지 튼튼한 '따릉이 아저씨'에게 따일 수 있습니다. 기록 단축은 카드가 아니라 땀으로 하는 것입니다.</p>
+                        <h3>무게 100g vs 당신의 뱃살 1kg</h3>
+                        <p>자전거 무게 100g을 줄이기 위해 100만 원을 쓰는 것보다, 당신의 체중 1kg을 줄이는 것이 오르막에서 10배 더 효과적입니다.</p>
                     </div>
                 </div>
-                
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">trending_down</span></div>
+                    <div class="icon-box">2</div>
                     <div class="reason-content">
-                        <h3>무시무시한 감가상각</h3>
-                        <p>자전거는 사는 순간 반값이 됩니다. 특히 고가 라인업일수록 중고 가격 방어가 안 됩니다. 유행이 지나면 아무도 쳐다보지 않는 고철 덩어리가 됩니다.</p>
+                        <h3>감가상각은 자비가 없습니다</h3>
+                        <p>작년의 최상위 기함도 신형 구동계가 나오는 순간 중고 가격은 폭락합니다. 자전거는 금이 아니라 '유행하는 플라스틱'입니다.</p>
                     </div>
                 </div>
-
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">warning</span></div>
+                    <div class="icon-box">3</div>
                     <div class="reason-content">
-                        <h3>도로 위의 위험</h3>
-                        <p>비싼 자전거일수록 프레임이 약해 충격에 취약합니다. 낙차 한 번이면 수백만 원짜리 프레임이 깨지고, 병원비까지 더블로 깨집니다.</p>
+                        <h3>실내 보관이 차지하는 집값</h3>
+                        <p>비싼 카본 차체를 지키기 위해 거실에 둔 거치대. 그 공간의 서울 평당 시세는 자전거 값보다 훨씬 비쌀 수 있습니다.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- 하단 광고 -->
-            <div class="ad-box">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <!-- SEO 텍스트 -->
+            <section class="seo-content">
+                <h2>자전거 경량화의 늪: 당신은 엔진(몸)을 키우고 있습니까, 허세를 키우고 있습니까?</h2>
+                <p>자전거 동호인들 사이에서 통용되는 "가벼운 것이 정의다"라는 말. 틀린 말은 아닙니다. 하지만 일반인 수준에서 자전거 무게 1~2kg 차이는 실제 기록에 미치는 영향보다 지갑에 미치는 영향이 훨씬 큽니다. 기함급 로드 자전거 한 대 가격이 1,500만 원을 상회하는 시대, 우리는 건강을 위해 페달을 밟는 것인지, 브랜드 로고를 뽐내기 위해 노동력을 착취당하는 것인지 냉정하게 따져봐야 합니다.</p>
 
-            <!-- common.js가 푸터 자동 추가 -->
+                <h3>1. 한계 효용의 법칙: 수천만 원의 가치</h3>
+                <p>200만 원짜리 입문급 자전거와 1,000만 원짜리 기함급 자전거. 무게 차이는 고작 1.5kg 내외입니다. 오르막길에서 이 무게 차이로 단축되는 시간은 몇 초에 불과합니다. 만약 당신이 프로 선수가 아니라면, 그 몇 초를 위해 지불한 800만 원의 기회비용은 은퇴 자산으로 굴렸을 때 20년 뒤 3,000만 원이 넘는 거금이 됩니다. 당신은 지금 1초를 아끼기 위해 미래의 1년을 팔고 있는 것과 같습니다.</p>
 
+                <h3>2. 유지 보수비의 공포</h3>
+                <p>고급 구동계와 카본 파츠는 유지 비용 또한 만만치 않습니다. 소모품인 체인과 타이어만 갈아도 저가형 자전거 한 대 값이 나옵니다. 자전거는 사는 것으로 끝나는 자산이 아니라, 소유하고 있는 내내 당신의 현금 흐름을 갉아먹는 '부채'입니다. 진짜 지능적인 라이더는 장비에 매몰되지 않고 자신의 심폐 지구력을 키우는 데 집중합니다. 엔진이 좋으면 철제 자전거로도 카본 자전거를 추월할 수 있습니다. 그것이 진정한 자전거의 낭만이 아니겠습니까?</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 비싼 거 사야 나중에 이중 지출 안 하지 않나요?</strong><br>A. "기변신(기기 변경 신)"은 끝이 없습니다. 본인의 실력이 장비의 성능을 100% 끌어낼 수 있을 때 업그레이드하는 것이 진정한 경제적 정석입니다.</li>
+                    <li><strong>Q. 운동량이 늘어나면 이득 아닌가요?</strong><br>A. 장비가 좋다고 운동을 더 자주 가는 상관관계는 통계적으로 매우 낮습니다. 오히려 비오는 날, 험한 길에서 기스가 날까 봐 자전거를 모셔두는 주객전도 상황이 발생합니다.</li>
+                </ul>
+            </section>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
 
-        <!-- [우측] 사이드바 광고 -->
         <aside class="sidebar">
-            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890" 
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </aside>
-
     </div>
 
-    <!-- 계산 로직 -->
+    <!-- [계산 로직] -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                // 1. 값 가져오기
-                const bike = Number(document.getElementById('bikePrice').value) * 10000;
-                const upgrade = Number(document.getElementById('upgradeCost').value) * 10000;
-                const gear = Number(document.getElementById('gearCost').value) * 10000;
-                const maint = Number(document.getElementById('maintCost').value) * 10000;
+                const total = (parseFloat(document.getElementById('bikeTotal').value) || 0) * 10000;
+                const freq = parseFloat(document.getElementById('annualRide').value) || 1;
+                const yrs = parseFloat(document.getElementById('useYears').value) || 1;
+                
+                const costPerTime = total / (freq * yrs);
 
-                if(bike < 0) {
-                    alert("가격을 입력해주세요.");
-                    return;
-                }
-
-                // 2. 계산 로직
-                // 3년 탄다고 가정했을 때 총비용
-                const totalCost = bike + upgrade + gear + (maint * 3);
-
-                // 3. 결과 출력
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-
-                document.getElementById('resTotal').innerText = Math.round(totalCost).toLocaleString() + "원";
-
-                // 4. 비교 물건 변경
-                const costManwon = totalCost / 10000;
-                let item = "최신형 전동 킥보드";
+                document.getElementById('rideCost').textContent = `약 ${Math.round(costPerTime).toLocaleString()}원`;
                 
-                if(costManwon > 5000) item = "할리데이비슨 바이크 (중고)";
-                else if(costManwon > 3000) item = "125cc 스쿠터 10대";
-                else if(costManwon > 1500) item = "혼다 PCX 스쿠터 (신차)";
-                else if(costManwon > 1000) item = "중고 경차 (모닝/스파크)";
-                else if(costManwon > 500) item = "최고급 전동 킥보드 2대";
-                else if(costManwon > 200) item = "전기 자전거 (퀄리 등)";
-                
-                document.getElementById('resMotor').innerText = item;
+                let feedback = "";
+                if(costPerTime > 100000) feedback = "이 정도면 한 번 탈 때마다 호텔 뷔페 한 끼를 바닥에 뿌리는 셈입니다. 장식장으로 쓰고 계시네요.";
+                else if(costPerTime > 30000) feedback = "택시로 이동하는 게 더 저렴할 수도 있습니다. 엔진(몸)보다 장비가 과한 상태입니다.";
+                else feedback = "매우 건전한 라이더입니다! 본전을 충분히 뽑으며 건강과 자산을 동시에 챙기고 계시네요.";
+
+                document.getElementById('resultText').textContent = feedback;
             });
         });
     </script>
