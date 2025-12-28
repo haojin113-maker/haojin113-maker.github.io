@@ -3,98 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="반려동물 양육비 계산기. 강아지, 고양이 평생 키우는데 드는 사료비, 병원비 총액을 계산해드립니다.">
+    <meta name="description" content="귀여움 뒤에 숨겨진 냉정한 숫자. 사료, 간식, 병원비까지 반려동물 평생 양육에 들어가는 총비용을 팩트로 계산해드립니다.">
     <title>댕냥이 양육비 계산기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 및 라이브러리 -->
     <script src="../common.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
+        /* 기본 레이아웃 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
-        .main-content { flex: 3; } .sidebar { flex: 1; position: sticky; top: 20px; }
-        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; border: 1px solid #eee; }
-        h1.page-title { font-size: 2.2rem; margin: 20px 0 10px; color: #111; }
-        h2 { border-left: 5px solid #795548; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #efebe9; border: 1px solid #d7ccc8; color: #4e342e; }
-        .intro-box strong { color: #795548; background: #fff; padding: 0 5px; border-radius: 4px; }
-        .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; color: #795548; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #795548; color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 1.2rem; font-weight: bold; }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #efebe9; border-radius: 12px; text-align: center; }
-        .highlight { font-size: 2.5rem; font-weight: 900; display: block; margin: 10px 0; color: #795548; }
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        /* 섹션 스타일 */
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        /* [가변] 테마 설정: Orange */
+        h2 { border-left: 5px solid #ff8f00; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #fff3e0; border: 1px solid #ffe0b2; color: #e65100; padding: 25px; border-radius: 12px; }
         
-        .seo-content h3 { margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; } }
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #ff8f00; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #ff8f00; outline: none; box-shadow: 0 0 0 3px rgba(255, 143, 0, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #ff8f00; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(255,143,0,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fff3e0; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #bf360c; }
+
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #ff8f00; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">귀여움의 대가, '중형차 한 대 값'입니다</h1>
-            <p class="page-subtitle">단순히 밥값만 생각하셨나요? 평생 책임져야 할 무게를 돈으로 환산해드립니다.</p>
+            <h1 class="page-title">귀여워서 데려왔다가 병원비에 웁니다</h1>
+            <p class="page-subtitle">반려동물 평생 양육비, 진짜 얼마나 들까요?</p>
 
             <section class="intro-box">
-                <h2>🐶 가족을 들이는 현실적인 비용</h2>
-                <p>"강아지 사료값 얼마나 하겠어?"라고 생각하시나요? 반려동물 양육비의 핵심은 밥값이 아니라 <strong>'의료비'</strong>입니다. 사람처럼 건강보험이 되지 않는 동물의 평생 병원비, 상상을 초월합니다.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">pets</span> "사료값만 있으면 되겠지"라는 생각은 착각입니다. 반려동물은 건강보험이 없는 <strong>'영원한 아기'</strong>입니다. 당신의 책임감을 숫자로 확인해 보세요.</p>
             </section>
 
+            <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>🦴 평생 양육비 계산기</h2>
-                <label>① 월평균 사료/용품비 (만원)</label>
-                <input type="number" id="monthlyCost" value="15" placeholder="예: 15">
-                <label>② 연간 병원비/검진비 (만원)</label>
-                <input type="number" id="yearlyMedical" value="50" placeholder="예: 50">
-                <label>③ 예상 수명 (년)</label>
-                <input type="number" id="lifespan" value="15" placeholder="예: 15">
-                <button id="calcBtn" class="calc-btn">무지개다리 건널 때까지 총비용</button>
+                <h2>🐶 반려동물 평생 비용 계산기</h2>
+                <div class="calc-group">
+                    <label>월 평균 고정비 (만원)</label>
+                    <input type="number" id="monthlyCost" placeholder="예: 15" value="15">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">사료, 간식, 모래/패드, 미용, 장난감 등을 합산하세요.</p>
+                </div>
+                <div class="calc-group">
+                    <label>연 평균 의료비 및 보험료 (만원)</label>
+                    <input type="number" id="annualMed" placeholder="예: 50" value="50">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">검진, 예방접종 및 노령기 병원비를 분할 계산한 예상액입니다.</p>
+                </div>
+                <div class="calc-group">
+                    <label>기대 수명 (년)</label>
+                    <input type="number" id="lifeSpan" placeholder="예: 15" value="15">
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">평생 소요 예산 확인하기</button>
 
                 <div id="result-area">
-                    <p>평생 양육 예상 비용</p>
-                    <span id="resTotal" class="highlight">0원</span>
-                    <div style="margin-top:20px; padding-top:20px; border-top:1px dashed #999;">
-                        <p>이 금액은</p>
-                        <strong id="compareItem" style="font-size:1.5rem; color:#4e342e;">중형차 한 대 값</strong>
-                        <p>과 맞먹습니다.</p>
+                    <p class="result-title">평생 동안 들이게 될 총 금액은?</p>
+                    <span id="totalCost" class="highlight">약 0원</span>
+                    <p id="resultText" style="color:#666;"></p>
+                </div>
+            </section>
+
+            <!-- 팩트 체크 -->
+            <section>
+                <h2>🛑 입양 전 고려해야 할 경제적 현실</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>건강보험이 없는 의료비의 공포</h3>
+                        <p>단순 혈액검사와 엑스레이만으로도 20~30만 원이 나갑니다. 큰 수술이라도 하면 웬만한 중고차 한 대 값이 순식간에 증발합니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>노령기는 청년기보다 3배 더 듭니다</h3>
+                        <p>10세 이후 노령견/노령묘가 되면 각종 만성 질환으로 인해 매달 나가는 약값과 관리비가 당신의 상상을 초월합니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>삶의 자유도 하락의 기회비용</h3>
+                        <p>휴가 갈 때 호텔비, 외출 시 펫시터 비용 등 돈도 돈이지만 마음 편히 떠나지 못하는 시간적 가치도 기회비용에 포함해야 합니다.</p>
                     </div>
                 </div>
             </section>
 
+            <!-- SEO 텍스트 -->
             <section class="seo-content">
-                <h2>🛑 입양 전, 지갑 사정 체크리스트</h2>
-                <h3>1. 동물 병원비는 '부르는 게 값'</h3>
-                <p>동물 진료비는 비급여 항목이라 병원마다 가격이 천차만별입니다. 감기약 5만 원, 혈액검사 20만 원은 기본입니다. 특히 슬개골 탈구 수술이나 이물 섭취 제거 수술 같은 경우 한 번에 200~300만 원이 깨지기도 합니다.</p>
-                <h3>2. 노령 케어의 무게</h3>
-                <p>강아지, 고양이도 나이가 들면 아픕니다. 수명의 마지막 3~4년은 '돈 먹는 하마'가 됩니다. 치매, 신부전증, 심장병 등으로 매달 약값만 수십만 원이 나가며, 24시간 간호가 필요할 수도 있습니다. 끝까지 책임질 경제적 능력이 있는지 스스로에게 물어봐야 합니다.</p>
+                <h2>반려동물 양육비 평균 3,000만 원 시대의 팩트</h2>
+                <p>반려동물을 가족으로 맞이하는 것은 단순히 귀여운 생명체와 함께 사는 것 이상의 경제적 책임이 뒤따릅니다. 한국소비자연맹 조사에 따르면 강아지와 고양이 한 마리를 15년간 키우는 데 드는 평균 비용은 약 3,000만 원에서 5,000만 원에 육박합니다. 이는 <strong>'아이 한 명을 키우는 것과 맞먹는 노력과 비용'</strong>이 필요하다는 뜻입니다.</p>
+
+                <h3>1. 보이지 않는 지출의 복습</h3>
+                <p>매달 결제하는 사료와 간식비는 시작일 뿐입니다. 미용비, 장난감 구매, 주기적인 구충제와 예방접종비는 필수 고정 지출입니다. 특히 최근에는 반려동물 전용 용품 시장이 고급화되면서 양육비가 상향 평준화되는 경향이 있습니다. "옆집은 비싼 사료 먹이는데 우리 애는..."이라는 비교 심리가 작동하는 순간 당신의 지갑은 더욱 빠르게 비워지게 됩니다.</p>
+
+                <h3>2. 가장 무서운 변수는 '노화'입니다</h3>
+                <p>반려동물은 사람보다 훨씬 빠르게 늙습니다. 7세가 넘어 '시니어' 단계에 진입하면 심장병, 신부전, 관절염 등 고액의 치료비를 요구하는 질환들이 줄줄이 대기하고 있습니다. 이때를 대비한 비상금이 마련되어 있지 않다면, 보호자는 경제적 파탄과 생명의 존엄 사이에서 괴로운 선택을 강요받게 됩니다. 보험을 들더라도 사람의 보험료보다 훨씬 비싼 매달 수만 원의 고정비를 수십 년간 감당해야 합니다.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 소형견은 대형견보다 훨씬 적게 들겠죠?</strong><br>A. 사료량은 적지만 수명이 길고 슬개골 탈구 등 유전적 질환 가능성이 커서 총 의료비 면에서는 차이가 크지 않을 수 있습니다.</li>
+                    <li><strong>Q. 펫보험은 가입하는 게 무조건 이득인가요?</strong><br>A. 젊고 건강할 때 가입해야 보장 범위가 넓지만, 월 보험료 자체가 꽤 높습니다. 차라리 매달 5만 원씩 반려동물 전용 적금을 들어두는 것이 더 효율적일 수도 있습니다.</li>
+                </ul>
             </section>
-            
-            <div class="ad-box"><span style="font-size:11px; color:#ccc;">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-        <aside class="sidebar"><div style="min-height: 600px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div></aside>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
     </div>
+
     <script>
-        document.getElementById('calcBtn').addEventListener('click', function() {
-            const monthly = Number(document.getElementById('monthlyCost').value) * 10000;
-            const yearly = Number(document.getElementById('yearlyMedical').value) * 10000;
-            const years = Number(document.getElementById('lifespan').value);
-            if(monthly <= 0 || years <= 0) { alert("값을 입력해주세요."); return; }
-            
-            const basicCost = monthly * 12 * years;
-            const medicalCost = yearly * years;
-            const oldAgeExtra = (yearly * (years * 0.3)) * 2; 
-            const initCost = 1000000;
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                const monthly = parseFloat(document.getElementById('monthlyCost').value) || 0;
+                const annualMed = parseFloat(document.getElementById('annualMed').value) || 0;
+                const yrs = parseFloat(document.getElementById('lifeSpan').value) || 1;
+                
+                const total = (monthly * 12 * yrs) + (annualMed * yrs);
 
-            const totalCost = basicCost + medicalCost + oldAgeExtra + initCost;
-
-            const resultArea = document.getElementById('result-area');
-            resultArea.style.display = 'block';
-            document.getElementById('resTotal').innerText = Math.round(totalCost).toLocaleString() + "원";
-            const totalManwon = totalCost / 10000;
-            let item = "경차 한 대 값";
-            if(totalManwon > 6000) item = "벤츠 E-클래스 (신차)";
-            else if(totalManwon > 4000) item = "그랜저 풀옵션";
-            else if(totalManwon > 2000) item = "아반떼 신차 한 대";
-            document.getElementById('compareItem').innerText = item;
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+                document.getElementById('totalCost').textContent = `약 ${(total).toFixed(0)}만 원`;
+                document.getElementById('resultText').textContent = `이 돈이면 중형 세단 한 대를 뽑거나, 서울 소형 아파트 전세자금의 기초를 마련할 수 있는 큰 금액입니다. 신중한 결정이 필요합니다.`;
+            });
         });
     </script>
 </body>
