@@ -1005,5 +1005,19 @@
   "icon": "🥃",
   "category": "life",
   "url": "./liquor/index.html"
+},
+  {
+  "title": "상조 가입 호갱 판독기",
+  "desc": "물가 보장? 원금 보장? 은행 이자와 복리의 무서움을 모르는 당신을 위한 상조 팩트 체크 계산기.",
+  "icon": "⚱️",
+  "category": "money",
+  "url": "./sangjo/index.html"
+},
+{
+  "title": "평범한 인생 견적서",
+  "desc": "집 사고, 애 키우고, 노후 준비까지... 중간이라도 가고 싶은 당신을 위한 충격적인 인생 합계 영수증.",
+  "icon": "🏁",
+  "category": "life",
+  "url": "./life/index.html"
 }
 ]
