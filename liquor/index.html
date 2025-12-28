@@ -3,97 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="위스키 와인 수집 비용 계산기. 홈바를 꾸미느라 쓴 돈과 재고 자산의 기회비용을 계산해드립니다.">
+    <meta name="description" content="마시지도 않을 위스키와 와인, 재테크라고 자위하고 계신가요? 병 속에 갇힌 당신의 현금이 복리로 자라날 기회를 팩트로 계산해드립니다.">
     <title>주류 수집 판독기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
+
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
+        /* 기본 레이아웃 */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
-        .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; }
-        .main-content { flex: 3; } .sidebar { flex: 1; }
-        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; border: 1px solid #eee; }
-        h1 { font-size: 2.2rem; margin: 20px 0 10px; } h2 { border-left: 5px solid #ff8f00; padding-left: 15px; margin: 40px 0 20px; }
-        .intro-box { background-color: #fff8e1; border: 1px solid #ffe082; padding: 20px; border-radius: 12px; }
-        input { width: 100%; padding: 14px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #ff8f00; color: white; border: none; border-radius: 12px; font-weight: bold; font-size: 1.2rem; cursor: pointer; }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fff8e1; border-radius: 12px; text-align: center; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #ff8f00; }
+        .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        /* 섹션 공통 스타일 */
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        /* [가변] 테마 설정: Amber Brown */
+        h2 { border-left: 5px solid #5d4037; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #efebe9; border: 1px solid #d7ccc8; color: #3e2723; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #5d4037; background: #fff; padding: 0 5px; border-radius: 4px; }
         
-        .seo-content h3 { margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; } }
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #5d4037; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #5d4037; outline: none; box-shadow: 0 0 0 3px rgba(93, 64, 55, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #5d4037; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(93, 64, 55, 0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #efebe9; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #3e2723; }
+
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #5d4037; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1>술을 마시는 겁니까, 모으는 겁니까?</h1>
-            <p>"밖에서 먹는 것보단 싸다"며 사 모은 위스키와 와인. 장식장에 잠든 돈을 깨워드립니다.</p>
+            <!-- [제목 섹션] -->
+            <h1 class="page-title">유리병에 갇힌 당신의 자본, 안녕하십니까?</h1>
+            <p class="page-subtitle">위스키 발베니와 맥캘란이 당신의 아파트 지분을 먹어치우고 있습니다.</p>
 
+            <!-- [도입 섹션] -->
             <section class="intro-box">
-                <h2>🥃 홈바(Home Bar)의 함정</h2>
-                <p>오픈런해서 구한 발베니, 맥캘란... 아까워서 뚜껑도 못 따고 계신가요? 마시지 않는 술은 <strong>'액체로 된 장식품'</strong>일 뿐입니다. 당신의 진열장에 묶여있는 자산의 규모를 확인해보세요.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">wine_bar</span> "술은 시간이 지날수록 비싸진다"는 말로 당신의 수집벽을 정당화하고 있나요? 관리 소홀로 변질될 위험, 불투명한 중고 시장, 그리고 <strong>복리의 기회비용</strong>을 따지면 당신의 장식장은 사실상 '가난의 박물관'입니다.</p>
             </section>
 
+            <!-- [계산기 섹션] -->
             <section id="calculator">
-                <h2>🍾 주류 재고 자산 평가</h2>
-                <label>① 현재 보유 중인 술 (병)</label>
-                <input type="number" id="bottleCount" value="20">
-                <label>② 평균 병당 가격 (만원)</label>
-                <input type="number" id="avgPrice" value="15">
-                <label>③ 월평균 추가 구매 비용 (만원)</label>
-                <input type="number" id="monthlyBuy" value="20">
-                <label>④ 취미 유지 기간 (년)</label>
-                <input type="number" id="years" value="10">
-                <button id="calcBtn" class="calc-btn">술독에 빠진 내 돈 확인하기</button>
+                <h2>🥃 주류 소장 기회비용 계산기</h2>
+                <div class="calc-group">
+                    <label>소장 중인 미개봉 주류 총 구매가 (만원)</label>
+                    <input type="number" id="collectionValue" placeholder="예: 500" value="500">
+                </div>
+                <div class="calc-group">
+                    <label>앞으로 마시지 않고 보관할 예상 기간 (년)</label>
+                    <input type="number" id="holdingYears" placeholder="예: 10" value="10">
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">병 속의 현금 가치 확인하기</button>
 
                 <div id="result-area">
-                    <p>현재 진열장에 묶인 돈 (매몰 비용)</p>
-                    <span id="resStock" class="highlight">0원</span>
-                    <p style="margin-top:20px; border-top:1px dashed #ccc; padding-top:20px;">이 취미를 유지할 때 총 기회비용 (투자 수익 포함)</p>
-                    <span id="resTotal" class="highlight" style="color:#ef6c00;">0원</span>
-                    <div style="margin-top:20px;">이 돈이면 <strong><span id="compareItem" style="background:white; padding:2px 5px;">순금 20돈</span></strong>을 살 수 있습니다.</div>
+                    <p class="result-title">이 돈을 S&P 500 지수에 넣었을 때의 미래 자산</p>
+                    <span id="futureValue" class="highlight">약 0원</span>
+                    <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
-            <section class="seo-content">
-                <h2>🛑 수집인가 중독인가</h2>
-                <h3>1. 엔젤스 셰어? 내 돈 증발!</h3>
-                <p>위스키는 보관 중 자연 증발하고, 와인은 온도 관리를 잘못하면 식초가 됩니다. 관리가 까다로운 술을 쌓아두는 것은 자산 가치를 떨어뜨리는 행위입니다. '나중에 마셔야지' 하다가 맛이 변해 버리는 경우가 허다합니다.</p>
-                <h3>2. 재테크 수단으로서의 한계</h3>
-                <p>"나중에 오르면 팔아야지"라고 생각하시나요? 한국에서 주류 면허 없이 개인 간 술을 거래하는 것은 <strong>불법(탈세)</strong>입니다. 환금성이 매우 떨어지는 자산에 과도한 돈을 묶어두지 마세요. 마실 만큼만 사는 것이 가장 현명합니다.</p>
+            <!-- [팩트체크 섹션] -->
+            <section>
+                <h2>🛑 주류 수집이 '투자'가 아닌 3가지 이유</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>불법과 탈세의 경계: 현금화가 어렵습니다</h3>
+                        <p>개인 간 주류 거래는 대한민국 법상 불법입니다. 급전이 필요할 때 당신의 수천만 원어치 위스키는 '장식용 보틀'일 뿐 현금이 아닙니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>엔젤스 쉐어(Angel's Share)는 당신의 손실입니다</h3>
+                        <p>완벽한 보관 조건이 아니라면 술은 미세하게 증발하고 코르크는 오염됩니다. 10년 뒤 당신이 열 병뚜껑 안에는 '변질된 식초'가 들어있을지 모릅니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>유행의 끝자락에서 하는 상투 잡기</h3>
+                        <p>이미 프리미엄이 붙을 대로 붙은 유명 보틀을 사는 행위는 주식 시장의 고점 매수와 같습니다. 대중이 열광할 때가 가장 위험한 시점입니다.</p>
+                    </div>
+                </div>
             </section>
 
-            <div class="ad-box"><span style="font-size:11px; color:#ccc;">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+            <!-- [SEO 블로그 콘텐츠] -->
+            <section class="seo-content">
+                <h2>위스키 재테크의 함정: 병 속에 든 것은 금인가, 단순한 액체인가?</h2>
+                <p>최근 '위스키 오픈런'이라는 단어가 나올 정도로 주류 수집 열풍이 거셉니다. 인스타에는 고가의 올드 보틀을 자랑하는 사진들이 넘쳐나고, 사람들은 이를 '주테크(주류+재테크)'라고 부르며 합리화합니다. 하지만 냉정한 자본주의 관점에서 **'소유권 이전이 제한된 소비재'**를 수집하는 것은 투자의 기초를 모르는 행위입니다. 당신이 장식장에 모셔둔 맥캘란 한 병이 당신의 미래 주거 안정을 어떻게 방해하고 있는지 파헤쳐봅니다.</p>
+
+                <h3>1. 보이지 않는 금융 비용: 복리의 배신</h3>
+                <p>소장품 가액이 1,000만 원인 수집가를 가정해 봅시다. 이 1,000만 원을 미국 지수 추종 ETF(연평균 수익률 8% 가정)에 넣고 20년만 기다려 보십시오. 복리의 마법을 거친 이 자금은 <strong>약 4,600만 원</strong>이 됩니다. 당신이 가진 위스키 한 병이 20년 뒤 4.6배 이상의 가격으로, 그것도 '합법적으로' 팔릴 확률이 얼마나 될까요? 주식은 배당을 낳고 스스로 가치를 불리지만, 술병은 주방 한구석에서 공간만 차지하며 당신의 인내심을 테스트할 뿐입니다. 진정한 부자는 먹어서 없어지는 것에 목돈을 묶지 않습니다.</p>
+
+                <h3>2. '취미'와 '투자'를 구분하지 못하는 오류</h3>
+                <p>진정으로 그 술의 맛과 역사를 즐기기 위해 소유한다면 가치 있는 취미입니다. 그러나 "나중에 비싸게 팔릴 것 같아서" 혹은 "남들에게 있어 보이기 위해서" 지갑을 연다면 그것은 자산 관리의 실패입니다. 위스키 가격의 거품은 언젠가 빠집니다. 대중의 관심이 다른 곳으로 옮겨가는 순간, 당신의 장식장은 그저 먼지 쌓인 유리병 보관소가 됩니다. 자산을 불리는 가장 확실한 방법은 액체가 아닌 **'자본의 시스템'**에 투자하는 것입니다. 지금 당장 장식장 속의 병을 따서 지인과 즐거움을 나누고, 남은 수집 예산은 본인의 주식 계좌로 송금하십시오. 그것이 당신의 팔자를 고치는 가장 빠른 지름길입니다.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 한정판은 무조건 오르지 않나요?</strong><br>A. 희소성이 가치를 보장하진 않습니다. 수요가 뒷받침되지 않는 희소성은 무의미합니다. 당신의 '한정판'이 30년 뒤에도 누군가 간절히 원하는 아이템일지 냉정하게 생각하세요.</li>
+                    <li><strong>Q. 와인 셀러에 넣어두면 안전하죠?</strong><br>A. 와인 셀러 구매 비용과 매달 나가는 전기료 또한 당신의 투자 마이너스 수익률에 합산해야 합니다. 유지비가 드는 자산은 자산이 아닙니다.</li>
+                </ul>
+            </section>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-        <aside class="sidebar"><div style="min-height: 600px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div></aside>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
     </div>
+
+    <!-- [계산 로직] -->
     <script>
-        document.getElementById('calcBtn').addEventListener('click', function() {
-            const bottles = Number(document.getElementById('bottleCount').value);
-            const price = Number(document.getElementById('avgPrice').value) * 10000;
-            const monthly = Number(document.getElementById('monthlyBuy').value) * 10000;
-            const years = Number(document.getElementById('years').value);
-            if(bottles < 0 || price <= 0 || years <= 0) { alert("값을 입력해주세요."); return; }
-            
-            const stockValue = bottles * price;
-            const rate = 0.10 / 12;
-            const months = years * 12;
-            const investValue = monthly * ((Math.pow(1 + rate, months) - 1) / rate);
-            const stockInvestValue = stockValue * Math.pow(1 + 0.10, years);
-            const totalOpportunity = stockInvestValue + investValue;
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                const total = (parseFloat(document.getElementById('collectionValue').value) || 0) * 10000;
+                const yrs = parseFloat(document.getElementById('holdingYears').value) || 1;
+                const rate = 0.08; // 지수 투자 연평균 수익률
+                
+                // 일시불 투자 복리 계산식: P * (1+r)^n
+                const futureVal = total * Math.pow((1 + rate), yrs);
 
-            const resultArea = document.getElementById('result-area');
-            resultArea.style.display = 'block';
-            document.getElementById('resStock').innerText = Math.round(stockValue).toLocaleString() + "원";
-            document.getElementById('resTotal').innerText = Math.round(totalOpportunity).toLocaleString() + "원";
-
-            const totalManwon = totalOpportunity / 10000;
-            let item = "최신형 아이패드";
-            if(totalManwon > 10000) item = "순금 30돈 (골드바)";
-            else if(totalManwon > 5000) item = "롤렉스 서브마리너";
-            else if(totalManwon > 3000) item = "유럽 초호화 여행";
-            else if(totalManwon > 1000) item = "최고급 안마의자";
-            document.getElementById('compareItem').innerText = item;
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+                document.getElementById('futureValue').textContent = `약 ${Math.round(futureVal/10000).toLocaleString()}만 원`;
+                
+                document.getElementById('resultText').textContent = `술병을 모으는 대신 세계 경제 성장에 올라탔다면 얻었을 확실한 자산 가치입니다. 액체보다는 자본의 성장을 수집해 보세요.`;
+            });
         });
     </script>
 </body>
