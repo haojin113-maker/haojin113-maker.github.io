@@ -3,99 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="영양제 과소비 비용 계산기. 먹지도 않고 유통기한 지난 영양제 비용과 과잉 섭취로 낭비되는 돈을 계산해드립니다.">
+    <meta name="description" content="남들 다 먹으니까 먹는 비타민, 혹시 유통기한 지나서 버리고 계신가요? 효능 없는 지출로 날려버린 당신의 시드머니를 팩트로 계산해드립니다.">
     <title>영양제 호갱 판독기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
+
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
-        .main-content { flex: 3; } .sidebar { flex: 1; position: sticky; top: 20px; }
-        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; border: 1px solid #eee; }
-        h1.page-title { font-size: 2.2rem; margin: 20px 0 10px; color: #111; }
-        h2 { border-left: 5px solid #fb8c00; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #fff3e0; border: 1px solid #ffe0b2; color: #e65100; }
-        .intro-box strong { color: #fb8c00; background: #fff; padding: 0 5px; border-radius: 4px; }
-        .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; color: #fb8c00; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #fb8c00; color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 1.2rem; font-weight: bold; }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fff8e1; border-radius: 12px; text-align: center; }
-        .highlight { font-size: 2.5rem; font-weight: 900; display: block; margin: 10px 0; color: #fb8c00; }
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        /* 섹션 공통 스타일 */
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        /* [가변] 테마 설정: Amber */
+        h2 { border-left: 5px solid #ff8f00; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #fff8e1; border: 1px solid #ffecb3; color: #ff6f00; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #ff8f00; background: #fff; padding: 0 5px; border-radius: 4px; }
         
-        .seo-content h3 { margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; } }
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #ff8f00; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #ff8f00; outline: none; box-shadow: 0 0 0 3px rgba(255, 143, 0, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #ff8f00; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(255,143,0,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fff8e1; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #e65100; }
+
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #ff8f00; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">당신은 세상에서 가장 비싼 소변을 보고 있습니다</h1>
-            <p class="page-subtitle">종합비타민, 오메가3, 유산균... 사놓고 안 먹어서 버리는 돈이 얼마일까요?</p>
+            <h1 class="page-title">내 몸은 정거장, 지갑은 화수분인가요?</h1>
+            <p class="page-subtitle">비싼 영양제의 80%는 소변으로 배출됩니다. 당신이 버린 기회비용을 확인하세요.</p>
 
             <section class="intro-box">
-                <h2>💊 약통 수집가 증후군</h2>
-                <p>"몸에 좋대서", "세일하길래" 샀지만 식탁 위에서 먼지만 쌓여가는 영양제들. 유통기한 지나서 버리는 비용과, 몸에 흡수도 안 되고 배출되는 <strong>과잉 섭취 비용</strong>을 팩트로 때려드립니다.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">pill</span> 약장에 가득 찬 영양제, 제대로 드시고 계신가요? 건강을 위한다는 핑계로 결제만 한 통들이 당신의 <strong>은퇴 자금</strong>을 삭제하고 있습니다. 숫자로 증명된 비싼 소변의 대가를 확인해보세요.</p>
             </section>
 
+            <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>🧪 영양제 가성비 견적서</h2>
-                <label>① 월평균 영양제 구매 비용 (만원)</label>
-                <input type="number" id="monthlyCost" value="10" placeholder="예: 10">
-                <label>② 끝까지 다 먹는 비율 (%)</label>
-                <input type="number" id="consumeRate" value="50" placeholder="예: 50 (절반은 버림)">
-                <label>③ 영양제 쇼핑 경력 (년)</label>
-                <input type="number" id="years" value="5" placeholder="예: 5">
-                <button id="calcBtn" class="calc-btn">하수구에 버린 돈 확인하기</button>
+                <h2>💊 비타민 매몰 비용 계산기</h2>
+                <div class="calc-group">
+                    <label>매월 영양제 구입 평균 총액 (원)</label>
+                    <input type="number" id="monthlyPills" placeholder="예: 100000" value="100000">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">해외 직구, 종합 비타민, 유산균, 다이어트 보조제 등 합산</p>
+                </div>
+                <div class="calc-group">
+                    <label>구입 후 유통기한 경과나 미섭취로 버리는 비율 (%)</label>
+                    <input type="number" id="wasteRatio" placeholder="예: 30" value="30">
+                </div>
+                <div class="calc-group">
+                    <label>이 생활을 지속할 예상 기간 (년)</label>
+                    <input type="number" id="pillYears" placeholder="예: 30" value="30">
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">쓰레기통에 부은 미래 가치 계산</button>
 
                 <div id="result-area">
-                    <p>제대로 섭취 못 하고 낭비한 총액</p>
-                    <span id="resTotalWaste" class="highlight">0원</span>
-                    <div style="margin-top:20px; padding-top:20px; border-top:1px dashed #999;">
-                        <p>이 돈이면 몸에 좋은</p>
-                        <strong id="compareItem" style="font-size:1.5rem; color:#2e7d32;">한우 1++ 세트</strong>
-                        <p>를 사 먹고도 남습니다.</p>
+                    <p class="result-title">평생 동안 '소변'과 '쓰레기통'에 기부할 금액</p>
+                    <span id="lostFuture" class="highlight">약 0원</span>
+                    <p id="resultText" style="color:#666;"></p>
+                </div>
+            </section>
+
+            <!-- 팩트 체크 -->
+            <section>
+                <h2>🛑 영양제 쇼핑 전 뼈 때리는 3가지 팩트</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>플라시보와 마케팅의 합작품</h3>
+                        <p>음식으로 충분히 섭취 가능한 영양소를 고가의 캡슐로 섭취하는 행위. 당신은 건강이 아니라 '안심'을 사고 있는 것입니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>간은 해독하느라 지쳐갑니다</h3>
+                        <p>좋다는 영양제를 수십 알씩 먹는 행위는 당신의 간에 과부하를 줍니다. 약값 아끼려다 더 비싼 치료비를 내야 할 수도 있습니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>공짜가 가장 좋은 영양제입니다</h3>
+                        <p>비타민 D를 사기 위해 일하는 시간보다 15분 햇볕을 쬐는 것이 훨씬 경제적이고 건강에 이롭다는 사실을 왜 잊으셨나요?</p>
                     </div>
                 </div>
             </section>
 
+            <!-- SEO 텍스트 -->
             <section class="seo-content">
-                <h2>🛑 영양제, 과유불급의 법칙</h2>
-                <h3>1. 비싼 오줌 (Expensive Urine)</h3>
-                <p>비타민 B, C와 같은 수용성 비타민은 우리 몸에서 필요한 양만 흡수하고, 나머지는 모두 소변으로 배출합니다. 고함량 비타민을 먹고 화장실에 가면 소변 색이 노란 이유가 바로 내 돈이 빠져나가는 증거입니다. 흡수율을 고려하지 않은 무조건적인 고함량 섭취는 낭비입니다.</p>
-                <h3>2. 간 독성의 위험</h3>
-                <p>"몸에 좋다니까 이것저것 다 먹자"라며 5~6개씩 섞어 드시나요? 모든 약물과 영양제는 간에서 대사됩니다. 불필요하게 많은 영양제 섭취는 오히려 간에 무리를 주어 독성 간염을 유발할 수 있습니다. 전문가와 상담 후 꼭 필요한 것만 드세요.</p>
-                <h3>3. 진짜 건강은 '식품'에서 온다</h3>
-                <p>영양제는 말 그대로 '보조제'일 뿐입니다. 사과 한 알에 들어있는 수천 가지의 생리활성물질은 알약 하나로 완벽하게 대체할 수 없습니다. 영양제 살 돈으로 신선한 제철 과일과 채소, 질 좋은 단백질을 사 드시는 게 건강에 100배 이득입니다.</p>
+                <h2>영양제 3,000억 시장의 불편한 진실: 왜 당신은 호갱이 되었나?</h2>
+                <p>한국인들의 건강 공포심을 이용한 영양제 마케팅은 독보적입니다. 인플루언서가 먹는 비타민, TV 건강 프로그램에서 소개된 원료를 찾아 결제 창을 두드리는 당신. 하지만 자본주의 관점에서 <strong>'필요 이상의 영양제 구매'</strong>는 자산 증식의 가장 조용한 방해꾼입니다. 대부분의 영양 성분은 균형 잡힌 식단만으로 충분하며, 남용된 성분은 체내에 흡수되지 못한 채 가장 비싼 소변이 되어 변기로 사라집니다.</p>
+
+                <h3>1. 보이지 않는 손실: 10만 원의 복리 가치</h3>
+                <p>매달 무심코 긁는 10만 원어치 영양제. 이를 30년 동안 연평균 8% 수익률의 인덱스 펀드에 넣었다면 어떻게 될까요? 30년 뒤 당신은 약 <strong>1억 5천만 원</strong>이라는 거액의 은퇴 자금을 확보할 수 있었습니다. 노후의 건강을 지키는 가장 강력한 수단은 한 움큼의 알약이 아니라, 경제적 여유를 기반으로 한 안정적인 생활 환경과 양질의 식재료입니다. 알약 한 통을 줄여 우량 주식 한 주를 사는 것이 당신의 80대를 위한 진정한 영양제입니다.</p>
+
+                <h3>2. 건강 격차와 지출의 균형</h3>
+                <p>진정으로 건강을 원하신다면 소비가 아닌 실천을 하십시오. 10만 원짜리 보조제보다 하루 7시간의 숙면과 정제당 끊기가 수만 배 더 효과적입니다. 돈으로 해결하려는 조급함이 당신을 영양제 회사의 VVIP로 만듭니다. 약장을 비우고 공간을 확보하세요. 물건을 관리하는 스트레스를 줄이는 것만으로도 코르티솔 수치가 낮아져 당신의 면역력이 올라갑니다. 영양제 회사의 사옥을 당신의 피땀 섞인 월급으로 지어줄 필요는 없습니다.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 비타민 C는 많이 먹어도 안전하지 않나요?</strong><br>A. 수용성 비타민은 배출되어 안전할 수 있지만, 당신의 지갑은 안전하지 않습니다. 배출될 것을 알고도 매달 결제하는 행위는 합리적인 경제 활동이 아닙니다.</li>
+                    <li><strong>Q. 의사나 약사가 추천하면 사야죠.</strong><br>A. 꼭 필요한 처방약과 건강 보조제는 엄격히 구분해야 합니다. 본인의 피검사 결과 결핍 수치가 나온 성분만 선별해서 드시는 것이 가장 똑똑한 건강 재테크입니다.</li>
+                </ul>
             </section>
-            
-            <div class="ad-box"><span style="font-size:11px; color:#ccc;">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-        <aside class="sidebar"><div style="min-height: 600px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div></aside>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
     </div>
+
+    <!-- [계산 로직] -->
     <script>
-        document.getElementById('calcBtn').addEventListener('click', function() {
-            const monthly = Number(document.getElementById('monthlyCost').value) * 10000;
-            const rate = Number(document.getElementById('consumeRate').value);
-            const years = Number(document.getElementById('years').value);
-            if(monthly <= 0 || years <= 0) { alert("값을 입력해주세요."); return; }
-            
-            const totalSpent = monthly * 12 * years;
-            const wasteRate = (100 - rate) / 100;
-            const totalWaste = totalSpent * wasteRate;
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                const monthly = parseFloat(document.getElementById('monthlyPills').value) || 0;
+                const ratio = (parseFloat(document.getElementById('wasteRatio').value) || 0) / 100;
+                const yrs = parseFloat(document.getElementById('pillYears').value) || 1;
+                const rate = 0.08; 
+                
+                // 낭비되는 월 금액 기반 복리 계산
+                const wastedMonthly = monthly * ratio;
+                let total = 0;
+                for(let i=0; i < yrs * 12; i++) {
+                    total = (total + wastedMonthly) * (1 + rate/12);
+                }
 
-            const resultArea = document.getElementById('result-area');
-            resultArea.style.display = 'block';
-            document.getElementById('resTotalWaste').innerText = Math.round(totalWaste).toLocaleString() + "원";
-
-            const wasteManwon = totalWaste / 10000;
-            let item = "제철 과일 박스";
-            if(wasteManwon > 1000) item = "최고급 한우 1++ 파티 (10회)";
-            else if(wasteManwon > 500) item = "프리미엄 건강검진 (전신 MRI)";
-            else if(wasteManwon > 300) item = "유기농 식단 정기배송 1년";
-            else if(wasteManwon > 100) item = "백화점 과일 바구니 5개";
-            document.getElementById('compareItem').innerText = item;
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+                document.getElementById('lostFuture').textContent = `약 ${(total/10000).toFixed(0)}만 원`;
+                document.getElementById('resultText').textContent = `30년 뒤 당신은 단순히 버려진 알약 대신 지방 오피스텔 보증금 한 채 값을 하수구로 흘려보낸 셈입니다.`;
+            });
         });
     </script>
 </body>
