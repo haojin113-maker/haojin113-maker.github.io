@@ -3,284 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="테니스 취미 비용 계산기. 레슨비, 코트비, 장비값을 합쳐 1회 운동 비용을 계산해드립니다.">
-    <title>테니스 가성비 판독기 | 팩트 폭격 연구소</title>
+    <meta name="description" content="테니스는 '귀족 스포츠'가 아닌 '지갑 약탈자'인가요? 레슨비와 장비값, 코트 대여료를 합산한 당신의 테니스 1시간당 단가를 팩트로 계산해드립니다.">
+    <title>테니스 비용 판독기 | 팩트 폭격 연구소</title>
 
     <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
 
-    <!-- 구글 아이콘 -->
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
     <style>
-        /* --- [표준 스타일 가이드] --- */
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.7;
-        }
-
-        .wrapper {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-        }
-        
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
+        .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
 
-        section {
-            background: white;
-            border-radius: 16px;
-            padding: 35px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            border: 1px solid #eee;
-        }
-
+        /* 섹션 공통 스타일 */
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
 
-        /* [테마 변경] 테니스/라임(Neon) -> #c6ff00 (텍스트 가독성을 위해 #827717, #33691e 등과 조합) */
-        h2 { border-left: 5px solid #aeea00; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-
-        .intro-box { background-color: #f9fbe7; border: 1px solid #dce775; color: #33691e; }
+        /* [가변] 테마 설정: Lime Green */
+        h2 { border-left: 5px solid #c0ca33; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #f9fbe7; border: 1px solid #e6ee9c; color: #33691e; padding: 25px; border-radius: 12px; }
         .intro-box strong { color: #827717; background: #fff; padding: 0 5px; border-radius: 4px; }
-
-        /* 계산기 스타일 */
+        
         .calc-group { margin-bottom: 20px; }
         label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #827717; }
-        input {
-            width: 100%; padding: 14px; border: 1px solid #ddd;
-            border-radius: 8px; font-size: 1rem; transition: 0.2s;
-        }
-        input:focus { border-color: #aeea00; outline: none; box-shadow: 0 0 0 3px rgba(174, 234, 0, 0.2); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #c0ca33; outline: none; box-shadow: 0 0 0 3px rgba(192, 202, 51, 0.1); }
 
-        .calc-btn {
-            width: 100%; padding: 18px;
-            background-color: #aeea00; color: #333;
-            border: none; border-radius: 12px;
-            font-size: 1.2rem; font-weight: bold; cursor: pointer;
-            margin-top: 10px; transition: 0.2s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .calc-btn:hover { background-color: #9ccc65; transform: translateY(-3px); }
+        .calc-btn { width: 100%; padding: 18px; background-color: #c0ca33; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(192,202,51,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
 
-        #result-area {
-            display: none; margin-top: 30px; padding: 30px;
-            background-color: #f0f4c3; border-radius: 12px; text-align: center;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.waste { color: #827717; } 
-        .highlight.gym { color: #2962ff; }
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #f9fbe7; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #33691e; }
 
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box {
-            flex-shrink: 0; width: 40px; height: 40px;
-            background: #aeea00; color: #333;
-            border-radius: 10px; font-weight: bold;
-            display: flex; align-items: center; justify-content: center;
-            margin-right: 20px; margin-top: 5px;
-        }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        @media (max-width: 850px) {
-            .wrapper { flex-direction: column; }
-            .sidebar { width: 100%; position: static; min-width: auto; }
-            .main-content { width: 100%; }
-            h1.page-title { font-size: 1.8rem; }
-        }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #c0ca33; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
-
     <div class="wrapper">
-        
-        <!-- [좌측] 메인 콘텐츠 -->
         <main class="main-content">
-            
-            <h1 class="page-title">라켓 한 자루면 될 줄 알았나요?</h1>
-            <p class="page-subtitle">"테니스가 골프보다 싸다"는 말에 속아 시작했다가 통장이 털리는 과정을 보여드립니다.</p>
+            <h1 class="page-title">실력보다 패션이 앞서는 '테니스 앓이' 중?</h1>
+            <p class="page-subtitle">코트 위 화려한 한 시간, 당신의 시간당 단가는 얼마입니까?</p>
 
-            <!-- 인트로: 팩트 제시 -->
             <section class="intro-box">
-                <h2>🎾 귀족 스포츠의 귀환</h2>
-                <p>
-                    실내 테니스장 레슨비 월 30만 원, 코트 예약비, 그리고 끊임없는 <strong>'테니스룩'</strong> 쇼핑.<br>
-                    공 한 번 칠 때마다 얼마를 내고 있는지 계산해드립니다. (골프보단 싸지만, 헬스보단 10배 비쌉니다.)
-                </p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">sports_tennis</span> 테니스는 고강도 유산소 운동입니다. 하지만 어느덧 <strong>장비 구매와 레슨 지출</strong>이 본인의 월급 수준을 위협하고 있다면 그것은 운동이 아닌 사치입니다. 당신의 스윙 한 번에 증발하는 현금을 숫자로 확인해 보세요.</p>
             </section>
 
             <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>📉 코트 위 지출 명세서</h2>
+                <h2>🎾 테니스 기회비용 판독기</h2>
+                <div class="calc-group">
+                    <label>월 평균 테니스 레슨비 + 코트비 (원)</label>
+                    <input type="number" id="monthlyTotal" placeholder="예: 300000" value="300000">
+                </div>
+                <div class="calc-group">
+                    <label>한 달 동안 실제 라켓을 휘두른 총 시간 (시간)</label>
+                    <input type="number" id="monthlyHours" placeholder="예: 10" value="10">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">게임, 랠리, 레슨 시간만 순수하게 합치세요.</p>
+                </div>
+                <div class="calc-group">
+                    <label>의류 및 장비 초기 지출 총액 (원)</label>
+                    <input type="number" id="gearInitial" placeholder="예: 1000000" value="1000000">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">라켓, 가방, 전용 신발, 브랜드 운동복 합산</p>
+                </div>
                 
-                <div class="calc-group">
-                    <label>① 초기 장비 비용 (만원)</label>
-                    <input type="number" id="gearCost" value="50" placeholder="예: 50 (라켓+가방+신발)">
-                </div>
+                <button id="calcBtn" class="calc-btn">테니스 1시간의 진짜 가격 확인</button>
 
-                <div class="calc-group">
-                    <label>② 월 레슨비 + 코트비 (만원)</label>
-                    <input type="number" id="monthlyFee" value="30" placeholder="예: 30 (주 2회 레슨)">
-                </div>
-
-                <div class="calc-group">
-                    <label>③ 연간 의류/용품 구매비 (만원)</label>
-                    <input type="number" id="clothingCost" value="100" placeholder="예: 100 (예쁜 옷+그립+공)">
-                    <div class="help-text">* 인스타 인증샷을 위한 필수 지출</div>
-                </div>
-
-                <div class="calc-group">
-                    <label>④ 주당 실제 운동 횟수 (회)</label>
-                    <input type="number" id="weeklyCount" value="2" placeholder="예: 2">
-                </div>
-
-                <button id="calcBtn" class="calc-btn">1회 운동 비용 확인하기</button>
-
-                <!-- 결과창 -->
                 <div id="result-area">
-                    
-                    <div style="margin-bottom:20px;">
-                        <p class="result-title">1년 동안 코트에 뿌린 돈</p>
-                        <span id="resTotal" class="highlight waste">0원</span>
-                    </div>
-
-                    <div style="border-top:1px dashed #aaa; padding-top:20px;">
-                        <p class="result-title" style="margin-bottom:10px;">운동 1번 할 때마다 드는 비용</p>
-                        <span id="resPerTime" class="highlight waste" style="font-size:2rem;">0원</span>
-                        <p style="font-size:0.9rem; color:#888;">(장비 감가상각 포함)</p>
-                    </div>
-
-                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #c5e1a5; font-size:0.95rem;">
-                        이 돈이면 동네 헬스장을<br>
-                        <strong><span id="compareItem" style="background:#e3f2fd; padding:0 4px; color:#2962ff;">10년</span></strong> 동안<br>
-                        다닐 수 있습니다.
-                    </div>
+                    <p class="result-title">당신이 코트 위에서 보내는 1시간의 가격</p>
+                    <span id="hourlyCost" class="highlight">약 0원</span>
+                    <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
-            <!-- 팩트 체크 리스트 -->
+            <!-- 팩트 체크 -->
             <section>
-                <h2>🛑 '테린이'가 겪게 될 현실</h2>
-                
+                <h2>🛑 '테린이' 탈출 전 마주해야 할 냉정한 팩트</h2>
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">checkroom</span></div>
+                    <div class="icon-box">1</div>
                     <div class="reason-content">
-                        <h3>패션쇼가 된 코트</h3>
-                        <p>테니스장 예약보다 힘든 게 '코디'입니다. 흰색 스커트, 브랜드 양말, 헤어밴드... 실력보다 장비와 패션에 돈을 더 쓰게 됩니다. 사진 찍으러 가는 건지 운동하러 가는 건지 헷갈립니다.</p>
+                        <h3>옷값이 실력을 대신해주지 않습니다</h3>
+                        <p>명품 브랜드의 테니스 라인은 수십만 원을 호가합니다. 공도 제대로 못 맞히는 상태에서 패션쇼를 하는 것은 테니스장에 대한 기부가 아닌 브랜드의 배만 불려주는 꼴입니다.</p>
                     </div>
                 </div>
-                
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">medical_services</span></div>
+                    <div class="icon-box">2</div>
                     <div class="reason-content">
-                        <h3>테니스 엘보의 공포</h3>
-                        <p>잘못된 자세로 무리하게 치다가 팔꿈치와 무릎이 나갑니다. 정형외과 물리치료 비용과 도수치료 비용까지 합치면 취미 생활 치고는 너무 비싼 대가를 치릅니다.</p>
+                        <h3>레슨 지옥: 평생 배우기만 하실 건가요?</h3>
+                        <p>연 단위로 레슨만 받고 실제 게임은 못 하는 '만년 테린이'들이 많습니다. 피드백 없는 무한 결제는 자기만족형 지출일 뿐 실질적인 신체 자산으로 남지 않습니다.</p>
                     </div>
                 </div>
-
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">mouse</span></div>
+                    <div class="icon-box">3</div>
                     <div class="reason-content">
-                        <h3>코트 예약 전쟁 (광클)</h3>
-                        <p>서울 시내 테니스장 예약은 아이돌 콘서트 티켓팅 수준입니다. 돈이 있어도 칠 곳이 없어서 새벽같이 일어나거나 경기도까지 원정을 가야 합니다.</p>
+                        <h3>시간 비용: 예약과 대기의 기회비용</h3>
+                        <p>코트 예약을 위해 클릭 전쟁을 벌이고, 차를 타고 먼 코트까지 이동하는 시간. 당신의 시급으로 환산하면 이미 테니스 한 번에 연차 한 번을 쓰고 계십니다.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- 하단 광고 -->
-            <div class="ad-box">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <!-- SEO 텍스트 -->
+            <section class="seo-content">
+                <h2>MZ 테니스 열풍의 실체: 운동인가, 소비인가?</h2>
+                <p>소셜 미디어의 알고리즘은 오늘도 당신에게 예쁜 테니스복을 입고 코트 위에서 포즈를 취하는 모습을 보여줍니다. MZ세대의 새로운 취미로 자리 잡은 테니스. 하지만 자본주의 경제적 관점에서 <strong>'진입 장벽이 높고 유지비가 비싼 스포츠'</strong>는 자산 형성 시기의 사회 초년생에게 가장 큰 적입니다. 테니스는 단순한 신발 한 켤레로 시작하는 러닝과는 완전히 다른 재무적 부담을 요구합니다.</p>
 
-            <!-- common.js가 푸터 자동 추가 -->
+                <h3>1. 보이지 않는 가계의 파열: 테니스 1시간의 가치</h3>
+                <p>매달 레슨과 코트비로 30~40만 원을 지출하는 20대가 많습니다. 초기 장비값 100만 원까지 감안하여 2년(24개월) 동안 테니스에 쏟는 총 비용은 원금만 약 1,000만 원에 육박합니다. 이 1,000만 원을 복리 8% 주식에 넣었을 때의 미래 가치는? 20년 뒤 <strong>약 4,600만 원</strong>입니다. 당신이 코트 위에서 공을 주우며 보낸 시간의 기회비용은 은퇴 후에 거주할 수 있는 오피스텔 보증금과 같습니다. 취미의 즐거움도 중요하지만, 그 즐거움이 내 인생의 안전판인 시드머니를 파괴하고 있지는 않은지 냉정하게 따져봐야 합니다.</p>
 
+                <h3>2. '본질'을 잃은 과시적 운동 문화의 위험성</h3>
+                <p>운동의 본질은 건강입니다. 땀을 흘리고 근력을 키워 의료비를 절약하는 것이 진정한 체육 재테크입니다. 하지만 지금의 테니스 문화는 실력 향상의 고통보다는 예쁜 사진과 비싼 브랜드를 뽐내는 방향으로 흐르고 있습니다. 라켓 하나를 골라도 실력보다는 디자인을 먼저 보고, 레슨 코치보다 예쁜 배경의 실내 코트를 선호하지는 않나요? 진짜 부자들은 남들이 하지 않는 시간(새벽)에 공립 코트에서 검소하게 운동을 즐깁니다. 보여주기 위한 스포츠에 당신의 소중한 황금기를 저당 잡히지 마십시오. 실력은 낡은 운동복에서 나오고, 자산은 통제된 지출에서 나옵니다.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 장비가 좋아야 무릎이나 팔꿈치를 보호하지 않나요?</strong><br>A. 무릎을 지키는 건 20만 원짜리 신발보다 평소의 하체 운동과 올바른 자세입니다. 장비에 기대는 안일한 생각은 오히려 부상의 위험을 키울 수 있습니다.</li>
+                    <li><strong>Q. 소모품(공, 줄) 비용도 계산해야 하나요?</strong><br>A. 주당 한 번 꼴로 터지는 거트 수리비와 매번 새로 뜯어야 하는 캔 볼 가격은 1년 합산 시 중소기업 월급 수준에 달합니다. 결코 소홀히 할 수 없는 고정 지출입니다.</li>
+                </ul>
+            </section>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
 
-        <!-- [우측] 사이드바 광고 -->
         <aside class="sidebar">
-            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890" 
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </aside>
-
     </div>
 
-    <!-- 계산 로직 -->
+    <!-- [계산 로직] -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                // 1. 값 가져오기
-                const gear = Number(document.getElementById('gearCost').value) * 10000;
-                const monthly = Number(document.getElementById('monthlyFee').value) * 10000;
-                const clothing = Number(document.getElementById('clothingCost').value) * 10000;
-                const weeklyCount = Number(document.getElementById('weeklyCount').value);
-
-                if(monthly <= 0 || weeklyCount <= 0) {
-                    alert("비용과 횟수를 올바르게 입력해주세요.");
-                    return;
-                }
-
-                // 2. 계산 로직
-                // 연간 고정 비용
-                const annualFixed = (monthly * 12) + clothing;
+                const monthly = parseFloat(document.getElementById('monthlyTotal').value) || 0;
+                const hours = parseFloat(document.getElementById('monthlyHours').value) || 1;
+                const initial = (parseFloat(document.getElementById('gearInitial').value) || 0) / 24; // 2년 할부 개념 안분
                 
-                // 장비 감가상각 (3년 사용 가정)
-                const annualGear = gear / 3;
-                
-                // 1년 총비용
-                const totalAnnualCost = annualFixed + annualGear;
+                const costPerHourValue = (monthly + initial) / hours;
 
-                // 연간 총 운동 횟수
-                const totalSessions = weeklyCount * 52;
-
-                // 1회당 비용
-                const costPerSession = totalAnnualCost / totalSessions;
-
-                // 헬스장 비교 (월 4만원 가정 -> 연 48만원)
-                const gymCost = 480000;
-                const gymYears = (totalAnnualCost / gymCost).toFixed(1);
-
-                // 3. 결과 출력
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
+                document.getElementById('hourlyCost').textContent = `약 ${Math.round(costPerHourValue).toLocaleString()}원`;
+                
+                let feedback = "";
+                if(costPerHourValue > 100000) feedback = "이 정도면 한 번 칠 때마다 호텔 룸서비스를 받는 격입니다. 귀족 스포츠 코스프레 중이시군요.";
+                else if(costPerHourValue > 50000) feedback = "시중 전문 미팅이나 프리미엄 강의보다 시간당 단가가 높습니다. 실력에 더 집중해야 본전을 뽑습니다.";
+                else feedback = "매우 알차게 테니스를 즐기고 계시네요! 지금처럼 합리적인 비용 내에서 건강을 챙기세요.";
 
-                document.getElementById('resTotal').innerText = Math.round(totalAnnualCost).toLocaleString() + "원";
-                document.getElementById('resPerTime').innerText = Math.round(costPerSession).toLocaleString() + "원";
-                document.getElementById('compareItem').innerText = gymYears + "년";
-
-                // 4. 메시지 강조
-                // (자동 색상 적용됨)
+                document.getElementById('resultText').textContent = feedback;
             });
         });
     </script>
