@@ -3,287 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="재수 삼수 비용 기회비용 계산기. 재수종합반 학원비와 늦어진 취업으로 인한 손실액을 계산해드립니다.">
+    <meta name="description" content="학벌 한 단계 높이려다 1억 원 날리고 계신가요? 재수, N수 기간 동안 발생하는 학원비와 잃어버린 경력 소득을 팩트로 합산하여 수험의 진짜 가성비를 계산해드립니다.">
     <title>재수/N수 가성비 판독기 | 팩트 폭격 연구소</title>
 
     <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
 
-    <!-- 구글 아이콘 -->
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
     <style>
-        /* --- [표준 스타일 가이드] --- */
+        /* 기본 레이아웃 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.7;
-        }
-
-        .wrapper {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-        }
-        
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
+        .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
 
-        section {
-            background: white;
-            border-radius: 16px;
-            padding: 35px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            border: 1px solid #eee;
-        }
-
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
 
-        /* [테마 변경] 시험/공부(Blue) -> #3d5afe */
-        h2 { border-left: 5px solid #3d5afe; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-
-        .intro-box { background-color: #e8eaf6; border: 1px solid #c5cae9; color: #1a237e; }
-        .intro-box strong { color: #3d5afe; background: #fff; padding: 0 5px; border-radius: 4px; }
-
-        /* 계산기 스타일 */
-        .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #3d5afe; }
-        input {
-            width: 100%; padding: 14px; border: 1px solid #ddd;
-            border-radius: 8px; font-size: 1rem; transition: 0.2s;
-        }
-        input:focus { border-color: #3d5afe; outline: none; box-shadow: 0 0 0 3px rgba(61, 90, 254, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-
-        .calc-btn {
-            width: 100%; padding: 18px;
-            background-color: #3d5afe; color: white;
-            border: none; border-radius: 12px;
-            font-size: 1.2rem; font-weight: bold; cursor: pointer;
-            margin-top: 10px; transition: 0.2s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .calc-btn:hover { background-color: #0031ca; transform: translateY(-3px); }
-
-        #result-area {
-            display: none; margin-top: 30px; padding: 30px;
-            background-color: #e8eaf6; border-radius: 12px; text-align: center;
-            animation: fadeIn 0.5s ease;
-        }
+        /* [가변] 테마 설정: Grey */
+        h2 { border-left: 5px solid #37474f; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #eceff1; border: 1px solid #cfd8dc; color: #263238; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #37474f; background: #fff; padding: 0 5px; border-radius: 4px; }
         
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.waste { color: #d32f2f; } 
-        .highlight.time { color: #3d5afe; }
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #37474f; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #37474f; outline: none; box-shadow: 0 0 0 3px rgba(55, 71, 79, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #37474f; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(55,71,79,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #eceff1; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #b71c1c; }
 
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box {
-            flex-shrink: 0; width: 40px; height: 40px;
-            background: #3d5afe; color: white;
-            border-radius: 10px; font-weight: bold;
-            display: flex; align-items: center; justify-content: center;
-            margin-right: 20px; margin-top: 5px;
-        }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        @media (max-width: 850px) {
-            .wrapper { flex-direction: column; }
-            .sidebar { width: 100%; position: static; min-width: auto; }
-            .main-content { width: 100%; }
-            h1.page-title { font-size: 1.8rem; }
-        }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #37474f; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
-
     <div class="wrapper">
-        
-        <!-- [좌측] 메인 콘텐츠 -->
         <main class="main-content">
-            
-            <h1 class="page-title">1년 더 공부하면 인생이 바뀔까요?</h1>
-            <p class="page-subtitle">"이번엔 진짜 열심히 할게"라는 다짐의 가격. 재수 비용과 기회비용을 합산해드립니다.</p>
+            <h1 class="page-title">재수 1년의 가격, 연봉 협상으로도 못 채웁니다</h1>
+            <p class="page-subtitle">학비는 2,000만 원이지만, 당신이 포기한 자산 가치는 1억 원이 넘습니다.</p>
 
-            <!-- 인트로: 팩트 제시 -->
             <section class="intro-box">
-                <h2>📝 N수의 경제학</h2>
-                <p>
-                    강남 대형 재수학원 월 200~300만 원.<br>
-                    하지만 진짜 비용은 <strong>'사회 진출이 1년 늦어지는 것'</strong>입니다. 당신이 대학 간판을 바꾸기 위해 지불하는 총비용을 계산해드립니다.
-                </p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">hourglass_bottom</span> "대학 이름이 평생 간다"는 기성세대의 조언. 하지만 2025년 대한민국 시장에서 1년의 지체는 <strong>생애 소득 1억 원 삭제</strong>와 같습니다. 다시 한 번 연필을 잡기 전, 이 베팅의 진짜 대가를 숫자로 계산해 보세요.</p>
             </section>
 
             <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>📉 수험 생활 비용 견적서</h2>
+                <h2>📝 N수 기회비용 시뮬레이터</h2>
+                <div class="calc-group">
+                    <label>1년 평균 학원비 + 교재비 + 기숙비 (만원)</label>
+                    <input type="number" id="directCost" placeholder="예: 2500" value="2500">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">식비와 방세 등 수험을 위한 직접 지출액 합계</p>
+                </div>
+                <div class="calc-group">
+                    <label>1년 일찍 취업 시 예상 초봉 (만원)</label>
+                    <input type="number" id="startingSalary" placeholder="예: 3600" value="3600">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">수험을 하지 않고 바로 경제활동을 했을 때의 기회비용</p>
+                </div>
+                <div class="calc-group">
+                    <label>이미 반복한 N수 누적 횟수 (년)</label>
+                    <input type="number" id="nSuCount" placeholder="예: 1" value="1">
+                </div>
                 
-                <div class="calc-group">
-                    <label>① 월평균 학원비/과외비 (만원)</label>
-                    <input type="number" id="academyCost" value="150" placeholder="예: 150 (재종반/독재)">
-                </div>
+                <button id="calcBtn" class="calc-btn">합격증의 리얼 단가 확인하기</button>
 
-                <div class="calc-group">
-                    <label>② 월 식비/용돈/교재비 (만원)</label>
-                    <input type="number" id="livingCost" value="80" placeholder="예: 80">
-                </div>
-
-                <div class="calc-group">
-                    <label>③ N수 기간 (년)</label>
-                    <input type="number" id="years" value="1" placeholder="예: 1 (재수)">
-                </div>
-
-                <div class="calc-group">
-                    <label>④ 취업 시 예상 초봉 (세전, 만원)</label>
-                    <input type="number" id="salary" value="3500" placeholder="예: 3500 (기회비용)">
-                    <div class="help-text">* 1년 늦게 취업해서 못 버는 돈</div>
-                </div>
-
-                <button id="calcBtn" class="calc-btn">대학 간판 교체 비용 확인</button>
-
-                <!-- 결과창 -->
                 <div id="result-area">
-                    
-                    <div style="margin-bottom:20px;">
-                        <p class="result-title">부모님 등골 브레이킹 총액</p>
-                        <span id="resTotal" class="highlight waste">0원</span>
-                        <p style="font-size:0.9rem; color:#888;">(직접 비용 + 못 번 연봉)</p>
-                    </div>
-
-                    <div style="border-top:1px dashed #aaa; padding-top:20px;">
-                        <p class="result-title" style="margin-bottom:10px;">이 돈을 연 10%로 굴렸다면 (10년 뒤)</p>
-                        <span id="resInvest" class="highlight time" style="font-size:1.8rem;">0원</span>
-                        <p style="font-size:0.9rem; color:#888;">의 자산이 됩니다.</p>
-                    </div>
-
-                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #c5cae9; font-size:0.95rem;">
-                        이 돈이면 한국 대학 대신<br>
-                        <strong><span id="compareItem" style="background:#e8eaf6; padding:0 4px; color:#3d5afe;">미국 주립대 유학</span></strong>을<br>
-                        다녀오고도 남습니다.
-                    </div>
+                    <p class="result-title">당신이 한 번 더 도전하며 태운 진짜 인생 비용</p>
+                    <span id="totalLostLife" class="highlight">약 0원</span>
+                    <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
-            <!-- 팩트 체크 리스트 -->
+            <!-- 팩트 체크 -->
             <section>
-                <h2>🛑 N수생이 모르는 현실</h2>
-                
+                <h2>🛑 '딱 1년만 더'가 무서운 경제적 이유</h2>
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">school</span></div>
+                    <div class="icon-box">1</div>
                     <div class="reason-content">
-                        <h3>학벌의 유효기간</h3>
-                        <p>첫 직장 들어갈 때까지만 유효합니다. 경력직 이직 시장에서는 출신 학교보다 '무슨 프로젝트를 했는지'가 훨씬 중요합니다. 간판보다 실력입니다.</p>
+                        <h3>정년 시점의 가장 비싼 월급 1년 치</h3>
+                        <p>1년 늦게 취업하면 사회생활의 끝에서 가장 호봉이 높은 마지막 1년 치 연봉을 날리는 꼴입니다. 사회생활의 황금기가 줄어듭니다.</p>
                     </div>
                 </div>
-                
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">trending_up</span></div>
+                    <div class="icon-box">2</div>
                     <div class="reason-content">
-                        <h3>성적 상승의 한계</h3>
-                        <p>통계적으로 재수생의 성적 상승폭은 크지 않습니다. 드라마틱한 역전은 극소수의 사례입니다. 대부분은 현역 때와 비슷한 대학에 갑니다.</p>
+                        <h3>종잣돈 형성의 딜레이 (복리의 기회)</h3>
+                        <p>25살에 3,000만 원을 모으는 것과 28살에 시작하는 것. 20년 뒤 은퇴 자산의 차이는 수억 원대로 벌어집니다.</p>
                     </div>
                 </div>
-
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">hourglass_bottom</span></div>
+                    <div class="icon-box">3</div>
                     <div class="reason-content">
-                        <h3>가장 빛나는 20대의 1년</h3>
-                        <p>돈으로 환산할 수 없는 젊음입니다. 독서실 칸막이 안에서 보내기엔 너무 아까운 시간입니다. 빨리 사회에 나와 경험을 쌓는 게 더 큰 자산일 수 있습니다.</p>
+                        <h3>학벌보다 '경력'이 실질 자산입니다</h3>
+                        <p>인공지능과 실무 능력 위주로 재편되는 시장. 대학 이름보다 본인의 필드 경력이 10년 뒤 당신의 연봉을 더 확실히 보장합니다.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- 하단 광고 -->
-            <div class="ad-box">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <!-- SEO 텍스트 -->
+            <section class="seo-content">
+                <h2>재수와 N수의 가성비 분석: 대한민국에서 '학력 세탁'의 유통기한</h2>
+                <p>수능 성적표를 받은 뒤, 원하지 않는 대학에 갈 바엔 재수를 하겠다는 결심은 누구나 한 번쯤 합니다. 명문대 간판이 사회 생활의 프리패스라고 믿기 때문입니다. 하지만 냉정한 자본주의 통계로 볼 때, **'학력의 수익률은 정체 중'**인 반면 **'시간의 가치는 폭등 중'**입니다. 한 단계 더 높은 대학을 가기 위해 바치는 1년은, 인생에서 가장 수익성이 떨어지는 투자 중 하나가 될 위험이 큽니다.</p>
 
-            <!-- common.js가 푸터 자동 추가 -->
+                <h3>1. 보이지 않는 금융 손실: 1억 원의 그림자</h3>
+                <p>평균적인 재수 학원비 2,500만 원. 여기에 당신이 편의점 알바라도 해서 벌었을 2,500만 원의 연봉(기회비용)을 더하면 1년의 가격표는 이미 5,000만 원입니다. 3수를 했다면 1.5억 원입니다. 사회 진출이 3년 늦어지면, 당신의 동료들이 집을 사고 주식을 굴릴 때 당신은 고사장에 앉아 문제를 풀고 있어야 합니다. 이 자산 형성의 골든 타임을 놓친 대가는 훗날 어떠한 학벌 프리미엄으로도 상쇄하기 어렵습니다. 30년 뒤 당신을 부자로 만들어주는 것은 졸업장에 찍힌 대학교 이름이 아니라, 남들보다 3년 일찍 투입된 **'복리의 시드머니'**입니다.</p>
 
+                <h3>2. '손절'하지 못하는 도박사의 오류</h3>
+                <p>재수생들이 가장 경계해야 할 심리는 "여태껏 쏟아부은 돈과 시간이 아까워서라도 그만둘 수 없다"는 매몰 비용의 오류입니다. 성공적인 투자는 실패를 빠르게 인정하고 다른 기회를 찾는 것에서 나옵니다. 세상에는 수많은 성공의 경로가 있습니다. 대학은 그중 하나일 뿐입니다. 만약 당신이 공부에 압도적인 재능이 없다면, 하루라도 빨리 현장에 뛰어들어 본인의 쓸모를 증명하는 것이 최상의 재테크입니다. 합격증은 인생의 보증수표가 아니라 단순히 '참가 티켓'일 뿐임을 잊지 마십시오. 티켓을 사느라 전 재산을 탕진하는 비극은 팩트 폭격 연구소의 분석만으로 충분합니다.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 그래도 SKY 가면 인생이 피지 않나요?</strong><br>A. 상위 1% 전문직 진로가 확실한 경우엔 가치가 있습니다. 하지만 일반 대기업 취업을 목표로 한다면 하위권 인서울과 상위권 지방대 사이의 생애 소득 차이는 미미합니다.</li>
+                    <li><strong>Q. 부모님 지원인데 제가 손해 볼 게 있나요?</strong><br>A. 부모님의 노후 자금이 당신의 학원비로 증발하고 있습니다. 훗날 당신이 부양해야 할 노후 고지서가 그만큼 일찍, 무겁게 날아올 것임을 명심하세요.</li>
+                </ul>
+            </section>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
 
-        <!-- [우측] 사이드바 광고 -->
         <aside class="sidebar">
-            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890" 
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </aside>
-
     </div>
 
-    <!-- 계산 로직 -->
+    <!-- [계산 로직] -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                // 1. 값 가져오기
-                const academy = Number(document.getElementById('academyCost').value) * 10000;
-                const living = Number(document.getElementById('livingCost').value) * 10000;
-                const years = Number(document.getElementById('years').value);
-                const salary = Number(document.getElementById('salary').value) * 10000;
-
-                if(years <= 0) {
-                    alert("기간을 입력해주세요.");
-                    return;
-                }
-
-                // 2. 계산 로직
-                // 직접 비용 (월 * 12 * 년)
-                const directCost = (academy + living) * 12 * years;
+                const direct = (parseFloat(document.getElementById('directCost').value) || 0) * 10000;
+                const salary = (parseFloat(document.getElementById('startingSalary').value) || 0) * 10000;
+                const count = parseFloat(document.getElementById('nSuCount').value) || 1;
                 
-                // 기회비용 (연봉 * 년)
-                const opportunityCost = salary * years;
-                
-                // 총 비용
-                const totalCost = directCost + opportunityCost;
+                const totalCostValue = (direct + salary) * count;
 
-                // 투자 시 미래 가치 (10년 뒤, 연복리 10%)
-                const rate = 0.10;
-                const futureValue = totalCost * Math.pow(1 + rate, 10);
-
-                // 3. 결과 출력
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-
-                document.getElementById('resTotal').innerText = Math.round(totalCost).toLocaleString() + "원";
-                document.getElementById('resInvest').innerText = Math.round(futureValue).toLocaleString() + "원";
-
-                // 4. 비교 물건 변경
-                const totalManwon = totalCost / 10000;
-                let item = "유럽 배낭여행";
+                document.getElementById('totalLostLife').textContent = `약 ${(totalCostValue/100000000).toFixed(1)}억 원`;
                 
-                if(totalManwon > 10000) item = "지방 소형 아파트 전세";
-                else if(totalManwon > 5000) item = "창업 시드머니 (카페 등)";
-                else if(totalManwon > 3000) item = "중형차 (소나타/K5) 신차";
-                else if(totalManwon > 2000) item = "아반떼 신차";
-                else if(totalManwon > 1000) item = "세계 일주 여행 경비";
-                
-                document.getElementById('compareItem').innerText = item;
+                document.getElementById('resultText').textContent = `단순한 학원비 문제가 아닙니다. 당신은 지금까지 총 ${(totalCostValue/10000).toLocaleString()}만 원의 기회비용을 허공에 날렸습니다. 학벌이 이 빚을 갚아줄까요?`;
             });
         });
     </script>
