@@ -3,106 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="금 투자 수익률 계산기. 실물 골드바 구매 시 부가세와 수수료를 뗀 실제 손익분기점을 계산해드립니다.">
-    <title>금 투자(골드바) 판독기 | 팩트 폭격 연구소</title>
+    <meta name="description" content="골드바 사자마자 -15% 손해? 부가세와 세공비를 포함한 실물 금 투자의 냉혹한 손익분기점을 팩트로 계산해드립니다.">
+    <title>금 투자 판독기 | 팩트 폭격 연구소</title>
     <script src="../common.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
-        .main-content { flex: 3; } .sidebar { flex: 1; position: sticky; top: 20px; }
-        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; border: 1px solid #eee; }
-        h1.page-title { font-size: 2.2rem; margin: 20px 0 10px; color: #111; }
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         h2 { border-left: 5px solid #ffc107; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #fff8e1; border: 1px solid #ffe082; color: #f57f17; }
+        .intro-box { background-color: #fff8e1; border: 1px solid #ffecb3; color: #795548; padding: 25px; border-radius: 12px; }
         .intro-box strong { color: #ffc107; background: #fff; padding: 0 5px; border-radius: 4px; }
         .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; color: #ffc107; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #ffc107; color: #333; border: none; border-radius: 12px; cursor: pointer; font-size: 1.2rem; font-weight: bold; }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fffde7; border-radius: 12px; text-align: center; }
-        .highlight { font-size: 2.5rem; font-weight: 900; display: block; margin: 10px 0; color: #ffc107; }
-        
-        .seo-content h3 { margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; } }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #ffc107; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        .calc-btn { width: 100%; padding: 18px; background-color: #ffc107; color: #333; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(255, 193, 7, 0.2); }
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fff8e1; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #e65100; }
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">금 샀는데 왜 돈을 잃었을까요?</h1>
-            <p class="page-subtitle">"안전 자산은 금이 최고"라며 골드바를 사셨나요? 사자마자 -15% 확정인 이유를 알려드립니다.</p>
+            <h1 class="page-title">금값은 오르는데 당신 계좌는 왜 마이너스일까요?</h1>
+            <p class="page-subtitle">실물 골드바 소지의 '낭만'에 숨겨진 15%의 세금 함정.</p>
 
             <section class="intro-box">
-                <h2>🧈 반짝이는 손실</h2>
-                <p>실물 금(골드바)을 사는 순간 <strong>부가세 10%</strong>와 <strong>수수료 5%</strong>가 날아갑니다.<br>금값이 15% 이상 폭등하지 않으면 본전도 못 찾습니다. 당신의 금 투자 성적표를 미리 확인하세요.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">monetization_on</span> 금은 인플레이션의 방패입니다. 하지만 '골드바'는 세무서와 금은방 사장님의 방패입니다. 부가세 10%와 세공비를 지불하는 순간 시작되는 <strong>수익률 -15%의 마법</strong>을 팩트로 마주해 보세요.</p>
             </section>
 
             <section id="calculator">
-                <h2>📉 금 투자 손익 계산기</h2>
-                <label>① 투자할 금액 (만원)</label>
-                <input type="number" id="invest" value="1000" placeholder="예: 1000">
-                <label>② 예상 금값 상승률 (%)</label>
-                <input type="number" id="rise" value="10" placeholder="예: 10 (1년 뒤 10% 상승 가정)">
-                <button id="calcBtn" class="calc-btn">팔 때 남는 돈 확인</button>
+                <h2>🧈 실물 금 투자 본전 계산기</h2>
+                <div class="calc-group">
+                    <label>실물 금 구매 금액 (만원)</label>
+                    <input type="number" id="goldAmount" placeholder="예: 1000" value="1000">
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">본전 찾기 위한 목표 가격 확인</button>
 
                 <div id="result-area">
-                    <p>구매 즉시 발생하는 비용 (부가세+수수료)</p>
-                    <span id="resCost" class="highlight" style="color:#d32f2f;">0원</span>
-                    <div style="margin-top:20px; padding-top:20px; border-top:1px dashed #999;">
-                        <p>금값이 <span id="resRiseText">0</span>% 올라도 내 수익은</p>
-                        <strong id="resNet" style="font-size:1.8rem;">0원</strong>
-                        <p id="resVerdict" style="font-size:0.9rem; color:#888;">(여전히 손해입니다)</p>
-                    </div>
+                    <p class="result-title">원금을 찾기 위해 금값이 올라야 할 비율</p>
+                    <span id="targetRise" class="highlight">최소 +18% 이상</span>
+                    <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
             <section class="seo-content">
-                <h2>🛑 금은 'KRX 금시장'에서 사세요</h2>
-                <h3>1. 실물 인출의 함정</h3>
-                <p>TV 홈쇼핑이나 금은방에서 골드바를 사면 부가세 10%를 무조건 내야 합니다. 나중에 팔 때 부가세를 돌려받나요? 아닙니다. 즉, 금값이 10% 올라야 겨우 본전입니다. 투자가 아니라 수집입니다.</p>
-                <h3>2. 수수료 없는 투자법</h3>
-                <p>증권사 계좌를 통해 'KRX 금시장'에서 거래하면 주식처럼 금을 1g 단위로 사고팔 수 있습니다. 이때는 부가세가 없고 수수료도 0.3% 수준으로 매우 저렴합니다. 차익에 대한 세금(양도소득세/배당소득세)도 없습니다. 금 투자의 정석은 KRX입니다.</p>
+                <h2>금 투자의 함정: KRX 금시장 vs 종로 골드바</h2>
+                <p>많은 분들이 경제 위기에 대비해 실물 금을 사둡니다. 하지만 골드바를 손에 쥐는 순간 당신은 국가에 10%의 부가세를 상납하고, 5% 이상의 스프레드 비용을 지불했습니다. 금값이 15% 이상 오르지 않는다면 당신은 여전히 **'돈을 잃고 있는 중'**입니다. 진짜 금 투자는 보관함 속이 아니라 <strong>세금 없는 디지털 계좌</strong>에서 이루어져야 합니다.</p>
             </section>
-            
-            <div class="ad-box"><span style="font-size:11px; color:#ccc;">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-        <aside class="sidebar"><div style="min-height: 600px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div></aside>
+        <aside class="sidebar"><div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"></div></aside>
     </div>
     <script>
-        document.getElementById('calcBtn').addEventListener('click', function() {
-            const invest = Number(document.getElementById('invest').value) * 10000;
-            const rise = Number(document.getElementById('rise').value);
-            if(invest <= 0) { alert("금액을 입력해주세요."); return; }
-            
-            // 비용: 부가세 10% + 수수료 약 5% (소매 기준)
-            const initialCost = invest * 0.15;
-            // 순수 금 가치
-            const goldValue = invest - initialCost;
-            // 상승 후 가치
-            const futureValue = goldValue * (1 + rise/100);
-            
-            // 최종 손익
-            const netProfit = futureValue - invest;
-
-            const resultArea = document.getElementById('result-area');
-            resultArea.style.display = 'block';
-            document.getElementById('resCost').innerText = "-" + Math.round(initialCost).toLocaleString() + "원";
-            document.getElementById('resRiseText').innerText = rise;
-            
-            const netElem = document.getElementById('resNet');
-            const verdElem = document.getElementById('resVerdict');
-
-            if (netProfit > 0) {
-                netElem.innerText = "+" + Math.round(netProfit).toLocaleString() + "원";
-                netElem.style.color = "#2e7d32";
-                verdElem.innerText = "(드디어 수익권입니다)";
-            } else {
-                netElem.innerText = Math.round(netProfit).toLocaleString() + "원";
-                netElem.style.color = "#d32f2f";
-                verdElem.innerText = "(아직도 손해입니다. KRX로 갈아타세요)";
-            }
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calcBtn').addEventListener('click', function() {
+                const amount = parseFloat(document.getElementById('goldAmount').value) || 0;
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = 'block';
+                document.getElementById('resultText').textContent = `당신이 금방에서 문을 나서자마자 자산 가치는 ${Math.round(amount * 0.85)}만 원으로 하락했습니다. 부가세 10%와 거래 마진을 극복하는 건 역사적으로 최소 3~4년의 시간이 필요합니다.`;
+            });
         });
     </script>
 </body>
