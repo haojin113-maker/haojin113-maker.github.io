@@ -3,127 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="골프 비용 계산기. 그린피, 캐디피, 장비값 등 골프를 취미로 가질 때 드는 현실적인 비용을 확인하세요.">
+    <meta name="description" content="필드 한 번에 40만 원? 취미 생활이 당신의 등골을 휘게 만들고 있습니다. 당신의 진짜 골프 지출과 기회비용을 팩트로 계산해드립니다.">
     <title>골프 푸어 판독기 | 팩트 폭격 연구소</title>
+
+    <!-- [1] 공통 모듈 및 라이브러리 -->
     <script src="../common.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
     <style>
+        /* 기본 레이아웃 및 리셋 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
         .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        /* 섹션 공통 스타일 */
         section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
-        h2 { border-left: 5px solid #2e7d32; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-        .intro-box { background-color: #e8f5e9; border: 1px solid #c8e6c9; color: #1b5e20; }
-        .intro-box strong { color: #2e7d32; background: #fff; padding: 0 5px; border-radius: 4px; }
-        .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #2e7d32; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; transition: 0.2s; }
-        input:focus { border-color: #2e7d32; outline: none; box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-        .calc-btn { width: 100%; padding: 18px; background-color: #2e7d32; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.2s; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .calc-btn:hover { background-color: #1b5e20; transform: translateY(-3px); }
-        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #f1f8e9; border-radius: 12px; text-align: center; animation: fadeIn 0.5s ease; }
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.cost { color: #2e7d32; } .highlight.item { color: #333; text-decoration: underline; text-decoration-color: #ffd600; }
-        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #2e7d32; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
+
+        /* [가변] 테마 설정: Forest Green */
+        h2 { border-left: 5px solid #1b5e20; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #e8f5e9; border: 1px solid #c8e6c9; color: #1b5e20; padding: 25px; border-radius: 12px; }
         
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #1b5e20; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; transition: 0.2s; }
+        input:focus { border-color: #1b5e20; outline: none; box-shadow: 0 0 0 3px rgba(27, 94, 32, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #1b5e20; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(27,94,32,0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과창 스타일 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #e8f5e9; border-radius: 12px; text-align: center; animation: fadeIn 0.5s ease; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #1b5e20; }
+
+        /* 요인 카드 스타일 */
+        .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #1b5e20; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        /* SEO 콘텐츠 스타일 */
         .seo-content { line-height: 1.8; color: #444; }
-        .seo-content h3 { font-size: 1.3rem; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .seo-content p { margin-bottom: 15px; }
-        .seo-content ul { padding-left: 20px; margin-bottom: 20px; }
-        .seo-content li { margin-bottom: 10px; }
+        .seo-content h3 { font-size: 1.3rem; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; color: #111; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; min-width: auto; } .main-content { width: 100%; } h1.page-title { font-size: 1.8rem; } }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } .main-content { width: 100%; } }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">"사장님 나이스 샷!"의 진짜 가격</h1>
-            <p class="page-subtitle">월급 300만 원으로 골프를 친다고요? 통장이 벙커에 빠지고 있습니다.</p>
+            <h1 class="page-title">필드 나갈 때마다 월급이 '파' 처리되나요?</h1>
+            <p class="page-subtitle">하차감을 위한 럭셔리 스포츠, 당신의 경제적 체력을 측정해드립니다.</p>
 
             <section class="intro-box">
-                <h2>⛳ 필드 한 번 나가면 40만 원 삭제</h2>
-                <p>그린피, 카트비, 캐디피(그카캐)에 그늘집 식사비, 기름값까지... 골프는 <strong>'돈을 땅에 뿌리는 스포츠'</strong>입니다. 당신의 골프 라이프가 연봉의 몇 퍼센트를 갉아먹는지 계산해드립니다.</p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">golf_course</span> 대한민국 골프는 더 이상 단순한 스포츠가 아닙니다. 그린피, 캐디피, 카트비에 '그늘집' 물가까지... <strong>'골프 지출의 팩트'</strong>를 확인하고 현명한 취미 생활을 시작하세요.</p>
             </section>
 
+            <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>💸 골프 유지비 견적서</h2>
-                <div class="calc-group"><label>① 월 라운딩(필드) 횟수 (회)</label><input type="number" id="rounds" value="2" placeholder="예: 2"></div>
-                <div class="calc-group"><label>② 1회당 총비용 (그카캐+식대+교통비, 만원)</label><input type="number" id="roundCost" value="35" placeholder="예: 35"></div>
-                <div class="calc-group"><label>③ 월 레슨비/연습장/스크린 비용 (만원)</label><input type="number" id="practiceCost" value="30" placeholder="예: 30"></div>
-                <div class="calc-group"><label>④ 연간 의류/장비 구매 예산 (만원)</label><input type="number" id="gearCost" value="200" placeholder="예: 200"></div>
-                <button id="calcBtn" class="calc-btn">1년 골프 비용 확인하기</button>
+                <h2>⛳ 골프 경제 지수 진단기</h2>
+                <div class="calc-group">
+                    <label>월 평균 라운딩 횟수 (번)</label>
+                    <input type="number" id="rounds" placeholder="예: 2" value="2">
+                </div>
+                <div class="calc-group">
+                    <label>라운딩 1회당 평균 지출 (원)</label>
+                    <input type="number" id="costPerRound" placeholder="예: 350000" value="350000">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">그린피+캐디피+카트비+식사비 포함</p>
+                </div>
+                <div class="calc-group">
+                    <label>기타 연간 지출 (연 80만원이면 80 입력)</label>
+                    <input type="number" id="annualExtra" placeholder="예: 300" value="300">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">의류, 골프채, 공, 레슨비 등 연간 소모 비용(만원)</p>
+                </div>
+                <div class="calc-group">
+                    <label>나의 월 세후 소득 (원)</label>
+                    <input type="number" id="income" placeholder="예: 4000000" value="4000000">
+                </div>
+                
+                <button id="calcBtn" class="calc-btn">나의 골프 푸어 지수 계산기</button>
+
                 <div id="result-area">
-                    <div style="margin-bottom:20px;"><p class="result-title">1년 동안 골프장에 뿌리는 돈</p><span id="resTotal" class="highlight cost">0원</span></div>
-                    <div style="border-top:1px dashed #aaa; padding-top:20px;"><p class="result-title" style="margin-bottom:10px;">이 돈이면 매년</p><span id="compareItem" class="highlight item">유럽 여행</span><p class="result-title" style="margin-top:10px;">을(를) 갈 수 있습니다.</p></div>
-                    <div style="margin-top:25px; font-size:0.9rem; color:#666;">* 당신의 은퇴 자금이 홀컵으로 사라지고 있습니다.</div>
+                    <p class="result-title">당신의 연간 골프 지출액은?</p>
+                    <span id="yearlyTotal" class="highlight">0원</span>
+                    <p id="gradeText" style="color:#666; margin-top:10px; font-weight:bold;"></p>
                 </div>
             </section>
 
+            <!-- 팩트체크 섹션 -->
             <section>
-                <h2>🛑 당신이 '골프 푸어'가 될 수밖에 없는 이유</h2>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">money_off</span></div><div class="reason-content"><h3>세계에서 가장 비싼 그린피</h3><p>한국의 대중제 골프장 요금은 세계 최고 수준입니다. 일본이나 동남아보다 2~3배 비쌉니다. 서비스는 줄이면서 가격만 올리는 '배짱 영업'에 당신의 지갑이 털리고 있습니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">checkroom</span></div><div class="reason-content"><h3>패션쇼가 된 라운딩</h3><p>타수는 못 줄여도 옷은 신상을 입어야 한다는 강박. 50만 원짜리 티셔츠, 30만 원짜리 모자... 골프는 운동이 아니라 '사치재 소비'가 되었습니다.</p></div></div>
-                <div class="reason-card"><div class="icon-box"><span class="material-icons-round">schedule</span></div><div class="reason-content"><h3>하루가 삭제되는 마법</h3><p>새벽 기상, 이동, 5시간 라운딩, 식사, 귀가... 필드 한 번 나가면 하루가 통째로 사라집니다. 주말을 골프에 바치면 가족과의 시간, 자기계발은 불가능합니다.</p></div></div>
+                <h2>🛑 골프가 자산 형성을 방해하는 3가지 이유</h2>
+                <div class="reason-card">
+                    <div class="icon-box">1</div>
+                    <div class="reason-content">
+                        <h3>장비와 의류의 거품 마케팅</h3>
+                        <p>대한민국 골프 의류 가격은 전 세계 최고 수준입니다. 성능보다 '보여주기'에 집중된 지출은 중고 시장에서 가치 방어가 불가능합니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">2</div>
+                    <div class="reason-content">
+                        <h3>'하루'를 통째로 반납하는 시간 비용</h3>
+                        <p>이동 시간과 라운딩, 식사까지 최소 10시간 이상 소요됩니다. 당신의 시급으로 환산하면 라운딩 비용은 명시된 금액의 2배가 넘습니다.</p>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="icon-box">3</div>
+                    <div class="reason-content">
+                        <h3>부자들의 네트워크? 당신에겐 해당 없나요?</h3>
+                        <p>사업적 이득을 내지 못하는 단순 친목 골프는 자산가들의 라이프스타일을 흉내 내는 '소비'일 뿐입니다. 지출의 성격을 냉정하게 구분하십시오.</p>
+                    </div>
+                </div>
             </section>
 
-            <!-- SEO 텍스트 추가 -->
+            <!-- SEO 블로그 콘텐츠 -->
             <section class="seo-content">
-                <h2>⛳ 골프, 취미인가 사치인가?</h2>
-                <p>코로나19 팬데믹 이후 2030 세대까지 골프 열풍이 불었습니다. 하지만 최근에는 '골프 푸어'라는 말이 생길 정도로, 과도한 비용 부담 때문에 중고 장비 매물이 쏟아지고 있습니다. 골프는 장비값, 레슨비, 연습장 비용뿐만 아니라, 필드에 나갈 때마다 발생하는 '그린피, 카트비, 캐디피(그카캐)'가 엄청난 부담이 됩니다.</p>
+                <h2>골프 인구 500만 시대, 즐거움인가 골프 푸어의 시작인가?</h2>
+                <p>MZ세대의 유입과 테니스, 러닝 열풍 사이에서도 골프는 여전히 '귀족 스포츠'라는 인식이 강합니다. 하지만 그 이면에는 소득 수준을 넘어서는 무리한 지출로 저축을 포기하는 <strong>'골프 푸어'</strong>들이 양산되고 있습니다. 특히 필드 한 번 나가는 비용이 40만 원을 육박하는 상황에서, 습관적인 라운딩은 미래의 노후 자금을 현재의 잔디 위에 뿌리는 행위가 될 수 있습니다.</p>
 
-                <h3>1. 한국 골프장의 기형적인 가격 구조</h3>
-                <p>한국의 주말 그린피는 평균 20~30만 원 선입니다. 여기에 카트비(10만 원/팀), 캐디피(15만 원)를 나누어 내고, 그늘집 식사와 이동 기름값까지 합치면 1인당 최소 35~40만 원이 깨집니다. 월 2회만 나가도 연간 1,000만 원 가까이 소모됩니다. 이는 연봉 5,000만 원 직장인의 가처분 소득 30%에 육박하는 금액입니다.</p>
+                <h3>1. 보이지 않는 지출의 공포: 그늘집과 레슨</h3>
+                <p>단순히 그린피만 저렴하다고 안심해서는 안 됩니다. 라운딩 전후의 식사비, 캔 맥주 하나에 만 원이 넘는 그늘집 물가, 그리고 실력을 유지하기 위한 끊임없는 레슨비와 연습장 등록비는 '숨겨진 고정 지출'입니다. 연간 골프에 1,000만 원 이상을 쓰면서 자가 주택 마련이 늦어지고 있다면, 이는 취미가 아닌 인생의 발목을 잡는 사치가 되고 있는 것은 아닌지 따져봐야 합니다.</p>
 
-                <h3>2. 스크린 골프와 파크 골프가 대안</h3>
-                <p>골프의 본질인 '타격감'과 '게임'을 즐기려면 굳이 비싼 필드에 나갈 필요가 없습니다. 스크린 골프는 2~3만 원대로 저렴하게 즐길 수 있으며, 최근에는 노년층을 중심으로 저렴한 비용의 '파크 골프'가 인기를 끌고 있습니다. 보여주기식이 아닌, 진짜 운동을 위한 합리적인 대안을 찾아야 합니다.</p>
+                <h3>2. 기회비용: 골프비 80만 원의 20년 뒤 가치</h3>
+                <p>매달 골프에 쓰는 80만 원을 미국 나스닥 지수에 투자한다면 어떨까요? 연평균 10% 수익률 가정 시, 20년 뒤 당신은 약 6억 원의 자산을 보유하게 됩니다. 주말 하루의 화려함과 은퇴 후의 6억 원을 맞바꾸고 있다는 사실을 인지하는 순간, 당신의 골프 가방은 조금 무겁게 느껴질 것입니다. 진정한 골퍼는 스윙의 각도뿐만 아니라 본인 자산의 각도 또한 관리할 줄 알아야 합니다.</p>
 
                 <h3>자주 묻는 질문 (FAQ)</h3>
                 <ul>
-                    <li><strong>Q. 회원권을 사면 싸지 않나요?</strong><br>A. 골프 회원권은 수천만 원에서 수억 원을 호가합니다. 자산 가치가 있다고는 하지만, 목돈이 묶이는 기회비용과 연회비, 그리고 회원이라도 내야 하는 세금과 이용료를 고려하면 일반인에게는 '가성비'와 거리가 멉니다.</li>
-                    <li><strong>Q. 골프채는 한 번 사면 평생 쓰나요?</strong><br>A. 이론상으로는 그렇지만, 실제로는 '장비병' 때문에 불가능합니다. 드라이버가 잘 안 맞으면 채 탓을 하며 신상으로 바꾸고, 아이언 샤프트를 교체하는 등 끊임없이 돈이 들어갑니다.</li>
+                    <li><strong>Q. 비즈니스상 꼭 쳐야 한다면요?</strong><br>A. 골프를 통해 발생하는 영업 이익이나 커리어적 성장이 지출보다 크다면 '투자'로 볼 수 있습니다. 하지만 영수증을 처리할 곳 없는 직장인에게는 100% '소비'임을 잊지 마세요.</li>
+                    <li><strong>Q. 스크린 골프는 괜찮지 않나요?</strong><br>A. 스크린 골프는 훌륭한 대안입니다. 하지만 필드에 나가고 싶은 욕망을 키우는 도구로 전락한다면 결국 지갑이 열리는 것은 시간문제입니다.</li>
                 </ul>
             </section>
 
-            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div>
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
-        <aside class="sidebar"><div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div></aside>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+        </aside>
     </div>
+
+    <!-- 로직 스크립트 -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                const rounds = Number(document.getElementById('rounds').value);
-                const roundCost = Number(document.getElementById('roundCost').value) * 10000;
-                const practiceCost = Number(document.getElementById('practiceCost').value) * 10000;
-                const gearCost = Number(document.getElementById('gearCost').value) * 10000;
-                if(rounds < 0 || roundCost < 0) { alert("값을 올바르게 입력해주세요."); return; }
-                const annualFieldCost = rounds * roundCost * 12;
-                const annualPracticeCost = practiceCost * 12;
-                const totalAnnualCost = annualFieldCost + annualPracticeCost + gearCost;
+                const rounds = parseFloat(document.getElementById('rounds').value) || 0;
+                const costPerRound = parseFloat(document.getElementById('costPerRound').value) || 0;
+                const annualExtra = parseFloat(document.getElementById('annualExtra').value) * 10000 || 0;
+                const income = parseFloat(document.getElementById('income').value) || 1;
+                
+                const monthlyTotal = (rounds * costPerRound) + (annualExtra / 12);
+                const yearlyTotal = monthlyTotal * 12;
+                const ratio = (monthlyTotal / income) * 100;
+
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-                document.getElementById('resTotal').innerText = Math.round(totalAnnualCost).toLocaleString() + "원";
-                const totalManwon = totalAnnualCost / 10000;
-                let item = "최신형 드라이버 하나";
-                if(totalManwon > 5000) item = "제네시스 G80 (할부금)";
-                else if(totalManwon > 3000) item = "롤렉스 시계 하나";
-                else if(totalManwon > 2000) item = "소형차 한 대";
-                else if(totalManwon > 1000) item = "명품 가방 두 개";
-                else if(totalManwon > 500) item = "유럽 여행 패키지";
-                else if(totalManwon > 300) item = "동남아 황제 골프 여행";
-                document.getElementById('compareItem').innerText = item;
+                document.getElementById('yearlyTotal').textContent = `연간 약 ${Math.round(yearlyTotal/10000).toLocaleString()}만 원`;
+                
+                let grade = "";
+                if(ratio < 5) grade = "건전한 취미 생활자 (소득 상위권 혹은 절제파)";
+                else if(ratio < 15) grade = "골프 매니아 (다른 소비를 줄여야 할 수준)";
+                else if(ratio < 25) grade = "경계 대상 (노후보다 잔디를 사랑하는 분)";
+                else grade = "완전한 골프 푸어 (등골이 홀인원 당하는 중)";
+
+                document.getElementById('gradeText').textContent = `[진단] ${grade} (소득의 ${ratio.toFixed(1)}% 지출)`;
             });
         });
     </script>
