@@ -3,279 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="3대 이모님(식기세척기, 건조기, 로봇청소기) 가성비 계산기. 가사노동 절약 시간을 돈으로 환산해드립니다.">
+    <meta name="description" content="식세기, 건조기, 로봇청소기... 돈 아깝다 생각하셨나요? 가사 노동 시간을 최저시급으로 환산하여 3대 가전의 압도적인 가성비를 팩트로 증명해드립니다.">
     <title>3대 이모님 가성비 판독기 | 팩트 폭격 연구소</title>
 
     <!-- [1] 공통 모듈 연결 -->
     <script src="../common.js"></script>
 
-    <!-- 구글 아이콘 -->
+    <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
     <style>
-        /* --- [표준 스타일 가이드] --- */
+        /* 기본 레이아웃 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.7;
-        }
-
-        .wrapper {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-        }
-        
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
+        .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
         .main-content { flex: 3; min-width: 0; }
         .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
 
-        section {
-            background: white;
-            border-radius: 16px;
-            padding: 35px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            border: 1px solid #eee;
-        }
-
+        /* 섹션 공통 스타일 */
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
         h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
         p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
 
-        /* [테마 변경] 가전/스마트(Violet) -> #7c4dff */
-        h2 { border-left: 5px solid #7c4dff; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
-
-        .intro-box { background-color: #ede7f6; border: 1px solid #d1c4e9; color: #512da8; }
-        .intro-box strong { color: #7c4dff; background: #fff; padding: 0 5px; border-radius: 4px; }
-
-        /* 계산기 스타일 */
-        .calc-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #7c4dff; }
-        input {
-            width: 100%; padding: 14px; border: 1px solid #ddd;
-            border-radius: 8px; font-size: 1rem; transition: 0.2s;
-        }
-        input:focus { border-color: #7c4dff; outline: none; box-shadow: 0 0 0 3px rgba(124, 77, 255, 0.1); }
-        .help-text { font-size: 0.85rem; color: #888; margin-top: 5px; }
-
-        .calc-btn {
-            width: 100%; padding: 18px;
-            background-color: #7c4dff; color: white;
-            border: none; border-radius: 12px;
-            font-size: 1.2rem; font-weight: bold; cursor: pointer;
-            margin-top: 10px; transition: 0.2s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .calc-btn:hover { background-color: #4527a0; transform: translateY(-3px); }
-
-        #result-area {
-            display: none; margin-top: 30px; padding: 30px;
-            background-color: #f3e5f5; border-radius: 12px; text-align: center;
-            animation: fadeIn 0.5s ease;
-        }
+        /* [가변] 테마 설정: Deep Purple */
+        h2 { border-left: 5px solid #7b1fa2; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #f3e5f5; border: 1px solid #e1bee7; color: #4a148c; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #7b1fa2; background: #fff; padding: 0 5px; border-radius: 4px; }
         
-        .result-title { font-size: 1.1rem; font-weight: bold; color: #555; }
-        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; letter-spacing: -1px; }
-        .highlight.time { color: #7c4dff; } 
-        .highlight.money { color: #2e7d32; }
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #7b1fa2; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { border-color: #7b1fa2; outline: none; box-shadow: 0 0 0 3px rgba(123, 31, 162, 0.1); }
+
+        .calc-btn { width: 100%; padding: 18px; background-color: #7b1fa2; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(123, 31, 162, 0.2); }
+        .calc-btn:hover { filter: brightness(0.9); transform: translateY(-3px); }
+
+        /* 결과 영역 */
+        #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #f3e5f5; border-radius: 12px; text-align: center; }
+        .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #4a148c; }
 
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
-        .icon-box {
-            flex-shrink: 0; width: 40px; height: 40px;
-            background: #7c4dff; color: white;
-            border-radius: 10px; font-weight: bold;
-            display: flex; align-items: center; justify-content: center;
-            margin-right: 20px; margin-top: 5px;
-        }
-        .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
-        .reason-content p { font-size: 1rem; color: #666; }
-
-        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
-        .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        @media (max-width: 850px) {
-            .wrapper { flex-direction: column; }
-            .sidebar { width: 100%; position: static; min-width: auto; }
-            .main-content { width: 100%; }
-            h1.page-title { font-size: 1.8rem; }
-        }
+        .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #7b1fa2; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
+        
+        .seo-content { line-height: 1.8; color: #444; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
 </head>
 <body>
-
     <div class="wrapper">
-        
-        <!-- [좌측] 메인 콘텐츠 -->
         <main class="main-content">
-            
-            <h1 class="page-title">설거지할 시간에 소파에 누우세요</h1>
-            <p class="page-subtitle">건조기, 식기세척기, 로봇청소기... 사치품이 아니라 '시간을 사는 기계'입니다.</p>
+            <h1 class="page-title">내 시간 시급 3만 원 vs 기계값 1,000원</h1>
+            <p class="page-subtitle">가장 합리적인 부의 선택: 당신의 노동력을 기계로 외주 주는 법.</p>
 
-            <!-- 인트로: 팩트 제시 -->
             <section class="intro-box">
-                <h2>🤖 3대 이모님의 기적</h2>
-                <p>
-                    가전제품 풀세트에 300~400만 원. 비싸 보이나요?<br>
-                    이 기계들이 10년 동안 당신 대신 일해주는 시간을 <strong>당신의 시급</strong>으로 계산하면, 안 사는 게 오히려 수천만 원 손해라는 것을 증명해드립니다.
-                </p>
+                <p><span class="material-icons-round" style="vertical-align: middle;">smart_toy</span> 자본주의의 핵심은 **'외주(Outsourcing)'**입니다. 식기세척기, 건조기, 로봇청소기를 사는 것은 사치가 아닙니다. 당신의 소중한 자유 시간을 대량 구매하는 가장 완벽한 <strong>'고수익 투자'</strong>입니다.</p>
             </section>
 
             <!-- 계산기 섹션 -->
             <section id="calculator">
-                <h2>⏳ 가사노동 가치 평가</h2>
+                <h2>🤖 시간 해방 기회비용 계산기</h2>
+                <div class="calc-group">
+                    <label>3대 가전 총 구입비 (식세기+건조기+로청/만원)</label>
+                    <input type="number" id="gadgetCost" placeholder="예: 300" value="300">
+                </div>
+                <div class="calc-group">
+                    <label>이 기계들이 하루에 아껴주는 총 시간 (분)</label>
+                    <input type="number" id="savedMinutes" placeholder="예: 60" value="60">
+                    <p style="font-size:0.8rem; color:#999; margin-top:5px;">설거지 20분 + 빨래 널기/걷기 20분 + 청소기 돌리기 20분 기준</p>
+                </div>
+                <div class="calc-group">
+                    <label>예상 사용 기간 (년)</label>
+                    <input type="number" id="lifeTime" placeholder="예: 5" value="5">
+                </div>
                 
-                <div class="calc-group">
-                    <label>① 구매할 가전 총비용 (만원)</label>
-                    <input type="number" id="price" value="300" placeholder="예: 300 (식세기+건조기+로청)">
-                </div>
+                <button id="calcBtn" class="calc-btn">내가 산 '시간당 단가' 확인하기</button>
 
-                <div class="calc-group">
-                    <label>② 하루에 절약되는 가사 시간 (분)</label>
-                    <input type="number" id="saveTime" value="60" placeholder="예: 60 (설거지 20분 + 빨래널기 20분 + 청소 20분)">
-                </div>
-
-                <div class="calc-group">
-                    <label>③ 당신의 시급 가치 (원)</label>
-                    <input type="number" id="wage" value="15000" placeholder="예: 15000">
-                    <div class="help-text">* 최저시급 약 1만원, 내 휴식의 가치</div>
-                </div>
-
-                <div class="calc-group">
-                    <label>④ 가전제품 기대 수명 (년)</label>
-                    <input type="number" id="years" value="10" placeholder="예: 10 (보통 10년 사용)">
-                </div>
-
-                <button id="calcBtn" class="calc-btn">기계가 벌어다 주는 돈 확인</button>
-
-                <!-- 결과창 -->
                 <div id="result-area">
-                    
-                    <div style="margin-bottom:20px;">
-                        <p class="result-title">이모님들이 당신에게 선물한 시간</p>
-                        <span id="resHours" class="highlight time">0시간</span>
-                        <p style="font-size:0.9rem; color:#888;">(약 <span id="resDays">0</span>일의 자유)</p>
-                    </div>
-
-                    <div style="border-top:1px dashed #aaa; padding-top:20px;">
-                        <p class="result-title" style="margin-bottom:10px;">노동 가치로 환산한 이득 (기계값 제외)</p>
-                        <span id="resProfit" class="highlight money">0원</span>
-                        <p style="font-size:0.9rem; color:#888;">(전기세 포함해도 압도적 이득)</p>
-                    </div>
-
-                    <div style="margin-top:25px; background:white; padding:15px; border-radius:8px; border:1px solid #d1c4e9; font-size:0.95rem;">
-                        <strong>결론:</strong><br>
-                        300만 원 쓰고 <strong><span style="color:#7c4dff;">3,000만 원어치 노동</span></strong>을 샀습니다.<br>
-                        고민은 배송만 늦출 뿐입니다.
-                    </div>
+                    <p class="result-title">이모님들을 모셨을 때 당신의 1시간 구매 가격은?</p>
+                    <span id="pricePerHour" class="highlight">0원</span>
+                    <p id="resultText" style="color:#666;"></p>
                 </div>
             </section>
 
-            <!-- 팩트 체크 리스트 -->
+            <!-- 팩트 체크 -->
             <section>
-                <h2>🛑 가전은 사치가 아닌 필수 생존템</h2>
-                
+                <h2>🛑 부자들이 3대 가전을 찬양하는 팩트</h2>
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">favorite</span></div>
+                    <div class="icon-box">1</div>
                     <div class="reason-content">
-                        <h3>부부 싸움 방지 비용</h3>
-                        <p>"오늘 설거지 네 차례잖아"라며 싸울 일이 사라집니다. 가정의 평화를 지키는 비용으로 300만 원은 너무나 저렴합니다. 이혼 변호사 비용보다 쌉니다.</p>
+                        <h3>시간은 재생 불가능한 유일한 자산입니다</h3>
+                        <p>돈은 다시 벌 수 있지만, 매일 밤 설거지대에 서 있던 30분은 영원히 돌아오지 않습니다. 당신의 1시간을 헐값에 팔지 마세요.</p>
                     </div>
                 </div>
-                
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">bedtime</span></div>
+                    <div class="icon-box">2</div>
                     <div class="reason-content">
-                        <h3>저녁이 있는 삶</h3>
-                        <p>퇴근 후 집안일하느라 10시에 눕던 삶이, 8시부터 넷플릭스를 보는 삶으로 바뀝니다. 로봇청소기가 바닥을 닦는 동안 당신은 커피를 마시면 됩니다.</p>
+                        <h3>정신적 에너지(의지력)의 보존</h3>
+                        <p>가사 노동 후의 피로감은 당신의 창의성과 자기계발 의지를 꺾습니다. 기계가 돕는 집안일은 곧 당신의 커리어 투자가 됩니다.</p>
                     </div>
                 </div>
-
                 <div class="reason-card">
-                    <div class="icon-box"><span class="material-icons-round">bolt</span></div>
+                    <div class="icon-box">3</div>
                     <div class="reason-content">
-                        <h3>전기세 걱정? (Fact)</h3>
-                        <p>식기세척기 1회 전기료는 약 100원, 건조기는 약 200원 수준입니다. 한 달 내내 써도 커피 두 잔 값이 안 나옵니다. 노동력 대비 유지비는 공짜나 다름없습니다.</p>
+                        <h3>삶의 만족도와 화목함은 덤입니다</h3>
+                        <p>누가 청소할지 싸우는 시간 비용만 합쳐도 이미 기계값은 본전을 뽑았습니다. 가전은 물건이 아니라 평화를 사는 티켓입니다.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- 하단 광고 -->
-            <div class="ad-box">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <!-- SEO 텍스트 -->
+            <section class="seo-content">
+                <h2>신가전 3대 이모님: 이것은 소비인가 투자인가?</h2>
+                <p>식기세척기, 의류건조기, 로봇청소기를 우리는 '3대 이모님'이라 부릅니다. 이전 세대에는 "손으로 하면 공짜인 일을 왜 돈 들여 하냐"는 핀잔을 들었을지 모르나, 2025년 현대 사회에서 가사 노동은 <strong>가장 가성비 낮은 비효율적 업무</strong>로 정의됩니다. 최저임금 만 원 시대에 당신의 노동을 고작 몇만 원짜리 기계로 대체하지 않는다면, 그것이 바로 당신이 부를 창출할 골든타임을 버리는 가장 큰 원인이 됩니다.</p>
 
-            <!-- common.js가 푸터 자동 추가 -->
+                <h3>1. 보이지 않는 가치: 시간의 단가를 생각하십시오</h3>
+                <p>하루에 1시간의 가사 노동을 줄여준다고 가정해 봅시다. 5년이면 1,825시간입니다. 당신이 300만 원을 들여 이 기계들을 샀다면, 당신의 자유 시간 한 시간당 구매 가격은 고작 <strong>1,640원</strong>에 불과합니다. 편의점 시급 10,030원의 15%도 안 되는 저렴한 비용으로 당신은 완전한 자유 시간을 구매한 것입니다. 그 시간에 책 한 권을 읽거나, 부족한 잠을 채워 컨디션을 회복하거나, 가족과 깊은 대화를 나누십시오. 기회비용을 따지는 자산가들에게 3대 가전은 선택이 아닌 무조건적인 필수 투자 자산입니다.</p>
 
+                <h3>2. 기계가 인간보다 압도적인 점: 품질과 지속성</h3>
+                <p>로봇청소기는 당신이 직장에서 일하는 동안 구석구석을 수십 번씩 지나갑니다. 식기세척기는 당신의 손바닥이 견디지 못하는 고온의 살균수로 세균을 박멸합니다. 건조기는 궂은 날씨에도 당신의 수건을 호텔급 포근함으로 유지합니다. 이 일정한 퀄리티는 삶의 질을 수치화할 수 없을 만큼 극적으로 올려줍니다. 또한 집안일 스트레스가 사라짐으로써 부부 간의 갈등 요인 70%가 제거됩니다. 연봉을 100만 원 올리려 애쓰는 것보다, 집안일에 들어가는 에너지를 0으로 수렴하게 만들어 남은 지적 체력을 소중한 곳에 집중하십시오.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 전기세가 많이 나오지 않나요?</strong><br>A. 최신 가전의 1회 사용 전기료는 약 100~300원 수준입니다. 당신의 1시간 노동 가치에 비하면 거의 공짜나 다름없습니다.</li>
+                    <li><strong>Q. 집이 좁아도 식세기가 필요한가요?</strong><br>A. 좁은 주거 환경일수록 건조대와 설거지 뭉치가 사라짐으로써 얻는 공간의 가치는 더욱 빛이 납니다. 시각적인 정돈이 가져다주는 정신적 가치는 막대합니다.</li>
+                </ul>
+            </section>
+
+            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </main>
 
-        <!-- [우측] 사이드바 광고 -->
         <aside class="sidebar">
-            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
-                <span class="ad-label">Sponsored</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1234567890" 
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
-            </div>
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
         </aside>
-
     </div>
 
-    <!-- 계산 로직 -->
+    <!-- [계산 로직] -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calcBtn').addEventListener('click', function() {
-                // 1. 값 가져오기
-                const price = Number(document.getElementById('price').value) * 10000;
-                const saveTime = Number(document.getElementById('saveTime').value);
-                const wage = Number(document.getElementById('wage').value);
-                const years = Number(document.getElementById('years').value);
+                const totalCost = (parseFloat(document.getElementById('gadgetCost').value) || 0) * 10000;
+                const minutes = parseFloat(document.getElementById('savedMinutes').value) || 0;
+                const yrs = parseFloat(document.getElementById('lifeTime').value) || 1;
+                
+                if(minutes === 0) { alert('절약 시간을 입력해주세요!'); return; }
 
-                if(price <= 0 || saveTime <= 0 || wage <= 0) {
-                    alert("모든 값을 올바르게 입력해주세요.");
-                    return;
-                }
+                const totalSavedHours = (minutes / 60) * 365 * yrs;
+                const hourlyCostValue = totalCost / totalSavedHours;
 
-                // 2. 계산 로직
-                // 연간 절약 시간 (시간 단위)
-                const yearlyHours = (saveTime / 60) * 365;
-                // 총 절약 시간
-                const totalHours = yearlyHours * years;
-                // 일(Day) 환산 (24시간 기준)
-                const totalDays = totalHours / 24;
-
-                // 총 노동 가치 (이득)
-                const totalValue = totalHours * wage;
-
-                // 전기세 및 소모품 비용 (대략 기계값의 20%로 가정)
-                const maintenance = price * 0.2;
-
-                // 순이익 = 노동가치 - (기계값 + 유지비)
-                const netProfit = totalValue - (price + maintenance);
-
-                // 3. 결과 출력
                 const resultArea = document.getElementById('result-area');
                 resultArea.style.display = 'block';
-
-                document.getElementById('resHours').innerText = Math.round(totalHours).toLocaleString() + "시간";
-                document.getElementById('resDays').innerText = Math.round(totalDays).toLocaleString();
-                document.getElementById('resProfit').innerText = "+" + Math.round(netProfit).toLocaleString() + "원";
+                document.getElementById('pricePerHour').textContent = `약 ${Math.round(hourlyCostValue).toLocaleString()}원`;
+                
+                document.getElementById('resultText').textContent = `당신은 시간당 약 ${Math.round(hourlyCostValue).toLocaleString()}원의 비용으로 완전한 해방을 얻었습니다. 최저시급보다 압도적으로 저렴한 '이모님'의 봉사에 감사하며 남은 시간에 더 위대한 일을 도모하세요.`;
             });
         });
     </script>
