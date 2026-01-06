@@ -1,20 +1,18 @@
-/* 수정된 common.js */
+/* [팩트 폭격 연구소] 통합 공통 모듈 - 광고 자동화 버전 */
 document.addEventListener("DOMContentLoaded", function() {
     
-    // 1. 경로 자동 계산 (가장 안전한 방식)
-    // 현재 경로에서 슬래시(/) 개수를 세어 rootPath를 결정합니다.
+    // 1. 경로 자동 계산 (기존 로직 유지)
     const pathArray = window.location.pathname.split('/').filter(p => p !== "");
-    // GitHub Pages 특성상 레포지토리 이름이 포함될 수 있으므로 유연하게 대처
     const isMain = pathArray.length <= 1 || window.location.pathname.endsWith('index.html') && pathArray.length === 1;
     const rootPath = isMain ? "./" : "../";
 
-    // 2. 파비콘 (즉시 실행)
+    // 2. 파비콘 설정 (기존 로직 유지)
     const favicon = document.createElement("link");
     favicon.rel = "icon";
     favicon.href = "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💣</text></svg>";
     document.head.appendChild(favicon);
 
-    // 3. 구글 분석 (GA4)
+    // 3. 구글 분석 (GA4) 연동 (기존 로직 유지)
     const gaId = 'G-42F1L5GYBK';
     const gaScript = document.createElement("script");
     gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
@@ -26,14 +24,18 @@ document.addEventListener("DOMContentLoaded", function() {
     gtag('js', new Date());
     gtag('config', gaId);
 
-    // 4. 구글 애드센스 (메인 코드 로드)
+    // 4. 구글 애드센스 자동화 설정
+    const adClient = "ca-pub-6902579674102145";
+    const adSlot = "6846067145"; // 검증된 광고 슬롯 번호
+
+    // 애드센스 메인 스크립트 로드
     const adScript = document.createElement("script");
-    adScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6902579674102145";
+    adScript.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adClient}`;
     adScript.async = true;
     adScript.crossOrigin = "anonymous";
     document.head.appendChild(adScript);
 
-    // 5. 상단 네비게이션
+    // 5. 상단 네비게이션 생성 (기존 디자인 유지)
     const navHTML = `
     <nav style="background:#212121; color:white; padding:15px 20px; border-bottom:1px solid #333; font-family:'Pretendard', sans-serif;">
         <div style="max-width:1100px; margin:0 auto; display:flex; justify-content:space-between; align-items:center;">
@@ -46,7 +48,42 @@ document.addEventListener("DOMContentLoaded", function() {
     </nav>`;
     document.body.insertAdjacentHTML("afterbegin", navHTML);
 
-    // 6. 하단 푸터 (버그 수정: rootPath 적용)
+    // 6. [신규] 광고 자동 주입 로직
+    // A. 본문 하단 광고 주입
+    const mainContent = document.querySelector('.main-content');
+    if (mainContent) {
+        const mainAdHTML = `
+            <div class="ad-box" style="margin: 40px 0; padding: 20px; background: #fff; border: 1px solid #eee; border-radius: 12px; text-align: center;">
+                <span style="font-size:11px; color:#ccc; display:block; margin-bottom:10px;">ADVERTISEMENT</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="${adClient}"
+                     data-ad-slot="${adSlot}"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            </div>`;
+        mainContent.insertAdjacentHTML("beforeend", mainAdHTML);
+        try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) { console.error(e); }
+    }
+
+    // B. 사이드바 광고 주입
+    const sidebar = document.querySelector('.sidebar');
+    if (sidebar) {
+        const sideAdHTML = `
+            <div class="ad-box" style="margin-bottom: 20px; padding: 15px; background: #fff; border: 1px solid #eee; border-radius: 12px; text-align: center; min-height: 600px;">
+                <span style="font-size:11px; color:#ccc; display:block; margin-bottom:10px;">ADVERTISEMENT</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="${adClient}"
+                     data-ad-slot="${adSlot}"
+                     data-ad-format="vertical"
+                     data-full-width-responsive="true"></ins>
+            </div>`;
+        sidebar.insertAdjacentHTML("afterbegin", sideAdHTML);
+        try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) { console.error(e); }
+    }
+
+    // 7. 하단 푸터 생성 (기존 로직 유지)
     const footerHTML = `
     ${!isMain ? `
     <div style="text-align:center; margin: 60px 0 40px;">
@@ -63,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function() {
         </div>
     </footer>`;
 
-    // 사이드바 유무에 따른 푸터 삽입 위치 결정 로직 강화
-    const mainContent = document.querySelector('.main-content') || document.body;
-    mainContent.insertAdjacentHTML("beforeend", footerHTML);
+    // 푸터는 광고 뒤에 나오도록 설정
+    const targetForFooter = document.querySelector('.main-content') || document.body;
+    targetForFooter.insertAdjacentHTML("beforeend", footerHTML);
 });
