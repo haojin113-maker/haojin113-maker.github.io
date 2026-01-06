@@ -1,4 +1,4 @@
-/* [팩트 폭격 연구소] 통합 공통 모듈 - 안전 최우선 광고 로직 */
+/* [팩트 폭격 연구소] 통합 공통 모듈 - 광고 강제 송출 버전 */
 document.addEventListener("DOMContentLoaded", function() {
     
     // 1. 경로 및 기본 설정
@@ -22,16 +22,14 @@ document.addEventListener("DOMContentLoaded", function() {
     gtag('js', new Date());
     gtag('config', gaId);
 
-    // 3. 구글 애드센스 핵심 스크립트 (무조건 로드 보장)
+    // 3. 구글 애드센스 스크립트 강제 로드
     const adClient = "ca-pub-6902579674102145";
     const adSlot = "6846067145";
-    if (!document.querySelector(`script[src*="adsbygoogle.js"]`)) {
-        const adScript = document.createElement("script");
-        adScript.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adClient}`;
-        adScript.async = true;
-        adScript.crossOrigin = "anonymous";
-        document.head.appendChild(adScript);
-    }
+    const adScript = document.createElement("script");
+    adScript.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adClient}`;
+    adScript.async = true;
+    adScript.crossOrigin = "anonymous";
+    document.head.appendChild(adScript);
 
     // 4. 상단 네비게이션 생성
     const navHTML = `
@@ -46,23 +44,17 @@ document.addEventListener("DOMContentLoaded", function() {
     document.body.insertAdjacentHTML("afterbegin", navHTML);
 
     /**
-     * 5. 스마트 광고 주입 함수 (안전장치 강화)
-     * @param {string} targetSelector - 광고를 넣을 부모 요소
-     * @param {string} format - 광고 형식 (auto, vertical)
+     * 5. 광고 주입 함수 (강제 실행 버전)
      */
-    function safeInjectAd(targetSelector, format) {
+    function forceInjectAd(targetSelector, format, uniqueId) {
         const target = document.querySelector(targetSelector);
         if (!target) return;
 
-        // [핵심 안전장치] 이미 광고가 존재하는지 아주 꼼꼼하게 체크합니다.
-        const hasAd = target.querySelector('ins.adsbygoogle') || target.querySelector('.ad-box');
-        if (hasAd) {
-            console.log(`${targetSelector} 영역에 이미 광고가 있어 주입을 건너뜁니다.`);
-            return;
-        }
+        // 중복 주입 방지: 내가 이미 넣은 광고(uniqueId)가 있는지 확인
+        if (document.getElementById(uniqueId)) return;
 
         const adHTML = `
-            <div class="ad-box" style="margin:30px 0; padding:15px; background:#fff; border:1px solid #eee; border-radius:16px; text-align:center; overflow:hidden;">
+            <div id="${uniqueId}" class="fb-ad-container" style="margin:30px 0; padding:15px; background:#fff; border:1px solid #eee; border-radius:16px; text-align:center; min-height:280px;">
                 <span style="font-size:10px; color:#ddd; display:block; margin-bottom:8px;">ADVERTISEMENT</span>
                 <ins class="adsbygoogle"
                      style="display:block"
@@ -72,20 +64,25 @@ document.addEventListener("DOMContentLoaded", function() {
                      data-full-width-responsive="true"></ins>
             </div>`;
         
-        // 본문 하단은 맨 뒤에, 사이드바는 맨 앞에 넣습니다.
         if (format === 'vertical') {
             target.insertAdjacentHTML('afterbegin', adHTML);
         } else {
             target.insertAdjacentHTML('beforeend', adHTML);
         }
 
-        // 광고 활성화 실행
-        try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) { console.error("AdSense push error:", e); }
+        try {
+            (adsbygoogle = window.adsbygoogle || []).push({});
+            console.log(`[광고 성공] ${uniqueId} 주입 완료`);
+        } catch (e) {
+            console.error(`[광고 실패] ${uniqueId}:`, e);
+        }
     }
 
-    // 광고 주입 실행 (본문 하단 및 사이드바)
-    safeInjectAd('.main-content', 'auto');
-    safeInjectAd('.sidebar', 'vertical');
+    // 약간의 지연을 주어 DOM이 완전히 안정된 후 주입 (미출력 방지)
+    setTimeout(() => {
+        forceInjectAd('.main-content', 'auto', 'main-ad-auto');
+        forceInjectAd('.sidebar', 'vertical', 'side-ad-ver');
+    }, 100);
 
     // 6. 하단 푸터 생성
     const footerHTML = `
