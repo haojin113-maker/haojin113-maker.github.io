@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="팩트 폭격 연구소 광고 송출 테스트 및 애드센스 미출력 해결 가이드">
+    <title>광고 작동 테스트 | 팩트 폭격 연구소</title>
+
+    <!-- [공통 모듈 연결] -->
+    <script src="../common.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+    <style>
+        /* 글로벌 스타일 유지보수 */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.7; }
+        .wrapper { max-width: 1100px; margin: 0 auto; padding: 20px; display: flex; gap: 40px; align-items: flex-start; }
+        .main-content { flex: 3; min-width: 0; }
+        .sidebar { flex: 1; min-width: 300px; position: sticky; top: 20px; }
+
+        section { background: white; border-radius: 16px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #eee; }
+        h1.page-title { font-size: 2.2rem; font-weight: 800; margin: 20px 0 10px; line-height: 1.3; color: #111; }
+        p.page-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 30px; }
+
+        /* 테마 컬러: 테스트용 블루 */
+        h2 { border-left: 5px solid #3b82f6; padding-left: 15px; margin: 40px 0 20px; font-size: 1.5rem; color: #111; }
+        .intro-box { background-color: #eff6ff; border: 1px solid #dbeafe; color: #1e40af; padding: 25px; border-radius: 12px; }
+        .intro-box strong { color: #3b82f6; background: #fff; padding: 0 5px; border-radius: 4px; }
+        
+        .calc-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; color: #3b82f6; }
+        .calc-btn { width: 100%; padding: 18px; background-color: #3b82f6; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.2s; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+
+        .seo-content { line-height: 1.8; color: #444; }
+        .seo-content h3 { font-size: 1.3rem; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; color: #111; }
+
+        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 15px; text-align: center; margin-bottom: 20px; min-height: 280px; }
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <main class="main-content">
+            <h1 class="page-title">광고 송출 상태 테스트 페이지</h1>
+            <p class="page-subtitle">애드센스 승인 후 광고가 보이지 않는 현상을 팩트로 분석합니다.</p>
+
+            <section class="intro-box">
+                <p>현재 이 페이지는 <strong>ca-pub-6902579674102145</strong> 계정의 <strong>6846067145</strong> 슬롯 광고를 테스트하기 위해 생성되었습니다. 만약 아래 영역이 빈칸으로 보인다면, 코드의 문제가 아니라 구글 서버의 전파 지연일 가능성이 높습니다.</p>
+            </section>
+
+            <!-- 테스트 광고 영역 1 -->
+            <div class="ad-box">
+                <span style="font-size:11px; color:#ccc; display:block; margin-bottom:10px;">ADVERTISEMENT (TOP)</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="6846067145"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
+
+            <section class="seo-content">
+                <h2>왜 내 사이트에는 광고가 안 나올까?</h2>
+                <p>애드센스 승인 메일을 받고 '준비됨' 상태를 확인했음에도 광고가 나오지 않는 것은 초보 운영자들이 가장 많이 겪는 고충입니다. 이는 기술적인 오류라기보다는 구글의 광고 송출 알고리즘과 도메인 시스템의 동기화 과정에서 발생하는 일시적인 현상인 경우가 많습니다.</p>
+                
+                <h3>1. 도메인 및 ads.txt 전파 시간</h3>
+                <p>구글 애드센스는 사이트의 소유권을 확인하기 위해 ads.txt 파일을 참조합니다. 깃허브 페이지(GitHub Pages) 환경에서는 파일 업로드 후 크롤러가 이를 다시 수집하는 데 시간이 걸립니다. '확인됨'으로 떴더라도 실제 광고 서버의 모든 노드에 이 정보가 전달되기까지는 최대 48시간이 소요될 수 있습니다.</p>
+
+                <h3>2. 콘텐츠 부족(Thin Content)과 광고 매칭</h3>
+                <p>애드센스는 페이지의 텍스트를 분석하여 그에 맞는 광고를 매칭합니다. 만약 페이지에 '계산기' 기능만 있고 설명 텍스트가 부족하다면, 구글 크롤러는 이 페이지가 무엇을 의미하는지 파악하지 못해 광고 송출을 포기(Unfilled)하게 됩니다. 이것이 바로 우리가 1,500자 이상의 SEO 텍스트를 고집하는 이유입니다.</p>
+
+                <h3>3. 브라우저 및 캐시 문제</h3>
+                <p>본인 기기에서만 안 보이는 것일 수도 있습니다. 브라우저의 캐시나 쿠키, 혹은 설치된 광고 차단 확장 프로그램(AdBlock)이 광고 스크립트의 실행을 막고 있을 수 있습니다. 이럴 때는 시크릿 모드(Ctrl+Shift+N)로 접속하여 확인하는 것이 가장 정확합니다.</p>
+
+                <h3>4. 계정 및 사이트 수준의 검토</h3>
+                <p>승인은 되었지만, 첫 광고가 송출되기 직전에 구글이 마지막으로 사이트의 품질을 재검토하는 단계가 있을 수 있습니다. 이 기간에는 광고 슬롯이 확보되어 있어도 투명한 빈칸으로 노출됩니다. 조급하게 코드를 수정하기보다는 양질의 포스팅을 1~2개 더 추가하며 기다리는 것이 현명합니다.</p>
+
+                <h3>자주 묻는 질문 (FAQ)</h3>
+                <ul>
+                    <li><strong>Q. 코드를 넣었는데 빈 공간만 크게 생깁니다.</strong><br>A. 광고 단위가 잡혔다는 뜻입니다. 구글 서버에서 광고 데이터만 보내주면 즉시 출력될 상태이니 안심하세요.</li>
+                    <li><strong>Q. common.js와 충돌이 나지는 않나요?</strong><br>A. common.js는 스크립트를 head에 한 번만 로드하도록 설계되었습니다. 중복 로드만 피한다면 아무런 문제가 없습니다.</li>
+                    <li><strong>Q. 깃허브 페이지라서 안 나오는 건가요?</strong><br>A. 아닙니다. 팩트 폭격 연구소는 정적 사이트이며, 애드센스는 정적 사이트에서 가장 잘 작동합니다.</li>
+                </ul>
+            </section>
+
+            <!-- 테스트 광고 영역 2 -->
+            <div class="ad-box">
+                <span style="font-size:11px; color:#ccc; display:block; margin-bottom:10px;">ADVERTISEMENT (BOTTOM)</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="6846067145"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
+        </main>
+
+        <aside class="sidebar">
+            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;">
+                <span style="font-size:11px; color:#ccc;">SIDEBAR AD</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="6846067145"
+                     data-ad-format="rectangle"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
+        </aside>
+    </div>
+</body>
+</html>
