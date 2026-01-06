@@ -124,7 +124,7 @@
   { "title": "왁싱 비용 판독기", "desc": "평생 뜯으실 건가요? 10년 왁싱 비용과 레이저 제모의 수익률 전격 비교.", "icon": "👙", "category": "life", "url": "./waxing/index.html" },
   { "title": "이사 비용 판독기", "desc": "2년마다 수백만 원 길바닥에? 복비와 이사비가 실질 월세를 얼마나 올리는지 계산.", "icon": "📦", "category": "money", "url": "./moving/index.html" },
   { "title": "애플병 판독기", "desc": "아이폰, 맥북, 워치... 애플 농장 차릴 돈을 주식에 넣었을 때의 자산 가치.", "icon": "🍎", "category": "consumer", "url": "./apple/index.html" },
-  { "title": "금 투자 판독기", "desc": "골드바 사자마자 -15% 손해? 실물 금 투자의 세금 함정과 진짜 수익 분석.", "icon": "🧈", "category": "money", "url": "./gold/index.html" }
+  { "title": "금 투자 판독기", "desc": "골드바 사자마자 -15% 손해? 실물 금 투자의 세금 함정과 진짜 수익 분석.", "icon": "🧈", "category": "money", "url": "./gold/index.html" },
   {
     "id": "test-page",
     "title": "광고 송출 테스트",
