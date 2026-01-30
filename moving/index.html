@@ -30,25 +30,13 @@
         .reason-card { display: flex; margin-bottom: 25px; align-items: flex-start; }
         .icon-box { flex-shrink: 0; width: 40px; height: 40px; background: #795548; color: white; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 20px; margin-top: 5px; }
         .seo-content { line-height: 1.8; color: #444; }
-        
+        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
-    
-        /* ===== 광고 표준 UX 스타일 ===== */
-        .ad-box { background: transparent; border: none; padding: 10px 0; margin: 28px 0; text-align: center; }
-        .ad-label { display: block; font-size: 9px; color: #aaa; margin-bottom: 6px; letter-spacing: 1px; text-transform: uppercase; text-align: center; }
-        .sidebar-ad { background: #f9f9f9; border-radius: 12px; padding: 12px; min-height: 600px; position: sticky; top: 20px; }
-        
-        /* 반응형 모바일 설정 */
-        .mobile-only { display: none; }
-        @media (max-width: 850px) { 
-            .sidebar { display: none !important; }
-            .mobile-only { display: block; }
-        }
     </style>
-
-    <!-- Google AdSense 스크립트 -->
+    <!-- [3] Google AdSense 스크립트 추가 (솔루션 반영) -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6902579674102145"
      crossorigin="anonymous"></script>
+
 </head>
 <body>
     <div class="wrapper">
@@ -56,7 +44,7 @@
             <h1 class="page-title">정들자마자 떠나는 당신, 돈이 길바닥에 샙니다</h1>
             <p class="page-subtitle">이사는 짐만 옮기는 게 아닙니다. 당신의 전세금 지분을 깎아 먹는 자산 삭제 행위입니다.</p>
 
-            <!-- 광고 #1: 본문 상단 -->
+                        <!-- 광고 #1: 본문 상단 (솔루션 추가) -->
             <div class="ad-box">
                 <span class="ad-label">Advertisement</span>
                 <ins class="adsbygoogle"
@@ -65,7 +53,7 @@
                      data-ad-slot="3862439838"
                      data-ad-format="horizontal"
                      data-full-width-responsive="true"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({})</script>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
             </div>
 
             <section class="intro-box">
@@ -128,6 +116,8 @@
                 <p>부동산의 본질 가치는 입지에 있습니다. 잦은 이사는 입지의 이득을 보기도 전에 중개 수수료로 수익을 갉아먹습니다. 조금 낡고 좁더라도 향후 발전 가능성이 높은 곳에 '말뚝'을 박으십시오. 이사 갈 돈을 시드머니에 보태어 더 나은 등급의 주택으로 상향하는 **'점프형 이사'**가 아닌 이상, 횡보하는 수준의 이사는 자기 만족을 위한 과소비일 뿐입니다. 지금 당장 당신의 이사 이력을 점검하고, 다음 계약은 반드시 4년, 아니 8년을 내다보는 혜택(계약갱신요구권 등)을 철저히 활용하십시오. 시간은 주차장 자릿세를 내는 자가 아닌, 토지를 소유한 자의 편입니다.</p>
             </section>
 
+            
+        
             <!-- 광고 #2: 본문 하단 -->
             <div class="ad-box">
                 <span class="ad-label">Advertisement</span>
@@ -137,11 +127,11 @@
                      data-ad-slot="9454451949"
                      data-ad-format="horizontal"
                      data-full-width-responsive="true"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({})</script>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
             </div>
 
-            <!-- 광고 #3: 모바일 전용 -->
-            <div class="ad-box mobile-only">
+            <!-- 광고 #4: 모바일 전용 (솔루션 반영) -->
+            <div class="ad-box mobile-ad">
                 <span class="ad-label">Advertisement</span>
                 <ins class="adsbygoogle"
                      style="display:block"
@@ -149,14 +139,14 @@
                      data-ad-slot="6297031481"
                      data-ad-format="auto"
                      data-full-width-responsive="true"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({})</script>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
             </div>
 
-            </main>
+        </main>
 
         <aside class="sidebar">
-            <!-- 광고 #4: 사이드바 -->
-            <div class="ad-box sidebar-ad">
+            <!-- 광고 #3: 사이드바 (솔루션 스타일 적용) -->
+            <div class="ad-box">
                 <span class="ad-label">Advertisement</span>
                 <ins class="adsbygoogle"
                      style="display:block"
@@ -164,8 +154,10 @@
                      data-ad-slot="5235231252"
                      data-ad-format="vertical"
                      data-full-width-responsive="true"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({})</script>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
             </div>
+
+            
         </aside>
     </div>
     <script>

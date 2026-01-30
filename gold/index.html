@@ -27,25 +27,13 @@
         #result-area { display: none; margin-top: 30px; padding: 30px; background-color: #fff8e1; border-radius: 12px; text-align: center; }
         .highlight { font-size: 2.2rem; font-weight: 900; display: block; margin: 10px 0; color: #e65100; }
         .seo-content { line-height: 1.8; color: #444; }
-        
+        .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
-    
-        /* ===== 광고 표준 UX 스타일 ===== */
-        .ad-box { background: transparent; border: none; padding: 10px 0; margin: 28px 0; text-align: center; }
-        .ad-label { display: block; font-size: 9px; color: #aaa; margin-bottom: 6px; letter-spacing: 1px; text-transform: uppercase; text-align: center; }
-        .sidebar-ad { background: #f9f9f9; border-radius: 12px; padding: 12px; min-height: 600px; position: sticky; top: 20px; }
-        
-        /* 반응형 모바일 설정 */
-        .mobile-only { display: none; }
-        @media (max-width: 850px) { 
-            .sidebar { display: none !important; }
-            .mobile-only { display: block; }
-        }
     </style>
-
-    <!-- Google AdSense 스크립트 -->
+    <!-- [3] Google AdSense 스크립트 추가 (솔루션 반영) -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6902579674102145"
      crossorigin="anonymous"></script>
+
 </head>
 <body>
     <div class="wrapper">
@@ -53,7 +41,7 @@
             <h1 class="page-title">금값이 올랐는데 왜 당신은 손해일까요?</h1>
             <p class="page-subtitle">실물 골드바의 화려함 뒤에 숨겨진 '마이너스 수익률'의 진실.</p>
 
-            <!-- 광고 #1: 본문 상단 -->
+                        <!-- 광고 #1: 본문 상단 (솔루션 추가) -->
             <div class="ad-box">
                 <span class="ad-label">Advertisement</span>
                 <ins class="adsbygoogle"
@@ -62,7 +50,7 @@
                      data-ad-slot="3862439838"
                      data-ad-format="horizontal"
                      data-full-width-responsive="true"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({})</script>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
             </div>
 
             <section class="intro-box">
@@ -95,6 +83,8 @@
                 <p>금의 가치 상승분을 온전히 누리고 싶다면 KRX 금시장이나 금 ETF(Exchange Traded Fund)를 활용하십시오. 이들은 부가세가 없으며, 거래 수수료 또한 0.3% 미만입니다. 실물 금을 장롱에 두었을 때 겪는 분실 및 도난 리스크, 보관료 또한 고려해야 할 잠재적 비용입니다. 진짜 부자들은 소지하고 다니기에 무거운 금을 좋아하지 않습니다. 그들은 언제든 버튼 하나로 전 세계 어디서나 현금화할 수 있는 **'디지털 자산 시스템'**에 금을 묻어둡니다. 지금 골드바를 결제하기 전, 금값 상승분이 당신이 지불한 수수료를 과연 넘어설 수 있을지 팩트로 판단하십시오.</p>
             </section>
 
+            
+        
             <!-- 광고 #2: 본문 하단 -->
             <div class="ad-box">
                 <span class="ad-label">Advertisement</span>
@@ -104,11 +94,11 @@
                      data-ad-slot="9454451949"
                      data-ad-format="horizontal"
                      data-full-width-responsive="true"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({})</script>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
             </div>
 
-            <!-- 광고 #3: 모바일 전용 -->
-            <div class="ad-box mobile-only">
+            <!-- 광고 #4: 모바일 전용 (솔루션 반영) -->
+            <div class="ad-box mobile-ad">
                 <span class="ad-label">Advertisement</span>
                 <ins class="adsbygoogle"
                      style="display:block"
@@ -116,13 +106,13 @@
                      data-ad-slot="6297031481"
                      data-ad-format="auto"
                      data-full-width-responsive="true"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({})</script>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
             </div>
 
-            </main>
+        </main>
         <aside class="sidebar">
-            <!-- 광고 #4: 사이드바 -->
-            <div class="ad-box sidebar-ad">
+            <!-- 광고 #3: 사이드바 (솔루션 스타일 적용) -->
+            <div class="ad-box">
                 <span class="ad-label">Advertisement</span>
                 <ins class="adsbygoogle"
                      style="display:block"
@@ -130,9 +120,9 @@
                      data-ad-slot="5235231252"
                      data-ad-format="vertical"
                      data-full-width-responsive="true"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({})</script>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
             </div>
-        </aside>
+</aside>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
