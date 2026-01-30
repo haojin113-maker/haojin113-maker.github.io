@@ -12,10 +12,6 @@
     <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
-    <!-- [3] Google AdSense 스크립트 -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6902579674102145"
-     crossorigin="anonymous"></script>
-
     <style>
         /* --- [표준 스타일 가이드] --- */
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -51,10 +47,8 @@
         .reason-content h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; }
         .reason-content p { font-size: 1rem; color: #666; }
 
-        /* ===== 광고 표준 UX 스타일 ===== */
-        .ad-box { background: transparent; border: none; padding: 10px 0; margin: 28px 0; text-align: center; }
-        .ad-label { display: block; font-size: 9px; color: #aaa; margin-bottom: 6px; letter-spacing: 1px; text-transform: uppercase; text-align: center; }
-        .sidebar-ad { background: #f9f9f9; border-radius: 12px; padding: 12px; min-height: 600px; position: sticky; top: 20px; }
+        
+        
         
         .seo-content { line-height: 1.8; color: #444; }
         .seo-content h3 { font-size: 1.3rem; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; color: #111; }
@@ -63,19 +57,24 @@
         .seo-content li { margin-bottom: 10px; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* 반응형 및 모바일 광고 설정 */
+        @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; min-width: auto; } .main-content { width: 100%; } h1.page-title { font-size: 1.8rem; } }
+    
+        /* ===== 광고 표준 UX 스타일 ===== */
+        .ad-box { background: transparent; border: none; padding: 10px 0; margin: 28px 0; text-align: center; }
+        .ad-label { display: block; font-size: 9px; color: #aaa; margin-bottom: 6px; letter-spacing: 1px; text-transform: uppercase; text-align: center; }
+        .sidebar-ad { background: #f9f9f9; border-radius: 12px; padding: 12px; min-height: 600px; position: sticky; top: 20px; }
+        
+        /* 반응형 모바일 설정 */
+        .mobile-only { display: none; }
         @media (max-width: 850px) { 
-            .wrapper { flex-direction: column; } 
-            .sidebar { display: none; } /* 모바일에서는 사이드바 숨김 */
-            .main-content { width: 100%; } 
-            h1.page-title { font-size: 1.8rem; }
+            .sidebar { display: none !important; }
             .mobile-only { display: block; }
         }
-        @media (min-width: 851px) {
-            .mobile-only { display: none; }
-        }
     </style>
+
+    <!-- Google AdSense 스크립트 -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6902579674102145"
+     crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="wrapper">
@@ -92,7 +91,7 @@
                      data-ad-slot="3862439838"
                      data-ad-format="horizontal"
                      data-full-width-responsive="true"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({})</script>
             </div>
 
             <section class="intro-box">
@@ -176,7 +175,7 @@
                      data-ad-slot="9454451949"
                      data-ad-format="horizontal"
                      data-full-width-responsive="true"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({})</script>
             </div>
 
             <!-- 광고 #3: 모바일 전용 -->
@@ -188,9 +187,10 @@
                      data-ad-slot="6297031481"
                      data-ad-format="auto"
                      data-full-width-responsive="true"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({})</script>
             </div>
-        </main>
+
+            </main>
 
         <aside class="sidebar">
             <!-- 광고 #4: 사이드바 -->
@@ -202,7 +202,7 @@
                      data-ad-slot="5235231252"
                      data-ad-format="vertical"
                      data-full-width-responsive="true"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({})</script>
             </div>
         </aside>
     </div>

@@ -47,13 +47,41 @@
         
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    
+        /* ===== 광고 표준 UX 스타일 ===== */
+        .ad-box { background: transparent; border: none; padding: 10px 0; margin: 28px 0; text-align: center; }
+        .ad-label { display: block; font-size: 9px; color: #aaa; margin-bottom: 6px; letter-spacing: 1px; text-transform: uppercase; text-align: center; }
+        .sidebar-ad { background: #f9f9f9; border-radius: 12px; padding: 12px; min-height: 600px; position: sticky; top: 20px; }
+        
+        /* 반응형 모바일 설정 */
+        .mobile-only { display: none; }
+        @media (max-width: 850px) { 
+            .sidebar { display: none !important; }
+            .mobile-only { display: block; }
+        }
     </style>
+
+    <!-- Google AdSense 스크립트 -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6902579674102145"
+     crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
             <h1 class="page-title">내 인생의 25%, 폰 보느라 삭제 중?</h1>
             <p class="page-subtitle">하루 4시간이면 1년 중 60일을 깨어있는 채로 폰만 보고 있습니다.</p>
+
+            <!-- 광고 #1: 본문 상단 -->
+            <div class="ad-box">
+                <span class="ad-label">Advertisement</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="3862439838"
+                     data-ad-format="horizontal"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({})</script>
+            </div>
 
             <section class="intro-box">
                 <p><span class="material-icons-round" style="vertical-align: middle;">schedule</span> 스마트폰 스크린 타임은 단순히 '시간'이 아닙니다. 당신이 잠잘 수 있었던 시간, 공부할 수 있었던 시간, 가족과 대화할 수 있었던 <strong>'인생의 총량'</strong>입니다. 충격적인 결과값을 확인하세요.</p>
@@ -125,11 +153,44 @@
                 </ul>
             </section>
 
-            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
-        </main>
+            <!-- 광고 #2: 본문 하단 -->
+            <div class="ad-box">
+                <span class="ad-label">Advertisement</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="9454451949"
+                     data-ad-format="horizontal"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({})</script>
+            </div>
+
+            <!-- 광고 #3: 모바일 전용 -->
+            <div class="ad-box mobile-only">
+                <span class="ad-label">Advertisement</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="6297031481"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({})</script>
+            </div>
+
+            </main>
 
         <aside class="sidebar">
-            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+            <!-- 광고 #4: 사이드바 -->
+            <div class="ad-box sidebar-ad">
+                <span class="ad-label">Advertisement</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="5235231252"
+                     data-ad-format="vertical"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({})</script>
+            </div>
         </aside>
     </div>
 

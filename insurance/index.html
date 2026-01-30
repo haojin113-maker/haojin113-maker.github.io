@@ -40,13 +40,41 @@
         
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    
+        /* ===== 광고 표준 UX 스타일 ===== */
+        .ad-box { background: transparent; border: none; padding: 10px 0; margin: 28px 0; text-align: center; }
+        .ad-label { display: block; font-size: 9px; color: #aaa; margin-bottom: 6px; letter-spacing: 1px; text-transform: uppercase; text-align: center; }
+        .sidebar-ad { background: #f9f9f9; border-radius: 12px; padding: 12px; min-height: 600px; position: sticky; top: 20px; }
+        
+        /* 반응형 모바일 설정 */
+        .mobile-only { display: none; }
+        @media (max-width: 850px) { 
+            .sidebar { display: none !important; }
+            .mobile-only { display: block; }
+        }
     </style>
+
+    <!-- Google AdSense 스크립트 -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6902579674102145"
+     crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
             <h1 class="page-title">불안을 담보로 사는 미래, 과연 합리적인가?</h1>
             <p class="page-subtitle">보험사에 월급을 바치는 당신을 위한 팩트 체크.</p>
+
+            <!-- 광고 #1: 본문 상단 -->
+            <div class="ad-box">
+                <span class="ad-label">Advertisement</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="3862439838"
+                     data-ad-format="horizontal"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({})</script>
+            </div>
 
             <section class="intro-box">
                 <p><span class="material-icons-round" style="vertical-align: middle;">verified_user</span> 보험은 저축이 아닙니다. 보험사가 떼가는 <strong>'사업비'</strong>는 이미 당신의 원금을 깎아먹고 시작합니다. 보장과 투자를 분리했을 때 생기는 엄청난 차액을 계산해 보세요.</p>
@@ -114,11 +142,44 @@
                 </ul>
             </section>
 
-            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
-        </main>
+            <!-- 광고 #2: 본문 하단 -->
+            <div class="ad-box">
+                <span class="ad-label">Advertisement</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="9454451949"
+                     data-ad-format="horizontal"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({})</script>
+            </div>
+
+            <!-- 광고 #3: 모바일 전용 -->
+            <div class="ad-box mobile-only">
+                <span class="ad-label">Advertisement</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="6297031481"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({})</script>
+            </div>
+
+            </main>
 
         <aside class="sidebar">
-            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+            <!-- 광고 #4: 사이드바 -->
+            <div class="ad-box sidebar-ad">
+                <span class="ad-label">Advertisement</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="5235231252"
+                     data-ad-format="vertical"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({})</script>
+            </div>
         </aside>
     </div>
 

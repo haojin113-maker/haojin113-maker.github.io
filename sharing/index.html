@@ -47,13 +47,41 @@
         
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    
+        /* ===== 광고 표준 UX 스타일 ===== */
+        .ad-box { background: transparent; border: none; padding: 10px 0; margin: 28px 0; text-align: center; }
+        .ad-label { display: block; font-size: 9px; color: #aaa; margin-bottom: 6px; letter-spacing: 1px; text-transform: uppercase; text-align: center; }
+        .sidebar-ad { background: #f9f9f9; border-radius: 12px; padding: 12px; min-height: 600px; position: sticky; top: 20px; }
+        
+        /* 반응형 모바일 설정 */
+        .mobile-only { display: none; }
+        @media (max-width: 850px) { 
+            .sidebar { display: none !important; }
+            .mobile-only { display: block; }
+        }
     </style>
+
+    <!-- Google AdSense 스크립트 -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6902579674102145"
+     crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
             <h1 class="page-title">주차장에 세워둔 자산, 빌려 쓰면 반값입니다</h1>
             <p class="page-subtitle">차키를 소유하고 싶은 욕망 vs 현명한 이동 수단의 가계부 승자는?</p>
+
+            <!-- 광고 #1: 본문 상단 -->
+            <div class="ad-box">
+                <span class="ad-label">Advertisement</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="3862439838"
+                     data-ad-format="horizontal"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({})</script>
+            </div>
 
             <section class="intro-box">
                 <p><span class="material-icons-round" style="vertical-align: middle;">directions_car</span> 당신의 차는 1년 중 90% 이상의 시간을 주차장에 머뭅니다. 가만히 있어도 감가상각과 세금은 매초 통장을 갉아먹습니다. <strong>카쉐어링과 자차 소유</strong>의 실질 유지비를 10원 단위까지 비교해 보세요.</p>
@@ -129,11 +157,44 @@
                 </ul>
             </section>
 
-            <div class="ad-box"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
-        </main>
+            <!-- 광고 #2: 본문 하단 -->
+            <div class="ad-box">
+                <span class="ad-label">Advertisement</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="9454451949"
+                     data-ad-format="horizontal"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({})</script>
+            </div>
+
+            <!-- 광고 #3: 모바일 전용 -->
+            <div class="ad-box mobile-only">
+                <span class="ad-label">Advertisement</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="6297031481"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({})</script>
+            </div>
+
+            </main>
 
         <aside class="sidebar">
-            <div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"><span class="ad-label">Sponsored</span><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6902579674102145" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+            <!-- 광고 #4: 사이드바 -->
+            <div class="ad-box sidebar-ad">
+                <span class="ad-label">Advertisement</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6902579674102145"
+                     data-ad-slot="5235231252"
+                     data-ad-format="vertical"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({})</script>
+            </div>
         </aside>
     </div>
 
