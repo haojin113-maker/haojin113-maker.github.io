@@ -12,7 +12,7 @@
     <!-- [2] 구글 아이콘 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     
-    <!-- [3] Google AdSense 스크립트 -->
+    <!-- [3] Google AdSense 스크립트 (한 번만 로드) -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6902579674102145"
      crossorigin="anonymous"></script>
 
@@ -53,19 +53,23 @@
 
         /* 광고 스타일 개선 */
         .ad-box { 
-            background: #fff; 
+            background: #fafafa; 
             border: 1px solid #e0e0e0; 
             border-radius: 12px; 
             padding: 15px; 
             text-align: center; 
             margin-bottom: 30px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
         .ad-label { 
             display: block; 
             font-size: 10px; 
             color: #999; 
-            margin-bottom: 8px; 
+            margin-bottom: 10px; 
             text-align: center;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -102,18 +106,15 @@
             <h1 class="page-title">전기차, 지금 사면 손해인 이유</h1>
             <p class="page-subtitle">보조금에 홀려 차값으로 날리는 돈을 계산해드립니다.</p>
 
-            <!-- 광고 #1: 상단 배너 (최고 가시성) -->
+            <!-- 광고 #1: 본문 상단 -->
             <div class="ad-box">
                 <span class="ad-label">Advertisement</span>
                 <ins class="adsbygoogle"
                      style="display:block"
                      data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="1111111111"
-                     data-ad-format="auto"
+                     data-ad-slot="1234567890"
+                     data-ad-format="horizontal"
                      data-full-width-responsive="true"></ins>
-                <script>
-                     (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
             </div>
 
             <section class="intro-box">
@@ -144,20 +145,6 @@
                     <p id="result-text" style="color:#666;"></p>
                 </div>
             </section>
-
-            <!-- 광고 #2: 본문 중간 (계산기 직후, 자연스러운 위치) -->
-            <div class="ad-box">
-                <span class="ad-label">Advertisement</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="2222222222"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script>
-                     (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-            </div>
 
             <section>
                 <h2>🛑 전기차 구매 전 뼈 때리는 팩트 체크</h2>
@@ -202,40 +189,35 @@
                 </ul>
             </section>
 
-            <!-- 광고 #3: 하단 배너 (이탈 직전 마지막 기회) -->
+            <!-- 광고 #2: 본문 하단 -->
             <div class="ad-box">
                 <span class="ad-label">Advertisement</span>
                 <ins class="adsbygoogle"
                      style="display:block"
                      data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="3333333333"
-                     data-ad-format="auto"
+                     data-ad-slot="9876543210"
+                     data-ad-format="horizontal"
                      data-full-width-responsive="true"></ins>
-                <script>
-                     (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
             </div>
         </main>
 
         <aside class="sidebar">
-            <!-- 광고 #4: 사이드바 고정 (스크롤 중 지속 노출) -->
+            <!-- 광고 #3: 사이드바 -->
             <div class="ad-box sidebar-ad">
                 <span class="ad-label">Advertisement</span>
                 <ins class="adsbygoogle"
                      style="display:block"
                      data-ad-client="ca-pub-6902579674102145"
-                     data-ad-slot="4444444444"
-                     data-ad-format="auto"
+                     data-ad-slot="5555555555"
+                     data-ad-format="vertical"
                      data-full-width-responsive="true"></ins>
-                <script>
-                     (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
             </div>
         </aside>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // 계산기 기능
             document.getElementById('calcBtn').addEventListener('click', function() {
                 const extraPrice = parseFloat(document.getElementById('extraPrice').value) * 10000;
                 const mileage = parseFloat(document.getElementById('mileage').value);
@@ -243,11 +225,9 @@
                 
                 if(!extraPrice || !mileage || !gasEff) { alert('값을 입력해주세요.'); return; }
 
-                // 대략적 계산 (휘발유 1700원 vs 전기 충전비 km당 60원 기준)
                 const gasCostPerKm = 1700 / gasEff;
                 const evCostPerKm = 60;
                 const savingsPerYear = (gasCostPerKm - evCostPerKm) * mileage;
-
                 const years = extraPrice / savingsPerYear;
 
                 const resultArea = document.getElementById('result-area');
@@ -258,6 +238,17 @@
                 resultYears.textContent = `약 ${years.toFixed(1)}년`;
                 resultText.textContent = `매년 기름값으로 약 ${(savingsPerYear/10000).toFixed(0)}만 원을 아껴야 ${years.toFixed(1)}년 뒤에 겨우 차값 본전을 찾습니다. 그 사이 배터리는 구형이 되겠죠?`;
             });
+
+            // AdSense 광고 초기화 (페이지 로드 후 한 번에)
+            setTimeout(function() {
+                try {
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                } catch (e) {
+                    console.error('AdSense error:', e);
+                }
+            }, 100);
         });
     </script>
 </body>
