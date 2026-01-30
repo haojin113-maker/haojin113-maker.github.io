@@ -48,7 +48,7 @@
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
     </style>
-    <!-- [3] Google AdSense 스크립트 추가 (솔루션 반영) -->
+    <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6902579674102145"
      crossorigin="anonymous"></script>
 
@@ -61,9 +61,8 @@
             <p class="page-subtitle">화장대 위의 화려한 병들, 유통기한 전엔 다 쓰실 수 있나요?</p>
 
             <!-- [도입 섹션] -->
-                        <!-- 광고 #1: 본문 상단 (솔루션 추가) -->
-            <div class="ad-box">
-                <span class="ad-label">Advertisement</span>
+                        <!-- 광고 #1: 본문 상단 -->
+            <div class="ad-box" style="background: transparent; padding: 20px 0; margin: 20px 0; text-align: center;">
                 <ins class="adsbygoogle"
                      style="display:block"
                      data-ad-client="ca-pub-6902579674102145"
@@ -150,8 +149,7 @@
             
         
             <!-- 광고 #2: 본문 하단 -->
-            <div class="ad-box">
-                <span class="ad-label">Advertisement</span>
+            <div class="ad-box" style="background: transparent; padding: 20px 0; margin: 20px 0; text-align: center;">
                 <ins class="adsbygoogle"
                      style="display:block"
                      data-ad-client="ca-pub-6902579674102145"
@@ -161,9 +159,8 @@
                 <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
             </div>
 
-            <!-- 광고 #4: 모바일 전용 (솔루션 반영) -->
-            <div class="ad-box mobile-ad">
-                <span class="ad-label">Advertisement</span>
+            <!-- 광고 #3: 모바일 전용 -->
+            <div class="ad-box mobile-ad" style="background: transparent; padding: 20px 0; margin: 20px 0; text-align: center;">
                 <ins class="adsbygoogle"
                      style="display:block"
                      data-ad-client="ca-pub-6902579674102145"
@@ -172,13 +169,20 @@
                      data-full-width-responsive="true"></ins>
                 <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
             </div>
+<style>
+@media (max-width: 768px) {
+    .mobile-ad { display: block !important; }
+}
+@media (min-width: 769px) {
+    .mobile-ad { display: none !important; }
+}
+</style>
 
         </main>
 
         <aside class="sidebar">
-            <!-- 광고 #3: 사이드바 (솔루션 스타일 적용) -->
-            <div class="ad-box">
-                <span class="ad-label">Advertisement</span>
+            <!-- 광고 #4: 사이드바 -->
+            <div class="ad-box" style="background: transparent; padding: 20px 0; margin: 20px 0; text-align: center;">
                 <ins class="adsbygoogle"
                      style="display:block"
                      data-ad-client="ca-pub-6902579674102145"
