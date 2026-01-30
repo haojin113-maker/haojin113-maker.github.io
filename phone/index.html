@@ -45,19 +45,18 @@
         
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">스마트폰 '공짜폰'에 속고 계신가요?</h1>
-            <p class="page-subtitle">할부 이자 5.9%와 비싼 요금제의 숨겨진 진실</p>
-
-            <section class="intro-box">
-                <p>매장에서 설명하는 "기기값 0원"은 당신의 요금 할인 금액을 기기값인 척 속이는 마케팅일 뿐입니다. <strong>자급제 + 알뜰폰</strong> 조합과 얼마나 차이 나는지 24개월 총비용을 비교해보세요.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -67,6 +66,12 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <h1 class="page-title">스마트폰 '공짜폰'에 속고 계신가요?</h1>
+            <p class="page-subtitle">할부 이자 5.9%와 비싼 요금제의 숨겨진 진실</p>
+
+            <section class="intro-box">
+                <p>매장에서 설명하는 "기기값 0원"은 당신의 요금 할인 금액을 기기값인 척 속이는 마케팅일 뿐입니다. <strong>자급제 + 알뜰폰</strong> 조합과 얼마나 차이 나는지 24개월 총비용을 비교해보세요.</p>
+            </section>
 
             <section id="calculator">
                 <h2>📱 통신비 비교 계산기</h2>
@@ -133,8 +138,8 @@
                     <li><strong>Q. 기기값을 완납하고 25% 선택약정을 받으면 안 되나요?</strong><br>A. 가장 흔한 선택이지만, 여전히 통신사 요금제 자체가 알뜰폰보다 비싸다는 근본적인 문제가 남습니다.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -143,23 +148,12 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"

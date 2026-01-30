@@ -47,21 +47,18 @@
         
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <!-- [제목 섹션] -->
-            <h1 class="page-title">내 차, 주차장에만 세워둬도 '돈'이 증발합니다</h1>
-            <p class="page-subtitle">비닐 뜯는 순간 시작되는 신차 가치 하락의 무서운 진실.</p>
-
-            <!-- [도입 섹션] -->
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">minor_crash</span> 자동차는 부동산이 아닙니다. 사는 순간부터 가치가 하락하는 <strong>'최악의 자산'</strong>입니다. 감가상각액과 세금, 기회비용을 합산하면 하루에 당신의 지갑에서 얼마가 사라지고 있는지 확인해보세요.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -71,6 +68,14 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <!-- [제목 섹션] -->
+            <h1 class="page-title">내 차, 주차장에만 세워둬도 '돈'이 증발합니다</h1>
+            <p class="page-subtitle">비닐 뜯는 순간 시작되는 신차 가치 하락의 무서운 진실.</p>
+
+            <!-- [도입 섹션] -->
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">minor_crash</span> 자동차는 부동산이 아닙니다. 사는 순간부터 가치가 하락하는 <strong>'최악의 자산'</strong>입니다. 감가상각액과 세금, 기회비용을 합산하면 하루에 당신의 지갑에서 얼마가 사라지고 있는지 확인해보세요.</p>
+            </section>
 
             <!-- [계산기 섹션] -->
             <section id="calculator">
@@ -137,8 +142,8 @@
                     <li><strong>Q. 옵션은 많이 넣을수록 나중에 팔 때 유리하지 않나요?</strong><br>A. 중고차 시장에서 옵션 가격은 거의 인정받지 못합니다. 당신이 수백만 원 들여 넣은 옵션은 중고 시장에서는 단 몇십만 원의 차이로 전락합니다.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -147,25 +152,14 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"

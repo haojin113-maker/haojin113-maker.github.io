@@ -47,21 +47,18 @@
         
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <!-- [제목 섹션] -->
-            <h1 class="page-title">아는 형님께 가입한 보험, 형님만 좋은 일?</h1>
-            <p class="page-subtitle">클릭 한 번이면 아낄 수 있는 15%의 수수료, 매년 버리고 계신가요?</p>
-
-            <!-- [도입 섹션] -->
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">policy</span> 자동차 보험은 상품이 아니라 **'의무'**입니다. 동일한 보장이라면 가장 싼 것을 찾는 것이 정의입니다. 설계사가 가져가는 수수료와 마케팅 비용이 당신의 주머니에서 나오고 있다는 사실을 확인하세요.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -71,6 +68,14 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <!-- [제목 섹션] -->
+            <h1 class="page-title">아는 형님께 가입한 보험, 형님만 좋은 일?</h1>
+            <p class="page-subtitle">클릭 한 번이면 아낄 수 있는 15%의 수수료, 매년 버리고 계신가요?</p>
+
+            <!-- [도입 섹션] -->
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">policy</span> 자동차 보험은 상품이 아니라 **'의무'**입니다. 동일한 보장이라면 가장 싼 것을 찾는 것이 정의입니다. 설계사가 가져가는 수수료와 마케팅 비용이 당신의 주머니에서 나오고 있다는 사실을 확인하세요.</p>
+            </section>
 
             <!-- [계산기 섹션] -->
             <section id="calculator">
@@ -136,8 +141,8 @@
                     <li><strong>Q. 다이렉트는 특약 설정이 너무 어려워요.</strong><br>A. 기존 가입 증명서를 사진 찍어 그대로 입력하거나, 추천 세팅(대물 10억 이상, 무보험차 상해 5억 등)을 따르시면 설계사보다 더 꼼꼼한 보장이 가능합니다.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -146,25 +151,14 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"

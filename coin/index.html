@@ -47,19 +47,18 @@
         
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">내려갈 땐 자유지만 본전은 아닙니다</h1>
-            <p class="page-subtitle">마이너스 50% 계좌가 원금을 회복하기 위한 잔인한 조건.</p>
-
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">show_chart</span> 코인 투자는 변동성의 파도를 타는 일입니다. 하지만 숫자는 거짓말을 하지 않습니다. 당신이 잃은 <strong>-%의 무게</strong>가 본전 회복 시 얼마나 무거운 족쇄가 되는지 팩트로 계산해 보세요.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -69,6 +68,12 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <h1 class="page-title">내려갈 땐 자유지만 본전은 아닙니다</h1>
+            <p class="page-subtitle">마이너스 50% 계좌가 원금을 회복하기 위한 잔인한 조건.</p>
+
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">show_chart</span> 코인 투자는 변동성의 파도를 타는 일입니다. 하지만 숫자는 거짓말을 하지 않습니다. 당신이 잃은 <strong>-%의 무게</strong>가 본전 회복 시 얼마나 무거운 족쇄가 되는지 팩트로 계산해 보세요.</p>
+            </section>
 
             <!-- 계산기 섹션 -->
             <section id="calculator">
@@ -136,8 +141,8 @@
                     <li><strong>Q. 존버하면 언젠가 고점은 다시 오겠죠?</strong><br>A. 2017년 광풍 당시의 코인 중 90% 이상은 상장 폐지되었거나 고점의 10분의 1 토막 상태입니다. 역사는 모든 코인이 살아남지 않는다는 것을 증명했습니다.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -146,25 +151,14 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"

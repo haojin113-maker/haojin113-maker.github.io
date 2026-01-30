@@ -47,19 +47,18 @@
         
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">매일 8시간의 무보수 휴식, 얼마짜리인가요?</h1>
-            <p class="page-subtitle">차에는 돈 아끼지 않으면서 인생의 1/3을 보내는 침대에는 왜 인색한가요?</p>
-
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">bed</span> 성공한 자본가들의 공통점은 '최상의 컨디션 유지'에 집착한다는 것입니다. 질 낮은 잠은 당신의 업무 능력을 20% 이상 떨어뜨립니다. <strong>수면의 1시간당 비용</strong>을 계산해보면 세상에서 가장 가성비 높은 투자가 무엇인지 알게 됩니다.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -69,6 +68,12 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <h1 class="page-title">매일 8시간의 무보수 휴식, 얼마짜리인가요?</h1>
+            <p class="page-subtitle">차에는 돈 아끼지 않으면서 인생의 1/3을 보내는 침대에는 왜 인색한가요?</p>
+
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">bed</span> 성공한 자본가들의 공통점은 '최상의 컨디션 유지'에 집착한다는 것입니다. 질 낮은 잠은 당신의 업무 능력을 20% 이상 떨어뜨립니다. <strong>수면의 1시간당 비용</strong>을 계산해보면 세상에서 가장 가성비 높은 투자가 무엇인지 알게 됩니다.</p>
+            </section>
 
             <!-- 계산기 섹션 -->
             <section id="calculator">
@@ -138,8 +143,8 @@
                     <li><strong>Q. 베개 하나 바꾼다고 잠이 잘 올까요?</strong><br>A. 머리와 목의 정렬은 수면 품질의 30%를 결정합니다. 300만 원 침대를 살 돈이 없다면 10만 원짜리 기능성 베개부터 시작하십시오. 가성비 최고의 시작입니다.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -148,25 +153,14 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"

@@ -32,19 +32,18 @@
         .seo-content { line-height: 1.8; color: #444; }
         .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">정들자마자 떠나는 당신, 돈이 길바닥에 샙니다</h1>
-            <p class="page-subtitle">이사는 짐만 옮기는 게 아닙니다. 당신의 전세금 지분을 깎아 먹는 자산 삭제 행위입니다.</p>
-
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">local_shipping</span> 2년 계약 만료 후 습관처럼 새로운 집을 찾으시나요? 복비 100만 원, 이사비 150만 원, 입주 청소와 도배... 이 소멸성 지출들이 당신의 <strong>'실질 주거비'</strong>를 얼마나 폭등시키는지 팩트로 직시하십시오.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -54,6 +53,12 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <h1 class="page-title">정들자마자 떠나는 당신, 돈이 길바닥에 샙니다</h1>
+            <p class="page-subtitle">이사는 짐만 옮기는 게 아닙니다. 당신의 전세금 지분을 깎아 먹는 자산 삭제 행위입니다.</p>
+
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">local_shipping</span> 2년 계약 만료 후 습관처럼 새로운 집을 찾으시나요? 복비 100만 원, 이사비 150만 원, 입주 청소와 도배... 이 소멸성 지출들이 당신의 <strong>'실질 주거비'</strong>를 얼마나 폭등시키는지 팩트로 직시하십시오.</p>
+            </section>
 
             <section id="calculator">
                 <h2>📦 주거 누수 비용 계산기</h2>
@@ -110,8 +115,8 @@
                 <h3>2. '집값 상승'에 배팅하는 지능적인 거주 전략</h3>
                 <p>부동산의 본질 가치는 입지에 있습니다. 잦은 이사는 입지의 이득을 보기도 전에 중개 수수료로 수익을 갉아먹습니다. 조금 낡고 좁더라도 향후 발전 가능성이 높은 곳에 '말뚝'을 박으십시오. 이사 갈 돈을 시드머니에 보태어 더 나은 등급의 주택으로 상향하는 **'점프형 이사'**가 아닌 이상, 횡보하는 수준의 이사는 자기 만족을 위한 과소비일 뿐입니다. 지금 당장 당신의 이사 이력을 점검하고, 다음 계약은 반드시 4년, 아니 8년을 내다보는 혜택(계약갱신요구권 등)을 철저히 활용하십시오. 시간은 주차장 자릿세를 내는 자가 아닌, 토지를 소유한 자의 편입니다.</p>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -120,25 +125,14 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"

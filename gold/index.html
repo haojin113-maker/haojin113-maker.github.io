@@ -29,19 +29,18 @@
         .seo-content { line-height: 1.8; color: #444; }
         .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">금값이 올랐는데 왜 당신은 손해일까요?</h1>
-            <p class="page-subtitle">실물 골드바의 화려함 뒤에 숨겨진 '마이너스 수익률'의 진실.</p>
-
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">monetization_on</span> 금은 인플레이션의 최고 방패로 불립니다. 하지만 '실물 골드바'를 손에 쥐는 순간, 당신은 국가에 <strong>부가세 10%</strong>를 상납하고 금은방 사장님께 거래 마진 5%를 지불한 것입니다. 문 밖을 나서는 순간 발생하는 수익률 -15%의 참극을 확인하세요.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -51,6 +50,12 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <h1 class="page-title">금값이 올랐는데 왜 당신은 손해일까요?</h1>
+            <p class="page-subtitle">실물 골드바의 화려함 뒤에 숨겨진 '마이너스 수익률'의 진실.</p>
+
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">monetization_on</span> 금은 인플레이션의 최고 방패로 불립니다. 하지만 '실물 골드바'를 손에 쥐는 순간, 당신은 국가에 <strong>부가세 10%</strong>를 상납하고 금은방 사장님께 거래 마진 5%를 지불한 것입니다. 문 밖을 나서는 순간 발생하는 수익률 -15%의 참극을 확인하세요.</p>
+            </section>
 
             <section id="calculator">
                 <h2>🧈 실물 금 투자 손익분기점 계산기</h2>
@@ -77,8 +82,8 @@
                 <h3>2. 현명한 금 투자: 보관함 대신 계좌를 뚫으세요</h3>
                 <p>금의 가치 상승분을 온전히 누리고 싶다면 KRX 금시장이나 금 ETF(Exchange Traded Fund)를 활용하십시오. 이들은 부가세가 없으며, 거래 수수료 또한 0.3% 미만입니다. 실물 금을 장롱에 두었을 때 겪는 분실 및 도난 리스크, 보관료 또한 고려해야 할 잠재적 비용입니다. 진짜 부자들은 소지하고 다니기에 무거운 금을 좋아하지 않습니다. 그들은 언제든 버튼 하나로 전 세계 어디서나 현금화할 수 있는 **'디지털 자산 시스템'**에 금을 묻어둡니다. 지금 골드바를 결제하기 전, 금값 상승분이 당신이 지불한 수수료를 과연 넘어설 수 있을지 팩트로 판단하십시오.</p>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -87,24 +92,13 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -113,7 +107,7 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-</aside>
+<div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"></div></aside>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {

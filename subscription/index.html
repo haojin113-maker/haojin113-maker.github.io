@@ -49,19 +49,18 @@
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } .main-content { width: 100%; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">숨만 쉬어도 나가는 '고정비의 덫'</h1>
-            <p class="page-subtitle">구독 서비스 몇 개나 쓰시나요? 10년 뒤 통장 잔고가 달라집니다.</p>
-
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">subscriptions</span> 매달 9,900원, 14,900원... 소액이라 괜찮다고요? 구독 서비스는 당신의 통장에서 매달 자동으로 빠져나가는 <strong>'부의 빨대'</strong>입니다.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -71,6 +70,12 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <h1 class="page-title">숨만 쉬어도 나가는 '고정비의 덫'</h1>
+            <p class="page-subtitle">구독 서비스 몇 개나 쓰시나요? 10년 뒤 통장 잔고가 달라집니다.</p>
+
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">subscriptions</span> 매달 9,900원, 14,900원... 소액이라 괜찮다고요? 구독 서비스는 당신의 통장에서 매달 자동으로 빠져나가는 <strong>'부의 빨대'</strong>입니다.</p>
+            </section>
 
             <!-- 계산기 섹션 -->
             <section id="calculator">
@@ -137,8 +142,8 @@
                     <li><strong>Q. 무료 체험 기간만 쓰고 해지하는 건 어떤가요?</strong><br>A. 전형적인 마케팅 기법입니다. 해지 예약을 깜빡하는 순간 첫 결제가 이루어지고, 그때부터 당신은 '이미 낸 돈이 아까워서' 구독을 유지하게 될 확률이 매우 높습니다.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -147,25 +152,14 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"

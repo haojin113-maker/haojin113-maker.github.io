@@ -47,21 +47,18 @@
         
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <!-- [제목 섹션] -->
-            <h1 class="page-title">10년째 기초 회화, 당신은 영어 '스폰서'인가요?</h1>
-            <p class="page-subtitle">작심삼일로 끝난 무수한 결제 내역, 당신의 매몰 비용을 계산해드립니다.</p>
-
-            <!-- [도입 섹션] -->
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">language</span> 영어를 배우겠다는 욕망은 돈이 됩니다. 교육 기업들은 당신의 불안을 먹고 성장합니다. <strong>실행 없는 결제</strong>가 지난 10년간 당신의 통장에서 삭제한 기회비용을 확인하세요.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -71,6 +68,14 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <!-- [제목 섹션] -->
+            <h1 class="page-title">10년째 기초 회화, 당신은 영어 '스폰서'인가요?</h1>
+            <p class="page-subtitle">작심삼일로 끝난 무수한 결제 내역, 당신의 매몰 비용을 계산해드립니다.</p>
+
+            <!-- [도입 섹션] -->
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">language</span> 영어를 배우겠다는 욕망은 돈이 됩니다. 교육 기업들은 당신의 불안을 먹고 성장합니다. <strong>실행 없는 결제</strong>가 지난 10년간 당신의 통장에서 삭제한 기회비용을 확인하세요.</p>
+            </section>
 
             <!-- [계산기 섹션] -->
             <section id="calculator">
@@ -142,8 +147,8 @@
                     <li><strong>Q. 유학이나 어학연수는 효과가 있겠죠?</strong><br>A. 수천만 원을 들여가는 유학 또한 본인의 기본기가 없다면 가장 비싼 해외 관광에 불과하게 됩니다. 비용이 실력을 보장하지 않습니다.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -152,25 +157,14 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"

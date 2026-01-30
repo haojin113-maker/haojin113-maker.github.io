@@ -58,19 +58,18 @@
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; min-width: auto; } .main-content { width: 100%; } h1.page-title { font-size: 1.8rem; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">전기차, 지금 사면 손해인 이유</h1>
-            <p class="page-subtitle">보조금에 홀려 차값으로 날리는 돈을 계산해드립니다.</p>
-
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">error_outline</span> 전기차가 경제적이라는 말, 과연 사실일까요? 초기 구매 비용과 배터리 감가상각을 포함한 <strong>'진짜 손익분기점'</strong>을 지금 바로 확인하세요.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -80,6 +79,12 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <h1 class="page-title">전기차, 지금 사면 손해인 이유</h1>
+            <p class="page-subtitle">보조금에 홀려 차값으로 날리는 돈을 계산해드립니다.</p>
+
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">error_outline</span> 전기차가 경제적이라는 말, 과연 사실일까요? 초기 구매 비용과 배터리 감가상각을 포함한 <strong>'진짜 손익분기점'</strong>을 지금 바로 확인하세요.</p>
+            </section>
 
             <section id="calculator">
                 <h2>⚡ 손익분기점 계산기</h2>
@@ -148,8 +153,8 @@
                     <li><strong>Q. 하이브리드와 비교하면 어떤가요?</strong><br>A. 현재로서는 하이브리드가 가장 합리적인 선택지입니다. 전기차 수준의 정숙성을 갖추면서도 충전 스트레스가 없고, 중고차 가격 방어에서도 압도적인 우위에 있기 때문입니다.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -158,25 +163,14 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"

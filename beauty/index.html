@@ -47,19 +47,18 @@
         
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">얼굴에 바르는 벤츠 한 대 값, 실화일까요?</h1>
-            <p class="page-subtitle">자기만족이라는 명분 아래 삭제되는 당신의 10년 뒤 시드머니.</p>
-
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">face</span> "나를 위한 투자"라고 말하지만, 사실은 뷰티 대기업의 주머니를 채워주고 있지는 않나요? <strong>미용, 피부과, 코스메틱</strong>에 쏟는 현금의 10년 뒤 가치를 계산해보세요.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -69,6 +68,12 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <h1 class="page-title">얼굴에 바르는 벤츠 한 대 값, 실화일까요?</h1>
+            <p class="page-subtitle">자기만족이라는 명분 아래 삭제되는 당신의 10년 뒤 시드머니.</p>
+
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">face</span> "나를 위한 투자"라고 말하지만, 사실은 뷰티 대기업의 주머니를 채워주고 있지는 않나요? <strong>미용, 피부과, 코스메틱</strong>에 쏟는 현금의 10년 뒤 가치를 계산해보세요.</p>
+            </section>
 
             <!-- 계산기 섹션 -->
             <section id="calculator">
@@ -135,8 +140,8 @@
                     <li><strong>Q. 그럼 미용실도 가지 말라는 건가요?</strong><br>A. 필수적인 관리는 하되, 유행에 민감한 잦은 염색과 고가의 시술 횟수를 절반으로 줄여 그 차액을 본인 이름의 주식 계좌로 보내보라는 것입니다.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -145,25 +150,13 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
 
 
-
-            
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -173,7 +166,6 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
-            
         </aside>
     </div>
 

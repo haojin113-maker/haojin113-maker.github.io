@@ -47,20 +47,18 @@
         
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">첫 영상 찍기 전인데 500만 원 긁으셨나요?</h1>
-            <p class="page-subtitle">구독자는 0명인데 장비는 나영석 PD급인 당신을 위한 팩트 체크.</p>
-
-            <!-- 도입 섹션 -->
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">videocam</span> 유튜브는 장비가 아니라 **'기획'**으로 하는 것입니다. 최신형 미러리스 카메라와 슈어 마이크를 샀다고 해서 당신의 콘텐츠가 갑자기 재밌어지진 않습니다. 당신의 조회수당 가치로 <strong>본전 뽑을 가능성</strong>을 계산해드립니다.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -70,6 +68,13 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <h1 class="page-title">첫 영상 찍기 전인데 500만 원 긁으셨나요?</h1>
+            <p class="page-subtitle">구독자는 0명인데 장비는 나영석 PD급인 당신을 위한 팩트 체크.</p>
+
+            <!-- 도입 섹션 -->
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">videocam</span> 유튜브는 장비가 아니라 **'기획'**으로 하는 것입니다. 최신형 미러리스 카메라와 슈어 마이크를 샀다고 해서 당신의 콘텐츠가 갑자기 재밌어지진 않습니다. 당신의 조회수당 가치로 <strong>본전 뽑을 가능성</strong>을 계산해드립니다.</p>
+            </section>
 
             <!-- 계산기 섹션 -->
             <section id="calculator">
@@ -136,8 +141,8 @@
                     <li><strong>Q. 나중에 중고로 팔면 되잖아요.</strong><br>A. 전자기기는 감가상각이 가장 심한 자산입니다. 한 세대만 지나도 반 토막 나는 장비 가격을 보며 당신은 또 다른 자산 누수를 경험하게 될 것입니다.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -146,25 +151,14 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"

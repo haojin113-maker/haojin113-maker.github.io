@@ -46,19 +46,18 @@
         
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">재수 1년의 가격, 연봉 협상으로도 못 채웁니다</h1>
-            <p class="page-subtitle">학비는 2,000만 원이지만, 당신이 포기한 자산 가치는 1억 원이 넘습니다.</p>
-
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">hourglass_bottom</span> "대학 이름이 평생 간다"는 기성세대의 조언. 하지만 2025년 대한민국 시장에서 1년의 지체는 <strong>생애 소득 1억 원 삭제</strong>와 같습니다. 다시 한 번 연필을 잡기 전, 이 베팅의 진짜 대가를 숫자로 계산해 보세요.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -68,6 +67,12 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <h1 class="page-title">재수 1년의 가격, 연봉 협상으로도 못 채웁니다</h1>
+            <p class="page-subtitle">학비는 2,000만 원이지만, 당신이 포기한 자산 가치는 1억 원이 넘습니다.</p>
+
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">hourglass_bottom</span> "대학 이름이 평생 간다"는 기성세대의 조언. 하지만 2025년 대한민국 시장에서 1년의 지체는 <strong>생애 소득 1억 원 삭제</strong>와 같습니다. 다시 한 번 연필을 잡기 전, 이 베팅의 진짜 대가를 숫자로 계산해 보세요.</p>
+            </section>
 
             <!-- 계산기 섹션 -->
             <section id="calculator">
@@ -139,8 +144,8 @@
                     <li><strong>Q. 부모님 지원인데 제가 손해 볼 게 있나요?</strong><br>A. 부모님의 노후 자금이 당신의 학원비로 증발하고 있습니다. 훗날 당신이 부양해야 할 노후 고지서가 그만큼 일찍, 무겁게 날아올 것임을 명심하세요.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -149,25 +154,14 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"

@@ -47,19 +47,18 @@
         
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">내 시간 시급 3만 원 vs 기계값 1,000원</h1>
-            <p class="page-subtitle">가장 합리적인 부의 선택: 당신의 노동력을 기계로 외주 주는 법.</p>
-
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">smart_toy</span> 자본주의의 핵심은 **'외주(Outsourcing)'**입니다. 식기세척기, 건조기, 로봇청소기를 사는 것은 사치가 아닙니다. 당신의 소중한 자유 시간을 대량 구매하는 가장 완벽한 <strong>'고수익 투자'</strong>입니다.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -69,6 +68,12 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <h1 class="page-title">내 시간 시급 3만 원 vs 기계값 1,000원</h1>
+            <p class="page-subtitle">가장 합리적인 부의 선택: 당신의 노동력을 기계로 외주 주는 법.</p>
+
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">smart_toy</span> 자본주의의 핵심은 **'외주(Outsourcing)'**입니다. 식기세척기, 건조기, 로봇청소기를 사는 것은 사치가 아닙니다. 당신의 소중한 자유 시간을 대량 구매하는 가장 완벽한 <strong>'고수익 투자'</strong>입니다.</p>
+            </section>
 
             <!-- 계산기 섹션 -->
             <section id="calculator">
@@ -139,8 +144,8 @@
                     <li><strong>Q. 집이 좁아도 식세기가 필요한가요?</strong><br>A. 좁은 주거 환경일수록 건조대와 설거지 뭉치가 사라짐으로써 얻는 공간의 가치는 더욱 빛이 납니다. 시각적인 정돈이 가져다주는 정신적 가치는 막대합니다.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -149,25 +154,14 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"

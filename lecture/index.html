@@ -47,21 +47,18 @@
         
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <!-- [제목 섹션] -->
-            <h1 class="page-title">배우지 않고 결제만 하는 '디지털 호더'인가요?</h1>
-            <p class="page-subtitle">평생 소장권이라는 이름의 휴지조각, 당신이 모은 강의의 실체.</p>
-
-            <!-- [도입 섹션] -->
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">library_books</span> 강의를 사는 순간 당신은 마치 똑똑해진 것 같은 착각에 빠집니다. 하지만 실행하지 않은 지식은 부채일 뿐입니다. <strong>완강률 5% 미만의 시대</strong>, 당신이 강의 플랫폼 사옥 건설에 기여한 총액을 확인하세요.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -71,6 +68,14 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <!-- [제목 섹션] -->
+            <h1 class="page-title">배우지 않고 결제만 하는 '디지털 호더'인가요?</h1>
+            <p class="page-subtitle">평생 소장권이라는 이름의 휴지조각, 당신이 모은 강의의 실체.</p>
+
+            <!-- [도입 섹션] -->
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">library_books</span> 강의를 사는 순간 당신은 마치 똑똑해진 것 같은 착각에 빠집니다. 하지만 실행하지 않은 지식은 부채일 뿐입니다. <strong>완강률 5% 미만의 시대</strong>, 당신이 강의 플랫폼 사옥 건설에 기여한 총액을 확인하세요.</p>
+            </section>
 
             <!-- [계산기 섹션] -->
             <section id="calculator">
@@ -141,8 +146,8 @@
                     <li><strong>Q. 독학보다 강의가 효율적이지 않나요?</strong><br>A. 기초를 잡는 데는 효율적이지만, 대부분의 '수집가'들은 기초 강의만 반복해서 듣습니다. 다음 단계로 넘어가 실질적인 결과물을 만드는 고통을 피하고 있는 것은 아닌지 점검하세요.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -151,25 +156,14 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"

@@ -47,21 +47,18 @@
         
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <!-- [제목 섹션] -->
-            <h1 class="page-title">강남 건물은 멀어도 '배당 빌딩'은 가깝습니다</h1>
-            <p class="page-subtitle">매달 100만 원씩 입금되는 디지털 월세의 기초를 확인하세요.</p>
-
-            <!-- [도입 섹션] -->
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">account_balance</span> 실제 건물은 공실 걱정, 수선비, 높은 세금이 뒤따릅니다. 하지만 <strong>글로벌 우량 기업의 배당금</strong>은 그런 걱정 없이 당신의 통장을 채웁니다. 월급 외 소득을 만들기 위한 시드머니 팩트를 체크하세요.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -71,6 +68,14 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <!-- [제목 섹션] -->
+            <h1 class="page-title">강남 건물은 멀어도 '배당 빌딩'은 가깝습니다</h1>
+            <p class="page-subtitle">매달 100만 원씩 입금되는 디지털 월세의 기초를 확인하세요.</p>
+
+            <!-- [도입 섹션] -->
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">account_balance</span> 실제 건물은 공실 걱정, 수선비, 높은 세금이 뒤따릅니다. 하지만 <strong>글로벌 우량 기업의 배당금</strong>은 그런 걱정 없이 당신의 통장을 채웁니다. 월급 외 소득을 만들기 위한 시드머니 팩트를 체크하세요.</p>
+            </section>
 
             <!-- [계산기 섹션] -->
             <section id="calculator">
@@ -138,8 +143,8 @@
                     <li><strong>Q. 주가가 하락하면 손해 아닌가요?</strong><br>A. 하락장은 더 저렴한 가격에 '디지털 부동산'의 평수를 늘릴 수 있는 세일 기간입니다. 장기적 현금 흐름을 목표로 한다면 주가 변동성은 오히려 친구가 됩니다.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -148,25 +153,14 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"

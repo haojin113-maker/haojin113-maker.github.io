@@ -47,21 +47,18 @@
         
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <!-- [제목 섹션] -->
-            <h1 class="page-title">거실에 모셔둔 수백만 원짜리 '철제 빨래대'</h1>
-            <p class="page-subtitle">헬스장 가기 귀찮아서 꾸민 홈짐, 진짜 쇠를 들고 계신가요?</p>
-
-            <!-- [도입 섹션] -->
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">fitness_center</span> "집에서 하면 시간 아끼겠지"라는 환상이 카드 할부를 부릅니다. 하지만 정작 <strong>가장 먼 거리는 현관문에서 거실 바닥까지</strong>입니다. 당신의 고가 장비가 1회 운동 당 얼마를 태우고 있는지 팩트로 확인하세요.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -71,6 +68,14 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <!-- [제목 섹션] -->
+            <h1 class="page-title">거실에 모셔둔 수백만 원짜리 '철제 빨래대'</h1>
+            <p class="page-subtitle">헬스장 가기 귀찮아서 꾸민 홈짐, 진짜 쇠를 들고 계신가요?</p>
+
+            <!-- [도입 섹션] -->
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">fitness_center</span> "집에서 하면 시간 아끼겠지"라는 환상이 카드 할부를 부릅니다. 하지만 정작 <strong>가장 먼 거리는 현관문에서 거실 바닥까지</strong>입니다. 당신의 고가 장비가 1회 운동 당 얼마를 태우고 있는지 팩트로 확인하세요.</p>
+            </section>
 
             <!-- [계산기 섹션] -->
             <section id="calculator">
@@ -141,8 +146,8 @@
                     <li><strong>Q. 매일 하면 헬스장보다 이득 아닌가요?</strong><br>A. 이론상으로는 그렇습니다. 하지만 본인이 지난 3년 동안 헬스장을 주 5회 이상 성실히 다녔던 '운동 상위 1%'의 실행력을 가졌는지 먼저 팩트로 검증해야 합니다.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -151,25 +156,14 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"

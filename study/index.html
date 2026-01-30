@@ -47,21 +47,18 @@
         
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } .main-content { width: 100%; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <!-- [제목 섹션] -->
-            <h1 class="page-title">합격해도 본전 못 뽑는 '시험 지옥'의 단가</h1>
-            <p class="page-subtitle">단순 학원비가 아닙니다. 당신이 벌지 못한 연봉이 진짜 비용입니다.</p>
-
-            <!-- [도입 섹션] -->
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">history_edu</span> 수험 기간이 길어질수록 당신의 몸값은 하락하고 자산 격차는 벌어집니다. <strong>합격하면 다 보상받겠지</strong>라는 생각은 전형적인 매몰 비용의 오류입니다. 당신의 2030 황금기가 환산하면 얼마인지 확인하세요.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -71,6 +68,14 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <!-- [제목 섹션] -->
+            <h1 class="page-title">합격해도 본전 못 뽑는 '시험 지옥'의 단가</h1>
+            <p class="page-subtitle">단순 학원비가 아닙니다. 당신이 벌지 못한 연봉이 진짜 비용입니다.</p>
+
+            <!-- [도입 섹션] -->
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">history_edu</span> 수험 기간이 길어질수록 당신의 몸값은 하락하고 자산 격차는 벌어집니다. <strong>합격하면 다 보상받겠지</strong>라는 생각은 전형적인 매몰 비용의 오류입니다. 당신의 2030 황금기가 환산하면 얼마인지 확인하세요.</p>
+            </section>
 
             <!-- [계산기 섹션] -->
             <section id="calculator">
@@ -142,8 +147,8 @@
                     <li><strong>Q. 그래도 전문직 자격증은 다르지 않나요?</strong><br>A. 전문직 또한 수급 조절과 AI 발전으로 수익률이 우하향하고 있습니다. 본인의 적성과 투입 가능한 자본 총량을 철저히 분석하고 뛰어드십시오.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -152,25 +157,14 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"

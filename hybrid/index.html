@@ -47,21 +47,18 @@
         
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <!-- [제목 섹션] -->
-            <h1 class="page-title">연비로 차값 뽕 뽑으려면 100년?</h1>
-            <p class="page-subtitle">가솔린 모델보다 400만 원 비싼 하이브리드, 과연 경제적인 선택일까요?</p>
-
-            <!-- [도입 섹션] -->
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">electric_car</span> 하이브리드 차량은 취득세 감면과 연비라는 강력한 장점이 있습니다. 하지만 초기 구매 비용 역시 <strong>수백만 원</strong> 더 비쌉니다. 당신의 주행 거리를 기준으로 본전 뽑는 시점을 숫자로 직면하세요.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -71,6 +68,14 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <!-- [제목 섹션] -->
+            <h1 class="page-title">연비로 차값 뽕 뽑으려면 100년?</h1>
+            <p class="page-subtitle">가솔린 모델보다 400만 원 비싼 하이브리드, 과연 경제적인 선택일까요?</p>
+
+            <!-- [도입 섹션] -->
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">electric_car</span> 하이브리드 차량은 취득세 감면과 연비라는 강력한 장점이 있습니다. 하지만 초기 구매 비용 역시 <strong>수백만 원</strong> 더 비쌉니다. 당신의 주행 거리를 기준으로 본전 뽑는 시점을 숫자로 직면하세요.</p>
+            </section>
 
             <!-- [계산기 섹션] -->
             <section id="calculator">
@@ -140,8 +145,8 @@
                     <li><strong>Q. 정숙성 때문에 사고 싶은데요.</strong><br>A. 승차감과 정숙성을 위한 지출이라면 소비로서 인정합니다. 하지만 '경제성' 때문에 산다는 말로 본인의 과소비를 합리화하지는 마세요.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -150,25 +155,14 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"

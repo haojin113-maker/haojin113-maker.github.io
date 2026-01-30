@@ -47,19 +47,18 @@
         
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">주차장에 세워둔 자산, 빌려 쓰면 반값입니다</h1>
-            <p class="page-subtitle">차키를 소유하고 싶은 욕망 vs 현명한 이동 수단의 가계부 승자는?</p>
-
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">directions_car</span> 당신의 차는 1년 중 90% 이상의 시간을 주차장에 머뭅니다. 가만히 있어도 감가상각과 세금은 매초 통장을 갉아먹습니다. <strong>카쉐어링과 자차 소유</strong>의 실질 유지비를 10원 단위까지 비교해 보세요.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -69,6 +68,12 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <h1 class="page-title">주차장에 세워둔 자산, 빌려 쓰면 반값입니다</h1>
+            <p class="page-subtitle">차키를 소유하고 싶은 욕망 vs 현명한 이동 수단의 가계부 승자는?</p>
+
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">directions_car</span> 당신의 차는 1년 중 90% 이상의 시간을 주차장에 머뭅니다. 가만히 있어도 감가상각과 세금은 매초 통장을 갉아먹습니다. <strong>카쉐어링과 자차 소유</strong>의 실질 유지비를 10원 단위까지 비교해 보세요.</p>
+            </section>
 
             <!-- 계산기 섹션 -->
             <section id="calculator">
@@ -139,8 +144,8 @@
                     <li><strong>Q. 카쉐어링은 위생 상태나 사고 시 대응이 불안해요.</strong><br>A. 최신 서비스들은 무인 관리를 넘어 철저한 클리닝 서비스를 도입하고 있습니다. 보험 시스템 또한 본인 부담금 한도를 낮추면 자차보다 리스크가 작을 수 있습니다.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -149,25 +154,14 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"

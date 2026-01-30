@@ -29,19 +29,18 @@
         .seo-content { line-height: 1.8; color: #444; }
         .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">애플의 충성 고객입니까, 지갑의 기부자입니까?</h1>
-            <p class="page-subtitle">"연동성"이라는 말에 속아 한 대기업의 시가총액을 지탱해 주는 당신의 열정.</p>
-
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">apple</span> 아이폰 하나로 시작해 맥북, 아이패드, 애플워치, 에어팟까지... 이른바 <strong>'사과 농장'</strong>을 차리는 비용은 이제 웬만한 수입 중고차 한 대 가격입니다. 당신이 한 끗 차이의 디자인에 바친 '감성세'가 10년 뒤 어떤 미래 자산을 잡아먹는지 확인하세요.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -51,6 +50,12 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <h1 class="page-title">애플의 충성 고객입니까, 지갑의 기부자입니까?</h1>
+            <p class="page-subtitle">"연동성"이라는 말에 속아 한 대기업의 시가총액을 지탱해 주는 당신의 열정.</p>
+
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">apple</span> 아이폰 하나로 시작해 맥북, 아이패드, 애플워치, 에어팟까지... 이른바 <strong>'사과 농장'</strong>을 차리는 비용은 이제 웬만한 수입 중고차 한 대 가격입니다. 당신이 한 끗 차이의 디자인에 바친 '감성세'가 10년 뒤 어떤 미래 자산을 잡아먹는지 확인하세요.</p>
+            </section>
 
             <section id="calculator">
                 <h2>🍎 사과 로고 감성 세금 계산기</h2>
@@ -82,8 +87,8 @@
                 <h3>2. '연동성'이라는 가장 값비싼 가스라이팅</h3>
                 <p>한 번 발을 들이면 다른 기기로 갈아타기 힘든 '폐쇄적 생태계'는 사용자의 편의를 빙자한 기업의 전략입니다. 동급의 윈도우나 안드로이드 기기로도 당신이 하는 업무와 학습의 95%는 완벽하게 수행 가능합니다. 5%의 차이를 위해 2배의 가격을 지불하는 것은 경제적 지능의 부재를 스스로 광고하는 셈입니다. 부자들은 애플 제품을 쓰지만, 그들은 그보다 1,000배 많은 애플 주식을 보유하고 있습니다. 당신의 '사과 농장'이 베란다 화분 수준인지, 아니면 거대한 지분 배당 농장인지 다시 확인하십시오. 진짜 성공은 손목에 감긴 고가의 티타늄 워치가 아니라, 언제든 일을 그만둬도 현금이 쏟아지는 자본의 시스템에서 옵니다.</p>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -92,24 +97,13 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -118,7 +112,7 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-</aside>
+<div class="ad-box" style="min-height: 600px; position:sticky; top:20px;"></div></aside>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {

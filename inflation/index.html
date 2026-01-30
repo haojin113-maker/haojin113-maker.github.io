@@ -49,19 +49,18 @@
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } .main-content { width: 100%; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">원금 보장? 사실은 '원금 파괴'입니다</h1>
-            <p class="page-subtitle">물가 상승률을 이기지 못하는 예적금은 저축이 아닌 손실입니다.</p>
-
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">trending_down</span> 예금은 안전한가요? 숫자만 그대로일 뿐, 당신이 살 수 있는 물건의 양은 매일 줄어듭니다. <strong>실질 마이너스 금리</strong>의 공포를 계산해 보세요.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -71,6 +70,12 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <h1 class="page-title">원금 보장? 사실은 '원금 파괴'입니다</h1>
+            <p class="page-subtitle">물가 상승률을 이기지 못하는 예적금은 저축이 아닌 손실입니다.</p>
+
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">trending_down</span> 예금은 안전한가요? 숫자만 그대로일 뿐, 당신이 살 수 있는 물건의 양은 매일 줄어듭니다. <strong>실질 마이너스 금리</strong>의 공포를 계산해 보세요.</p>
+            </section>
 
             <!-- 계산기 섹션 -->
             <section id="calculator">
@@ -141,8 +146,8 @@
                     <li><strong>Q. 그럼 적금을 당장 해지해야 할까요?</strong><br>A. 당장 쓸 돈이나 비상금은 예금이 적합합니다. 하지만 노후 자금과 같이 장기적인 자금은 물가 상승률 + 알파의 수익을 낼 수 있는 투자 자산으로 분산해야 합니다.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -151,25 +156,14 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"

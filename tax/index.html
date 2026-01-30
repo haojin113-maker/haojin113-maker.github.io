@@ -47,21 +47,18 @@
         
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <!-- [제목 섹션] -->
-            <h1 class="page-title">내 연봉, 세금만 떼이고 계신가요?</h1>
-            <p class="page-subtitle">합법적으로 나라에서 돈을 돌려받는 '유일한' 확정 투자법.</p>
-
-            <!-- [도입 섹션] -->
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">request_quote</span> 연말정산은 '운'이 아니라 '전략'입니다. 연금저축과 IRP 불입만으로 얻는 <strong>연 최대 148만 5천 원</strong>의 환급금. 주식 수익률로 환산하면 무려 16.5%의 확정 수익입니다. 당신의 잃어버린 13월의 월급을 계산하세요.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -71,6 +68,14 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <!-- [제목 섹션] -->
+            <h1 class="page-title">내 연봉, 세금만 떼이고 계신가요?</h1>
+            <p class="page-subtitle">합법적으로 나라에서 돈을 돌려받는 '유일한' 확정 투자법.</p>
+
+            <!-- [도입 섹션] -->
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">request_quote</span> 연말정산은 '운'이 아니라 '전략'입니다. 연금저축과 IRP 불입만으로 얻는 <strong>연 최대 148만 5천 원</strong>의 환급금. 주식 수익률로 환산하면 무려 16.5%의 확정 수익입니다. 당신의 잃어버린 13월의 월급을 계산하세요.</p>
+            </section>
 
             <!-- [계산기 섹션] -->
             <section id="calculator">
@@ -140,8 +145,8 @@
                     <li><strong>Q. 나중에 연금 받을 때 세금 또 내지 않나요?</strong><br>A. 연금 소득세율은 3.3~5.5%에 불과합니다. 지금 16.5%를 아끼고 나중에 5%를 내는 것은 무조건 이득인 '세금 쇼핑'입니다.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -150,25 +155,14 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"

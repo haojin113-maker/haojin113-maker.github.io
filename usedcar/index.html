@@ -47,19 +47,18 @@
         
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">1500만 원으로 누리는 강남 하차감?</h1>
-            <p class="page-subtitle">차 값보다 수리비가 더 나오는 '썩차'의 팩트 청구서.</p>
-
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">dangerous</span> 감가가 끝난 외제차는 기회가 아니라 <strong>'폭탄'</strong>입니다. 당신의 얄팍한 예산은 정비소 사장님의 자녀 학원비가 될 확률이 높습니다. 월 수입 대비 실질 유지비를 지금 바로 진단해보세요.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -69,6 +68,12 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <h1 class="page-title">1500만 원으로 누리는 강남 하차감?</h1>
+            <p class="page-subtitle">차 값보다 수리비가 더 나오는 '썩차'의 팩트 청구서.</p>
+
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">dangerous</span> 감가가 끝난 외제차는 기회가 아니라 <strong>'폭탄'</strong>입니다. 당신의 얄팍한 예산은 정비소 사장님의 자녀 학원비가 될 확률이 높습니다. 월 수입 대비 실질 유지비를 지금 바로 진단해보세요.</p>
+            </section>
 
             <!-- 계산기 섹션 -->
             <section id="calculator">
@@ -138,8 +143,8 @@
                     <li><strong>Q. 보증 기간(워런티) 연장이 가능하지 않나요?</strong><br>A. 10년 된 차량의 보증 연장은 사실상 불가능하며, 보험 성격의 연장권 가격 또한 기겁할 만큼 비쌉니다. 그 보험료가 곧 당신의 예상 수리비인 셈입니다.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -148,25 +153,14 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"

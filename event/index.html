@@ -47,19 +47,18 @@
         
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">정으로 내는 돈, 통장엔 '멍'이 듭니다</h1>
-            <p class="page-subtitle">매달 평균 20만 원의 경조사비, 평생 모으면 얼마일까요?</p>
-
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">card_giftcard</span> 관계의 도리라는 이름 하에 거절하지 못하고 낸 봉투값. "나중에 다 돌려받는다"는 말을 아직도 믿으시나요? 인맥 유지를 위한 <strong>'사회적 비용'</strong>을 지금 바로 계산해보세요.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -69,6 +68,12 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <h1 class="page-title">정으로 내는 돈, 통장엔 '멍'이 듭니다</h1>
+            <p class="page-subtitle">매달 평균 20만 원의 경조사비, 평생 모으면 얼마일까요?</p>
+
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">card_giftcard</span> 관계의 도리라는 이름 하에 거절하지 못하고 낸 봉투값. "나중에 다 돌려받는다"는 말을 아직도 믿으시나요? 인맥 유지를 위한 <strong>'사회적 비용'</strong>을 지금 바로 계산해보세요.</p>
+            </section>
 
             <!-- 계산기 섹션 -->
             <section id="calculator">
@@ -138,8 +143,8 @@
                     <li><strong>Q. 호텔 예식은 기본 10만 원이라던데?</strong><br>A. 식사를 포기하고 봉투만 보내거나, 진심 어린 축하 메시지와 함께 정중히 불참을 알리는 것이 서로에게 가장 깔끔한 방법일 수 있습니다.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -148,25 +153,14 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"

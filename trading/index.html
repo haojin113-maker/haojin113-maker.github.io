@@ -46,19 +46,18 @@
         
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">매수와 매도 사이, 증권사만 웃고 있습니다</h1>
-            <p class="page-subtitle">수익이 0%여도 당신의 계좌가 반 토막 나는 이유, 거래세의 함정.</p>
-
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">show_chart</span> 주식 단타는 '투자의 영역'이 아니라 <strong>'확률적 자산 삭제'</strong> 게임에 가깝습니다. 실력이 있어도 세금과 수수료라는 문턱이 당신을 기다립니다. 1년 뒤 계좌 상태를 예측해 보세요.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -68,6 +67,12 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <h1 class="page-title">매수와 매도 사이, 증권사만 웃고 있습니다</h1>
+            <p class="page-subtitle">수익이 0%여도 당신의 계좌가 반 토막 나는 이유, 거래세의 함정.</p>
+
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">show_chart</span> 주식 단타는 '투자의 영역'이 아니라 <strong>'확률적 자산 삭제'</strong> 게임에 가깝습니다. 실력이 있어도 세금과 수수료라는 문턱이 당신을 기다립니다. 1년 뒤 계좌 상태를 예측해 보세요.</p>
+            </section>
 
             <!-- 계산기 섹션 -->
             <section id="calculator">
@@ -139,8 +144,8 @@
                     <li><strong>Q. 고수들은 단타로 수억 원을 벌지 않나요?</strong><br>A. 극소수의 슈퍼 트레이더들이 존재하긴 하지만, 그들은 정교한 프로그램과 막대한 정보를 동원하는 상위 0.01%의 프로들입니다. 일반 개인이 그들과 싸워 이길 확률은 없습니다.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -149,25 +154,14 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"

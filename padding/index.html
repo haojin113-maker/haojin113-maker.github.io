@@ -47,20 +47,18 @@
         
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">로고가 커질수록 당신의 자산은 작아집니다</h1>
-            <p class="page-subtitle">200만 원짜리 패딩의 리얼 할부 가격표.</p>
-
-            <!-- 도입 섹션 -->
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">ac_unit</span> 대한민국은 한여름에도 패딩 오픈런이 일어나는 기이한 시장입니다. "평생 입을 거니까"라는 합리화는 통장에선 통하지 않습니다. <strong>패딩 한 번 입을 때마다 나가는 일세(日稅)</strong>를 계산하고 명품 패딩 계급도 너머의 진실을 확인하세요.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -70,6 +68,13 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <h1 class="page-title">로고가 커질수록 당신의 자산은 작아집니다</h1>
+            <p class="page-subtitle">200만 원짜리 패딩의 리얼 할부 가격표.</p>
+
+            <!-- 도입 섹션 -->
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">ac_unit</span> 대한민국은 한여름에도 패딩 오픈런이 일어나는 기이한 시장입니다. "평생 입을 거니까"라는 합리화는 통장에선 통하지 않습니다. <strong>패딩 한 번 입을 때마다 나가는 일세(日稅)</strong>를 계산하고 명품 패딩 계급도 너머의 진실을 확인하세요.</p>
+            </section>
 
             <!-- 계산기 섹션 -->
             <section id="calculator">
@@ -140,8 +145,8 @@
                     <li><strong>Q. 한정판은 리셀이 가능하지 않나요?</strong><br>A. 시계나 가방과 달리 패딩은 피부에 직접 닿고 체취가 배는 품목입니다. 중고 가치는 보관 상태와 유행에 따라 바닥을 칩니다. 리셀 재테크로는 부적합한 소모품일 뿐입니다.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -150,25 +155,14 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"

@@ -33,19 +33,18 @@
         .ad-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 10px; text-align: center; margin-bottom: 20px; }
         .ad-label { display: block; font-size: 11px; color: #ccc; margin-bottom: 5px; text-align: right; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">내 인생의 2년을 '철길'에 바칠 가치</h1>
-            <p class="page-subtitle">단순한 성형이 아닙니다. 노년의 임플란트 값을 아끼는 투자입니다.</p>
-
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">check_circle</span> 치아 교정 비용 600만 원. 누군가는 차라리 명품 가방을 사겠다고 합니다. 하지만 부정교합을 방치했을 때 50대 이후에 마주할 <strong>임플란트 10개와 틀니 비용</strong>을 합치면, 교정은 연 수익률 수백 퍼센트의 확실한 '방어적 재테크'입니다.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -55,6 +54,12 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <h1 class="page-title">내 인생의 2년을 '철길'에 바칠 가치</h1>
+            <p class="page-subtitle">단순한 성형이 아닙니다. 노년의 임플란트 값을 아끼는 투자입니다.</p>
+
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">check_circle</span> 치아 교정 비용 600만 원. 누군가는 차라리 명품 가방을 사겠다고 합니다. 하지만 부정교합을 방치했을 때 50대 이후에 마주할 <strong>임플란트 10개와 틀니 비용</strong>을 합치면, 교정은 연 수익률 수백 퍼센트의 확실한 '방어적 재테크'입니다.</p>
+            </section>
 
             <section id="calculator">
                 <h2>😬 교정 가성비 정산기</h2>
@@ -116,8 +121,10 @@
                     <li><strong>Q. 비용 할인이 많이 되는 치과가 좋겠죠?</strong><br>A. 과도한 할인을 미끼로 환자를 모으는 이른바 '이벤트 치과'는 사후 관리가 안 되거나 도산할 위험이 큽니다. 당신의 평생 미소를 싸구려 박리다매에 맡기지 마세요.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+
+            
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -126,26 +133,13 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
 
-
-
-            
             
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"

@@ -47,19 +47,18 @@
         
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <h1 class="page-title">사랑도 쇼핑이 가능한가요? '만남'의 가격표</h1>
-            <p class="page-subtitle">수백만 원 가입비 뒤에 숨겨진 1회당 만남의 냉정한 경제성.</p>
-
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">groups</span> "전문가에게 맡기면 다르겠지"라는 기대로 문을 두드리는 결혼정보회사(결정사). 하지만 자본주의 시장에서 인연은 **'단가'**로 계산됩니다. 가입비와 추가 지출을 합산한 소개팅 한 번의 가격을 마주해 보세요.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -69,6 +68,12 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <h1 class="page-title">사랑도 쇼핑이 가능한가요? '만남'의 가격표</h1>
+            <p class="page-subtitle">수백만 원 가입비 뒤에 숨겨진 1회당 만남의 냉정한 경제성.</p>
+
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">groups</span> "전문가에게 맡기면 다르겠지"라는 기대로 문을 두드리는 결혼정보회사(결정사). 하지만 자본주의 시장에서 인연은 **'단가'**로 계산됩니다. 가입비와 추가 지출을 합산한 소개팅 한 번의 가격을 마주해 보세요.</p>
+            </section>
 
             <!-- 계산기 섹션 -->
             <section id="calculator">
@@ -139,8 +144,8 @@
                     <li><strong>Q. 성혼 사례금이 비싼 건 성과급 아닐까요?</strong><br>A. 성과급이 높다는 것은 회사가 당신의 '절박함'에 가장 높은 프리미엄을 붙였다는 뜻입니다. 자본주의에서 승자는 절박함을 팔지 않고 평정심을 유지하는 사람입니다.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -149,25 +154,14 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"

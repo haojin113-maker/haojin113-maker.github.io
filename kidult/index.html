@@ -47,21 +47,18 @@
         
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <!-- [제목 섹션] -->
-            <h1 class="page-title">내 거실을 점령한 플라스틱 군대, 얼마입니까?</h1>
-            <p class="page-subtitle">피규어 한 박스에 담긴 당신의 '아파트 잔금'을 찾아드립니다.</p>
-
-            <!-- [도입 섹션] -->
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">smart_toy</span> 어린 시절의 추억을 완성한다는 핑계로 수백만 원어치 레고와 피규어를 쌓아두고 계신가요? 수집품은 <strong>'자산'이 아니라 '부피 큰 소모품'</strong>입니다. 당신의 장식장이 잡아먹는 공간 가치와 매몰 비용을 숫자로 직면하세요.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -71,6 +68,14 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <!-- [제목 섹션] -->
+            <h1 class="page-title">내 거실을 점령한 플라스틱 군대, 얼마입니까?</h1>
+            <p class="page-subtitle">피규어 한 박스에 담긴 당신의 '아파트 잔금'을 찾아드립니다.</p>
+
+            <!-- [도입 섹션] -->
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">smart_toy</span> 어린 시절의 추억을 완성한다는 핑계로 수백만 원어치 레고와 피규어를 쌓아두고 계신가요? 수집품은 <strong>'자산'이 아니라 '부피 큰 소모품'</strong>입니다. 당신의 장식장이 잡아먹는 공간 가치와 매몰 비용을 숫자로 직면하세요.</p>
+            </section>
 
             <!-- [계산기 섹션] -->
             <section id="calculator">
@@ -142,8 +147,8 @@
                     <li><strong>Q. 취미로 삶의 활력을 얻는데 돈이 아까운가요?</strong><br>A. 활력을 얻는 것은 좋지만, 그 비용이 본인의 총 자산 형성 속도를 10년 이상 늦추고 있다면 그것은 건전한 취미가 아니라 자기 파괴적 과소비입니다.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -152,25 +157,14 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"

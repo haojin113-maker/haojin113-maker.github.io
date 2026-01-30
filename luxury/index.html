@@ -46,21 +46,18 @@
         
         .seo-content { line-height: 1.8; color: #444; }
         @media (max-width: 850px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; position: static; } }
+    /* 모바일: 사이드바 광고 숨김 */
+    @media (max-width: 850px) {
+        .sidebar-ad-wrapper { display: none !important; }
+    }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <main class="main-content">
-            <!-- [제목 섹션] -->
-            <h1 class="page-title">가방이 샤넬이면, 당신의 자산도 샤넬입니까?</h1>
-            <p class="page-subtitle">"하나쯤은 있어야지"라는 자기 최면이 당신의 노후를 샤넬과 맞바꾸고 있습니다.</p>
-
-            <!-- [도입 섹션] -->
-            <section class="intro-box">
-                <p><span class="material-icons-round" style="vertical-align: middle;">handbag</span> 명품은 성공의 증표가 아니라, 명품 브랜드 대주주들에게 당신의 노동력을 상납하는 <strong>'자산 이전'</strong> 행위입니다. 가죽 조각과 부의 기회를 비교해보세요.</p>
-            </section>
-    <!-- 광고 #1: 본문 상단 -->
-    <div style="text-align:center; margin:30px 0;">
+    <!-- 광고: 본문 상단 -->
+    <div style="text-align:center; margin:20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -70,6 +67,14 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
+            <!-- [제목 섹션] -->
+            <h1 class="page-title">가방이 샤넬이면, 당신의 자산도 샤넬입니까?</h1>
+            <p class="page-subtitle">"하나쯤은 있어야지"라는 자기 최면이 당신의 노후를 샤넬과 맞바꾸고 있습니다.</p>
+
+            <!-- [도입 섹션] -->
+            <section class="intro-box">
+                <p><span class="material-icons-round" style="vertical-align: middle;">handbag</span> 명품은 성공의 증표가 아니라, 명품 브랜드 대주주들에게 당신의 노동력을 상납하는 <strong>'자산 이전'</strong> 행위입니다. 가죽 조각과 부의 기회를 비교해보세요.</p>
+            </section>
 
             <!-- [계산기 섹션] -->
             <section id="calculator">
@@ -135,8 +140,8 @@
                     <li><strong>Q. 사회생활하면서 기죽지 않으려면 필요하지 않나요?</strong><br>A. 진정으로 능력이 있는 사람은 저렴한 옷을 입어도 가벼워 보이지 않습니다. 오히려 낡은 차에서 내리며 명품 가방을 든 모습은 경제적 불안정함의 상징으로 비칠 뿐입니다.</li>
                 </ul>
             </section>
-    <!-- 광고 #2: 본문 하단 -->
-    <div style="text-align:center; margin:40px 0;">
+    <!-- 광고: 본문 하단 -->
+    <div style="text-align:center; margin:40px 0 20px 0;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
@@ -145,25 +150,14 @@
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <!-- 광고 #3: 모바일 전용 -->
-    <div style="text-align:center; margin:30px 0;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6902579674102145"
-             data-ad-slot="6297031481"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
 
 
             
         </main>
 
         <aside class="sidebar">
-    <!-- 광고 #4: 사이드바 -->
-    <div style="text-align:center; margin-bottom:20px;">
+    <!-- 광고: 사이드바 (PC 전용) -->
+    <div class="sidebar-ad-wrapper" style="text-align:center; margin-bottom:20px;">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6902579674102145"
